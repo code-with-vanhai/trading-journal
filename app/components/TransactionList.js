@@ -4,6 +4,7 @@ import { useState } from 'react';
 import Link from 'next/link';
 import { format } from 'date-fns';
 import { vi } from 'date-fns/locale';
+import TransactionDetailModal from './TransactionDetailModal';
 
 export default function TransactionList({ 
   transactions, 
@@ -13,6 +14,8 @@ export default function TransactionList({
   onSortChange
 }) {
   const [deletingId, setDeletingId] = useState(null);
+  const [modalOpen, setModalOpen] = useState(false);
+  const [selectedTransactionId, setSelectedTransactionId] = useState(null);
 
   const handleSort = (field) => {
     if (onSortChange) {
@@ -53,6 +56,15 @@ export default function TransactionList({
         setDeletingId(null);
       }
     }
+  };
+
+  const openTransactionModal = (id) => {
+    setSelectedTransactionId(id);
+    setModalOpen(true);
+  };
+
+  const closeTransactionModal = () => {
+    setModalOpen(false);
   };
 
   // Format currency to VND with thousands separators
@@ -160,15 +172,15 @@ export default function TransactionList({
                 </td>
                 <td className="px-4 py-2 whitespace-nowrap text-sm">
                   {transaction.journalEntry ? (
-                    <Link
-                      href={`/transactions/${transaction.id}`}
+                    <button
+                      onClick={() => openTransactionModal(transaction.id)}
                       className="text-indigo-600 hover:text-indigo-900 flex items-center"
                     >
                       <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
                       </svg>
                       Xem
-                    </Link>
+                    </button>
                   ) : (
                     <Link
                       href={`/transactions/${transaction.id}/journal/new`}
@@ -182,12 +194,12 @@ export default function TransactionList({
                   )}
                 </td>
                 <td className="px-4 py-2 whitespace-nowrap text-right text-sm font-medium flex justify-end space-x-2">
-                  <Link
-                    href={`/transactions/${transaction.id}`}
+                  <button
+                    onClick={() => openTransactionModal(transaction.id)}
                     className="text-indigo-600 hover:text-indigo-900"
                   >
                     Xem
-                  </Link>
+                  </button>
                   <Link
                     href={`/transactions/${transaction.id}/edit`}
                     className="text-blue-600 hover:text-blue-900"
@@ -207,6 +219,13 @@ export default function TransactionList({
           </tbody>
         </table>
       </div>
+
+      {/* Transaction Detail Modal */}
+      <TransactionDetailModal 
+        isOpen={modalOpen}
+        onClose={closeTransactionModal}
+        transactionId={selectedTransactionId}
+      />
     </div>
   );
 } 

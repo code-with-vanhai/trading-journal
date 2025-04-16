@@ -14,7 +14,9 @@ export async function DELETE(request, { params }) {
       return NextResponse.json({ message: 'Unauthorized' }, { status: 401 });
     }
 
-    const { id } = params;
+    // Await params in Next.js 15
+    const resolvedParams = await params;
+    const id = resolvedParams.id;
 
     // Check if strategy exists and belongs to the current user
     const strategy = await prisma.strategy.findUnique({

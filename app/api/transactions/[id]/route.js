@@ -14,7 +14,9 @@ export async function GET(request, { params }) {
       return NextResponse.json({ message: 'Unauthorized' }, { status: 401 });
     }
 
-    const { id } = params;
+    // Await params in Next.js 15
+    const resolvedParams = await params;
+    const id = resolvedParams.id;
 
     // Check if transaction exists and belongs to the current user
     const transaction = await prisma.transaction.findUnique({
@@ -50,7 +52,10 @@ export async function PUT(request, { params }) {
       return NextResponse.json({ message: 'Unauthorized' }, { status: 401 });
     }
 
-    const { id } = params;
+    // Await params in Next.js 15
+    const resolvedParams = await params;
+    const id = resolvedParams.id;
+    
     const body = await request.json();
     const { ticker, type, quantity, price, transactionDate, fee, taxRate, notes } = body;
 
@@ -109,7 +114,9 @@ export async function DELETE(request, { params }) {
       return NextResponse.json({ message: 'Unauthorized' }, { status: 401 });
     }
 
-    const { id } = params;
+    // Await params in Next.js 15
+    const resolvedParams = await params;
+    const id = resolvedParams.id;
 
     // Check if transaction exists and belongs to the current user
     const transaction = await prisma.transaction.findUnique({
