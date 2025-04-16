@@ -1,0 +1,576 @@
+[2025-04-16T09:48:54.756Z] [INFO] Market data request received
+{
+  "userId": "cm9jmvfrn0000ze7x00j5yfop",
+  "tickers": [
+    "CTG"
+  ]
+}
+--------------------------------------------------------------------------------
+[2025-04-16T09:48:54.756Z] [DEBUG] Starting batch market data fetch with timestamps
+{
+  "tickers": [
+    "CTG"
+  ],
+  "from": 1744624134,
+  "to": 1744710534,
+  "fromDate": "2025-04-14T09:48:54.000Z",
+  "toDate": "2025-04-15T09:48:54.000Z"
+}
+--------------------------------------------------------------------------------
+[2025-04-16T09:48:54.757Z] [INFO] Fetching market data
+{
+  "ticker": "CTG",
+  "from": 1744624134,
+  "to": 1744710534,
+  "url": "https://apipubaws.tcbs.com.vn/stock-insight/v1/stock/bars-long-term?ticker=CTG&type=stock&resolution=D&from=1744624134&to=1744710534"
+}
+--------------------------------------------------------------------------------
+[2025-04-16T09:48:55.042Z] [INFO] TCBS API response status
+{
+  "ticker": "CTG",
+  "status": 200
+}
+--------------------------------------------------------------------------------
+[2025-04-16T09:48:55.044Z] [DEBUG] API response structure
+{
+  "ticker": "CTG",
+  "keys": [
+    "ticker",
+    "data",
+    "dataT1"
+  ],
+  "sample": "{\"ticker\":\"CTG\",\"data\":[{\"open\":37800,\"high\":38000,\"low\":37200,\"close\":37750,\"volume\":10259616,\"tradingDate\":\"2025-04-15T00:00:00.000Z\"}],\"dataT1\":null}"
+}
+--------------------------------------------------------------------------------
+[2025-04-16T09:48:55.044Z] [INFO] Successfully fetched market data
+{
+  "ticker": "CTG",
+  "latestEntry": {
+    "open": 37800,
+    "high": 38000,
+    "low": 37200,
+    "close": 37750,
+    "volume": 10259616,
+    "tradingDate": "2025-04-15T00:00:00.000Z"
+  }
+}
+--------------------------------------------------------------------------------
+[2025-04-16T09:48:55.045Z] [INFO] Batch market data fetch completed
+{
+  "totalRequested": 1,
+  "successful": 1,
+  "failed": 0
+}
+--------------------------------------------------------------------------------
+[2025-04-16T09:48:55.063Z] [INFO] Market data request received
+{
+  "userId": "cm9jmvfrn0000ze7x00j5yfop",
+  "tickers": [
+    "CTG"
+  ]
+}
+--------------------------------------------------------------------------------
+[2025-04-16T09:48:55.063Z] [DEBUG] Starting batch market data fetch with timestamps
+{
+  "tickers": [
+    "CTG"
+  ],
+  "from": 1744624135,
+  "to": 1744710535,
+  "fromDate": "2025-04-14T09:48:55.000Z",
+  "toDate": "2025-04-15T09:48:55.000Z"
+}
+--------------------------------------------------------------------------------
+[2025-04-16T09:48:55.063Z] [INFO] Fetching market data
+{
+  "ticker": "CTG",
+  "from": 1744624135,
+  "to": 1744710535,
+  "url": "https://apipubaws.tcbs.com.vn/stock-insight/v1/stock/bars-long-term?ticker=CTG&type=stock&resolution=D&from=1744624135&to=1744710535"
+}
+--------------------------------------------------------------------------------
+[2025-04-16T09:48:55.140Z] [INFO] TCBS API response status
+{
+  "ticker": "CTG",
+  "status": 200
+}
+--------------------------------------------------------------------------------
+[2025-04-16T09:48:55.141Z] [DEBUG] API response structure
+{
+  "ticker": "CTG",
+  "keys": [
+    "ticker",
+    "data",
+    "dataT1"
+  ],
+  "sample": "{\"ticker\":\"CTG\",\"data\":[{\"open\":37800,\"high\":38000,\"low\":37200,\"close\":37750,\"volume\":10259616,\"tradingDate\":\"2025-04-15T00:00:00.000Z\"}],\"dataT1\":null}"
+}
+--------------------------------------------------------------------------------
+[2025-04-16T09:48:55.141Z] [INFO] Successfully fetched market data
+{
+  "ticker": "CTG",
+  "latestEntry": {
+    "open": 37800,
+    "high": 38000,
+    "low": 37200,
+    "close": 37750,
+    "volume": 10259616,
+    "tradingDate": "2025-04-15T00:00:00.000Z"
+  }
+}
+--------------------------------------------------------------------------------
+[2025-04-16T09:48:55.141Z] [INFO] Batch market data fetch completed
+{
+  "totalRequested": 1,
+  "successful": 1,
+  "failed": 0
+}
+--------------------------------------------------------------------------------
+[2025-04-16T09:52:19.816Z] [INFO] Market data request received
+{
+  "userId": "cm9jmvfrn0000ze7x00j5yfop",
+  "tickers": [
+    "CTG"
+  ]
+}
+--------------------------------------------------------------------------------
+[2025-04-16T09:52:19.816Z] [DEBUG] Starting batch market data fetch with timestamps
+{
+  "tickers": [
+    "CTG"
+  ],
+  "from": 1744624339,
+  "to": 1744710739,
+  "fromDate": "2025-04-14T09:52:19.000Z",
+  "toDate": "2025-04-15T09:52:19.000Z"
+}
+--------------------------------------------------------------------------------
+[2025-04-16T09:52:19.817Z] [INFO] Fetching market data
+{
+  "ticker": "CTG",
+  "from": 1744624339,
+  "to": 1744710739,
+  "url": "https://apipubaws.tcbs.com.vn/stock-insight/v1/stock/bars-long-term?ticker=CTG&type=stock&resolution=D&from=1744624339&to=1744710739"
+}
+--------------------------------------------------------------------------------
+[2025-04-16T09:52:20.258Z] [INFO] TCBS API response status
+{
+  "ticker": "CTG",
+  "status": 200
+}
+--------------------------------------------------------------------------------
+[2025-04-16T09:52:20.260Z] [DEBUG] API response structure
+{
+  "ticker": "CTG",
+  "keys": [
+    "ticker",
+    "data",
+    "dataT1"
+  ],
+  "sample": "{\"ticker\":\"CTG\",\"data\":[{\"open\":37800,\"high\":38000,\"low\":37200,\"close\":37750,\"volume\":10259616,\"tradingDate\":\"2025-04-15T00:00:00.000Z\"}],\"dataT1\":null}"
+}
+--------------------------------------------------------------------------------
+[2025-04-16T09:52:20.260Z] [INFO] Successfully fetched market data
+{
+  "ticker": "CTG",
+  "latestEntry": {
+    "open": 37800,
+    "high": 38000,
+    "low": 37200,
+    "close": 37750,
+    "volume": 10259616,
+    "tradingDate": "2025-04-15T00:00:00.000Z"
+  }
+}
+--------------------------------------------------------------------------------
+[2025-04-16T09:52:20.260Z] [INFO] Batch market data fetch completed
+{
+  "totalRequested": 1,
+  "successful": 1,
+  "failed": 0
+}
+--------------------------------------------------------------------------------
+[2025-04-16T09:53:18.365Z] [INFO] Market data request received
+{
+  "userId": "cm9jmvfrn0000ze7x00j5yfop",
+  "tickers": [
+    "CTG"
+  ]
+}
+--------------------------------------------------------------------------------
+[2025-04-16T09:53:18.366Z] [DEBUG] Starting batch market data fetch with timestamps
+{
+  "tickers": [
+    "CTG"
+  ],
+  "from": 1744624398,
+  "to": 1744710798,
+  "fromDate": "2025-04-14T09:53:18.000Z",
+  "toDate": "2025-04-15T09:53:18.000Z"
+}
+--------------------------------------------------------------------------------
+[2025-04-16T09:53:18.367Z] [INFO] Fetching market data
+{
+  "ticker": "CTG",
+  "from": 1744624398,
+  "to": 1744710798,
+  "url": "https://apipubaws.tcbs.com.vn/stock-insight/v1/stock/bars-long-term?ticker=CTG&type=stock&resolution=D&from=1744624398&to=1744710798"
+}
+--------------------------------------------------------------------------------
+[2025-04-16T09:53:18.644Z] [INFO] TCBS API response status
+{
+  "ticker": "CTG",
+  "status": 200
+}
+--------------------------------------------------------------------------------
+[2025-04-16T09:53:18.648Z] [DEBUG] API response structure
+{
+  "ticker": "CTG",
+  "keys": [
+    "ticker",
+    "data",
+    "dataT1"
+  ],
+  "sample": "{\"ticker\":\"CTG\",\"data\":[{\"open\":37800,\"high\":38000,\"low\":37200,\"close\":37750,\"volume\":10259616,\"tradingDate\":\"2025-04-15T00:00:00.000Z\"}],\"dataT1\":null}"
+}
+--------------------------------------------------------------------------------
+[2025-04-16T09:53:18.648Z] [INFO] Successfully fetched market data
+{
+  "ticker": "CTG",
+  "latestEntry": {
+    "open": 37800,
+    "high": 38000,
+    "low": 37200,
+    "close": 37750,
+    "volume": 10259616,
+    "tradingDate": "2025-04-15T00:00:00.000Z"
+  }
+}
+--------------------------------------------------------------------------------
+[2025-04-16T09:53:18.648Z] [INFO] Batch market data fetch completed
+{
+  "totalRequested": 1,
+  "successful": 1,
+  "failed": 0
+}
+--------------------------------------------------------------------------------
+[2025-04-16T09:53:18.691Z] [INFO] Market data request received
+{
+  "userId": "cm9jmvfrn0000ze7x00j5yfop",
+  "tickers": [
+    "CTG"
+  ]
+}
+--------------------------------------------------------------------------------
+[2025-04-16T09:53:18.691Z] [DEBUG] Starting batch market data fetch with timestamps
+{
+  "tickers": [
+    "CTG"
+  ],
+  "from": 1744624398,
+  "to": 1744710798,
+  "fromDate": "2025-04-14T09:53:18.000Z",
+  "toDate": "2025-04-15T09:53:18.000Z"
+}
+--------------------------------------------------------------------------------
+[2025-04-16T09:53:18.691Z] [INFO] Fetching market data
+{
+  "ticker": "CTG",
+  "from": 1744624398,
+  "to": 1744710798,
+  "url": "https://apipubaws.tcbs.com.vn/stock-insight/v1/stock/bars-long-term?ticker=CTG&type=stock&resolution=D&from=1744624398&to=1744710798"
+}
+--------------------------------------------------------------------------------
+[2025-04-16T09:53:18.794Z] [INFO] TCBS API response status
+{
+  "ticker": "CTG",
+  "status": 200
+}
+--------------------------------------------------------------------------------
+[2025-04-16T09:53:18.796Z] [DEBUG] API response structure
+{
+  "ticker": "CTG",
+  "keys": [
+    "ticker",
+    "data",
+    "dataT1"
+  ],
+  "sample": "{\"ticker\":\"CTG\",\"data\":[{\"open\":37800,\"high\":38000,\"low\":37200,\"close\":37750,\"volume\":10259616,\"tradingDate\":\"2025-04-15T00:00:00.000Z\"}],\"dataT1\":null}"
+}
+--------------------------------------------------------------------------------
+[2025-04-16T09:53:18.796Z] [INFO] Successfully fetched market data
+{
+  "ticker": "CTG",
+  "latestEntry": {
+    "open": 37800,
+    "high": 38000,
+    "low": 37200,
+    "close": 37750,
+    "volume": 10259616,
+    "tradingDate": "2025-04-15T00:00:00.000Z"
+  }
+}
+--------------------------------------------------------------------------------
+[2025-04-16T09:53:18.796Z] [INFO] Batch market data fetch completed
+{
+  "totalRequested": 1,
+  "successful": 1,
+  "failed": 0
+}
+--------------------------------------------------------------------------------
+[2025-04-16T09:55:08.018Z] [INFO] Market data request received
+{
+  "userId": "cm9jmvfrn0000ze7x00j5yfop",
+  "tickers": [
+    "CTG"
+  ]
+}
+--------------------------------------------------------------------------------
+[2025-04-16T09:55:08.018Z] [DEBUG] Starting batch market data fetch with timestamps
+{
+  "tickers": [
+    "CTG"
+  ],
+  "from": 1744624508,
+  "to": 1744710908,
+  "fromDate": "2025-04-14T09:55:08.000Z",
+  "toDate": "2025-04-15T09:55:08.000Z"
+}
+--------------------------------------------------------------------------------
+[2025-04-16T09:55:08.019Z] [INFO] Fetching market data
+{
+  "ticker": "CTG",
+  "from": 1744624508,
+  "to": 1744710908,
+  "url": "https://apipubaws.tcbs.com.vn/stock-insight/v1/stock/bars-long-term?ticker=CTG&type=stock&resolution=D&from=1744624508&to=1744710908"
+}
+--------------------------------------------------------------------------------
+[2025-04-16T09:55:08.308Z] [INFO] TCBS API response status
+{
+  "ticker": "CTG",
+  "status": 200
+}
+--------------------------------------------------------------------------------
+[2025-04-16T09:55:08.309Z] [DEBUG] API response structure
+{
+  "ticker": "CTG",
+  "keys": [
+    "ticker",
+    "data",
+    "dataT1"
+  ],
+  "sample": "{\"ticker\":\"CTG\",\"data\":[{\"open\":37800,\"high\":38000,\"low\":37200,\"close\":37750,\"volume\":10259616,\"tradingDate\":\"2025-04-15T00:00:00.000Z\"}],\"dataT1\":null}"
+}
+--------------------------------------------------------------------------------
+[2025-04-16T09:55:08.310Z] [INFO] Successfully fetched market data
+{
+  "ticker": "CTG",
+  "latestEntry": {
+    "open": 37800,
+    "high": 38000,
+    "low": 37200,
+    "close": 37750,
+    "volume": 10259616,
+    "tradingDate": "2025-04-15T00:00:00.000Z"
+  }
+}
+--------------------------------------------------------------------------------
+[2025-04-16T09:55:08.310Z] [INFO] Batch market data fetch completed
+{
+  "totalRequested": 1,
+  "successful": 1,
+  "failed": 0
+}
+--------------------------------------------------------------------------------
+[2025-04-16T09:55:08.325Z] [INFO] Market data request received
+{
+  "userId": "cm9jmvfrn0000ze7x00j5yfop",
+  "tickers": [
+    "CTG"
+  ]
+}
+--------------------------------------------------------------------------------
+[2025-04-16T09:55:08.325Z] [DEBUG] Starting batch market data fetch with timestamps
+{
+  "tickers": [
+    "CTG"
+  ],
+  "from": 1744624508,
+  "to": 1744710908,
+  "fromDate": "2025-04-14T09:55:08.000Z",
+  "toDate": "2025-04-15T09:55:08.000Z"
+}
+--------------------------------------------------------------------------------
+[2025-04-16T09:55:08.325Z] [INFO] Fetching market data
+{
+  "ticker": "CTG",
+  "from": 1744624508,
+  "to": 1744710908,
+  "url": "https://apipubaws.tcbs.com.vn/stock-insight/v1/stock/bars-long-term?ticker=CTG&type=stock&resolution=D&from=1744624508&to=1744710908"
+}
+--------------------------------------------------------------------------------
+[2025-04-16T09:55:08.399Z] [INFO] TCBS API response status
+{
+  "ticker": "CTG",
+  "status": 200
+}
+--------------------------------------------------------------------------------
+[2025-04-16T09:55:08.400Z] [DEBUG] API response structure
+{
+  "ticker": "CTG",
+  "keys": [
+    "ticker",
+    "data",
+    "dataT1"
+  ],
+  "sample": "{\"ticker\":\"CTG\",\"data\":[{\"open\":37800,\"high\":38000,\"low\":37200,\"close\":37750,\"volume\":10259616,\"tradingDate\":\"2025-04-15T00:00:00.000Z\"}],\"dataT1\":null}"
+}
+--------------------------------------------------------------------------------
+[2025-04-16T09:55:08.401Z] [INFO] Successfully fetched market data
+{
+  "ticker": "CTG",
+  "latestEntry": {
+    "open": 37800,
+    "high": 38000,
+    "low": 37200,
+    "close": 37750,
+    "volume": 10259616,
+    "tradingDate": "2025-04-15T00:00:00.000Z"
+  }
+}
+--------------------------------------------------------------------------------
+[2025-04-16T09:55:08.401Z] [INFO] Batch market data fetch completed
+{
+  "totalRequested": 1,
+  "successful": 1,
+  "failed": 0
+}
+--------------------------------------------------------------------------------
+[2025-04-16T09:58:40.029Z] [INFO] Market data request received
+{
+  "userId": "cm9jmvfrn0000ze7x00j5yfop",
+  "tickers": [
+    "CTG"
+  ]
+}
+--------------------------------------------------------------------------------
+[2025-04-16T09:58:40.029Z] [DEBUG] Starting batch market data fetch with timestamps
+{
+  "tickers": [
+    "CTG"
+  ],
+  "from": 1744624720,
+  "to": 1744711120,
+  "fromDate": "2025-04-14T09:58:40.000Z",
+  "toDate": "2025-04-15T09:58:40.000Z"
+}
+--------------------------------------------------------------------------------
+[2025-04-16T09:58:40.029Z] [INFO] Fetching market data
+{
+  "ticker": "CTG",
+  "from": 1744624720,
+  "to": 1744711120,
+  "url": "https://apipubaws.tcbs.com.vn/stock-insight/v1/stock/bars-long-term?ticker=CTG&type=stock&resolution=D&from=1744624720&to=1744711120"
+}
+--------------------------------------------------------------------------------
+[2025-04-16T09:58:40.511Z] [INFO] TCBS API response status
+{
+  "ticker": "CTG",
+  "status": 200
+}
+--------------------------------------------------------------------------------
+[2025-04-16T09:58:40.513Z] [DEBUG] API response structure
+{
+  "ticker": "CTG",
+  "keys": [
+    "ticker",
+    "data",
+    "dataT1"
+  ],
+  "sample": "{\"ticker\":\"CTG\",\"data\":[{\"open\":37800,\"high\":38000,\"low\":37200,\"close\":37750,\"volume\":10259616,\"tradingDate\":\"2025-04-15T00:00:00.000Z\"}],\"dataT1\":null}"
+}
+--------------------------------------------------------------------------------
+[2025-04-16T09:58:40.513Z] [INFO] Successfully fetched market data
+{
+  "ticker": "CTG",
+  "latestEntry": {
+    "open": 37800,
+    "high": 38000,
+    "low": 37200,
+    "close": 37750,
+    "volume": 10259616,
+    "tradingDate": "2025-04-15T00:00:00.000Z"
+  }
+}
+--------------------------------------------------------------------------------
+[2025-04-16T09:58:40.513Z] [INFO] Batch market data fetch completed
+{
+  "totalRequested": 1,
+  "successful": 1,
+  "failed": 0
+}
+--------------------------------------------------------------------------------
+[2025-04-16T09:58:40.529Z] [INFO] Market data request received
+{
+  "userId": "cm9jmvfrn0000ze7x00j5yfop",
+  "tickers": [
+    "CTG"
+  ]
+}
+--------------------------------------------------------------------------------
+[2025-04-16T09:58:40.530Z] [DEBUG] Starting batch market data fetch with timestamps
+{
+  "tickers": [
+    "CTG"
+  ],
+  "from": 1744624720,
+  "to": 1744711120,
+  "fromDate": "2025-04-14T09:58:40.000Z",
+  "toDate": "2025-04-15T09:58:40.000Z"
+}
+--------------------------------------------------------------------------------
+[2025-04-16T09:58:40.530Z] [INFO] Fetching market data
+{
+  "ticker": "CTG",
+  "from": 1744624720,
+  "to": 1744711120,
+  "url": "https://apipubaws.tcbs.com.vn/stock-insight/v1/stock/bars-long-term?ticker=CTG&type=stock&resolution=D&from=1744624720&to=1744711120"
+}
+--------------------------------------------------------------------------------
+[2025-04-16T09:58:40.609Z] [INFO] TCBS API response status
+{
+  "ticker": "CTG",
+  "status": 200
+}
+--------------------------------------------------------------------------------
+[2025-04-16T09:58:40.610Z] [DEBUG] API response structure
+{
+  "ticker": "CTG",
+  "keys": [
+    "ticker",
+    "data",
+    "dataT1"
+  ],
+  "sample": "{\"ticker\":\"CTG\",\"data\":[{\"open\":37800,\"high\":38000,\"low\":37200,\"close\":37750,\"volume\":10259616,\"tradingDate\":\"2025-04-15T00:00:00.000Z\"}],\"dataT1\":null}"
+}
+--------------------------------------------------------------------------------
+[2025-04-16T09:58:40.610Z] [INFO] Successfully fetched market data
+{
+  "ticker": "CTG",
+  "latestEntry": {
+    "open": 37800,
+    "high": 38000,
+    "low": 37200,
+    "close": 37750,
+    "volume": 10259616,
+    "tradingDate": "2025-04-15T00:00:00.000Z"
+  }
+}
+--------------------------------------------------------------------------------
+[2025-04-16T09:58:40.610Z] [INFO] Batch market data fetch completed
+{
+  "totalRequested": 1,
+  "successful": 1,
+  "failed": 0
+}
+--------------------------------------------------------------------------------

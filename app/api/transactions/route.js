@@ -175,6 +175,7 @@ export async function GET(request) {
       'price', 'calculatedPl', 'fee', 'taxRate'
     ];
     
+    // Format orderBy for Prisma - must be formatted as key with value object
     let orderBy = {};
     if (validSortFields.includes(sortBy)) {
       orderBy[sortBy] = sortOrder.toLowerCase();
@@ -184,7 +185,11 @@ export async function GET(request) {
     
     // Add a secondary sort by id to ensure consistent ordering
     if (sortBy !== 'id') {
-      orderBy.id = 'desc';
+      // Fix: Prisma expects a specific format for orderBy when using multiple fields
+      orderBy = [
+        { [Object.keys(orderBy)[0]]: Object.values(orderBy)[0] },
+        { id: 'desc' }
+      ];
     }
 
     // For common requests (first page with default sort), optimize further
@@ -254,7 +259,7 @@ export async function GET(request) {
       }),
       prisma.transaction.findMany({
         where: whereClause,
-        orderBy,
+        orderBy, // Now correctly formatted
         // Only select fields we need
         select: {
           id: true,
