@@ -1,0 +1,212 @@
+'use client';
+
+import { useState } from 'react';
+import Link from 'next/link';
+import { format } from 'date-fns';
+import { vi } from 'date-fns/locale';
+
+export default function TransactionList({ 
+  transactions, 
+  onDeleteTransaction,
+  sortField = 'transactionDate',
+  sortDirection = 'desc',
+  onSortChange
+}) {
+  const [deletingId, setDeletingId] = useState(null);
+
+  const handleSort = (field) => {
+    if (onSortChange) {
+      if (sortField === field) {
+        onSortChange(field, sortDirection === 'asc' ? 'desc' : 'asc');
+      } else {
+        onSortChange(field, 'asc');
+      }
+    }
+  };
+
+  const getSortIcon = (field) => {
+    if (sortField !== field) return null;
+    return sortDirection === 'asc' ? '↑' : '↓';
+  };
+
+  const handleDelete = async (id) => {
+    if (confirm('Bạn có chắc chắn muốn xóa giao dịch này không? Hành động này không thể hoàn tác.')) {
+      setDeletingId(id);
+      
+      try {
+        const response = await fetch(`/api/transactions/${id}`, {
+          method: 'DELETE',
+        });
+        
+        if (!response.ok) {
+          throw new Error('Không thể xóa giao dịch');
+        }
+        
+        // Notify parent to refresh the list
+        if (onDeleteTransaction) {
+          onDeleteTransaction(id);
+        }
+      } catch (err) {
+        console.error('Delete error:', err);
+        alert('Không thể xóa giao dịch');
+      } finally {
+        setDeletingId(null);
+      }
+    }
+  };
+
+  // Format currency to VND with thousands separators
+  const formatCurrency = (value) => {
+    return value.toLocaleString('vi-VN') + ' ₫';
+  };
+
+  // Remove the local filtering and sorting since it's now handled by the API
+  const filteredAndSortedTransactions = transactions;
+
+  if (transactions.length === 0) {
+    return (
+      <div className="text-center py-10">
+        <p className="text-gray-500 mb-4">Chưa có giao dịch nào được ghi lại.</p>
+        <Link href="/transactions/new" className="btn-primary">
+          Thêm Giao Dịch Đầu Tiên
+        </Link>
+      </div>
+    );
+  }
+
+  return (
+    <div>
+      <div className="overflow-x-auto">
+        <table className="min-w-full bg-white">
+          <thead className="bg-gray-50">
+            <tr>
+              <th
+                className="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer"
+                onClick={() => handleSort('transactionDate')}
+              >
+                Ngày {getSortIcon('transactionDate')}
+              </th>
+              <th
+                className="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer"
+                onClick={() => handleSort('ticker')}
+              >
+                Mã CP {getSortIcon('ticker')}
+              </th>
+              <th
+                className="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer"
+                onClick={() => handleSort('type')}
+              >
+                Loại {getSortIcon('type')}
+              </th>
+              <th
+                className="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer"
+                onClick={() => handleSort('quantity')}
+              >
+                Số Lượng {getSortIcon('quantity')}
+              </th>
+              <th
+                className="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer"
+                onClick={() => handleSort('price')}
+              >
+                Giá {getSortIcon('price')}
+              </th>
+              <th
+                className="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer"
+                onClick={() => handleSort('calculatedPl')}
+              >
+                Lãi/Lỗ {getSortIcon('calculatedPl')}
+              </th>
+              <th className="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                Nhật Ký
+              </th>
+              <th className="px-4 py-2 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
+                Thao Tác
+              </th>
+            </tr>
+          </thead>
+          <tbody className="divide-y divide-gray-200">
+            {filteredAndSortedTransactions.map((transaction) => (
+              <tr key={transaction.id} className="hover:bg-gray-50">
+                <td className="px-4 py-2 whitespace-nowrap">
+                  {format(new Date(transaction.transactionDate), 'dd MMM, yyyy', { locale: vi })}
+                </td>
+                <td className="px-4 py-2 whitespace-nowrap font-medium">
+                  {transaction.ticker}
+                </td>
+                <td className="px-4 py-2 whitespace-nowrap">
+                  <span className={`px-2 py-1 rounded-full text-xs font-semibold ${
+                    transaction.type === 'BUY' 
+                      ? 'bg-green-100 text-green-800' 
+                      : 'bg-red-100 text-red-800'
+                  }`}>
+                    {transaction.type === 'BUY' ? 'Mua' : 'Bán'}
+                  </span>
+                </td>
+                <td className="px-4 py-2 whitespace-nowrap">
+                  {transaction.quantity}
+                </td>
+                <td className="px-4 py-2 whitespace-nowrap">
+                  {formatCurrency(transaction.price)}
+                </td>
+                <td className="px-4 py-2 whitespace-nowrap">
+                  {transaction.calculatedPl != null ? (
+                    <span className={transaction.calculatedPl >= 0 ? 'text-green-600' : 'text-red-600'}>
+                      {transaction.calculatedPl >= 0 ? '+' : ''}
+                      {formatCurrency(Math.abs(transaction.calculatedPl))}
+                    </span>
+                  ) : (
+                    '-'
+                  )}
+                </td>
+                <td className="px-4 py-2 whitespace-nowrap text-sm">
+                  {transaction.journalEntry ? (
+                    <Link
+                      href={`/transactions/${transaction.id}`}
+                      className="text-indigo-600 hover:text-indigo-900 flex items-center"
+                    >
+                      <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                      </svg>
+                      Xem
+                    </Link>
+                  ) : (
+                    <Link
+                      href={`/transactions/${transaction.id}/journal/new`}
+                      className="text-green-600 hover:text-green-900 flex items-center"
+                    >
+                      <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
+                      </svg>
+                      Thêm
+                    </Link>
+                  )}
+                </td>
+                <td className="px-4 py-2 whitespace-nowrap text-right text-sm font-medium flex justify-end space-x-2">
+                  <Link
+                    href={`/transactions/${transaction.id}`}
+                    className="text-indigo-600 hover:text-indigo-900"
+                  >
+                    Xem
+                  </Link>
+                  <Link
+                    href={`/transactions/${transaction.id}/edit`}
+                    className="text-blue-600 hover:text-blue-900"
+                  >
+                    Sửa
+                  </Link>
+                  <button
+                    onClick={() => handleDelete(transaction.id)}
+                    disabled={deletingId === transaction.id}
+                    className="text-red-600 hover:text-red-900"
+                  >
+                    {deletingId === transaction.id ? 'Đang xóa...' : 'Xóa'}
+                  </button>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  );
+} 

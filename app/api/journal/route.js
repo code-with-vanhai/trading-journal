@@ -1,0 +1,244 @@
+import { NextResponse } from 'next/server';
+import { getServerSession } from 'next-auth/next';
+import { PrismaClient } from '@prisma/client';
+import { authOptions } from '../auth/[...nextauth]/route';
+
+const prisma = new PrismaClient();
+
+// POST - Create or update a journal entry
+export async function POST(request) {
+  try {
+    const session = await getServerSession(authOptions);
+    
+    if (!session) {
+      return NextResponse.json({ message: 'Unauthorized' }, { status: 401 });
+    }
+
+    const body = await request.json();
+    const { transactionId, emotionOnEntry, emotionOnExit, strategyUsed, postTradeReview, tags = [] } = body;
+
+    if (!transactionId) {
+      return NextResponse.json(
+        { message: 'Transaction ID is required' },
+        { status: 400 }
+      );
+    }
+
+    // Check if the transaction exists and belongs to the user
+    const transaction = await prisma.transaction.findUnique({
+      where: {
+        id: transactionId,
+        userId: session.user.id,
+      },
+    });
+
+    if (!transaction) {
+      return NextResponse.json(
+        { message: 'Transaction not found or does not belong to you' },
+        { status: 404 }
+      );
+    }
+
+    // Check if a journal entry already exists for this transaction
+    const existingEntry = await prisma.journalEntry.findUnique({
+      where: {
+        transactionId,
+      },
+    });
+
+    // Create or update the journal entry
+    let journalEntry;
+    if (existingEntry) {
+      // Update existing entry
+      journalEntry = await prisma.journalEntry.update({
+        where: {
+          id: existingEntry.id,
+        },
+        data: {
+          emotionOnEntry,
+          emotionOnExit,
+          strategyUsed,
+          postTradeReview,
+        },
+      });
+
+      // Delete existing tags and add new ones if provided
+      if (tags.length > 0) {
+        // Remove old tags
+        await prisma.journalEntryTag.deleteMany({
+          where: {
+            journalEntryId: journalEntry.id,
+          },
+        });
+
+        // Add new tags
+        for (const tagId of tags) {
+          await prisma.journalEntryTag.create({
+            data: {
+              journalEntryId: journalEntry.id,
+              tagId,
+            },
+          });
+        }
+      }
+    } else {
+      // Create new entry
+      journalEntry = await prisma.journalEntry.create({
+        data: {
+          transactionId,
+          userId: session.user.id,
+          emotionOnEntry,
+          emotionOnExit,
+          strategyUsed,
+          postTradeReview,
+        },
+      });
+
+      // Add tags if provided
+      if (tags.length > 0) {
+        for (const tagId of tags) {
+          await prisma.journalEntryTag.create({
+            data: {
+              journalEntryId: journalEntry.id,
+              tagId,
+            },
+          });
+        }
+      }
+    }
+
+    // Return the journal entry with tags
+    const entryWithTags = await prisma.journalEntry.findUnique({
+      where: {
+        id: journalEntry.id,
+      },
+      include: {
+        tags: {
+          include: {
+            tag: true,
+          },
+        },
+      },
+    });
+
+    return NextResponse.json(entryWithTags, { 
+      status: existingEntry ? 200 : 201 
+    });
+  } catch (error) {
+    console.error('Error saving journal entry:', error);
+    return NextResponse.json(
+      { message: 'Failed to save journal entry', error: error.message },
+      { status: 500 }
+    );
+  }
+}
+
+// GET - Fetch a journal entry by transaction ID
+export async function GET(request) {
+  try {
+    const session = await getServerSession(authOptions);
+    
+    if (!session) {
+      return NextResponse.json({ message: 'Unauthorized' }, { status: 401 });
+    }
+
+    const { searchParams } = new URL(request.url);
+    const transactionId = searchParams.get('transactionId');
+
+    if (!transactionId) {
+      return NextResponse.json(
+        { message: 'Transaction ID is required' },
+        { status: 400 }
+      );
+    }
+
+    // Check if the journal entry exists and belongs to the user
+    const journalEntry = await prisma.journalEntry.findFirst({
+      where: {
+        transactionId,
+        userId: session.user.id,
+      },
+      include: {
+        tags: {
+          include: {
+            tag: true,
+          },
+        },
+        transaction: true,
+      },
+    });
+
+    if (!journalEntry) {
+      return NextResponse.json(
+        { message: 'Journal entry not found' },
+        { status: 404 }
+      );
+    }
+
+    return NextResponse.json(journalEntry);
+  } catch (error) {
+    console.error('Error fetching journal entry:', error);
+    return NextResponse.json(
+      { message: 'Failed to fetch journal entry', error: error.message },
+      { status: 500 }
+    );
+  }
+}
+
+// DELETE - Delete a journal entry
+export async function DELETE(request) {
+  try {
+    const session = await getServerSession(authOptions);
+    
+    if (!session) {
+      return NextResponse.json({ message: 'Unauthorized' }, { status: 401 });
+    }
+
+    const { searchParams } = new URL(request.url);
+    const transactionId = searchParams.get('transactionId');
+
+    if (!transactionId) {
+      return NextResponse.json(
+        { message: 'Transaction ID is required' },
+        { status: 400 }
+      );
+    }
+
+    // Find the journal entry
+    const journalEntry = await prisma.journalEntry.findFirst({
+      where: {
+        transactionId,
+        userId: session.user.id,
+      },
+    });
+
+    if (!journalEntry) {
+      return NextResponse.json(
+        { message: 'Journal entry not found' },
+        { status: 404 }
+      );
+    }
+
+    // Delete all associated tags first
+    await prisma.journalEntryTag.deleteMany({
+      where: {
+        journalEntryId: journalEntry.id,
+      },
+    });
+
+    // Delete the journal entry
+    await prisma.journalEntry.delete({
+      where: {
+        id: journalEntry.id,
+      },
+    });
+
+    return NextResponse.json({ success: true });
+  } catch (error) {
+    console.error('Error deleting journal entry:', error);
+    return NextResponse.json(
+      { message: 'Failed to delete journal entry', error: error.message },
+      { status: 500 }
+    );
+  }
+} 

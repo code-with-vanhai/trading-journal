@@ -1,0 +1,3984 @@
+[2025-04-16T01:58:25.149Z] [INFO] Market data request received
+{
+  "userId": "cm9i9n0500000krszqm5qeltc",
+  "tickers": [
+    "CTG"
+  ]
+}
+--------------------------------------------------------------------------------
+[2025-04-16T01:58:25.150Z] [DEBUG] Starting batch market data fetch with timestamps
+{
+  "tickers": [
+    "CTG"
+  ],
+  "from": 1744595905,
+  "to": 1744682305,
+  "fromDate": "2025-04-14T01:58:25.000Z",
+  "toDate": "2025-04-15T01:58:25.000Z"
+}
+--------------------------------------------------------------------------------
+[2025-04-16T01:58:25.150Z] [INFO] Fetching market data
+{
+  "ticker": "CTG",
+  "from": 1744595905,
+  "to": 1744682305,
+  "url": "https://apipubaws.tcbs.com.vn/stock-insight/v1/stock/bars-long-term?ticker=CTG&type=stock&resolution=D&from=1744595905&to=1744682305"
+}
+--------------------------------------------------------------------------------
+[2025-04-16T01:58:25.442Z] [INFO] TCBS API response status
+{
+  "ticker": "CTG",
+  "status": 200
+}
+--------------------------------------------------------------------------------
+[2025-04-16T01:58:25.443Z] [DEBUG] API response structure
+{
+  "ticker": "CTG",
+  "keys": [
+    "ticker",
+    "data",
+    "dataT1"
+  ],
+  "sample": "{\"ticker\":\"CTG\",\"data\":[{\"open\":37800,\"high\":38000,\"low\":37200,\"close\":37750,\"volume\":10259616,\"tradingDate\":\"2025-04-15T00:00:00.000Z\"}],\"dataT1\":null}"
+}
+--------------------------------------------------------------------------------
+[2025-04-16T01:58:25.443Z] [INFO] Successfully fetched market data
+{
+  "ticker": "CTG",
+  "latestEntry": {
+    "open": 37800,
+    "high": 38000,
+    "low": 37200,
+    "close": 37750,
+    "volume": 10259616,
+    "tradingDate": "2025-04-15T00:00:00.000Z"
+  }
+}
+--------------------------------------------------------------------------------
+[2025-04-16T01:58:25.443Z] [INFO] Batch market data fetch completed
+{
+  "totalRequested": 1,
+  "successful": 1,
+  "failed": 0
+}
+--------------------------------------------------------------------------------
+[2025-04-16T02:01:24.163Z] [INFO] Market data request received
+{
+  "userId": "cm9i9n0500000krszqm5qeltc",
+  "tickers": [
+    "CTG"
+  ]
+}
+--------------------------------------------------------------------------------
+[2025-04-16T02:01:24.163Z] [DEBUG] Starting batch market data fetch with timestamps
+{
+  "tickers": [
+    "CTG"
+  ],
+  "from": 1744596084,
+  "to": 1744682484,
+  "fromDate": "2025-04-14T02:01:24.000Z",
+  "toDate": "2025-04-15T02:01:24.000Z"
+}
+--------------------------------------------------------------------------------
+[2025-04-16T02:01:24.164Z] [INFO] Fetching market data
+{
+  "ticker": "CTG",
+  "from": 1744596084,
+  "to": 1744682484,
+  "url": "https://apipubaws.tcbs.com.vn/stock-insight/v1/stock/bars-long-term?ticker=CTG&type=stock&resolution=D&from=1744596084&to=1744682484"
+}
+--------------------------------------------------------------------------------
+[2025-04-16T02:01:24.544Z] [INFO] TCBS API response status
+{
+  "ticker": "CTG",
+  "status": 200
+}
+--------------------------------------------------------------------------------
+[2025-04-16T02:01:24.547Z] [DEBUG] API response structure
+{
+  "ticker": "CTG",
+  "keys": [
+    "ticker",
+    "data",
+    "dataT1"
+  ],
+  "sample": "{\"ticker\":\"CTG\",\"data\":[{\"open\":37800,\"high\":38000,\"low\":37200,\"close\":37750,\"volume\":10259616,\"tradingDate\":\"2025-04-15T00:00:00.000Z\"}],\"dataT1\":null}"
+}
+--------------------------------------------------------------------------------
+[2025-04-16T02:01:24.547Z] [INFO] Successfully fetched market data
+{
+  "ticker": "CTG",
+  "latestEntry": {
+    "open": 37800,
+    "high": 38000,
+    "low": 37200,
+    "close": 37750,
+    "volume": 10259616,
+    "tradingDate": "2025-04-15T00:00:00.000Z"
+  }
+}
+--------------------------------------------------------------------------------
+[2025-04-16T02:01:24.548Z] [INFO] Batch market data fetch completed
+{
+  "totalRequested": 1,
+  "successful": 1,
+  "failed": 0
+}
+--------------------------------------------------------------------------------
+[2025-04-16T02:01:24.595Z] [INFO] Market data request received
+{
+  "userId": "cm9i9n0500000krszqm5qeltc",
+  "tickers": [
+    "CTG"
+  ]
+}
+--------------------------------------------------------------------------------
+[2025-04-16T02:01:24.596Z] [DEBUG] Starting batch market data fetch with timestamps
+{
+  "tickers": [
+    "CTG"
+  ],
+  "from": 1744596084,
+  "to": 1744682484,
+  "fromDate": "2025-04-14T02:01:24.000Z",
+  "toDate": "2025-04-15T02:01:24.000Z"
+}
+--------------------------------------------------------------------------------
+[2025-04-16T02:01:24.596Z] [INFO] Fetching market data
+{
+  "ticker": "CTG",
+  "from": 1744596084,
+  "to": 1744682484,
+  "url": "https://apipubaws.tcbs.com.vn/stock-insight/v1/stock/bars-long-term?ticker=CTG&type=stock&resolution=D&from=1744596084&to=1744682484"
+}
+--------------------------------------------------------------------------------
+[2025-04-16T02:01:24.684Z] [INFO] TCBS API response status
+{
+  "ticker": "CTG",
+  "status": 200
+}
+--------------------------------------------------------------------------------
+[2025-04-16T02:01:24.686Z] [DEBUG] API response structure
+{
+  "ticker": "CTG",
+  "keys": [
+    "ticker",
+    "data",
+    "dataT1"
+  ],
+  "sample": "{\"ticker\":\"CTG\",\"data\":[{\"open\":37800,\"high\":38000,\"low\":37200,\"close\":37750,\"volume\":10259616,\"tradingDate\":\"2025-04-15T00:00:00.000Z\"}],\"dataT1\":null}"
+}
+--------------------------------------------------------------------------------
+[2025-04-16T02:01:24.686Z] [INFO] Successfully fetched market data
+{
+  "ticker": "CTG",
+  "latestEntry": {
+    "open": 37800,
+    "high": 38000,
+    "low": 37200,
+    "close": 37750,
+    "volume": 10259616,
+    "tradingDate": "2025-04-15T00:00:00.000Z"
+  }
+}
+--------------------------------------------------------------------------------
+[2025-04-16T02:01:24.686Z] [INFO] Batch market data fetch completed
+{
+  "totalRequested": 1,
+  "successful": 1,
+  "failed": 0
+}
+--------------------------------------------------------------------------------
+[2025-04-16T02:01:47.668Z] [INFO] Market data request received
+{
+  "userId": "cm9i9n0500000krszqm5qeltc",
+  "tickers": [
+    "FPT",
+    "CTG"
+  ]
+}
+--------------------------------------------------------------------------------
+[2025-04-16T02:01:47.668Z] [DEBUG] Starting batch market data fetch with timestamps
+{
+  "tickers": [
+    "FPT",
+    "CTG"
+  ],
+  "from": 1744596107,
+  "to": 1744682507,
+  "fromDate": "2025-04-14T02:01:47.000Z",
+  "toDate": "2025-04-15T02:01:47.000Z"
+}
+--------------------------------------------------------------------------------
+[2025-04-16T02:01:47.669Z] [INFO] Fetching market data
+{
+  "ticker": "FPT",
+  "from": 1744596107,
+  "to": 1744682507,
+  "url": "https://apipubaws.tcbs.com.vn/stock-insight/v1/stock/bars-long-term?ticker=FPT&type=stock&resolution=D&from=1744596107&to=1744682507"
+}
+--------------------------------------------------------------------------------
+[2025-04-16T02:01:47.678Z] [INFO] Fetching market data
+{
+  "ticker": "CTG",
+  "from": 1744596107,
+  "to": 1744682507,
+  "url": "https://apipubaws.tcbs.com.vn/stock-insight/v1/stock/bars-long-term?ticker=CTG&type=stock&resolution=D&from=1744596107&to=1744682507"
+}
+--------------------------------------------------------------------------------
+[2025-04-16T02:01:47.941Z] [INFO] TCBS API response status
+{
+  "ticker": "CTG",
+  "status": 200
+}
+--------------------------------------------------------------------------------
+[2025-04-16T02:01:47.943Z] [DEBUG] API response structure
+{
+  "ticker": "CTG",
+  "keys": [
+    "ticker",
+    "data",
+    "dataT1"
+  ],
+  "sample": "{\"ticker\":\"CTG\",\"data\":[{\"open\":37800,\"high\":38000,\"low\":37200,\"close\":37750,\"volume\":10259616,\"tradingDate\":\"2025-04-15T00:00:00.000Z\"}],\"dataT1\":null}"
+}
+--------------------------------------------------------------------------------
+[2025-04-16T02:01:47.943Z] [INFO] Successfully fetched market data
+{
+  "ticker": "CTG",
+  "latestEntry": {
+    "open": 37800,
+    "high": 38000,
+    "low": 37200,
+    "close": 37750,
+    "volume": 10259616,
+    "tradingDate": "2025-04-15T00:00:00.000Z"
+  }
+}
+--------------------------------------------------------------------------------
+[2025-04-16T02:01:48.028Z] [INFO] TCBS API response status
+{
+  "ticker": "FPT",
+  "status": 200
+}
+--------------------------------------------------------------------------------
+[2025-04-16T02:01:48.028Z] [DEBUG] API response structure
+{
+  "ticker": "FPT",
+  "keys": [
+    "ticker",
+    "data",
+    "dataT1"
+  ],
+  "sample": "{\"ticker\":\"FPT\",\"data\":[{\"open\":116100,\"high\":117000,\"low\":113700,\"close\":116000,\"volume\":7787164,\"tradingDate\":\"2025-04-15T00:00:00.000Z\"}],\"dataT1\":null}"
+}
+--------------------------------------------------------------------------------
+[2025-04-16T02:01:48.029Z] [INFO] Successfully fetched market data
+{
+  "ticker": "FPT",
+  "latestEntry": {
+    "open": 116100,
+    "high": 117000,
+    "low": 113700,
+    "close": 116000,
+    "volume": 7787164,
+    "tradingDate": "2025-04-15T00:00:00.000Z"
+  }
+}
+--------------------------------------------------------------------------------
+[2025-04-16T02:01:48.029Z] [INFO] Batch market data fetch completed
+{
+  "totalRequested": 2,
+  "successful": 2,
+  "failed": 0
+}
+--------------------------------------------------------------------------------
+[2025-04-16T02:01:48.048Z] [INFO] Market data request received
+{
+  "userId": "cm9i9n0500000krszqm5qeltc",
+  "tickers": [
+    "FPT",
+    "CTG"
+  ]
+}
+--------------------------------------------------------------------------------
+[2025-04-16T02:01:48.048Z] [DEBUG] Starting batch market data fetch with timestamps
+{
+  "tickers": [
+    "FPT",
+    "CTG"
+  ],
+  "from": 1744596108,
+  "to": 1744682508,
+  "fromDate": "2025-04-14T02:01:48.000Z",
+  "toDate": "2025-04-15T02:01:48.000Z"
+}
+--------------------------------------------------------------------------------
+[2025-04-16T02:01:48.048Z] [INFO] Fetching market data
+{
+  "ticker": "FPT",
+  "from": 1744596108,
+  "to": 1744682508,
+  "url": "https://apipubaws.tcbs.com.vn/stock-insight/v1/stock/bars-long-term?ticker=FPT&type=stock&resolution=D&from=1744596108&to=1744682508"
+}
+--------------------------------------------------------------------------------
+[2025-04-16T02:01:48.050Z] [INFO] Fetching market data
+{
+  "ticker": "CTG",
+  "from": 1744596108,
+  "to": 1744682508,
+  "url": "https://apipubaws.tcbs.com.vn/stock-insight/v1/stock/bars-long-term?ticker=CTG&type=stock&resolution=D&from=1744596108&to=1744682508"
+}
+--------------------------------------------------------------------------------
+[2025-04-16T02:01:48.132Z] [INFO] TCBS API response status
+{
+  "ticker": "CTG",
+  "status": 200
+}
+--------------------------------------------------------------------------------
+[2025-04-16T02:01:48.133Z] [DEBUG] API response structure
+{
+  "ticker": "CTG",
+  "keys": [
+    "ticker",
+    "data",
+    "dataT1"
+  ],
+  "sample": "{\"ticker\":\"CTG\",\"data\":[{\"open\":37800,\"high\":38000,\"low\":37200,\"close\":37750,\"volume\":10259616,\"tradingDate\":\"2025-04-15T00:00:00.000Z\"}],\"dataT1\":null}"
+}
+--------------------------------------------------------------------------------
+[2025-04-16T02:01:48.133Z] [INFO] Successfully fetched market data
+{
+  "ticker": "CTG",
+  "latestEntry": {
+    "open": 37800,
+    "high": 38000,
+    "low": 37200,
+    "close": 37750,
+    "volume": 10259616,
+    "tradingDate": "2025-04-15T00:00:00.000Z"
+  }
+}
+--------------------------------------------------------------------------------
+[2025-04-16T02:01:48.134Z] [INFO] TCBS API response status
+{
+  "ticker": "FPT",
+  "status": 200
+}
+--------------------------------------------------------------------------------
+[2025-04-16T02:01:48.135Z] [DEBUG] API response structure
+{
+  "ticker": "FPT",
+  "keys": [
+    "ticker",
+    "data",
+    "dataT1"
+  ],
+  "sample": "{\"ticker\":\"FPT\",\"data\":[{\"open\":116100,\"high\":117000,\"low\":113700,\"close\":116000,\"volume\":7787164,\"tradingDate\":\"2025-04-15T00:00:00.000Z\"}],\"dataT1\":null}"
+}
+--------------------------------------------------------------------------------
+[2025-04-16T02:01:48.135Z] [INFO] Successfully fetched market data
+{
+  "ticker": "FPT",
+  "latestEntry": {
+    "open": 116100,
+    "high": 117000,
+    "low": 113700,
+    "close": 116000,
+    "volume": 7787164,
+    "tradingDate": "2025-04-15T00:00:00.000Z"
+  }
+}
+--------------------------------------------------------------------------------
+[2025-04-16T02:01:48.135Z] [INFO] Batch market data fetch completed
+{
+  "totalRequested": 2,
+  "successful": 2,
+  "failed": 0
+}
+--------------------------------------------------------------------------------
+[2025-04-16T02:02:39.213Z] [INFO] Market data request received
+{
+  "userId": "cm9i9n0500000krszqm5qeltc",
+  "tickers": [
+    "FPT",
+    "CTG"
+  ]
+}
+--------------------------------------------------------------------------------
+[2025-04-16T02:02:39.213Z] [DEBUG] Starting batch market data fetch with timestamps
+{
+  "tickers": [
+    "FPT",
+    "CTG"
+  ],
+  "from": 1744596159,
+  "to": 1744682559,
+  "fromDate": "2025-04-14T02:02:39.000Z",
+  "toDate": "2025-04-15T02:02:39.000Z"
+}
+--------------------------------------------------------------------------------
+[2025-04-16T02:02:39.214Z] [INFO] Fetching market data
+{
+  "ticker": "FPT",
+  "from": 1744596159,
+  "to": 1744682559,
+  "url": "https://apipubaws.tcbs.com.vn/stock-insight/v1/stock/bars-long-term?ticker=FPT&type=stock&resolution=D&from=1744596159&to=1744682559"
+}
+--------------------------------------------------------------------------------
+[2025-04-16T02:02:39.216Z] [INFO] Fetching market data
+{
+  "ticker": "CTG",
+  "from": 1744596159,
+  "to": 1744682559,
+  "url": "https://apipubaws.tcbs.com.vn/stock-insight/v1/stock/bars-long-term?ticker=CTG&type=stock&resolution=D&from=1744596159&to=1744682559"
+}
+--------------------------------------------------------------------------------
+[2025-04-16T02:02:39.485Z] [INFO] TCBS API response status
+{
+  "ticker": "FPT",
+  "status": 200
+}
+--------------------------------------------------------------------------------
+[2025-04-16T02:02:39.486Z] [DEBUG] API response structure
+{
+  "ticker": "FPT",
+  "keys": [
+    "ticker",
+    "data",
+    "dataT1"
+  ],
+  "sample": "{\"ticker\":\"FPT\",\"data\":[{\"open\":116100,\"high\":117000,\"low\":113700,\"close\":116000,\"volume\":7787164,\"tradingDate\":\"2025-04-15T00:00:00.000Z\"}],\"dataT1\":null}"
+}
+--------------------------------------------------------------------------------
+[2025-04-16T02:02:39.486Z] [INFO] Successfully fetched market data
+{
+  "ticker": "FPT",
+  "latestEntry": {
+    "open": 116100,
+    "high": 117000,
+    "low": 113700,
+    "close": 116000,
+    "volume": 7787164,
+    "tradingDate": "2025-04-15T00:00:00.000Z"
+  }
+}
+--------------------------------------------------------------------------------
+[2025-04-16T02:02:39.487Z] [INFO] TCBS API response status
+{
+  "ticker": "CTG",
+  "status": 200
+}
+--------------------------------------------------------------------------------
+[2025-04-16T02:02:39.487Z] [DEBUG] API response structure
+{
+  "ticker": "CTG",
+  "keys": [
+    "ticker",
+    "data",
+    "dataT1"
+  ],
+  "sample": "{\"ticker\":\"CTG\",\"data\":[{\"open\":37800,\"high\":38000,\"low\":37200,\"close\":37750,\"volume\":10259616,\"tradingDate\":\"2025-04-15T00:00:00.000Z\"}],\"dataT1\":null}"
+}
+--------------------------------------------------------------------------------
+[2025-04-16T02:02:39.487Z] [INFO] Successfully fetched market data
+{
+  "ticker": "CTG",
+  "latestEntry": {
+    "open": 37800,
+    "high": 38000,
+    "low": 37200,
+    "close": 37750,
+    "volume": 10259616,
+    "tradingDate": "2025-04-15T00:00:00.000Z"
+  }
+}
+--------------------------------------------------------------------------------
+[2025-04-16T02:02:39.488Z] [INFO] Batch market data fetch completed
+{
+  "totalRequested": 2,
+  "successful": 2,
+  "failed": 0
+}
+--------------------------------------------------------------------------------
+[2025-04-16T02:02:39.503Z] [INFO] Market data request received
+{
+  "userId": "cm9i9n0500000krszqm5qeltc",
+  "tickers": [
+    "FPT",
+    "CTG"
+  ]
+}
+--------------------------------------------------------------------------------
+[2025-04-16T02:02:39.503Z] [DEBUG] Starting batch market data fetch with timestamps
+{
+  "tickers": [
+    "FPT",
+    "CTG"
+  ],
+  "from": 1744596159,
+  "to": 1744682559,
+  "fromDate": "2025-04-14T02:02:39.000Z",
+  "toDate": "2025-04-15T02:02:39.000Z"
+}
+--------------------------------------------------------------------------------
+[2025-04-16T02:02:39.504Z] [INFO] Fetching market data
+{
+  "ticker": "FPT",
+  "from": 1744596159,
+  "to": 1744682559,
+  "url": "https://apipubaws.tcbs.com.vn/stock-insight/v1/stock/bars-long-term?ticker=FPT&type=stock&resolution=D&from=1744596159&to=1744682559"
+}
+--------------------------------------------------------------------------------
+[2025-04-16T02:02:39.505Z] [INFO] Fetching market data
+{
+  "ticker": "CTG",
+  "from": 1744596159,
+  "to": 1744682559,
+  "url": "https://apipubaws.tcbs.com.vn/stock-insight/v1/stock/bars-long-term?ticker=CTG&type=stock&resolution=D&from=1744596159&to=1744682559"
+}
+--------------------------------------------------------------------------------
+[2025-04-16T02:02:39.589Z] [INFO] TCBS API response status
+{
+  "ticker": "FPT",
+  "status": 200
+}
+--------------------------------------------------------------------------------
+[2025-04-16T02:02:39.590Z] [DEBUG] API response structure
+{
+  "ticker": "FPT",
+  "keys": [
+    "ticker",
+    "data",
+    "dataT1"
+  ],
+  "sample": "{\"ticker\":\"FPT\",\"data\":[{\"open\":116100,\"high\":117000,\"low\":113700,\"close\":116000,\"volume\":7787164,\"tradingDate\":\"2025-04-15T00:00:00.000Z\"}],\"dataT1\":null}"
+}
+--------------------------------------------------------------------------------
+[2025-04-16T02:02:39.590Z] [INFO] Successfully fetched market data
+{
+  "ticker": "FPT",
+  "latestEntry": {
+    "open": 116100,
+    "high": 117000,
+    "low": 113700,
+    "close": 116000,
+    "volume": 7787164,
+    "tradingDate": "2025-04-15T00:00:00.000Z"
+  }
+}
+--------------------------------------------------------------------------------
+[2025-04-16T02:02:39.591Z] [INFO] TCBS API response status
+{
+  "ticker": "CTG",
+  "status": 200
+}
+--------------------------------------------------------------------------------
+[2025-04-16T02:02:39.592Z] [DEBUG] API response structure
+{
+  "ticker": "CTG",
+  "keys": [
+    "ticker",
+    "data",
+    "dataT1"
+  ],
+  "sample": "{\"ticker\":\"CTG\",\"data\":[{\"open\":37800,\"high\":38000,\"low\":37200,\"close\":37750,\"volume\":10259616,\"tradingDate\":\"2025-04-15T00:00:00.000Z\"}],\"dataT1\":null}"
+}
+--------------------------------------------------------------------------------
+[2025-04-16T02:02:39.592Z] [INFO] Successfully fetched market data
+{
+  "ticker": "CTG",
+  "latestEntry": {
+    "open": 37800,
+    "high": 38000,
+    "low": 37200,
+    "close": 37750,
+    "volume": 10259616,
+    "tradingDate": "2025-04-15T00:00:00.000Z"
+  }
+}
+--------------------------------------------------------------------------------
+[2025-04-16T02:02:39.592Z] [INFO] Batch market data fetch completed
+{
+  "totalRequested": 2,
+  "successful": 2,
+  "failed": 0
+}
+--------------------------------------------------------------------------------
+[2025-04-16T02:03:43.786Z] [INFO] Market data request received
+{
+  "userId": "cm9i9n0500000krszqm5qeltc",
+  "tickers": [
+    "FPT",
+    "CTG"
+  ]
+}
+--------------------------------------------------------------------------------
+[2025-04-16T02:03:43.787Z] [DEBUG] Starting batch market data fetch with timestamps
+{
+  "tickers": [
+    "FPT",
+    "CTG"
+  ],
+  "from": 1744596223,
+  "to": 1744682623,
+  "fromDate": "2025-04-14T02:03:43.000Z",
+  "toDate": "2025-04-15T02:03:43.000Z"
+}
+--------------------------------------------------------------------------------
+[2025-04-16T02:03:43.788Z] [INFO] Fetching market data
+{
+  "ticker": "FPT",
+  "from": 1744596223,
+  "to": 1744682623,
+  "url": "https://apipubaws.tcbs.com.vn/stock-insight/v1/stock/bars-long-term?ticker=FPT&type=stock&resolution=D&from=1744596223&to=1744682623"
+}
+--------------------------------------------------------------------------------
+[2025-04-16T02:03:43.808Z] [INFO] Fetching market data
+{
+  "ticker": "CTG",
+  "from": 1744596223,
+  "to": 1744682623,
+  "url": "https://apipubaws.tcbs.com.vn/stock-insight/v1/stock/bars-long-term?ticker=CTG&type=stock&resolution=D&from=1744596223&to=1744682623"
+}
+--------------------------------------------------------------------------------
+[2025-04-16T02:03:44.078Z] [INFO] TCBS API response status
+{
+  "ticker": "FPT",
+  "status": 200
+}
+--------------------------------------------------------------------------------
+[2025-04-16T02:03:44.081Z] [DEBUG] API response structure
+{
+  "ticker": "FPT",
+  "keys": [
+    "ticker",
+    "data",
+    "dataT1"
+  ],
+  "sample": "{\"ticker\":\"FPT\",\"data\":[{\"open\":116100,\"high\":117000,\"low\":113700,\"close\":116000,\"volume\":7787164,\"tradingDate\":\"2025-04-15T00:00:00.000Z\"}],\"dataT1\":null}"
+}
+--------------------------------------------------------------------------------
+[2025-04-16T02:03:44.081Z] [INFO] Successfully fetched market data
+{
+  "ticker": "FPT",
+  "latestEntry": {
+    "open": 116100,
+    "high": 117000,
+    "low": 113700,
+    "close": 116000,
+    "volume": 7787164,
+    "tradingDate": "2025-04-15T00:00:00.000Z"
+  }
+}
+--------------------------------------------------------------------------------
+[2025-04-16T02:03:44.112Z] [INFO] TCBS API response status
+{
+  "ticker": "CTG",
+  "status": 200
+}
+--------------------------------------------------------------------------------
+[2025-04-16T02:03:44.113Z] [DEBUG] API response structure
+{
+  "ticker": "CTG",
+  "keys": [
+    "ticker",
+    "data",
+    "dataT1"
+  ],
+  "sample": "{\"ticker\":\"CTG\",\"data\":[{\"open\":37800,\"high\":38000,\"low\":37200,\"close\":37750,\"volume\":10259616,\"tradingDate\":\"2025-04-15T00:00:00.000Z\"}],\"dataT1\":null}"
+}
+--------------------------------------------------------------------------------
+[2025-04-16T02:03:44.113Z] [INFO] Successfully fetched market data
+{
+  "ticker": "CTG",
+  "latestEntry": {
+    "open": 37800,
+    "high": 38000,
+    "low": 37200,
+    "close": 37750,
+    "volume": 10259616,
+    "tradingDate": "2025-04-15T00:00:00.000Z"
+  }
+}
+--------------------------------------------------------------------------------
+[2025-04-16T02:03:44.113Z] [INFO] Batch market data fetch completed
+{
+  "totalRequested": 2,
+  "successful": 2,
+  "failed": 0
+}
+--------------------------------------------------------------------------------
+[2025-04-16T02:03:44.129Z] [INFO] Market data request received
+{
+  "userId": "cm9i9n0500000krszqm5qeltc",
+  "tickers": [
+    "FPT",
+    "CTG"
+  ]
+}
+--------------------------------------------------------------------------------
+[2025-04-16T02:03:44.129Z] [DEBUG] Starting batch market data fetch with timestamps
+{
+  "tickers": [
+    "FPT",
+    "CTG"
+  ],
+  "from": 1744596224,
+  "to": 1744682624,
+  "fromDate": "2025-04-14T02:03:44.000Z",
+  "toDate": "2025-04-15T02:03:44.000Z"
+}
+--------------------------------------------------------------------------------
+[2025-04-16T02:03:44.129Z] [INFO] Fetching market data
+{
+  "ticker": "FPT",
+  "from": 1744596224,
+  "to": 1744682624,
+  "url": "https://apipubaws.tcbs.com.vn/stock-insight/v1/stock/bars-long-term?ticker=FPT&type=stock&resolution=D&from=1744596224&to=1744682624"
+}
+--------------------------------------------------------------------------------
+[2025-04-16T02:03:44.130Z] [INFO] Fetching market data
+{
+  "ticker": "CTG",
+  "from": 1744596224,
+  "to": 1744682624,
+  "url": "https://apipubaws.tcbs.com.vn/stock-insight/v1/stock/bars-long-term?ticker=CTG&type=stock&resolution=D&from=1744596224&to=1744682624"
+}
+--------------------------------------------------------------------------------
+[2025-04-16T02:03:44.207Z] [INFO] TCBS API response status
+{
+  "ticker": "FPT",
+  "status": 200
+}
+--------------------------------------------------------------------------------
+[2025-04-16T02:03:44.208Z] [DEBUG] API response structure
+{
+  "ticker": "FPT",
+  "keys": [
+    "ticker",
+    "data",
+    "dataT1"
+  ],
+  "sample": "{\"ticker\":\"FPT\",\"data\":[{\"open\":116100,\"high\":117000,\"low\":113700,\"close\":116000,\"volume\":7787164,\"tradingDate\":\"2025-04-15T00:00:00.000Z\"}],\"dataT1\":null}"
+}
+--------------------------------------------------------------------------------
+[2025-04-16T02:03:44.208Z] [INFO] Successfully fetched market data
+{
+  "ticker": "FPT",
+  "latestEntry": {
+    "open": 116100,
+    "high": 117000,
+    "low": 113700,
+    "close": 116000,
+    "volume": 7787164,
+    "tradingDate": "2025-04-15T00:00:00.000Z"
+  }
+}
+--------------------------------------------------------------------------------
+[2025-04-16T02:03:44.213Z] [INFO] TCBS API response status
+{
+  "ticker": "CTG",
+  "status": 200
+}
+--------------------------------------------------------------------------------
+[2025-04-16T02:03:44.213Z] [DEBUG] API response structure
+{
+  "ticker": "CTG",
+  "keys": [
+    "ticker",
+    "data",
+    "dataT1"
+  ],
+  "sample": "{\"ticker\":\"CTG\",\"data\":[{\"open\":37800,\"high\":38000,\"low\":37200,\"close\":37750,\"volume\":10259616,\"tradingDate\":\"2025-04-15T00:00:00.000Z\"}],\"dataT1\":null}"
+}
+--------------------------------------------------------------------------------
+[2025-04-16T02:03:44.213Z] [INFO] Successfully fetched market data
+{
+  "ticker": "CTG",
+  "latestEntry": {
+    "open": 37800,
+    "high": 38000,
+    "low": 37200,
+    "close": 37750,
+    "volume": 10259616,
+    "tradingDate": "2025-04-15T00:00:00.000Z"
+  }
+}
+--------------------------------------------------------------------------------
+[2025-04-16T02:03:44.213Z] [INFO] Batch market data fetch completed
+{
+  "totalRequested": 2,
+  "successful": 2,
+  "failed": 0
+}
+--------------------------------------------------------------------------------
+[2025-04-16T02:07:33.999Z] [INFO] Market data request received
+{
+  "userId": "cm9i9n0500000krszqm5qeltc",
+  "tickers": [
+    "FPT",
+    "CTG",
+    "GEX"
+  ]
+}
+--------------------------------------------------------------------------------
+[2025-04-16T02:07:33.999Z] [DEBUG] Starting batch market data fetch with timestamps
+{
+  "tickers": [
+    "FPT",
+    "CTG",
+    "GEX"
+  ],
+  "from": 1744596453,
+  "to": 1744682853,
+  "fromDate": "2025-04-14T02:07:33.000Z",
+  "toDate": "2025-04-15T02:07:33.000Z"
+}
+--------------------------------------------------------------------------------
+[2025-04-16T02:07:33.999Z] [INFO] Fetching market data
+{
+  "ticker": "FPT",
+  "from": 1744596453,
+  "to": 1744682853,
+  "url": "https://apipubaws.tcbs.com.vn/stock-insight/v1/stock/bars-long-term?ticker=FPT&type=stock&resolution=D&from=1744596453&to=1744682853"
+}
+--------------------------------------------------------------------------------
+[2025-04-16T02:07:34.007Z] [INFO] Fetching market data
+{
+  "ticker": "CTG",
+  "from": 1744596453,
+  "to": 1744682853,
+  "url": "https://apipubaws.tcbs.com.vn/stock-insight/v1/stock/bars-long-term?ticker=CTG&type=stock&resolution=D&from=1744596453&to=1744682853"
+}
+--------------------------------------------------------------------------------
+[2025-04-16T02:07:34.009Z] [INFO] Fetching market data
+{
+  "ticker": "GEX",
+  "from": 1744596453,
+  "to": 1744682853,
+  "url": "https://apipubaws.tcbs.com.vn/stock-insight/v1/stock/bars-long-term?ticker=GEX&type=stock&resolution=D&from=1744596453&to=1744682853"
+}
+--------------------------------------------------------------------------------
+[2025-04-16T02:07:34.255Z] [INFO] TCBS API response status
+{
+  "ticker": "CTG",
+  "status": 200
+}
+--------------------------------------------------------------------------------
+[2025-04-16T02:07:34.258Z] [DEBUG] API response structure
+{
+  "ticker": "CTG",
+  "keys": [
+    "ticker",
+    "data",
+    "dataT1"
+  ],
+  "sample": "{\"ticker\":\"CTG\",\"data\":[{\"open\":37800,\"high\":38000,\"low\":37200,\"close\":37750,\"volume\":10259616,\"tradingDate\":\"2025-04-15T00:00:00.000Z\"}],\"dataT1\":null}"
+}
+--------------------------------------------------------------------------------
+[2025-04-16T02:07:34.258Z] [INFO] Successfully fetched market data
+{
+  "ticker": "CTG",
+  "latestEntry": {
+    "open": 37800,
+    "high": 38000,
+    "low": 37200,
+    "close": 37750,
+    "volume": 10259616,
+    "tradingDate": "2025-04-15T00:00:00.000Z"
+  }
+}
+--------------------------------------------------------------------------------
+[2025-04-16T02:07:34.276Z] [INFO] TCBS API response status
+{
+  "ticker": "FPT",
+  "status": 200
+}
+--------------------------------------------------------------------------------
+[2025-04-16T02:07:34.277Z] [DEBUG] API response structure
+{
+  "ticker": "FPT",
+  "keys": [
+    "ticker",
+    "data",
+    "dataT1"
+  ],
+  "sample": "{\"ticker\":\"FPT\",\"data\":[{\"open\":116100,\"high\":117000,\"low\":113700,\"close\":116000,\"volume\":7787164,\"tradingDate\":\"2025-04-15T00:00:00.000Z\"}],\"dataT1\":null}"
+}
+--------------------------------------------------------------------------------
+[2025-04-16T02:07:34.277Z] [INFO] Successfully fetched market data
+{
+  "ticker": "FPT",
+  "latestEntry": {
+    "open": 116100,
+    "high": 117000,
+    "low": 113700,
+    "close": 116000,
+    "volume": 7787164,
+    "tradingDate": "2025-04-15T00:00:00.000Z"
+  }
+}
+--------------------------------------------------------------------------------
+[2025-04-16T02:07:34.371Z] [INFO] TCBS API response status
+{
+  "ticker": "GEX",
+  "status": 200
+}
+--------------------------------------------------------------------------------
+[2025-04-16T02:07:34.372Z] [DEBUG] API response structure
+{
+  "ticker": "GEX",
+  "keys": [
+    "ticker",
+    "data",
+    "dataT1"
+  ],
+  "sample": "{\"ticker\":\"GEX\",\"data\":[{\"open\":23850,\"high\":25650,\"low\":23850,\"close\":25150,\"volume\":18961806,\"tradingDate\":\"2025-04-15T00:00:00.000Z\"}],\"dataT1\":null}"
+}
+--------------------------------------------------------------------------------
+[2025-04-16T02:07:34.372Z] [INFO] Successfully fetched market data
+{
+  "ticker": "GEX",
+  "latestEntry": {
+    "open": 23850,
+    "high": 25650,
+    "low": 23850,
+    "close": 25150,
+    "volume": 18961806,
+    "tradingDate": "2025-04-15T00:00:00.000Z"
+  }
+}
+--------------------------------------------------------------------------------
+[2025-04-16T02:07:34.372Z] [INFO] Batch market data fetch completed
+{
+  "totalRequested": 3,
+  "successful": 3,
+  "failed": 0
+}
+--------------------------------------------------------------------------------
+[2025-04-16T02:07:34.388Z] [INFO] Market data request received
+{
+  "userId": "cm9i9n0500000krszqm5qeltc",
+  "tickers": [
+    "FPT",
+    "CTG",
+    "GEX"
+  ]
+}
+--------------------------------------------------------------------------------
+[2025-04-16T02:07:34.388Z] [DEBUG] Starting batch market data fetch with timestamps
+{
+  "tickers": [
+    "FPT",
+    "CTG",
+    "GEX"
+  ],
+  "from": 1744596454,
+  "to": 1744682854,
+  "fromDate": "2025-04-14T02:07:34.000Z",
+  "toDate": "2025-04-15T02:07:34.000Z"
+}
+--------------------------------------------------------------------------------
+[2025-04-16T02:07:34.388Z] [INFO] Fetching market data
+{
+  "ticker": "FPT",
+  "from": 1744596454,
+  "to": 1744682854,
+  "url": "https://apipubaws.tcbs.com.vn/stock-insight/v1/stock/bars-long-term?ticker=FPT&type=stock&resolution=D&from=1744596454&to=1744682854"
+}
+--------------------------------------------------------------------------------
+[2025-04-16T02:07:34.389Z] [INFO] Fetching market data
+{
+  "ticker": "CTG",
+  "from": 1744596454,
+  "to": 1744682854,
+  "url": "https://apipubaws.tcbs.com.vn/stock-insight/v1/stock/bars-long-term?ticker=CTG&type=stock&resolution=D&from=1744596454&to=1744682854"
+}
+--------------------------------------------------------------------------------
+[2025-04-16T02:07:34.390Z] [INFO] Fetching market data
+{
+  "ticker": "GEX",
+  "from": 1744596454,
+  "to": 1744682854,
+  "url": "https://apipubaws.tcbs.com.vn/stock-insight/v1/stock/bars-long-term?ticker=GEX&type=stock&resolution=D&from=1744596454&to=1744682854"
+}
+--------------------------------------------------------------------------------
+[2025-04-16T02:07:34.470Z] [INFO] TCBS API response status
+{
+  "ticker": "FPT",
+  "status": 200
+}
+--------------------------------------------------------------------------------
+[2025-04-16T02:07:34.472Z] [DEBUG] API response structure
+{
+  "ticker": "FPT",
+  "keys": [
+    "ticker",
+    "data",
+    "dataT1"
+  ],
+  "sample": "{\"ticker\":\"FPT\",\"data\":[{\"open\":116100,\"high\":117000,\"low\":113700,\"close\":116000,\"volume\":7787164,\"tradingDate\":\"2025-04-15T00:00:00.000Z\"}],\"dataT1\":null}"
+}
+--------------------------------------------------------------------------------
+[2025-04-16T02:07:34.472Z] [INFO] Successfully fetched market data
+{
+  "ticker": "FPT",
+  "latestEntry": {
+    "open": 116100,
+    "high": 117000,
+    "low": 113700,
+    "close": 116000,
+    "volume": 7787164,
+    "tradingDate": "2025-04-15T00:00:00.000Z"
+  }
+}
+--------------------------------------------------------------------------------
+[2025-04-16T02:07:34.479Z] [INFO] TCBS API response status
+{
+  "ticker": "GEX",
+  "status": 200
+}
+--------------------------------------------------------------------------------
+[2025-04-16T02:07:34.483Z] [DEBUG] API response structure
+{
+  "ticker": "GEX",
+  "keys": [
+    "ticker",
+    "data",
+    "dataT1"
+  ],
+  "sample": "{\"ticker\":\"GEX\",\"data\":[{\"open\":23850,\"high\":25650,\"low\":23850,\"close\":25150,\"volume\":18961806,\"tradingDate\":\"2025-04-15T00:00:00.000Z\"}],\"dataT1\":null}"
+}
+--------------------------------------------------------------------------------
+[2025-04-16T02:07:34.483Z] [INFO] Successfully fetched market data
+{
+  "ticker": "GEX",
+  "latestEntry": {
+    "open": 23850,
+    "high": 25650,
+    "low": 23850,
+    "close": 25150,
+    "volume": 18961806,
+    "tradingDate": "2025-04-15T00:00:00.000Z"
+  }
+}
+--------------------------------------------------------------------------------
+[2025-04-16T02:07:34.487Z] [INFO] TCBS API response status
+{
+  "ticker": "CTG",
+  "status": 200
+}
+--------------------------------------------------------------------------------
+[2025-04-16T02:07:34.488Z] [DEBUG] API response structure
+{
+  "ticker": "CTG",
+  "keys": [
+    "ticker",
+    "data",
+    "dataT1"
+  ],
+  "sample": "{\"ticker\":\"CTG\",\"data\":[{\"open\":37800,\"high\":38000,\"low\":37200,\"close\":37750,\"volume\":10259616,\"tradingDate\":\"2025-04-15T00:00:00.000Z\"}],\"dataT1\":null}"
+}
+--------------------------------------------------------------------------------
+[2025-04-16T02:07:34.489Z] [INFO] Successfully fetched market data
+{
+  "ticker": "CTG",
+  "latestEntry": {
+    "open": 37800,
+    "high": 38000,
+    "low": 37200,
+    "close": 37750,
+    "volume": 10259616,
+    "tradingDate": "2025-04-15T00:00:00.000Z"
+  }
+}
+--------------------------------------------------------------------------------
+[2025-04-16T02:07:34.489Z] [INFO] Batch market data fetch completed
+{
+  "totalRequested": 3,
+  "successful": 3,
+  "failed": 0
+}
+--------------------------------------------------------------------------------
+[2025-04-16T04:07:45.387Z] [INFO] Market data request received
+{
+  "userId": "cm9i9n0500000krszqm5qeltc",
+  "tickers": [
+    "FPT",
+    "CTG",
+    "GEX"
+  ]
+}
+--------------------------------------------------------------------------------
+[2025-04-16T04:07:45.388Z] [DEBUG] Starting batch market data fetch with timestamps
+{
+  "tickers": [
+    "FPT",
+    "CTG",
+    "GEX"
+  ],
+  "from": 1744603665,
+  "to": 1744690065,
+  "fromDate": "2025-04-14T04:07:45.000Z",
+  "toDate": "2025-04-15T04:07:45.000Z"
+}
+--------------------------------------------------------------------------------
+[2025-04-16T04:07:45.388Z] [INFO] Fetching market data
+{
+  "ticker": "FPT",
+  "from": 1744603665,
+  "to": 1744690065,
+  "url": "https://apipubaws.tcbs.com.vn/stock-insight/v1/stock/bars-long-term?ticker=FPT&type=stock&resolution=D&from=1744603665&to=1744690065"
+}
+--------------------------------------------------------------------------------
+[2025-04-16T04:07:45.397Z] [INFO] Fetching market data
+{
+  "ticker": "CTG",
+  "from": 1744603665,
+  "to": 1744690065,
+  "url": "https://apipubaws.tcbs.com.vn/stock-insight/v1/stock/bars-long-term?ticker=CTG&type=stock&resolution=D&from=1744603665&to=1744690065"
+}
+--------------------------------------------------------------------------------
+[2025-04-16T04:07:45.399Z] [INFO] Fetching market data
+{
+  "ticker": "GEX",
+  "from": 1744603665,
+  "to": 1744690065,
+  "url": "https://apipubaws.tcbs.com.vn/stock-insight/v1/stock/bars-long-term?ticker=GEX&type=stock&resolution=D&from=1744603665&to=1744690065"
+}
+--------------------------------------------------------------------------------
+[2025-04-16T04:07:45.657Z] [INFO] TCBS API response status
+{
+  "ticker": "FPT",
+  "status": 200
+}
+--------------------------------------------------------------------------------
+[2025-04-16T04:07:45.661Z] [DEBUG] API response structure
+{
+  "ticker": "FPT",
+  "keys": [
+    "ticker",
+    "data",
+    "dataT1"
+  ],
+  "sample": "{\"ticker\":\"FPT\",\"data\":[{\"open\":116100,\"high\":117000,\"low\":113700,\"close\":116000,\"volume\":7787164,\"tradingDate\":\"2025-04-15T00:00:00.000Z\"}],\"dataT1\":null}"
+}
+--------------------------------------------------------------------------------
+[2025-04-16T04:07:45.661Z] [INFO] Successfully fetched market data
+{
+  "ticker": "FPT",
+  "latestEntry": {
+    "open": 116100,
+    "high": 117000,
+    "low": 113700,
+    "close": 116000,
+    "volume": 7787164,
+    "tradingDate": "2025-04-15T00:00:00.000Z"
+  }
+}
+--------------------------------------------------------------------------------
+[2025-04-16T04:07:45.663Z] [INFO] TCBS API response status
+{
+  "ticker": "CTG",
+  "status": 200
+}
+--------------------------------------------------------------------------------
+[2025-04-16T04:07:45.664Z] [DEBUG] API response structure
+{
+  "ticker": "CTG",
+  "keys": [
+    "ticker",
+    "data",
+    "dataT1"
+  ],
+  "sample": "{\"ticker\":\"CTG\",\"data\":[{\"open\":37800,\"high\":38000,\"low\":37200,\"close\":37750,\"volume\":10259616,\"tradingDate\":\"2025-04-15T00:00:00.000Z\"}],\"dataT1\":null}"
+}
+--------------------------------------------------------------------------------
+[2025-04-16T04:07:45.664Z] [INFO] Successfully fetched market data
+{
+  "ticker": "CTG",
+  "latestEntry": {
+    "open": 37800,
+    "high": 38000,
+    "low": 37200,
+    "close": 37750,
+    "volume": 10259616,
+    "tradingDate": "2025-04-15T00:00:00.000Z"
+  }
+}
+--------------------------------------------------------------------------------
+[2025-04-16T04:07:45.684Z] [INFO] TCBS API response status
+{
+  "ticker": "GEX",
+  "status": 200
+}
+--------------------------------------------------------------------------------
+[2025-04-16T04:07:45.684Z] [DEBUG] API response structure
+{
+  "ticker": "GEX",
+  "keys": [
+    "ticker",
+    "data",
+    "dataT1"
+  ],
+  "sample": "{\"ticker\":\"GEX\",\"data\":[{\"open\":23850,\"high\":25650,\"low\":23850,\"close\":25150,\"volume\":18961806,\"tradingDate\":\"2025-04-15T00:00:00.000Z\"}],\"dataT1\":null}"
+}
+--------------------------------------------------------------------------------
+[2025-04-16T04:07:45.684Z] [INFO] Successfully fetched market data
+{
+  "ticker": "GEX",
+  "latestEntry": {
+    "open": 23850,
+    "high": 25650,
+    "low": 23850,
+    "close": 25150,
+    "volume": 18961806,
+    "tradingDate": "2025-04-15T00:00:00.000Z"
+  }
+}
+--------------------------------------------------------------------------------
+[2025-04-16T04:07:45.685Z] [INFO] Batch market data fetch completed
+{
+  "totalRequested": 3,
+  "successful": 3,
+  "failed": 0
+}
+--------------------------------------------------------------------------------
+[2025-04-16T04:07:45.700Z] [INFO] Market data request received
+{
+  "userId": "cm9i9n0500000krszqm5qeltc",
+  "tickers": [
+    "FPT",
+    "CTG",
+    "GEX"
+  ]
+}
+--------------------------------------------------------------------------------
+[2025-04-16T04:07:45.700Z] [DEBUG] Starting batch market data fetch with timestamps
+{
+  "tickers": [
+    "FPT",
+    "CTG",
+    "GEX"
+  ],
+  "from": 1744603665,
+  "to": 1744690065,
+  "fromDate": "2025-04-14T04:07:45.000Z",
+  "toDate": "2025-04-15T04:07:45.000Z"
+}
+--------------------------------------------------------------------------------
+[2025-04-16T04:07:45.700Z] [INFO] Fetching market data
+{
+  "ticker": "FPT",
+  "from": 1744603665,
+  "to": 1744690065,
+  "url": "https://apipubaws.tcbs.com.vn/stock-insight/v1/stock/bars-long-term?ticker=FPT&type=stock&resolution=D&from=1744603665&to=1744690065"
+}
+--------------------------------------------------------------------------------
+[2025-04-16T04:07:45.701Z] [INFO] Fetching market data
+{
+  "ticker": "CTG",
+  "from": 1744603665,
+  "to": 1744690065,
+  "url": "https://apipubaws.tcbs.com.vn/stock-insight/v1/stock/bars-long-term?ticker=CTG&type=stock&resolution=D&from=1744603665&to=1744690065"
+}
+--------------------------------------------------------------------------------
+[2025-04-16T04:07:45.702Z] [INFO] Fetching market data
+{
+  "ticker": "GEX",
+  "from": 1744603665,
+  "to": 1744690065,
+  "url": "https://apipubaws.tcbs.com.vn/stock-insight/v1/stock/bars-long-term?ticker=GEX&type=stock&resolution=D&from=1744603665&to=1744690065"
+}
+--------------------------------------------------------------------------------
+[2025-04-16T04:07:45.776Z] [INFO] TCBS API response status
+{
+  "ticker": "FPT",
+  "status": 200
+}
+--------------------------------------------------------------------------------
+[2025-04-16T04:07:45.777Z] [DEBUG] API response structure
+{
+  "ticker": "FPT",
+  "keys": [
+    "ticker",
+    "data",
+    "dataT1"
+  ],
+  "sample": "{\"ticker\":\"FPT\",\"data\":[{\"open\":116100,\"high\":117000,\"low\":113700,\"close\":116000,\"volume\":7787164,\"tradingDate\":\"2025-04-15T00:00:00.000Z\"}],\"dataT1\":null}"
+}
+--------------------------------------------------------------------------------
+[2025-04-16T04:07:45.777Z] [INFO] Successfully fetched market data
+{
+  "ticker": "FPT",
+  "latestEntry": {
+    "open": 116100,
+    "high": 117000,
+    "low": 113700,
+    "close": 116000,
+    "volume": 7787164,
+    "tradingDate": "2025-04-15T00:00:00.000Z"
+  }
+}
+--------------------------------------------------------------------------------
+[2025-04-16T04:07:45.778Z] [INFO] TCBS API response status
+{
+  "ticker": "CTG",
+  "status": 200
+}
+--------------------------------------------------------------------------------
+[2025-04-16T04:07:45.779Z] [DEBUG] API response structure
+{
+  "ticker": "CTG",
+  "keys": [
+    "ticker",
+    "data",
+    "dataT1"
+  ],
+  "sample": "{\"ticker\":\"CTG\",\"data\":[{\"open\":37800,\"high\":38000,\"low\":37200,\"close\":37750,\"volume\":10259616,\"tradingDate\":\"2025-04-15T00:00:00.000Z\"}],\"dataT1\":null}"
+}
+--------------------------------------------------------------------------------
+[2025-04-16T04:07:45.779Z] [INFO] Successfully fetched market data
+{
+  "ticker": "CTG",
+  "latestEntry": {
+    "open": 37800,
+    "high": 38000,
+    "low": 37200,
+    "close": 37750,
+    "volume": 10259616,
+    "tradingDate": "2025-04-15T00:00:00.000Z"
+  }
+}
+--------------------------------------------------------------------------------
+[2025-04-16T04:07:45.780Z] [INFO] TCBS API response status
+{
+  "ticker": "GEX",
+  "status": 200
+}
+--------------------------------------------------------------------------------
+[2025-04-16T04:07:45.781Z] [DEBUG] API response structure
+{
+  "ticker": "GEX",
+  "keys": [
+    "ticker",
+    "data",
+    "dataT1"
+  ],
+  "sample": "{\"ticker\":\"GEX\",\"data\":[{\"open\":23850,\"high\":25650,\"low\":23850,\"close\":25150,\"volume\":18961806,\"tradingDate\":\"2025-04-15T00:00:00.000Z\"}],\"dataT1\":null}"
+}
+--------------------------------------------------------------------------------
+[2025-04-16T04:07:45.781Z] [INFO] Successfully fetched market data
+{
+  "ticker": "GEX",
+  "latestEntry": {
+    "open": 23850,
+    "high": 25650,
+    "low": 23850,
+    "close": 25150,
+    "volume": 18961806,
+    "tradingDate": "2025-04-15T00:00:00.000Z"
+  }
+}
+--------------------------------------------------------------------------------
+[2025-04-16T04:07:45.781Z] [INFO] Batch market data fetch completed
+{
+  "totalRequested": 3,
+  "successful": 3,
+  "failed": 0
+}
+--------------------------------------------------------------------------------
+[2025-04-16T04:10:58.763Z] [INFO] Market data request received
+{
+  "userId": "cm9i9n0500000krszqm5qeltc",
+  "tickers": [
+    "FPT",
+    "CTG",
+    "GEX"
+  ]
+}
+--------------------------------------------------------------------------------
+[2025-04-16T04:10:58.763Z] [DEBUG] Starting batch market data fetch with timestamps
+{
+  "tickers": [
+    "FPT",
+    "CTG",
+    "GEX"
+  ],
+  "from": 1744603858,
+  "to": 1744690258,
+  "fromDate": "2025-04-14T04:10:58.000Z",
+  "toDate": "2025-04-15T04:10:58.000Z"
+}
+--------------------------------------------------------------------------------
+[2025-04-16T04:10:58.763Z] [INFO] Fetching market data
+{
+  "ticker": "FPT",
+  "from": 1744603858,
+  "to": 1744690258,
+  "url": "https://apipubaws.tcbs.com.vn/stock-insight/v1/stock/bars-long-term?ticker=FPT&type=stock&resolution=D&from=1744603858&to=1744690258"
+}
+--------------------------------------------------------------------------------
+[2025-04-16T04:10:58.770Z] [INFO] Fetching market data
+{
+  "ticker": "CTG",
+  "from": 1744603858,
+  "to": 1744690258,
+  "url": "https://apipubaws.tcbs.com.vn/stock-insight/v1/stock/bars-long-term?ticker=CTG&type=stock&resolution=D&from=1744603858&to=1744690258"
+}
+--------------------------------------------------------------------------------
+[2025-04-16T04:10:58.772Z] [INFO] Fetching market data
+{
+  "ticker": "GEX",
+  "from": 1744603858,
+  "to": 1744690258,
+  "url": "https://apipubaws.tcbs.com.vn/stock-insight/v1/stock/bars-long-term?ticker=GEX&type=stock&resolution=D&from=1744603858&to=1744690258"
+}
+--------------------------------------------------------------------------------
+[2025-04-16T04:10:59.017Z] [INFO] TCBS API response status
+{
+  "ticker": "CTG",
+  "status": 200
+}
+--------------------------------------------------------------------------------
+[2025-04-16T04:10:59.019Z] [DEBUG] API response structure
+{
+  "ticker": "CTG",
+  "keys": [
+    "ticker",
+    "data",
+    "dataT1"
+  ],
+  "sample": "{\"ticker\":\"CTG\",\"data\":[{\"open\":37800,\"high\":38000,\"low\":37200,\"close\":37750,\"volume\":10259616,\"tradingDate\":\"2025-04-15T00:00:00.000Z\"}],\"dataT1\":null}"
+}
+--------------------------------------------------------------------------------
+[2025-04-16T04:10:59.019Z] [INFO] Successfully fetched market data
+{
+  "ticker": "CTG",
+  "latestEntry": {
+    "open": 37800,
+    "high": 38000,
+    "low": 37200,
+    "close": 37750,
+    "volume": 10259616,
+    "tradingDate": "2025-04-15T00:00:00.000Z"
+  }
+}
+--------------------------------------------------------------------------------
+[2025-04-16T04:10:59.030Z] [INFO] TCBS API response status
+{
+  "ticker": "GEX",
+  "status": 200
+}
+--------------------------------------------------------------------------------
+[2025-04-16T04:10:59.031Z] [DEBUG] API response structure
+{
+  "ticker": "GEX",
+  "keys": [
+    "ticker",
+    "data",
+    "dataT1"
+  ],
+  "sample": "{\"ticker\":\"GEX\",\"data\":[{\"open\":23850,\"high\":25650,\"low\":23850,\"close\":25150,\"volume\":18961806,\"tradingDate\":\"2025-04-15T00:00:00.000Z\"}],\"dataT1\":null}"
+}
+--------------------------------------------------------------------------------
+[2025-04-16T04:10:59.032Z] [INFO] Successfully fetched market data
+{
+  "ticker": "GEX",
+  "latestEntry": {
+    "open": 23850,
+    "high": 25650,
+    "low": 23850,
+    "close": 25150,
+    "volume": 18961806,
+    "tradingDate": "2025-04-15T00:00:00.000Z"
+  }
+}
+--------------------------------------------------------------------------------
+[2025-04-16T04:10:59.049Z] [INFO] TCBS API response status
+{
+  "ticker": "FPT",
+  "status": 200
+}
+--------------------------------------------------------------------------------
+[2025-04-16T04:10:59.050Z] [DEBUG] API response structure
+{
+  "ticker": "FPT",
+  "keys": [
+    "ticker",
+    "data",
+    "dataT1"
+  ],
+  "sample": "{\"ticker\":\"FPT\",\"data\":[{\"open\":116100,\"high\":117000,\"low\":113700,\"close\":116000,\"volume\":7787164,\"tradingDate\":\"2025-04-15T00:00:00.000Z\"}],\"dataT1\":null}"
+}
+--------------------------------------------------------------------------------
+[2025-04-16T04:10:59.050Z] [INFO] Successfully fetched market data
+{
+  "ticker": "FPT",
+  "latestEntry": {
+    "open": 116100,
+    "high": 117000,
+    "low": 113700,
+    "close": 116000,
+    "volume": 7787164,
+    "tradingDate": "2025-04-15T00:00:00.000Z"
+  }
+}
+--------------------------------------------------------------------------------
+[2025-04-16T04:10:59.050Z] [INFO] Batch market data fetch completed
+{
+  "totalRequested": 3,
+  "successful": 3,
+  "failed": 0
+}
+--------------------------------------------------------------------------------
+[2025-04-16T04:10:59.093Z] [INFO] Market data request received
+{
+  "userId": "cm9i9n0500000krszqm5qeltc",
+  "tickers": [
+    "FPT",
+    "CTG",
+    "GEX"
+  ]
+}
+--------------------------------------------------------------------------------
+[2025-04-16T04:10:59.093Z] [DEBUG] Starting batch market data fetch with timestamps
+{
+  "tickers": [
+    "FPT",
+    "CTG",
+    "GEX"
+  ],
+  "from": 1744603859,
+  "to": 1744690259,
+  "fromDate": "2025-04-14T04:10:59.000Z",
+  "toDate": "2025-04-15T04:10:59.000Z"
+}
+--------------------------------------------------------------------------------
+[2025-04-16T04:10:59.093Z] [INFO] Fetching market data
+{
+  "ticker": "FPT",
+  "from": 1744603859,
+  "to": 1744690259,
+  "url": "https://apipubaws.tcbs.com.vn/stock-insight/v1/stock/bars-long-term?ticker=FPT&type=stock&resolution=D&from=1744603859&to=1744690259"
+}
+--------------------------------------------------------------------------------
+[2025-04-16T04:10:59.096Z] [INFO] Fetching market data
+{
+  "ticker": "CTG",
+  "from": 1744603859,
+  "to": 1744690259,
+  "url": "https://apipubaws.tcbs.com.vn/stock-insight/v1/stock/bars-long-term?ticker=CTG&type=stock&resolution=D&from=1744603859&to=1744690259"
+}
+--------------------------------------------------------------------------------
+[2025-04-16T04:10:59.097Z] [INFO] Fetching market data
+{
+  "ticker": "GEX",
+  "from": 1744603859,
+  "to": 1744690259,
+  "url": "https://apipubaws.tcbs.com.vn/stock-insight/v1/stock/bars-long-term?ticker=GEX&type=stock&resolution=D&from=1744603859&to=1744690259"
+}
+--------------------------------------------------------------------------------
+[2025-04-16T04:10:59.170Z] [INFO] TCBS API response status
+{
+  "ticker": "GEX",
+  "status": 200
+}
+--------------------------------------------------------------------------------
+[2025-04-16T04:10:59.171Z] [DEBUG] API response structure
+{
+  "ticker": "GEX",
+  "keys": [
+    "ticker",
+    "data",
+    "dataT1"
+  ],
+  "sample": "{\"ticker\":\"GEX\",\"data\":[{\"open\":23850,\"high\":25650,\"low\":23850,\"close\":25150,\"volume\":18961806,\"tradingDate\":\"2025-04-15T00:00:00.000Z\"}],\"dataT1\":null}"
+}
+--------------------------------------------------------------------------------
+[2025-04-16T04:10:59.172Z] [INFO] Successfully fetched market data
+{
+  "ticker": "GEX",
+  "latestEntry": {
+    "open": 23850,
+    "high": 25650,
+    "low": 23850,
+    "close": 25150,
+    "volume": 18961806,
+    "tradingDate": "2025-04-15T00:00:00.000Z"
+  }
+}
+--------------------------------------------------------------------------------
+[2025-04-16T04:10:59.175Z] [INFO] TCBS API response status
+{
+  "ticker": "CTG",
+  "status": 200
+}
+--------------------------------------------------------------------------------
+[2025-04-16T04:10:59.177Z] [DEBUG] API response structure
+{
+  "ticker": "CTG",
+  "keys": [
+    "ticker",
+    "data",
+    "dataT1"
+  ],
+  "sample": "{\"ticker\":\"CTG\",\"data\":[{\"open\":37800,\"high\":38000,\"low\":37200,\"close\":37750,\"volume\":10259616,\"tradingDate\":\"2025-04-15T00:00:00.000Z\"}],\"dataT1\":null}"
+}
+--------------------------------------------------------------------------------
+[2025-04-16T04:10:59.177Z] [INFO] Successfully fetched market data
+{
+  "ticker": "CTG",
+  "latestEntry": {
+    "open": 37800,
+    "high": 38000,
+    "low": 37200,
+    "close": 37750,
+    "volume": 10259616,
+    "tradingDate": "2025-04-15T00:00:00.000Z"
+  }
+}
+--------------------------------------------------------------------------------
+[2025-04-16T04:10:59.180Z] [INFO] TCBS API response status
+{
+  "ticker": "FPT",
+  "status": 200
+}
+--------------------------------------------------------------------------------
+[2025-04-16T04:10:59.181Z] [DEBUG] API response structure
+{
+  "ticker": "FPT",
+  "keys": [
+    "ticker",
+    "data",
+    "dataT1"
+  ],
+  "sample": "{\"ticker\":\"FPT\",\"data\":[{\"open\":116100,\"high\":117000,\"low\":113700,\"close\":116000,\"volume\":7787164,\"tradingDate\":\"2025-04-15T00:00:00.000Z\"}],\"dataT1\":null}"
+}
+--------------------------------------------------------------------------------
+[2025-04-16T04:10:59.181Z] [INFO] Successfully fetched market data
+{
+  "ticker": "FPT",
+  "latestEntry": {
+    "open": 116100,
+    "high": 117000,
+    "low": 113700,
+    "close": 116000,
+    "volume": 7787164,
+    "tradingDate": "2025-04-15T00:00:00.000Z"
+  }
+}
+--------------------------------------------------------------------------------
+[2025-04-16T04:10:59.182Z] [INFO] Batch market data fetch completed
+{
+  "totalRequested": 3,
+  "successful": 3,
+  "failed": 0
+}
+--------------------------------------------------------------------------------
+[2025-04-16T04:12:15.059Z] [INFO] Market data request received
+{
+  "userId": "cm9i9n0500000krszqm5qeltc",
+  "tickers": [
+    "FPT",
+    "CTG",
+    "GEX"
+  ]
+}
+--------------------------------------------------------------------------------
+[2025-04-16T04:12:15.059Z] [DEBUG] Starting batch market data fetch with timestamps
+{
+  "tickers": [
+    "FPT",
+    "CTG",
+    "GEX"
+  ],
+  "from": 1744603935,
+  "to": 1744690335,
+  "fromDate": "2025-04-14T04:12:15.000Z",
+  "toDate": "2025-04-15T04:12:15.000Z"
+}
+--------------------------------------------------------------------------------
+[2025-04-16T04:12:15.059Z] [INFO] Fetching market data
+{
+  "ticker": "FPT",
+  "from": 1744603935,
+  "to": 1744690335,
+  "url": "https://apipubaws.tcbs.com.vn/stock-insight/v1/stock/bars-long-term?ticker=FPT&type=stock&resolution=D&from=1744603935&to=1744690335"
+}
+--------------------------------------------------------------------------------
+[2025-04-16T04:12:15.066Z] [INFO] Fetching market data
+{
+  "ticker": "CTG",
+  "from": 1744603935,
+  "to": 1744690335,
+  "url": "https://apipubaws.tcbs.com.vn/stock-insight/v1/stock/bars-long-term?ticker=CTG&type=stock&resolution=D&from=1744603935&to=1744690335"
+}
+--------------------------------------------------------------------------------
+[2025-04-16T04:12:15.068Z] [INFO] Fetching market data
+{
+  "ticker": "GEX",
+  "from": 1744603935,
+  "to": 1744690335,
+  "url": "https://apipubaws.tcbs.com.vn/stock-insight/v1/stock/bars-long-term?ticker=GEX&type=stock&resolution=D&from=1744603935&to=1744690335"
+}
+--------------------------------------------------------------------------------
+[2025-04-16T04:12:15.288Z] [INFO] TCBS API response status
+{
+  "ticker": "CTG",
+  "status": 200
+}
+--------------------------------------------------------------------------------
+[2025-04-16T04:12:15.292Z] [DEBUG] API response structure
+{
+  "ticker": "CTG",
+  "keys": [
+    "ticker",
+    "data",
+    "dataT1"
+  ],
+  "sample": "{\"ticker\":\"CTG\",\"data\":[{\"open\":37800,\"high\":38000,\"low\":37200,\"close\":37750,\"volume\":10259616,\"tradingDate\":\"2025-04-15T00:00:00.000Z\"}],\"dataT1\":null}"
+}
+--------------------------------------------------------------------------------
+[2025-04-16T04:12:15.293Z] [INFO] Successfully fetched market data
+{
+  "ticker": "CTG",
+  "latestEntry": {
+    "open": 37800,
+    "high": 38000,
+    "low": 37200,
+    "close": 37750,
+    "volume": 10259616,
+    "tradingDate": "2025-04-15T00:00:00.000Z"
+  }
+}
+--------------------------------------------------------------------------------
+[2025-04-16T04:12:15.337Z] [INFO] TCBS API response status
+{
+  "ticker": "GEX",
+  "status": 200
+}
+--------------------------------------------------------------------------------
+[2025-04-16T04:12:15.339Z] [DEBUG] API response structure
+{
+  "ticker": "GEX",
+  "keys": [
+    "ticker",
+    "data",
+    "dataT1"
+  ],
+  "sample": "{\"ticker\":\"GEX\",\"data\":[{\"open\":23850,\"high\":25650,\"low\":23850,\"close\":25150,\"volume\":18961806,\"tradingDate\":\"2025-04-15T00:00:00.000Z\"}],\"dataT1\":null}"
+}
+--------------------------------------------------------------------------------
+[2025-04-16T04:12:15.339Z] [INFO] Successfully fetched market data
+{
+  "ticker": "GEX",
+  "latestEntry": {
+    "open": 23850,
+    "high": 25650,
+    "low": 23850,
+    "close": 25150,
+    "volume": 18961806,
+    "tradingDate": "2025-04-15T00:00:00.000Z"
+  }
+}
+--------------------------------------------------------------------------------
+[2025-04-16T04:12:15.342Z] [INFO] TCBS API response status
+{
+  "ticker": "FPT",
+  "status": 200
+}
+--------------------------------------------------------------------------------
+[2025-04-16T04:12:15.343Z] [DEBUG] API response structure
+{
+  "ticker": "FPT",
+  "keys": [
+    "ticker",
+    "data",
+    "dataT1"
+  ],
+  "sample": "{\"ticker\":\"FPT\",\"data\":[{\"open\":116100,\"high\":117000,\"low\":113700,\"close\":116000,\"volume\":7787164,\"tradingDate\":\"2025-04-15T00:00:00.000Z\"}],\"dataT1\":null}"
+}
+--------------------------------------------------------------------------------
+[2025-04-16T04:12:15.343Z] [INFO] Successfully fetched market data
+{
+  "ticker": "FPT",
+  "latestEntry": {
+    "open": 116100,
+    "high": 117000,
+    "low": 113700,
+    "close": 116000,
+    "volume": 7787164,
+    "tradingDate": "2025-04-15T00:00:00.000Z"
+  }
+}
+--------------------------------------------------------------------------------
+[2025-04-16T04:12:15.344Z] [INFO] Batch market data fetch completed
+{
+  "totalRequested": 3,
+  "successful": 3,
+  "failed": 0
+}
+--------------------------------------------------------------------------------
+[2025-04-16T04:12:15.385Z] [INFO] Market data request received
+{
+  "userId": "cm9i9n0500000krszqm5qeltc",
+  "tickers": [
+    "FPT",
+    "CTG",
+    "GEX"
+  ]
+}
+--------------------------------------------------------------------------------
+[2025-04-16T04:12:15.385Z] [DEBUG] Starting batch market data fetch with timestamps
+{
+  "tickers": [
+    "FPT",
+    "CTG",
+    "GEX"
+  ],
+  "from": 1744603935,
+  "to": 1744690335,
+  "fromDate": "2025-04-14T04:12:15.000Z",
+  "toDate": "2025-04-15T04:12:15.000Z"
+}
+--------------------------------------------------------------------------------
+[2025-04-16T04:12:15.385Z] [INFO] Fetching market data
+{
+  "ticker": "FPT",
+  "from": 1744603935,
+  "to": 1744690335,
+  "url": "https://apipubaws.tcbs.com.vn/stock-insight/v1/stock/bars-long-term?ticker=FPT&type=stock&resolution=D&from=1744603935&to=1744690335"
+}
+--------------------------------------------------------------------------------
+[2025-04-16T04:12:15.387Z] [INFO] Fetching market data
+{
+  "ticker": "CTG",
+  "from": 1744603935,
+  "to": 1744690335,
+  "url": "https://apipubaws.tcbs.com.vn/stock-insight/v1/stock/bars-long-term?ticker=CTG&type=stock&resolution=D&from=1744603935&to=1744690335"
+}
+--------------------------------------------------------------------------------
+[2025-04-16T04:12:15.390Z] [INFO] Fetching market data
+{
+  "ticker": "GEX",
+  "from": 1744603935,
+  "to": 1744690335,
+  "url": "https://apipubaws.tcbs.com.vn/stock-insight/v1/stock/bars-long-term?ticker=GEX&type=stock&resolution=D&from=1744603935&to=1744690335"
+}
+--------------------------------------------------------------------------------
+[2025-04-16T04:12:15.483Z] [INFO] TCBS API response status
+{
+  "ticker": "CTG",
+  "status": 200
+}
+--------------------------------------------------------------------------------
+[2025-04-16T04:12:15.485Z] [DEBUG] API response structure
+{
+  "ticker": "CTG",
+  "keys": [
+    "ticker",
+    "data",
+    "dataT1"
+  ],
+  "sample": "{\"ticker\":\"CTG\",\"data\":[{\"open\":37800,\"high\":38000,\"low\":37200,\"close\":37750,\"volume\":10259616,\"tradingDate\":\"2025-04-15T00:00:00.000Z\"}],\"dataT1\":null}"
+}
+--------------------------------------------------------------------------------
+[2025-04-16T04:12:15.485Z] [INFO] Successfully fetched market data
+{
+  "ticker": "CTG",
+  "latestEntry": {
+    "open": 37800,
+    "high": 38000,
+    "low": 37200,
+    "close": 37750,
+    "volume": 10259616,
+    "tradingDate": "2025-04-15T00:00:00.000Z"
+  }
+}
+--------------------------------------------------------------------------------
+[2025-04-16T04:12:15.488Z] [INFO] TCBS API response status
+{
+  "ticker": "FPT",
+  "status": 200
+}
+--------------------------------------------------------------------------------
+[2025-04-16T04:12:15.489Z] [DEBUG] API response structure
+{
+  "ticker": "FPT",
+  "keys": [
+    "ticker",
+    "data",
+    "dataT1"
+  ],
+  "sample": "{\"ticker\":\"FPT\",\"data\":[{\"open\":116100,\"high\":117000,\"low\":113700,\"close\":116000,\"volume\":7787164,\"tradingDate\":\"2025-04-15T00:00:00.000Z\"}],\"dataT1\":null}"
+}
+--------------------------------------------------------------------------------
+[2025-04-16T04:12:15.489Z] [INFO] Successfully fetched market data
+{
+  "ticker": "FPT",
+  "latestEntry": {
+    "open": 116100,
+    "high": 117000,
+    "low": 113700,
+    "close": 116000,
+    "volume": 7787164,
+    "tradingDate": "2025-04-15T00:00:00.000Z"
+  }
+}
+--------------------------------------------------------------------------------
+[2025-04-16T04:12:15.495Z] [INFO] TCBS API response status
+{
+  "ticker": "GEX",
+  "status": 200
+}
+--------------------------------------------------------------------------------
+[2025-04-16T04:12:15.496Z] [DEBUG] API response structure
+{
+  "ticker": "GEX",
+  "keys": [
+    "ticker",
+    "data",
+    "dataT1"
+  ],
+  "sample": "{\"ticker\":\"GEX\",\"data\":[{\"open\":23850,\"high\":25650,\"low\":23850,\"close\":25150,\"volume\":18961806,\"tradingDate\":\"2025-04-15T00:00:00.000Z\"}],\"dataT1\":null}"
+}
+--------------------------------------------------------------------------------
+[2025-04-16T04:12:15.496Z] [INFO] Successfully fetched market data
+{
+  "ticker": "GEX",
+  "latestEntry": {
+    "open": 23850,
+    "high": 25650,
+    "low": 23850,
+    "close": 25150,
+    "volume": 18961806,
+    "tradingDate": "2025-04-15T00:00:00.000Z"
+  }
+}
+--------------------------------------------------------------------------------
+[2025-04-16T04:12:15.497Z] [INFO] Batch market data fetch completed
+{
+  "totalRequested": 3,
+  "successful": 3,
+  "failed": 0
+}
+--------------------------------------------------------------------------------
+[2025-04-16T04:15:37.180Z] [INFO] Market data request received
+{
+  "userId": "cm9i9n0500000krszqm5qeltc",
+  "tickers": [
+    "FPT",
+    "CTG",
+    "GEX"
+  ]
+}
+--------------------------------------------------------------------------------
+[2025-04-16T04:15:37.180Z] [DEBUG] Starting batch market data fetch with timestamps
+{
+  "tickers": [
+    "FPT",
+    "CTG",
+    "GEX"
+  ],
+  "from": 1744604137,
+  "to": 1744690537,
+  "fromDate": "2025-04-14T04:15:37.000Z",
+  "toDate": "2025-04-15T04:15:37.000Z"
+}
+--------------------------------------------------------------------------------
+[2025-04-16T04:15:37.180Z] [INFO] Fetching market data
+{
+  "ticker": "FPT",
+  "from": 1744604137,
+  "to": 1744690537,
+  "url": "https://apipubaws.tcbs.com.vn/stock-insight/v1/stock/bars-long-term?ticker=FPT&type=stock&resolution=D&from=1744604137&to=1744690537"
+}
+--------------------------------------------------------------------------------
+[2025-04-16T04:15:37.186Z] [INFO] Fetching market data
+{
+  "ticker": "CTG",
+  "from": 1744604137,
+  "to": 1744690537,
+  "url": "https://apipubaws.tcbs.com.vn/stock-insight/v1/stock/bars-long-term?ticker=CTG&type=stock&resolution=D&from=1744604137&to=1744690537"
+}
+--------------------------------------------------------------------------------
+[2025-04-16T04:15:37.187Z] [INFO] Fetching market data
+{
+  "ticker": "GEX",
+  "from": 1744604137,
+  "to": 1744690537,
+  "url": "https://apipubaws.tcbs.com.vn/stock-insight/v1/stock/bars-long-term?ticker=GEX&type=stock&resolution=D&from=1744604137&to=1744690537"
+}
+--------------------------------------------------------------------------------
+[2025-04-16T04:15:37.402Z] [INFO] TCBS API response status
+{
+  "ticker": "CTG",
+  "status": 200
+}
+--------------------------------------------------------------------------------
+[2025-04-16T04:15:37.404Z] [DEBUG] API response structure
+{
+  "ticker": "CTG",
+  "keys": [
+    "ticker",
+    "data",
+    "dataT1"
+  ],
+  "sample": "{\"ticker\":\"CTG\",\"data\":[{\"open\":37800,\"high\":38000,\"low\":37200,\"close\":37750,\"volume\":10259616,\"tradingDate\":\"2025-04-15T00:00:00.000Z\"}],\"dataT1\":null}"
+}
+--------------------------------------------------------------------------------
+[2025-04-16T04:15:37.404Z] [INFO] Successfully fetched market data
+{
+  "ticker": "CTG",
+  "latestEntry": {
+    "open": 37800,
+    "high": 38000,
+    "low": 37200,
+    "close": 37750,
+    "volume": 10259616,
+    "tradingDate": "2025-04-15T00:00:00.000Z"
+  }
+}
+--------------------------------------------------------------------------------
+[2025-04-16T04:15:37.438Z] [INFO] TCBS API response status
+{
+  "ticker": "FPT",
+  "status": 200
+}
+--------------------------------------------------------------------------------
+[2025-04-16T04:15:37.440Z] [DEBUG] API response structure
+{
+  "ticker": "FPT",
+  "keys": [
+    "ticker",
+    "data",
+    "dataT1"
+  ],
+  "sample": "{\"ticker\":\"FPT\",\"data\":[{\"open\":116100,\"high\":117000,\"low\":113700,\"close\":116000,\"volume\":7787164,\"tradingDate\":\"2025-04-15T00:00:00.000Z\"}],\"dataT1\":null}"
+}
+--------------------------------------------------------------------------------
+[2025-04-16T04:15:37.440Z] [INFO] Successfully fetched market data
+{
+  "ticker": "FPT",
+  "latestEntry": {
+    "open": 116100,
+    "high": 117000,
+    "low": 113700,
+    "close": 116000,
+    "volume": 7787164,
+    "tradingDate": "2025-04-15T00:00:00.000Z"
+  }
+}
+--------------------------------------------------------------------------------
+[2025-04-16T04:15:37.485Z] [INFO] TCBS API response status
+{
+  "ticker": "GEX",
+  "status": 200
+}
+--------------------------------------------------------------------------------
+[2025-04-16T04:15:37.486Z] [DEBUG] API response structure
+{
+  "ticker": "GEX",
+  "keys": [
+    "ticker",
+    "data",
+    "dataT1"
+  ],
+  "sample": "{\"ticker\":\"GEX\",\"data\":[{\"open\":23850,\"high\":25650,\"low\":23850,\"close\":25150,\"volume\":18961806,\"tradingDate\":\"2025-04-15T00:00:00.000Z\"}],\"dataT1\":null}"
+}
+--------------------------------------------------------------------------------
+[2025-04-16T04:15:37.486Z] [INFO] Successfully fetched market data
+{
+  "ticker": "GEX",
+  "latestEntry": {
+    "open": 23850,
+    "high": 25650,
+    "low": 23850,
+    "close": 25150,
+    "volume": 18961806,
+    "tradingDate": "2025-04-15T00:00:00.000Z"
+  }
+}
+--------------------------------------------------------------------------------
+[2025-04-16T04:15:37.487Z] [INFO] Batch market data fetch completed
+{
+  "totalRequested": 3,
+  "successful": 3,
+  "failed": 0
+}
+--------------------------------------------------------------------------------
+[2025-04-16T04:15:37.501Z] [INFO] Market data request received
+{
+  "userId": "cm9i9n0500000krszqm5qeltc",
+  "tickers": [
+    "FPT",
+    "CTG",
+    "GEX"
+  ]
+}
+--------------------------------------------------------------------------------
+[2025-04-16T04:15:37.501Z] [DEBUG] Starting batch market data fetch with timestamps
+{
+  "tickers": [
+    "FPT",
+    "CTG",
+    "GEX"
+  ],
+  "from": 1744604137,
+  "to": 1744690537,
+  "fromDate": "2025-04-14T04:15:37.000Z",
+  "toDate": "2025-04-15T04:15:37.000Z"
+}
+--------------------------------------------------------------------------------
+[2025-04-16T04:15:37.502Z] [INFO] Fetching market data
+{
+  "ticker": "FPT",
+  "from": 1744604137,
+  "to": 1744690537,
+  "url": "https://apipubaws.tcbs.com.vn/stock-insight/v1/stock/bars-long-term?ticker=FPT&type=stock&resolution=D&from=1744604137&to=1744690537"
+}
+--------------------------------------------------------------------------------
+[2025-04-16T04:15:37.502Z] [INFO] Fetching market data
+{
+  "ticker": "CTG",
+  "from": 1744604137,
+  "to": 1744690537,
+  "url": "https://apipubaws.tcbs.com.vn/stock-insight/v1/stock/bars-long-term?ticker=CTG&type=stock&resolution=D&from=1744604137&to=1744690537"
+}
+--------------------------------------------------------------------------------
+[2025-04-16T04:15:37.503Z] [INFO] Fetching market data
+{
+  "ticker": "GEX",
+  "from": 1744604137,
+  "to": 1744690537,
+  "url": "https://apipubaws.tcbs.com.vn/stock-insight/v1/stock/bars-long-term?ticker=GEX&type=stock&resolution=D&from=1744604137&to=1744690537"
+}
+--------------------------------------------------------------------------------
+[2025-04-16T04:15:37.602Z] [INFO] TCBS API response status
+{
+  "ticker": "CTG",
+  "status": 200
+}
+--------------------------------------------------------------------------------
+[2025-04-16T04:15:37.603Z] [DEBUG] API response structure
+{
+  "ticker": "CTG",
+  "keys": [
+    "ticker",
+    "data",
+    "dataT1"
+  ],
+  "sample": "{\"ticker\":\"CTG\",\"data\":[{\"open\":37800,\"high\":38000,\"low\":37200,\"close\":37750,\"volume\":10259616,\"tradingDate\":\"2025-04-15T00:00:00.000Z\"}],\"dataT1\":null}"
+}
+--------------------------------------------------------------------------------
+[2025-04-16T04:15:37.603Z] [INFO] Successfully fetched market data
+{
+  "ticker": "CTG",
+  "latestEntry": {
+    "open": 37800,
+    "high": 38000,
+    "low": 37200,
+    "close": 37750,
+    "volume": 10259616,
+    "tradingDate": "2025-04-15T00:00:00.000Z"
+  }
+}
+--------------------------------------------------------------------------------
+[2025-04-16T04:15:37.612Z] [INFO] TCBS API response status
+{
+  "ticker": "GEX",
+  "status": 200
+}
+--------------------------------------------------------------------------------
+[2025-04-16T04:15:37.613Z] [DEBUG] API response structure
+{
+  "ticker": "GEX",
+  "keys": [
+    "ticker",
+    "data",
+    "dataT1"
+  ],
+  "sample": "{\"ticker\":\"GEX\",\"data\":[{\"open\":23850,\"high\":25650,\"low\":23850,\"close\":25150,\"volume\":18961806,\"tradingDate\":\"2025-04-15T00:00:00.000Z\"}],\"dataT1\":null}"
+}
+--------------------------------------------------------------------------------
+[2025-04-16T04:15:37.613Z] [INFO] Successfully fetched market data
+{
+  "ticker": "GEX",
+  "latestEntry": {
+    "open": 23850,
+    "high": 25650,
+    "low": 23850,
+    "close": 25150,
+    "volume": 18961806,
+    "tradingDate": "2025-04-15T00:00:00.000Z"
+  }
+}
+--------------------------------------------------------------------------------
+[2025-04-16T04:15:37.614Z] [INFO] TCBS API response status
+{
+  "ticker": "FPT",
+  "status": 200
+}
+--------------------------------------------------------------------------------
+[2025-04-16T04:15:37.615Z] [DEBUG] API response structure
+{
+  "ticker": "FPT",
+  "keys": [
+    "ticker",
+    "data",
+    "dataT1"
+  ],
+  "sample": "{\"ticker\":\"FPT\",\"data\":[{\"open\":116100,\"high\":117000,\"low\":113700,\"close\":116000,\"volume\":7787164,\"tradingDate\":\"2025-04-15T00:00:00.000Z\"}],\"dataT1\":null}"
+}
+--------------------------------------------------------------------------------
+[2025-04-16T04:15:37.615Z] [INFO] Successfully fetched market data
+{
+  "ticker": "FPT",
+  "latestEntry": {
+    "open": 116100,
+    "high": 117000,
+    "low": 113700,
+    "close": 116000,
+    "volume": 7787164,
+    "tradingDate": "2025-04-15T00:00:00.000Z"
+  }
+}
+--------------------------------------------------------------------------------
+[2025-04-16T04:15:37.615Z] [INFO] Batch market data fetch completed
+{
+  "totalRequested": 3,
+  "successful": 3,
+  "failed": 0
+}
+--------------------------------------------------------------------------------
+[2025-04-16T04:54:19.081Z] [INFO] Market data request received
+{
+  "userId": "cm9i9n0500000krszqm5qeltc",
+  "tickers": [
+    "FPT",
+    "CTG",
+    "GEX"
+  ]
+}
+--------------------------------------------------------------------------------
+[2025-04-16T04:54:19.081Z] [DEBUG] Starting batch market data fetch with timestamps
+{
+  "tickers": [
+    "FPT",
+    "CTG",
+    "GEX"
+  ],
+  "from": 1744606459,
+  "to": 1744692859,
+  "fromDate": "2025-04-14T04:54:19.000Z",
+  "toDate": "2025-04-15T04:54:19.000Z"
+}
+--------------------------------------------------------------------------------
+[2025-04-16T04:54:19.081Z] [INFO] Fetching market data
+{
+  "ticker": "FPT",
+  "from": 1744606459,
+  "to": 1744692859,
+  "url": "https://apipubaws.tcbs.com.vn/stock-insight/v1/stock/bars-long-term?ticker=FPT&type=stock&resolution=D&from=1744606459&to=1744692859"
+}
+--------------------------------------------------------------------------------
+[2025-04-16T04:54:19.091Z] [INFO] Fetching market data
+{
+  "ticker": "CTG",
+  "from": 1744606459,
+  "to": 1744692859,
+  "url": "https://apipubaws.tcbs.com.vn/stock-insight/v1/stock/bars-long-term?ticker=CTG&type=stock&resolution=D&from=1744606459&to=1744692859"
+}
+--------------------------------------------------------------------------------
+[2025-04-16T04:54:19.094Z] [INFO] Fetching market data
+{
+  "ticker": "GEX",
+  "from": 1744606459,
+  "to": 1744692859,
+  "url": "https://apipubaws.tcbs.com.vn/stock-insight/v1/stock/bars-long-term?ticker=GEX&type=stock&resolution=D&from=1744606459&to=1744692859"
+}
+--------------------------------------------------------------------------------
+[2025-04-16T04:54:19.412Z] [INFO] TCBS API response status
+{
+  "ticker": "CTG",
+  "status": 200
+}
+--------------------------------------------------------------------------------
+[2025-04-16T04:54:19.415Z] [DEBUG] API response structure
+{
+  "ticker": "CTG",
+  "keys": [
+    "ticker",
+    "data",
+    "dataT1"
+  ],
+  "sample": "{\"ticker\":\"CTG\",\"data\":[{\"open\":37800,\"high\":38000,\"low\":37200,\"close\":37750,\"volume\":10259616,\"tradingDate\":\"2025-04-15T00:00:00.000Z\"}],\"dataT1\":null}"
+}
+--------------------------------------------------------------------------------
+[2025-04-16T04:54:19.415Z] [INFO] Successfully fetched market data
+{
+  "ticker": "CTG",
+  "latestEntry": {
+    "open": 37800,
+    "high": 38000,
+    "low": 37200,
+    "close": 37750,
+    "volume": 10259616,
+    "tradingDate": "2025-04-15T00:00:00.000Z"
+  }
+}
+--------------------------------------------------------------------------------
+[2025-04-16T04:54:19.421Z] [INFO] TCBS API response status
+{
+  "ticker": "FPT",
+  "status": 200
+}
+--------------------------------------------------------------------------------
+[2025-04-16T04:54:19.422Z] [DEBUG] API response structure
+{
+  "ticker": "FPT",
+  "keys": [
+    "ticker",
+    "data",
+    "dataT1"
+  ],
+  "sample": "{\"ticker\":\"FPT\",\"data\":[{\"open\":116100,\"high\":117000,\"low\":113700,\"close\":116000,\"volume\":7787164,\"tradingDate\":\"2025-04-15T00:00:00.000Z\"}],\"dataT1\":null}"
+}
+--------------------------------------------------------------------------------
+[2025-04-16T04:54:19.422Z] [INFO] Successfully fetched market data
+{
+  "ticker": "FPT",
+  "latestEntry": {
+    "open": 116100,
+    "high": 117000,
+    "low": 113700,
+    "close": 116000,
+    "volume": 7787164,
+    "tradingDate": "2025-04-15T00:00:00.000Z"
+  }
+}
+--------------------------------------------------------------------------------
+[2025-04-16T04:54:19.496Z] [INFO] TCBS API response status
+{
+  "ticker": "GEX",
+  "status": 200
+}
+--------------------------------------------------------------------------------
+[2025-04-16T04:54:19.497Z] [DEBUG] API response structure
+{
+  "ticker": "GEX",
+  "keys": [
+    "ticker",
+    "data",
+    "dataT1"
+  ],
+  "sample": "{\"ticker\":\"GEX\",\"data\":[{\"open\":23850,\"high\":25650,\"low\":23850,\"close\":25150,\"volume\":18961806,\"tradingDate\":\"2025-04-15T00:00:00.000Z\"}],\"dataT1\":null}"
+}
+--------------------------------------------------------------------------------
+[2025-04-16T04:54:19.497Z] [INFO] Successfully fetched market data
+{
+  "ticker": "GEX",
+  "latestEntry": {
+    "open": 23850,
+    "high": 25650,
+    "low": 23850,
+    "close": 25150,
+    "volume": 18961806,
+    "tradingDate": "2025-04-15T00:00:00.000Z"
+  }
+}
+--------------------------------------------------------------------------------
+[2025-04-16T04:54:19.497Z] [INFO] Batch market data fetch completed
+{
+  "totalRequested": 3,
+  "successful": 3,
+  "failed": 0
+}
+--------------------------------------------------------------------------------
+[2025-04-16T04:54:19.513Z] [INFO] Market data request received
+{
+  "userId": "cm9i9n0500000krszqm5qeltc",
+  "tickers": [
+    "FPT",
+    "CTG",
+    "GEX"
+  ]
+}
+--------------------------------------------------------------------------------
+[2025-04-16T04:54:19.513Z] [DEBUG] Starting batch market data fetch with timestamps
+{
+  "tickers": [
+    "FPT",
+    "CTG",
+    "GEX"
+  ],
+  "from": 1744606459,
+  "to": 1744692859,
+  "fromDate": "2025-04-14T04:54:19.000Z",
+  "toDate": "2025-04-15T04:54:19.000Z"
+}
+--------------------------------------------------------------------------------
+[2025-04-16T04:54:19.514Z] [INFO] Fetching market data
+{
+  "ticker": "FPT",
+  "from": 1744606459,
+  "to": 1744692859,
+  "url": "https://apipubaws.tcbs.com.vn/stock-insight/v1/stock/bars-long-term?ticker=FPT&type=stock&resolution=D&from=1744606459&to=1744692859"
+}
+--------------------------------------------------------------------------------
+[2025-04-16T04:54:19.515Z] [INFO] Fetching market data
+{
+  "ticker": "CTG",
+  "from": 1744606459,
+  "to": 1744692859,
+  "url": "https://apipubaws.tcbs.com.vn/stock-insight/v1/stock/bars-long-term?ticker=CTG&type=stock&resolution=D&from=1744606459&to=1744692859"
+}
+--------------------------------------------------------------------------------
+[2025-04-16T04:54:19.516Z] [INFO] Fetching market data
+{
+  "ticker": "GEX",
+  "from": 1744606459,
+  "to": 1744692859,
+  "url": "https://apipubaws.tcbs.com.vn/stock-insight/v1/stock/bars-long-term?ticker=GEX&type=stock&resolution=D&from=1744606459&to=1744692859"
+}
+--------------------------------------------------------------------------------
+[2025-04-16T04:54:19.599Z] [INFO] TCBS API response status
+{
+  "ticker": "CTG",
+  "status": 200
+}
+--------------------------------------------------------------------------------
+[2025-04-16T04:54:19.600Z] [DEBUG] API response structure
+{
+  "ticker": "CTG",
+  "keys": [
+    "ticker",
+    "data",
+    "dataT1"
+  ],
+  "sample": "{\"ticker\":\"CTG\",\"data\":[{\"open\":37800,\"high\":38000,\"low\":37200,\"close\":37750,\"volume\":10259616,\"tradingDate\":\"2025-04-15T00:00:00.000Z\"}],\"dataT1\":null}"
+}
+--------------------------------------------------------------------------------
+[2025-04-16T04:54:19.600Z] [INFO] Successfully fetched market data
+{
+  "ticker": "CTG",
+  "latestEntry": {
+    "open": 37800,
+    "high": 38000,
+    "low": 37200,
+    "close": 37750,
+    "volume": 10259616,
+    "tradingDate": "2025-04-15T00:00:00.000Z"
+  }
+}
+--------------------------------------------------------------------------------
+[2025-04-16T04:54:19.601Z] [INFO] TCBS API response status
+{
+  "ticker": "FPT",
+  "status": 200
+}
+--------------------------------------------------------------------------------
+[2025-04-16T04:54:19.601Z] [DEBUG] API response structure
+{
+  "ticker": "FPT",
+  "keys": [
+    "ticker",
+    "data",
+    "dataT1"
+  ],
+  "sample": "{\"ticker\":\"FPT\",\"data\":[{\"open\":116100,\"high\":117000,\"low\":113700,\"close\":116000,\"volume\":7787164,\"tradingDate\":\"2025-04-15T00:00:00.000Z\"}],\"dataT1\":null}"
+}
+--------------------------------------------------------------------------------
+[2025-04-16T04:54:19.602Z] [INFO] Successfully fetched market data
+{
+  "ticker": "FPT",
+  "latestEntry": {
+    "open": 116100,
+    "high": 117000,
+    "low": 113700,
+    "close": 116000,
+    "volume": 7787164,
+    "tradingDate": "2025-04-15T00:00:00.000Z"
+  }
+}
+--------------------------------------------------------------------------------
+[2025-04-16T04:54:19.603Z] [INFO] TCBS API response status
+{
+  "ticker": "GEX",
+  "status": 200
+}
+--------------------------------------------------------------------------------
+[2025-04-16T04:54:19.603Z] [DEBUG] API response structure
+{
+  "ticker": "GEX",
+  "keys": [
+    "ticker",
+    "data",
+    "dataT1"
+  ],
+  "sample": "{\"ticker\":\"GEX\",\"data\":[{\"open\":23850,\"high\":25650,\"low\":23850,\"close\":25150,\"volume\":18961806,\"tradingDate\":\"2025-04-15T00:00:00.000Z\"}],\"dataT1\":null}"
+}
+--------------------------------------------------------------------------------
+[2025-04-16T04:54:19.603Z] [INFO] Successfully fetched market data
+{
+  "ticker": "GEX",
+  "latestEntry": {
+    "open": 23850,
+    "high": 25650,
+    "low": 23850,
+    "close": 25150,
+    "volume": 18961806,
+    "tradingDate": "2025-04-15T00:00:00.000Z"
+  }
+}
+--------------------------------------------------------------------------------
+[2025-04-16T04:54:19.603Z] [INFO] Batch market data fetch completed
+{
+  "totalRequested": 3,
+  "successful": 3,
+  "failed": 0
+}
+--------------------------------------------------------------------------------
+[2025-04-16T04:54:26.166Z] [INFO] Market data request received
+{
+  "userId": "cm9i9n0500000krszqm5qeltc",
+  "tickers": [
+    "FPT",
+    "CTG",
+    "GEX"
+  ]
+}
+--------------------------------------------------------------------------------
+[2025-04-16T04:54:26.166Z] [DEBUG] Starting batch market data fetch with timestamps
+{
+  "tickers": [
+    "FPT",
+    "CTG",
+    "GEX"
+  ],
+  "from": 1744606466,
+  "to": 1744692866,
+  "fromDate": "2025-04-14T04:54:26.000Z",
+  "toDate": "2025-04-15T04:54:26.000Z"
+}
+--------------------------------------------------------------------------------
+[2025-04-16T04:54:26.166Z] [INFO] Fetching market data
+{
+  "ticker": "FPT",
+  "from": 1744606466,
+  "to": 1744692866,
+  "url": "https://apipubaws.tcbs.com.vn/stock-insight/v1/stock/bars-long-term?ticker=FPT&type=stock&resolution=D&from=1744606466&to=1744692866"
+}
+--------------------------------------------------------------------------------
+[2025-04-16T04:54:26.168Z] [INFO] Fetching market data
+{
+  "ticker": "CTG",
+  "from": 1744606466,
+  "to": 1744692866,
+  "url": "https://apipubaws.tcbs.com.vn/stock-insight/v1/stock/bars-long-term?ticker=CTG&type=stock&resolution=D&from=1744606466&to=1744692866"
+}
+--------------------------------------------------------------------------------
+[2025-04-16T04:54:26.170Z] [INFO] Fetching market data
+{
+  "ticker": "GEX",
+  "from": 1744606466,
+  "to": 1744692866,
+  "url": "https://apipubaws.tcbs.com.vn/stock-insight/v1/stock/bars-long-term?ticker=GEX&type=stock&resolution=D&from=1744606466&to=1744692866"
+}
+--------------------------------------------------------------------------------
+[2025-04-16T04:54:26.411Z] [INFO] TCBS API response status
+{
+  "ticker": "FPT",
+  "status": 200
+}
+--------------------------------------------------------------------------------
+[2025-04-16T04:54:26.413Z] [DEBUG] API response structure
+{
+  "ticker": "FPT",
+  "keys": [
+    "ticker",
+    "data",
+    "dataT1"
+  ],
+  "sample": "{\"ticker\":\"FPT\",\"data\":[{\"open\":116100,\"high\":117000,\"low\":113700,\"close\":116000,\"volume\":7787164,\"tradingDate\":\"2025-04-15T00:00:00.000Z\"}],\"dataT1\":null}"
+}
+--------------------------------------------------------------------------------
+[2025-04-16T04:54:26.413Z] [INFO] Successfully fetched market data
+{
+  "ticker": "FPT",
+  "latestEntry": {
+    "open": 116100,
+    "high": 117000,
+    "low": 113700,
+    "close": 116000,
+    "volume": 7787164,
+    "tradingDate": "2025-04-15T00:00:00.000Z"
+  }
+}
+--------------------------------------------------------------------------------
+[2025-04-16T04:54:26.422Z] [INFO] TCBS API response status
+{
+  "ticker": "CTG",
+  "status": 200
+}
+--------------------------------------------------------------------------------
+[2025-04-16T04:54:26.424Z] [DEBUG] API response structure
+{
+  "ticker": "CTG",
+  "keys": [
+    "ticker",
+    "data",
+    "dataT1"
+  ],
+  "sample": "{\"ticker\":\"CTG\",\"data\":[{\"open\":37800,\"high\":38000,\"low\":37200,\"close\":37750,\"volume\":10259616,\"tradingDate\":\"2025-04-15T00:00:00.000Z\"}],\"dataT1\":null}"
+}
+--------------------------------------------------------------------------------
+[2025-04-16T04:54:26.425Z] [INFO] Successfully fetched market data
+{
+  "ticker": "CTG",
+  "latestEntry": {
+    "open": 37800,
+    "high": 38000,
+    "low": 37200,
+    "close": 37750,
+    "volume": 10259616,
+    "tradingDate": "2025-04-15T00:00:00.000Z"
+  }
+}
+--------------------------------------------------------------------------------
+[2025-04-16T04:54:26.452Z] [INFO] TCBS API response status
+{
+  "ticker": "GEX",
+  "status": 200
+}
+--------------------------------------------------------------------------------
+[2025-04-16T04:54:26.453Z] [DEBUG] API response structure
+{
+  "ticker": "GEX",
+  "keys": [
+    "ticker",
+    "data",
+    "dataT1"
+  ],
+  "sample": "{\"ticker\":\"GEX\",\"data\":[{\"open\":23850,\"high\":25650,\"low\":23850,\"close\":25150,\"volume\":18961806,\"tradingDate\":\"2025-04-15T00:00:00.000Z\"}],\"dataT1\":null}"
+}
+--------------------------------------------------------------------------------
+[2025-04-16T04:54:26.454Z] [INFO] Successfully fetched market data
+{
+  "ticker": "GEX",
+  "latestEntry": {
+    "open": 23850,
+    "high": 25650,
+    "low": 23850,
+    "close": 25150,
+    "volume": 18961806,
+    "tradingDate": "2025-04-15T00:00:00.000Z"
+  }
+}
+--------------------------------------------------------------------------------
+[2025-04-16T04:54:26.454Z] [INFO] Batch market data fetch completed
+{
+  "totalRequested": 3,
+  "successful": 3,
+  "failed": 0
+}
+--------------------------------------------------------------------------------
+[2025-04-16T04:54:26.494Z] [INFO] Market data request received
+{
+  "userId": "cm9i9n0500000krszqm5qeltc",
+  "tickers": [
+    "FPT",
+    "CTG",
+    "GEX"
+  ]
+}
+--------------------------------------------------------------------------------
+[2025-04-16T04:54:26.494Z] [DEBUG] Starting batch market data fetch with timestamps
+{
+  "tickers": [
+    "FPT",
+    "CTG",
+    "GEX"
+  ],
+  "from": 1744606466,
+  "to": 1744692866,
+  "fromDate": "2025-04-14T04:54:26.000Z",
+  "toDate": "2025-04-15T04:54:26.000Z"
+}
+--------------------------------------------------------------------------------
+[2025-04-16T04:54:26.495Z] [INFO] Fetching market data
+{
+  "ticker": "FPT",
+  "from": 1744606466,
+  "to": 1744692866,
+  "url": "https://apipubaws.tcbs.com.vn/stock-insight/v1/stock/bars-long-term?ticker=FPT&type=stock&resolution=D&from=1744606466&to=1744692866"
+}
+--------------------------------------------------------------------------------
+[2025-04-16T04:54:26.497Z] [INFO] Fetching market data
+{
+  "ticker": "CTG",
+  "from": 1744606466,
+  "to": 1744692866,
+  "url": "https://apipubaws.tcbs.com.vn/stock-insight/v1/stock/bars-long-term?ticker=CTG&type=stock&resolution=D&from=1744606466&to=1744692866"
+}
+--------------------------------------------------------------------------------
+[2025-04-16T04:54:26.499Z] [INFO] Fetching market data
+{
+  "ticker": "GEX",
+  "from": 1744606466,
+  "to": 1744692866,
+  "url": "https://apipubaws.tcbs.com.vn/stock-insight/v1/stock/bars-long-term?ticker=GEX&type=stock&resolution=D&from=1744606466&to=1744692866"
+}
+--------------------------------------------------------------------------------
+[2025-04-16T04:54:26.578Z] [INFO] TCBS API response status
+{
+  "ticker": "FPT",
+  "status": 200
+}
+--------------------------------------------------------------------------------
+[2025-04-16T04:54:26.580Z] [DEBUG] API response structure
+{
+  "ticker": "FPT",
+  "keys": [
+    "ticker",
+    "data",
+    "dataT1"
+  ],
+  "sample": "{\"ticker\":\"FPT\",\"data\":[{\"open\":116100,\"high\":117000,\"low\":113700,\"close\":116000,\"volume\":7787164,\"tradingDate\":\"2025-04-15T00:00:00.000Z\"}],\"dataT1\":null}"
+}
+--------------------------------------------------------------------------------
+[2025-04-16T04:54:26.580Z] [INFO] Successfully fetched market data
+{
+  "ticker": "FPT",
+  "latestEntry": {
+    "open": 116100,
+    "high": 117000,
+    "low": 113700,
+    "close": 116000,
+    "volume": 7787164,
+    "tradingDate": "2025-04-15T00:00:00.000Z"
+  }
+}
+--------------------------------------------------------------------------------
+[2025-04-16T04:54:26.584Z] [INFO] TCBS API response status
+{
+  "ticker": "CTG",
+  "status": 200
+}
+--------------------------------------------------------------------------------
+[2025-04-16T04:54:26.585Z] [DEBUG] API response structure
+{
+  "ticker": "CTG",
+  "keys": [
+    "ticker",
+    "data",
+    "dataT1"
+  ],
+  "sample": "{\"ticker\":\"CTG\",\"data\":[{\"open\":37800,\"high\":38000,\"low\":37200,\"close\":37750,\"volume\":10259616,\"tradingDate\":\"2025-04-15T00:00:00.000Z\"}],\"dataT1\":null}"
+}
+--------------------------------------------------------------------------------
+[2025-04-16T04:54:26.585Z] [INFO] Successfully fetched market data
+{
+  "ticker": "CTG",
+  "latestEntry": {
+    "open": 37800,
+    "high": 38000,
+    "low": 37200,
+    "close": 37750,
+    "volume": 10259616,
+    "tradingDate": "2025-04-15T00:00:00.000Z"
+  }
+}
+--------------------------------------------------------------------------------
+[2025-04-16T04:54:26.588Z] [INFO] TCBS API response status
+{
+  "ticker": "GEX",
+  "status": 200
+}
+--------------------------------------------------------------------------------
+[2025-04-16T04:54:26.589Z] [DEBUG] API response structure
+{
+  "ticker": "GEX",
+  "keys": [
+    "ticker",
+    "data",
+    "dataT1"
+  ],
+  "sample": "{\"ticker\":\"GEX\",\"data\":[{\"open\":23850,\"high\":25650,\"low\":23850,\"close\":25150,\"volume\":18961806,\"tradingDate\":\"2025-04-15T00:00:00.000Z\"}],\"dataT1\":null}"
+}
+--------------------------------------------------------------------------------
+[2025-04-16T04:54:26.589Z] [INFO] Successfully fetched market data
+{
+  "ticker": "GEX",
+  "latestEntry": {
+    "open": 23850,
+    "high": 25650,
+    "low": 23850,
+    "close": 25150,
+    "volume": 18961806,
+    "tradingDate": "2025-04-15T00:00:00.000Z"
+  }
+}
+--------------------------------------------------------------------------------
+[2025-04-16T04:54:26.589Z] [INFO] Batch market data fetch completed
+{
+  "totalRequested": 3,
+  "successful": 3,
+  "failed": 0
+}
+--------------------------------------------------------------------------------
+[2025-04-16T04:58:49.329Z] [INFO] Market data request received
+{
+  "userId": "cm9i9n0500000krszqm5qeltc",
+  "tickers": [
+    "FPT",
+    "CTG",
+    "GEX"
+  ]
+}
+--------------------------------------------------------------------------------
+[2025-04-16T04:58:49.330Z] [DEBUG] Starting batch market data fetch with timestamps
+{
+  "tickers": [
+    "FPT",
+    "CTG",
+    "GEX"
+  ],
+  "from": 1744606729,
+  "to": 1744693129,
+  "fromDate": "2025-04-14T04:58:49.000Z",
+  "toDate": "2025-04-15T04:58:49.000Z"
+}
+--------------------------------------------------------------------------------
+[2025-04-16T04:58:49.330Z] [INFO] Fetching market data
+{
+  "ticker": "FPT",
+  "from": 1744606729,
+  "to": 1744693129,
+  "url": "https://apipubaws.tcbs.com.vn/stock-insight/v1/stock/bars-long-term?ticker=FPT&type=stock&resolution=D&from=1744606729&to=1744693129"
+}
+--------------------------------------------------------------------------------
+[2025-04-16T04:58:49.338Z] [INFO] Fetching market data
+{
+  "ticker": "CTG",
+  "from": 1744606729,
+  "to": 1744693129,
+  "url": "https://apipubaws.tcbs.com.vn/stock-insight/v1/stock/bars-long-term?ticker=CTG&type=stock&resolution=D&from=1744606729&to=1744693129"
+}
+--------------------------------------------------------------------------------
+[2025-04-16T04:58:49.340Z] [INFO] Fetching market data
+{
+  "ticker": "GEX",
+  "from": 1744606729,
+  "to": 1744693129,
+  "url": "https://apipubaws.tcbs.com.vn/stock-insight/v1/stock/bars-long-term?ticker=GEX&type=stock&resolution=D&from=1744606729&to=1744693129"
+}
+--------------------------------------------------------------------------------
+[2025-04-16T04:58:49.578Z] [INFO] TCBS API response status
+{
+  "ticker": "FPT",
+  "status": 200
+}
+--------------------------------------------------------------------------------
+[2025-04-16T04:58:49.580Z] [DEBUG] API response structure
+{
+  "ticker": "FPT",
+  "keys": [
+    "ticker",
+    "data",
+    "dataT1"
+  ],
+  "sample": "{\"ticker\":\"FPT\",\"data\":[{\"open\":116100,\"high\":117000,\"low\":113700,\"close\":116000,\"volume\":7787164,\"tradingDate\":\"2025-04-15T00:00:00.000Z\"}],\"dataT1\":null}"
+}
+--------------------------------------------------------------------------------
+[2025-04-16T04:58:49.580Z] [INFO] Successfully fetched market data
+{
+  "ticker": "FPT",
+  "latestEntry": {
+    "open": 116100,
+    "high": 117000,
+    "low": 113700,
+    "close": 116000,
+    "volume": 7787164,
+    "tradingDate": "2025-04-15T00:00:00.000Z"
+  }
+}
+--------------------------------------------------------------------------------
+[2025-04-16T04:58:49.582Z] [INFO] TCBS API response status
+{
+  "ticker": "CTG",
+  "status": 200
+}
+--------------------------------------------------------------------------------
+[2025-04-16T04:58:49.583Z] [DEBUG] API response structure
+{
+  "ticker": "CTG",
+  "keys": [
+    "ticker",
+    "data",
+    "dataT1"
+  ],
+  "sample": "{\"ticker\":\"CTG\",\"data\":[{\"open\":37800,\"high\":38000,\"low\":37200,\"close\":37750,\"volume\":10259616,\"tradingDate\":\"2025-04-15T00:00:00.000Z\"}],\"dataT1\":null}"
+}
+--------------------------------------------------------------------------------
+[2025-04-16T04:58:49.583Z] [INFO] Successfully fetched market data
+{
+  "ticker": "CTG",
+  "latestEntry": {
+    "open": 37800,
+    "high": 38000,
+    "low": 37200,
+    "close": 37750,
+    "volume": 10259616,
+    "tradingDate": "2025-04-15T00:00:00.000Z"
+  }
+}
+--------------------------------------------------------------------------------
+[2025-04-16T04:58:49.609Z] [INFO] TCBS API response status
+{
+  "ticker": "GEX",
+  "status": 200
+}
+--------------------------------------------------------------------------------
+[2025-04-16T04:58:49.609Z] [DEBUG] API response structure
+{
+  "ticker": "GEX",
+  "keys": [
+    "ticker",
+    "data",
+    "dataT1"
+  ],
+  "sample": "{\"ticker\":\"GEX\",\"data\":[{\"open\":23850,\"high\":25650,\"low\":23850,\"close\":25150,\"volume\":18961806,\"tradingDate\":\"2025-04-15T00:00:00.000Z\"}],\"dataT1\":null}"
+}
+--------------------------------------------------------------------------------
+[2025-04-16T04:58:49.609Z] [INFO] Successfully fetched market data
+{
+  "ticker": "GEX",
+  "latestEntry": {
+    "open": 23850,
+    "high": 25650,
+    "low": 23850,
+    "close": 25150,
+    "volume": 18961806,
+    "tradingDate": "2025-04-15T00:00:00.000Z"
+  }
+}
+--------------------------------------------------------------------------------
+[2025-04-16T04:58:49.610Z] [INFO] Batch market data fetch completed
+{
+  "totalRequested": 3,
+  "successful": 3,
+  "failed": 0
+}
+--------------------------------------------------------------------------------
+[2025-04-16T04:58:49.626Z] [INFO] Market data request received
+{
+  "userId": "cm9i9n0500000krszqm5qeltc",
+  "tickers": [
+    "FPT",
+    "CTG",
+    "GEX"
+  ]
+}
+--------------------------------------------------------------------------------
+[2025-04-16T04:58:49.627Z] [DEBUG] Starting batch market data fetch with timestamps
+{
+  "tickers": [
+    "FPT",
+    "CTG",
+    "GEX"
+  ],
+  "from": 1744606729,
+  "to": 1744693129,
+  "fromDate": "2025-04-14T04:58:49.000Z",
+  "toDate": "2025-04-15T04:58:49.000Z"
+}
+--------------------------------------------------------------------------------
+[2025-04-16T04:58:49.627Z] [INFO] Fetching market data
+{
+  "ticker": "FPT",
+  "from": 1744606729,
+  "to": 1744693129,
+  "url": "https://apipubaws.tcbs.com.vn/stock-insight/v1/stock/bars-long-term?ticker=FPT&type=stock&resolution=D&from=1744606729&to=1744693129"
+}
+--------------------------------------------------------------------------------
+[2025-04-16T04:58:49.628Z] [INFO] Fetching market data
+{
+  "ticker": "CTG",
+  "from": 1744606729,
+  "to": 1744693129,
+  "url": "https://apipubaws.tcbs.com.vn/stock-insight/v1/stock/bars-long-term?ticker=CTG&type=stock&resolution=D&from=1744606729&to=1744693129"
+}
+--------------------------------------------------------------------------------
+[2025-04-16T04:58:49.629Z] [INFO] Fetching market data
+{
+  "ticker": "GEX",
+  "from": 1744606729,
+  "to": 1744693129,
+  "url": "https://apipubaws.tcbs.com.vn/stock-insight/v1/stock/bars-long-term?ticker=GEX&type=stock&resolution=D&from=1744606729&to=1744693129"
+}
+--------------------------------------------------------------------------------
+[2025-04-16T04:58:49.701Z] [INFO] TCBS API response status
+{
+  "ticker": "FPT",
+  "status": 200
+}
+--------------------------------------------------------------------------------
+[2025-04-16T04:58:49.702Z] [DEBUG] API response structure
+{
+  "ticker": "FPT",
+  "keys": [
+    "ticker",
+    "data",
+    "dataT1"
+  ],
+  "sample": "{\"ticker\":\"FPT\",\"data\":[{\"open\":116100,\"high\":117000,\"low\":113700,\"close\":116000,\"volume\":7787164,\"tradingDate\":\"2025-04-15T00:00:00.000Z\"}],\"dataT1\":null}"
+}
+--------------------------------------------------------------------------------
+[2025-04-16T04:58:49.702Z] [INFO] Successfully fetched market data
+{
+  "ticker": "FPT",
+  "latestEntry": {
+    "open": 116100,
+    "high": 117000,
+    "low": 113700,
+    "close": 116000,
+    "volume": 7787164,
+    "tradingDate": "2025-04-15T00:00:00.000Z"
+  }
+}
+--------------------------------------------------------------------------------
+[2025-04-16T04:58:49.705Z] [INFO] TCBS API response status
+{
+  "ticker": "GEX",
+  "status": 200
+}
+--------------------------------------------------------------------------------
+[2025-04-16T04:58:49.705Z] [DEBUG] API response structure
+{
+  "ticker": "GEX",
+  "keys": [
+    "ticker",
+    "data",
+    "dataT1"
+  ],
+  "sample": "{\"ticker\":\"GEX\",\"data\":[{\"open\":23850,\"high\":25650,\"low\":23850,\"close\":25150,\"volume\":18961806,\"tradingDate\":\"2025-04-15T00:00:00.000Z\"}],\"dataT1\":null}"
+}
+--------------------------------------------------------------------------------
+[2025-04-16T04:58:49.705Z] [INFO] Successfully fetched market data
+{
+  "ticker": "GEX",
+  "latestEntry": {
+    "open": 23850,
+    "high": 25650,
+    "low": 23850,
+    "close": 25150,
+    "volume": 18961806,
+    "tradingDate": "2025-04-15T00:00:00.000Z"
+  }
+}
+--------------------------------------------------------------------------------
+[2025-04-16T04:58:49.709Z] [INFO] TCBS API response status
+{
+  "ticker": "CTG",
+  "status": 200
+}
+--------------------------------------------------------------------------------
+[2025-04-16T04:58:49.709Z] [DEBUG] API response structure
+{
+  "ticker": "CTG",
+  "keys": [
+    "ticker",
+    "data",
+    "dataT1"
+  ],
+  "sample": "{\"ticker\":\"CTG\",\"data\":[{\"open\":37800,\"high\":38000,\"low\":37200,\"close\":37750,\"volume\":10259616,\"tradingDate\":\"2025-04-15T00:00:00.000Z\"}],\"dataT1\":null}"
+}
+--------------------------------------------------------------------------------
+[2025-04-16T04:58:49.709Z] [INFO] Successfully fetched market data
+{
+  "ticker": "CTG",
+  "latestEntry": {
+    "open": 37800,
+    "high": 38000,
+    "low": 37200,
+    "close": 37750,
+    "volume": 10259616,
+    "tradingDate": "2025-04-15T00:00:00.000Z"
+  }
+}
+--------------------------------------------------------------------------------
+[2025-04-16T04:58:49.709Z] [INFO] Batch market data fetch completed
+{
+  "totalRequested": 3,
+  "successful": 3,
+  "failed": 0
+}
+--------------------------------------------------------------------------------
+[2025-04-16T05:01:32.650Z] [INFO] Market data request received
+{
+  "userId": "cm9i9n0500000krszqm5qeltc",
+  "tickers": [
+    "FPT",
+    "CTG",
+    "GEX"
+  ]
+}
+--------------------------------------------------------------------------------
+[2025-04-16T05:01:32.651Z] [DEBUG] Starting batch market data fetch with timestamps
+{
+  "tickers": [
+    "FPT",
+    "CTG",
+    "GEX"
+  ],
+  "from": 1744606892,
+  "to": 1744693292,
+  "fromDate": "2025-04-14T05:01:32.000Z",
+  "toDate": "2025-04-15T05:01:32.000Z"
+}
+--------------------------------------------------------------------------------
+[2025-04-16T05:01:32.651Z] [INFO] Fetching market data
+{
+  "ticker": "FPT",
+  "from": 1744606892,
+  "to": 1744693292,
+  "url": "https://apipubaws.tcbs.com.vn/stock-insight/v1/stock/bars-long-term?ticker=FPT&type=stock&resolution=D&from=1744606892&to=1744693292"
+}
+--------------------------------------------------------------------------------
+[2025-04-16T05:01:32.658Z] [INFO] Fetching market data
+{
+  "ticker": "CTG",
+  "from": 1744606892,
+  "to": 1744693292,
+  "url": "https://apipubaws.tcbs.com.vn/stock-insight/v1/stock/bars-long-term?ticker=CTG&type=stock&resolution=D&from=1744606892&to=1744693292"
+}
+--------------------------------------------------------------------------------
+[2025-04-16T05:01:32.659Z] [INFO] Fetching market data
+{
+  "ticker": "GEX",
+  "from": 1744606892,
+  "to": 1744693292,
+  "url": "https://apipubaws.tcbs.com.vn/stock-insight/v1/stock/bars-long-term?ticker=GEX&type=stock&resolution=D&from=1744606892&to=1744693292"
+}
+--------------------------------------------------------------------------------
+[2025-04-16T05:01:33.005Z] [INFO] TCBS API response status
+{
+  "ticker": "GEX",
+  "status": 200
+}
+--------------------------------------------------------------------------------
+[2025-04-16T05:01:33.008Z] [DEBUG] API response structure
+{
+  "ticker": "GEX",
+  "keys": [
+    "ticker",
+    "data",
+    "dataT1"
+  ],
+  "sample": "{\"ticker\":\"GEX\",\"data\":[{\"open\":23850,\"high\":25650,\"low\":23850,\"close\":25150,\"volume\":18961806,\"tradingDate\":\"2025-04-15T00:00:00.000Z\"}],\"dataT1\":null}"
+}
+--------------------------------------------------------------------------------
+[2025-04-16T05:01:33.008Z] [INFO] Successfully fetched market data
+{
+  "ticker": "GEX",
+  "latestEntry": {
+    "open": 23850,
+    "high": 25650,
+    "low": 23850,
+    "close": 25150,
+    "volume": 18961806,
+    "tradingDate": "2025-04-15T00:00:00.000Z"
+  }
+}
+--------------------------------------------------------------------------------
+[2025-04-16T05:01:33.011Z] [INFO] TCBS API response status
+{
+  "ticker": "FPT",
+  "status": 200
+}
+--------------------------------------------------------------------------------
+[2025-04-16T05:01:33.012Z] [DEBUG] API response structure
+{
+  "ticker": "FPT",
+  "keys": [
+    "ticker",
+    "data",
+    "dataT1"
+  ],
+  "sample": "{\"ticker\":\"FPT\",\"data\":[{\"open\":116100,\"high\":117000,\"low\":113700,\"close\":116000,\"volume\":7787164,\"tradingDate\":\"2025-04-15T00:00:00.000Z\"}],\"dataT1\":null}"
+}
+--------------------------------------------------------------------------------
+[2025-04-16T05:01:33.013Z] [INFO] Successfully fetched market data
+{
+  "ticker": "FPT",
+  "latestEntry": {
+    "open": 116100,
+    "high": 117000,
+    "low": 113700,
+    "close": 116000,
+    "volume": 7787164,
+    "tradingDate": "2025-04-15T00:00:00.000Z"
+  }
+}
+--------------------------------------------------------------------------------
+[2025-04-16T05:01:33.015Z] [INFO] TCBS API response status
+{
+  "ticker": "CTG",
+  "status": 200
+}
+--------------------------------------------------------------------------------
+[2025-04-16T05:01:33.016Z] [DEBUG] API response structure
+{
+  "ticker": "CTG",
+  "keys": [
+    "ticker",
+    "data",
+    "dataT1"
+  ],
+  "sample": "{\"ticker\":\"CTG\",\"data\":[{\"open\":37800,\"high\":38000,\"low\":37200,\"close\":37750,\"volume\":10259616,\"tradingDate\":\"2025-04-15T00:00:00.000Z\"}],\"dataT1\":null}"
+}
+--------------------------------------------------------------------------------
+[2025-04-16T05:01:33.016Z] [INFO] Successfully fetched market data
+{
+  "ticker": "CTG",
+  "latestEntry": {
+    "open": 37800,
+    "high": 38000,
+    "low": 37200,
+    "close": 37750,
+    "volume": 10259616,
+    "tradingDate": "2025-04-15T00:00:00.000Z"
+  }
+}
+--------------------------------------------------------------------------------
+[2025-04-16T05:01:33.016Z] [INFO] Batch market data fetch completed
+{
+  "totalRequested": 3,
+  "successful": 3,
+  "failed": 0
+}
+--------------------------------------------------------------------------------
+[2025-04-16T05:01:33.059Z] [INFO] Market data request received
+{
+  "userId": "cm9i9n0500000krszqm5qeltc",
+  "tickers": [
+    "FPT",
+    "CTG",
+    "GEX"
+  ]
+}
+--------------------------------------------------------------------------------
+[2025-04-16T05:01:33.059Z] [DEBUG] Starting batch market data fetch with timestamps
+{
+  "tickers": [
+    "FPT",
+    "CTG",
+    "GEX"
+  ],
+  "from": 1744606893,
+  "to": 1744693293,
+  "fromDate": "2025-04-14T05:01:33.000Z",
+  "toDate": "2025-04-15T05:01:33.000Z"
+}
+--------------------------------------------------------------------------------
+[2025-04-16T05:01:33.059Z] [INFO] Fetching market data
+{
+  "ticker": "FPT",
+  "from": 1744606893,
+  "to": 1744693293,
+  "url": "https://apipubaws.tcbs.com.vn/stock-insight/v1/stock/bars-long-term?ticker=FPT&type=stock&resolution=D&from=1744606893&to=1744693293"
+}
+--------------------------------------------------------------------------------
+[2025-04-16T05:01:33.060Z] [INFO] Fetching market data
+{
+  "ticker": "CTG",
+  "from": 1744606893,
+  "to": 1744693293,
+  "url": "https://apipubaws.tcbs.com.vn/stock-insight/v1/stock/bars-long-term?ticker=CTG&type=stock&resolution=D&from=1744606893&to=1744693293"
+}
+--------------------------------------------------------------------------------
+[2025-04-16T05:01:33.062Z] [INFO] Fetching market data
+{
+  "ticker": "GEX",
+  "from": 1744606893,
+  "to": 1744693293,
+  "url": "https://apipubaws.tcbs.com.vn/stock-insight/v1/stock/bars-long-term?ticker=GEX&type=stock&resolution=D&from=1744606893&to=1744693293"
+}
+--------------------------------------------------------------------------------
+[2025-04-16T05:01:33.139Z] [INFO] TCBS API response status
+{
+  "ticker": "GEX",
+  "status": 200
+}
+--------------------------------------------------------------------------------
+[2025-04-16T05:01:33.140Z] [DEBUG] API response structure
+{
+  "ticker": "GEX",
+  "keys": [
+    "ticker",
+    "data",
+    "dataT1"
+  ],
+  "sample": "{\"ticker\":\"GEX\",\"data\":[{\"open\":23850,\"high\":25650,\"low\":23850,\"close\":25150,\"volume\":18961806,\"tradingDate\":\"2025-04-15T00:00:00.000Z\"}],\"dataT1\":null}"
+}
+--------------------------------------------------------------------------------
+[2025-04-16T05:01:33.141Z] [INFO] Successfully fetched market data
+{
+  "ticker": "GEX",
+  "latestEntry": {
+    "open": 23850,
+    "high": 25650,
+    "low": 23850,
+    "close": 25150,
+    "volume": 18961806,
+    "tradingDate": "2025-04-15T00:00:00.000Z"
+  }
+}
+--------------------------------------------------------------------------------
+[2025-04-16T05:01:33.143Z] [INFO] TCBS API response status
+{
+  "ticker": "FPT",
+  "status": 200
+}
+--------------------------------------------------------------------------------
+[2025-04-16T05:01:33.144Z] [DEBUG] API response structure
+{
+  "ticker": "FPT",
+  "keys": [
+    "ticker",
+    "data",
+    "dataT1"
+  ],
+  "sample": "{\"ticker\":\"FPT\",\"data\":[{\"open\":116100,\"high\":117000,\"low\":113700,\"close\":116000,\"volume\":7787164,\"tradingDate\":\"2025-04-15T00:00:00.000Z\"}],\"dataT1\":null}"
+}
+--------------------------------------------------------------------------------
+[2025-04-16T05:01:33.145Z] [INFO] Successfully fetched market data
+{
+  "ticker": "FPT",
+  "latestEntry": {
+    "open": 116100,
+    "high": 117000,
+    "low": 113700,
+    "close": 116000,
+    "volume": 7787164,
+    "tradingDate": "2025-04-15T00:00:00.000Z"
+  }
+}
+--------------------------------------------------------------------------------
+[2025-04-16T05:01:33.148Z] [INFO] TCBS API response status
+{
+  "ticker": "CTG",
+  "status": 200
+}
+--------------------------------------------------------------------------------
+[2025-04-16T05:01:33.149Z] [DEBUG] API response structure
+{
+  "ticker": "CTG",
+  "keys": [
+    "ticker",
+    "data",
+    "dataT1"
+  ],
+  "sample": "{\"ticker\":\"CTG\",\"data\":[{\"open\":37800,\"high\":38000,\"low\":37200,\"close\":37750,\"volume\":10259616,\"tradingDate\":\"2025-04-15T00:00:00.000Z\"}],\"dataT1\":null}"
+}
+--------------------------------------------------------------------------------
+[2025-04-16T05:01:33.149Z] [INFO] Successfully fetched market data
+{
+  "ticker": "CTG",
+  "latestEntry": {
+    "open": 37800,
+    "high": 38000,
+    "low": 37200,
+    "close": 37750,
+    "volume": 10259616,
+    "tradingDate": "2025-04-15T00:00:00.000Z"
+  }
+}
+--------------------------------------------------------------------------------
+[2025-04-16T05:01:33.149Z] [INFO] Batch market data fetch completed
+{
+  "totalRequested": 3,
+  "successful": 3,
+  "failed": 0
+}
+--------------------------------------------------------------------------------
+[2025-04-16T05:02:38.454Z] [INFO] Market data request received
+{
+  "userId": "cm9i9n0500000krszqm5qeltc",
+  "tickers": [
+    "FPT",
+    "CTG",
+    "GEX"
+  ]
+}
+--------------------------------------------------------------------------------
+[2025-04-16T05:02:38.454Z] [DEBUG] Starting batch market data fetch with timestamps
+{
+  "tickers": [
+    "FPT",
+    "CTG",
+    "GEX"
+  ],
+  "from": 1744606958,
+  "to": 1744693358,
+  "fromDate": "2025-04-14T05:02:38.000Z",
+  "toDate": "2025-04-15T05:02:38.000Z"
+}
+--------------------------------------------------------------------------------
+[2025-04-16T05:02:38.455Z] [INFO] Fetching market data
+{
+  "ticker": "FPT",
+  "from": 1744606958,
+  "to": 1744693358,
+  "url": "https://apipubaws.tcbs.com.vn/stock-insight/v1/stock/bars-long-term?ticker=FPT&type=stock&resolution=D&from=1744606958&to=1744693358"
+}
+--------------------------------------------------------------------------------
+[2025-04-16T05:02:38.460Z] [INFO] Fetching market data
+{
+  "ticker": "CTG",
+  "from": 1744606958,
+  "to": 1744693358,
+  "url": "https://apipubaws.tcbs.com.vn/stock-insight/v1/stock/bars-long-term?ticker=CTG&type=stock&resolution=D&from=1744606958&to=1744693358"
+}
+--------------------------------------------------------------------------------
+[2025-04-16T05:02:38.464Z] [INFO] Fetching market data
+{
+  "ticker": "GEX",
+  "from": 1744606958,
+  "to": 1744693358,
+  "url": "https://apipubaws.tcbs.com.vn/stock-insight/v1/stock/bars-long-term?ticker=GEX&type=stock&resolution=D&from=1744606958&to=1744693358"
+}
+--------------------------------------------------------------------------------
+[2025-04-16T05:02:38.770Z] [INFO] TCBS API response status
+{
+  "ticker": "FPT",
+  "status": 200
+}
+--------------------------------------------------------------------------------
+[2025-04-16T05:02:38.771Z] [DEBUG] API response structure
+{
+  "ticker": "FPT",
+  "keys": [
+    "ticker",
+    "data",
+    "dataT1"
+  ],
+  "sample": "{\"ticker\":\"FPT\",\"data\":[{\"open\":116100,\"high\":117000,\"low\":113700,\"close\":116000,\"volume\":7787164,\"tradingDate\":\"2025-04-15T00:00:00.000Z\"}],\"dataT1\":null}"
+}
+--------------------------------------------------------------------------------
+[2025-04-16T05:02:38.771Z] [INFO] Successfully fetched market data
+{
+  "ticker": "FPT",
+  "latestEntry": {
+    "open": 116100,
+    "high": 117000,
+    "low": 113700,
+    "close": 116000,
+    "volume": 7787164,
+    "tradingDate": "2025-04-15T00:00:00.000Z"
+  }
+}
+--------------------------------------------------------------------------------
+[2025-04-16T05:02:38.780Z] [INFO] TCBS API response status
+{
+  "ticker": "CTG",
+  "status": 200
+}
+--------------------------------------------------------------------------------
+[2025-04-16T05:02:38.780Z] [DEBUG] API response structure
+{
+  "ticker": "CTG",
+  "keys": [
+    "ticker",
+    "data",
+    "dataT1"
+  ],
+  "sample": "{\"ticker\":\"CTG\",\"data\":[{\"open\":37800,\"high\":38000,\"low\":37200,\"close\":37750,\"volume\":10259616,\"tradingDate\":\"2025-04-15T00:00:00.000Z\"}],\"dataT1\":null}"
+}
+--------------------------------------------------------------------------------
+[2025-04-16T05:02:38.780Z] [INFO] Successfully fetched market data
+{
+  "ticker": "CTG",
+  "latestEntry": {
+    "open": 37800,
+    "high": 38000,
+    "low": 37200,
+    "close": 37750,
+    "volume": 10259616,
+    "tradingDate": "2025-04-15T00:00:00.000Z"
+  }
+}
+--------------------------------------------------------------------------------
+[2025-04-16T05:02:38.805Z] [INFO] TCBS API response status
+{
+  "ticker": "GEX",
+  "status": 200
+}
+--------------------------------------------------------------------------------
+[2025-04-16T05:02:38.806Z] [DEBUG] API response structure
+{
+  "ticker": "GEX",
+  "keys": [
+    "ticker",
+    "data",
+    "dataT1"
+  ],
+  "sample": "{\"ticker\":\"GEX\",\"data\":[{\"open\":23850,\"high\":25650,\"low\":23850,\"close\":25150,\"volume\":18961806,\"tradingDate\":\"2025-04-15T00:00:00.000Z\"}],\"dataT1\":null}"
+}
+--------------------------------------------------------------------------------
+[2025-04-16T05:02:38.806Z] [INFO] Successfully fetched market data
+{
+  "ticker": "GEX",
+  "latestEntry": {
+    "open": 23850,
+    "high": 25650,
+    "low": 23850,
+    "close": 25150,
+    "volume": 18961806,
+    "tradingDate": "2025-04-15T00:00:00.000Z"
+  }
+}
+--------------------------------------------------------------------------------
+[2025-04-16T05:02:38.806Z] [INFO] Batch market data fetch completed
+{
+  "totalRequested": 3,
+  "successful": 3,
+  "failed": 0
+}
+--------------------------------------------------------------------------------
+[2025-04-16T05:02:38.819Z] [INFO] Market data request received
+{
+  "userId": "cm9i9n0500000krszqm5qeltc",
+  "tickers": [
+    "FPT",
+    "CTG",
+    "GEX"
+  ]
+}
+--------------------------------------------------------------------------------
+[2025-04-16T05:02:38.819Z] [DEBUG] Starting batch market data fetch with timestamps
+{
+  "tickers": [
+    "FPT",
+    "CTG",
+    "GEX"
+  ],
+  "from": 1744606958,
+  "to": 1744693358,
+  "fromDate": "2025-04-14T05:02:38.000Z",
+  "toDate": "2025-04-15T05:02:38.000Z"
+}
+--------------------------------------------------------------------------------
+[2025-04-16T05:02:38.819Z] [INFO] Fetching market data
+{
+  "ticker": "FPT",
+  "from": 1744606958,
+  "to": 1744693358,
+  "url": "https://apipubaws.tcbs.com.vn/stock-insight/v1/stock/bars-long-term?ticker=FPT&type=stock&resolution=D&from=1744606958&to=1744693358"
+}
+--------------------------------------------------------------------------------
+[2025-04-16T05:02:38.820Z] [INFO] Fetching market data
+{
+  "ticker": "CTG",
+  "from": 1744606958,
+  "to": 1744693358,
+  "url": "https://apipubaws.tcbs.com.vn/stock-insight/v1/stock/bars-long-term?ticker=CTG&type=stock&resolution=D&from=1744606958&to=1744693358"
+}
+--------------------------------------------------------------------------------
+[2025-04-16T05:02:38.820Z] [INFO] Fetching market data
+{
+  "ticker": "GEX",
+  "from": 1744606958,
+  "to": 1744693358,
+  "url": "https://apipubaws.tcbs.com.vn/stock-insight/v1/stock/bars-long-term?ticker=GEX&type=stock&resolution=D&from=1744606958&to=1744693358"
+}
+--------------------------------------------------------------------------------
+[2025-04-16T05:02:38.894Z] [INFO] TCBS API response status
+{
+  "ticker": "GEX",
+  "status": 200
+}
+--------------------------------------------------------------------------------
+[2025-04-16T05:02:38.894Z] [DEBUG] API response structure
+{
+  "ticker": "GEX",
+  "keys": [
+    "ticker",
+    "data",
+    "dataT1"
+  ],
+  "sample": "{\"ticker\":\"GEX\",\"data\":[{\"open\":23850,\"high\":25650,\"low\":23850,\"close\":25150,\"volume\":18961806,\"tradingDate\":\"2025-04-15T00:00:00.000Z\"}],\"dataT1\":null}"
+}
+--------------------------------------------------------------------------------
+[2025-04-16T05:02:38.894Z] [INFO] Successfully fetched market data
+{
+  "ticker": "GEX",
+  "latestEntry": {
+    "open": 23850,
+    "high": 25650,
+    "low": 23850,
+    "close": 25150,
+    "volume": 18961806,
+    "tradingDate": "2025-04-15T00:00:00.000Z"
+  }
+}
+--------------------------------------------------------------------------------
+[2025-04-16T05:02:38.895Z] [INFO] TCBS API response status
+{
+  "ticker": "FPT",
+  "status": 200
+}
+--------------------------------------------------------------------------------
+[2025-04-16T05:02:38.895Z] [DEBUG] API response structure
+{
+  "ticker": "FPT",
+  "keys": [
+    "ticker",
+    "data",
+    "dataT1"
+  ],
+  "sample": "{\"ticker\":\"FPT\",\"data\":[{\"open\":116100,\"high\":117000,\"low\":113700,\"close\":116000,\"volume\":7787164,\"tradingDate\":\"2025-04-15T00:00:00.000Z\"}],\"dataT1\":null}"
+}
+--------------------------------------------------------------------------------
+[2025-04-16T05:02:38.895Z] [INFO] Successfully fetched market data
+{
+  "ticker": "FPT",
+  "latestEntry": {
+    "open": 116100,
+    "high": 117000,
+    "low": 113700,
+    "close": 116000,
+    "volume": 7787164,
+    "tradingDate": "2025-04-15T00:00:00.000Z"
+  }
+}
+--------------------------------------------------------------------------------
+[2025-04-16T05:02:38.896Z] [INFO] TCBS API response status
+{
+  "ticker": "CTG",
+  "status": 200
+}
+--------------------------------------------------------------------------------
+[2025-04-16T05:02:38.897Z] [DEBUG] API response structure
+{
+  "ticker": "CTG",
+  "keys": [
+    "ticker",
+    "data",
+    "dataT1"
+  ],
+  "sample": "{\"ticker\":\"CTG\",\"data\":[{\"open\":37800,\"high\":38000,\"low\":37200,\"close\":37750,\"volume\":10259616,\"tradingDate\":\"2025-04-15T00:00:00.000Z\"}],\"dataT1\":null}"
+}
+--------------------------------------------------------------------------------
+[2025-04-16T05:02:38.897Z] [INFO] Successfully fetched market data
+{
+  "ticker": "CTG",
+  "latestEntry": {
+    "open": 37800,
+    "high": 38000,
+    "low": 37200,
+    "close": 37750,
+    "volume": 10259616,
+    "tradingDate": "2025-04-15T00:00:00.000Z"
+  }
+}
+--------------------------------------------------------------------------------
+[2025-04-16T05:02:38.897Z] [INFO] Batch market data fetch completed
+{
+  "totalRequested": 3,
+  "successful": 3,
+  "failed": 0
+}
+--------------------------------------------------------------------------------
+[2025-04-16T07:29:27.778Z] [INFO] Market data request received
+{
+  "userId": "cm9i9n0500000krszqm5qeltc",
+  "tickers": [
+    "FPT",
+    "CTG",
+    "GEX"
+  ]
+}
+--------------------------------------------------------------------------------
+[2025-04-16T07:29:27.780Z] [DEBUG] Starting batch market data fetch with timestamps
+{
+  "tickers": [
+    "FPT",
+    "CTG",
+    "GEX"
+  ],
+  "from": 1744615767,
+  "to": 1744702167,
+  "fromDate": "2025-04-14T07:29:27.000Z",
+  "toDate": "2025-04-15T07:29:27.000Z"
+}
+--------------------------------------------------------------------------------
+[2025-04-16T07:29:27.780Z] [INFO] Fetching market data
+{
+  "ticker": "FPT",
+  "from": 1744615767,
+  "to": 1744702167,
+  "url": "https://apipubaws.tcbs.com.vn/stock-insight/v1/stock/bars-long-term?ticker=FPT&type=stock&resolution=D&from=1744615767&to=1744702167"
+}
+--------------------------------------------------------------------------------
+[2025-04-16T07:29:27.794Z] [INFO] Fetching market data
+{
+  "ticker": "CTG",
+  "from": 1744615767,
+  "to": 1744702167,
+  "url": "https://apipubaws.tcbs.com.vn/stock-insight/v1/stock/bars-long-term?ticker=CTG&type=stock&resolution=D&from=1744615767&to=1744702167"
+}
+--------------------------------------------------------------------------------
+[2025-04-16T07:29:27.797Z] [INFO] Fetching market data
+{
+  "ticker": "GEX",
+  "from": 1744615767,
+  "to": 1744702167,
+  "url": "https://apipubaws.tcbs.com.vn/stock-insight/v1/stock/bars-long-term?ticker=GEX&type=stock&resolution=D&from=1744615767&to=1744702167"
+}
+--------------------------------------------------------------------------------
+[2025-04-16T07:29:28.030Z] [INFO] TCBS API response status
+{
+  "ticker": "FPT",
+  "status": 200
+}
+--------------------------------------------------------------------------------
+[2025-04-16T07:29:28.033Z] [DEBUG] API response structure
+{
+  "ticker": "FPT",
+  "keys": [
+    "ticker",
+    "data",
+    "dataT1"
+  ],
+  "sample": "{\"ticker\":\"FPT\",\"data\":[{\"open\":116100,\"high\":117000,\"low\":113700,\"close\":116000,\"volume\":7787164,\"tradingDate\":\"2025-04-15T00:00:00.000Z\"}],\"dataT1\":null}"
+}
+--------------------------------------------------------------------------------
+[2025-04-16T07:29:28.033Z] [INFO] Successfully fetched market data
+{
+  "ticker": "FPT",
+  "latestEntry": {
+    "open": 116100,
+    "high": 117000,
+    "low": 113700,
+    "close": 116000,
+    "volume": 7787164,
+    "tradingDate": "2025-04-15T00:00:00.000Z"
+  }
+}
+--------------------------------------------------------------------------------
+[2025-04-16T07:29:28.048Z] [INFO] TCBS API response status
+{
+  "ticker": "CTG",
+  "status": 200
+}
+--------------------------------------------------------------------------------
+[2025-04-16T07:29:28.049Z] [DEBUG] API response structure
+{
+  "ticker": "CTG",
+  "keys": [
+    "ticker",
+    "data",
+    "dataT1"
+  ],
+  "sample": "{\"ticker\":\"CTG\",\"data\":[{\"open\":37800,\"high\":38000,\"low\":37200,\"close\":37750,\"volume\":10259616,\"tradingDate\":\"2025-04-15T00:00:00.000Z\"}],\"dataT1\":null}"
+}
+--------------------------------------------------------------------------------
+[2025-04-16T07:29:28.049Z] [INFO] Successfully fetched market data
+{
+  "ticker": "CTG",
+  "latestEntry": {
+    "open": 37800,
+    "high": 38000,
+    "low": 37200,
+    "close": 37750,
+    "volume": 10259616,
+    "tradingDate": "2025-04-15T00:00:00.000Z"
+  }
+}
+--------------------------------------------------------------------------------
+[2025-04-16T07:29:28.053Z] [INFO] TCBS API response status
+{
+  "ticker": "GEX",
+  "status": 200
+}
+--------------------------------------------------------------------------------
+[2025-04-16T07:29:28.054Z] [DEBUG] API response structure
+{
+  "ticker": "GEX",
+  "keys": [
+    "ticker",
+    "data",
+    "dataT1"
+  ],
+  "sample": "{\"ticker\":\"GEX\",\"data\":[{\"open\":23850,\"high\":25650,\"low\":23850,\"close\":25150,\"volume\":18961806,\"tradingDate\":\"2025-04-15T00:00:00.000Z\"}],\"dataT1\":null}"
+}
+--------------------------------------------------------------------------------
+[2025-04-16T07:29:28.054Z] [INFO] Successfully fetched market data
+{
+  "ticker": "GEX",
+  "latestEntry": {
+    "open": 23850,
+    "high": 25650,
+    "low": 23850,
+    "close": 25150,
+    "volume": 18961806,
+    "tradingDate": "2025-04-15T00:00:00.000Z"
+  }
+}
+--------------------------------------------------------------------------------
+[2025-04-16T07:29:28.054Z] [INFO] Batch market data fetch completed
+{
+  "totalRequested": 3,
+  "successful": 3,
+  "failed": 0
+}
+--------------------------------------------------------------------------------
+[2025-04-16T07:29:28.080Z] [INFO] Market data request received
+{
+  "userId": "cm9i9n0500000krszqm5qeltc",
+  "tickers": [
+    "FPT",
+    "CTG",
+    "GEX"
+  ]
+}
+--------------------------------------------------------------------------------
+[2025-04-16T07:29:28.080Z] [DEBUG] Starting batch market data fetch with timestamps
+{
+  "tickers": [
+    "FPT",
+    "CTG",
+    "GEX"
+  ],
+  "from": 1744615768,
+  "to": 1744702168,
+  "fromDate": "2025-04-14T07:29:28.000Z",
+  "toDate": "2025-04-15T07:29:28.000Z"
+}
+--------------------------------------------------------------------------------
+[2025-04-16T07:29:28.080Z] [INFO] Fetching market data
+{
+  "ticker": "FPT",
+  "from": 1744615768,
+  "to": 1744702168,
+  "url": "https://apipubaws.tcbs.com.vn/stock-insight/v1/stock/bars-long-term?ticker=FPT&type=stock&resolution=D&from=1744615768&to=1744702168"
+}
+--------------------------------------------------------------------------------
+[2025-04-16T07:29:28.081Z] [INFO] Fetching market data
+{
+  "ticker": "CTG",
+  "from": 1744615768,
+  "to": 1744702168,
+  "url": "https://apipubaws.tcbs.com.vn/stock-insight/v1/stock/bars-long-term?ticker=CTG&type=stock&resolution=D&from=1744615768&to=1744702168"
+}
+--------------------------------------------------------------------------------
+[2025-04-16T07:29:28.082Z] [INFO] Fetching market data
+{
+  "ticker": "GEX",
+  "from": 1744615768,
+  "to": 1744702168,
+  "url": "https://apipubaws.tcbs.com.vn/stock-insight/v1/stock/bars-long-term?ticker=GEX&type=stock&resolution=D&from=1744615768&to=1744702168"
+}
+--------------------------------------------------------------------------------
+[2025-04-16T07:29:28.169Z] [INFO] TCBS API response status
+{
+  "ticker": "FPT",
+  "status": 200
+}
+--------------------------------------------------------------------------------
+[2025-04-16T07:29:28.169Z] [DEBUG] API response structure
+{
+  "ticker": "FPT",
+  "keys": [
+    "ticker",
+    "data",
+    "dataT1"
+  ],
+  "sample": "{\"ticker\":\"FPT\",\"data\":[{\"open\":116100,\"high\":117000,\"low\":113700,\"close\":116000,\"volume\":7787164,\"tradingDate\":\"2025-04-15T00:00:00.000Z\"}],\"dataT1\":null}"
+}
+--------------------------------------------------------------------------------
+[2025-04-16T07:29:28.170Z] [INFO] Successfully fetched market data
+{
+  "ticker": "FPT",
+  "latestEntry": {
+    "open": 116100,
+    "high": 117000,
+    "low": 113700,
+    "close": 116000,
+    "volume": 7787164,
+    "tradingDate": "2025-04-15T00:00:00.000Z"
+  }
+}
+--------------------------------------------------------------------------------
+[2025-04-16T07:29:28.172Z] [INFO] TCBS API response status
+{
+  "ticker": "GEX",
+  "status": 200
+}
+--------------------------------------------------------------------------------
+[2025-04-16T07:29:28.173Z] [DEBUG] API response structure
+{
+  "ticker": "GEX",
+  "keys": [
+    "ticker",
+    "data",
+    "dataT1"
+  ],
+  "sample": "{\"ticker\":\"GEX\",\"data\":[{\"open\":23850,\"high\":25650,\"low\":23850,\"close\":25150,\"volume\":18961806,\"tradingDate\":\"2025-04-15T00:00:00.000Z\"}],\"dataT1\":null}"
+}
+--------------------------------------------------------------------------------
+[2025-04-16T07:29:28.173Z] [INFO] Successfully fetched market data
+{
+  "ticker": "GEX",
+  "latestEntry": {
+    "open": 23850,
+    "high": 25650,
+    "low": 23850,
+    "close": 25150,
+    "volume": 18961806,
+    "tradingDate": "2025-04-15T00:00:00.000Z"
+  }
+}
+--------------------------------------------------------------------------------
+[2025-04-16T07:29:28.182Z] [INFO] TCBS API response status
+{
+  "ticker": "CTG",
+  "status": 200
+}
+--------------------------------------------------------------------------------
+[2025-04-16T07:29:28.183Z] [DEBUG] API response structure
+{
+  "ticker": "CTG",
+  "keys": [
+    "ticker",
+    "data",
+    "dataT1"
+  ],
+  "sample": "{\"ticker\":\"CTG\",\"data\":[{\"open\":37800,\"high\":38000,\"low\":37200,\"close\":37750,\"volume\":10259616,\"tradingDate\":\"2025-04-15T00:00:00.000Z\"}],\"dataT1\":null}"
+}
+--------------------------------------------------------------------------------
+[2025-04-16T07:29:28.183Z] [INFO] Successfully fetched market data
+{
+  "ticker": "CTG",
+  "latestEntry": {
+    "open": 37800,
+    "high": 38000,
+    "low": 37200,
+    "close": 37750,
+    "volume": 10259616,
+    "tradingDate": "2025-04-15T00:00:00.000Z"
+  }
+}
+--------------------------------------------------------------------------------
+[2025-04-16T07:29:28.183Z] [INFO] Batch market data fetch completed
+{
+  "totalRequested": 3,
+  "successful": 3,
+  "failed": 0
+}
+--------------------------------------------------------------------------------
