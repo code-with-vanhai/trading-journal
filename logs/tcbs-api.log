@@ -574,3 +574,732 @@
   "failed": 0
 }
 --------------------------------------------------------------------------------
+[2025-04-16T10:04:46.803Z] [INFO] Market data request received
+{
+  "userId": "cm9jmvfrn0000ze7x00j5yfop",
+  "tickers": [
+    "CTG"
+  ]
+}
+--------------------------------------------------------------------------------
+[2025-04-16T10:04:46.803Z] [DEBUG] Starting batch market data fetch with timestamps
+{
+  "tickers": [
+    "CTG"
+  ],
+  "from": 1744625086,
+  "to": 1744711486,
+  "fromDate": "2025-04-14T10:04:46.000Z",
+  "toDate": "2025-04-15T10:04:46.000Z"
+}
+--------------------------------------------------------------------------------
+[2025-04-16T10:04:46.804Z] [INFO] Fetching market data
+{
+  "ticker": "CTG",
+  "from": 1744625086,
+  "to": 1744711486,
+  "url": "https://apipubaws.tcbs.com.vn/stock-insight/v1/stock/bars-long-term?ticker=CTG&type=stock&resolution=D&from=1744625086&to=1744711486"
+}
+--------------------------------------------------------------------------------
+[2025-04-16T10:04:47.082Z] [INFO] TCBS API response status
+{
+  "ticker": "CTG",
+  "status": 200
+}
+--------------------------------------------------------------------------------
+[2025-04-16T10:04:47.084Z] [DEBUG] API response structure
+{
+  "ticker": "CTG",
+  "keys": [
+    "ticker",
+    "data",
+    "dataT1"
+  ],
+  "sample": "{\"ticker\":\"CTG\",\"data\":[{\"open\":37800,\"high\":38000,\"low\":37200,\"close\":37750,\"volume\":10259616,\"tradingDate\":\"2025-04-15T00:00:00.000Z\"}],\"dataT1\":null}"
+}
+--------------------------------------------------------------------------------
+[2025-04-16T10:04:47.084Z] [INFO] Successfully fetched market data
+{
+  "ticker": "CTG",
+  "latestEntry": {
+    "open": 37800,
+    "high": 38000,
+    "low": 37200,
+    "close": 37750,
+    "volume": 10259616,
+    "tradingDate": "2025-04-15T00:00:00.000Z"
+  }
+}
+--------------------------------------------------------------------------------
+[2025-04-16T10:04:47.085Z] [INFO] Batch market data fetch completed
+{
+  "totalRequested": 1,
+  "successful": 1,
+  "failed": 0
+}
+--------------------------------------------------------------------------------
+[2025-04-16T10:04:47.097Z] [INFO] Market data request received
+{
+  "userId": "cm9jmvfrn0000ze7x00j5yfop",
+  "tickers": [
+    "CTG"
+  ]
+}
+--------------------------------------------------------------------------------
+[2025-04-16T10:04:47.097Z] [DEBUG] Starting batch market data fetch with timestamps
+{
+  "tickers": [
+    "CTG"
+  ],
+  "from": 1744625087,
+  "to": 1744711487,
+  "fromDate": "2025-04-14T10:04:47.000Z",
+  "toDate": "2025-04-15T10:04:47.000Z"
+}
+--------------------------------------------------------------------------------
+[2025-04-16T10:04:47.097Z] [INFO] Fetching market data
+{
+  "ticker": "CTG",
+  "from": 1744625087,
+  "to": 1744711487,
+  "url": "https://apipubaws.tcbs.com.vn/stock-insight/v1/stock/bars-long-term?ticker=CTG&type=stock&resolution=D&from=1744625087&to=1744711487"
+}
+--------------------------------------------------------------------------------
+[2025-04-16T10:04:47.178Z] [INFO] TCBS API response status
+{
+  "ticker": "CTG",
+  "status": 200
+}
+--------------------------------------------------------------------------------
+[2025-04-16T10:04:47.179Z] [DEBUG] API response structure
+{
+  "ticker": "CTG",
+  "keys": [
+    "ticker",
+    "data",
+    "dataT1"
+  ],
+  "sample": "{\"ticker\":\"CTG\",\"data\":[{\"open\":37800,\"high\":38000,\"low\":37200,\"close\":37750,\"volume\":10259616,\"tradingDate\":\"2025-04-15T00:00:00.000Z\"}],\"dataT1\":null}"
+}
+--------------------------------------------------------------------------------
+[2025-04-16T10:04:47.179Z] [INFO] Successfully fetched market data
+{
+  "ticker": "CTG",
+  "latestEntry": {
+    "open": 37800,
+    "high": 38000,
+    "low": 37200,
+    "close": 37750,
+    "volume": 10259616,
+    "tradingDate": "2025-04-15T00:00:00.000Z"
+  }
+}
+--------------------------------------------------------------------------------
+[2025-04-16T10:04:47.179Z] [INFO] Batch market data fetch completed
+{
+  "totalRequested": 1,
+  "successful": 1,
+  "failed": 0
+}
+--------------------------------------------------------------------------------
+[2025-04-16T10:04:51.389Z] [INFO] Market data request received
+{
+  "userId": "cm9jmvfrn0000ze7x00j5yfop",
+  "tickers": [
+    "CTG"
+  ]
+}
+--------------------------------------------------------------------------------
+[2025-04-16T10:04:51.390Z] [DEBUG] Starting batch market data fetch with timestamps
+{
+  "tickers": [
+    "CTG"
+  ],
+  "from": 1744625091,
+  "to": 1744711491,
+  "fromDate": "2025-04-14T10:04:51.000Z",
+  "toDate": "2025-04-15T10:04:51.000Z"
+}
+--------------------------------------------------------------------------------
+[2025-04-16T10:04:51.390Z] [INFO] Fetching market data
+{
+  "ticker": "CTG",
+  "from": 1744625091,
+  "to": 1744711491,
+  "url": "https://apipubaws.tcbs.com.vn/stock-insight/v1/stock/bars-long-term?ticker=CTG&type=stock&resolution=D&from=1744625091&to=1744711491"
+}
+--------------------------------------------------------------------------------
+[2025-04-16T10:04:51.485Z] [INFO] TCBS API response status
+{
+  "ticker": "CTG",
+  "status": 200
+}
+--------------------------------------------------------------------------------
+[2025-04-16T10:04:51.488Z] [DEBUG] API response structure
+{
+  "ticker": "CTG",
+  "keys": [
+    "ticker",
+    "data",
+    "dataT1"
+  ],
+  "sample": "{\"ticker\":\"CTG\",\"data\":[{\"open\":37800,\"high\":38000,\"low\":37200,\"close\":37750,\"volume\":10259616,\"tradingDate\":\"2025-04-15T00:00:00.000Z\"}],\"dataT1\":null}"
+}
+--------------------------------------------------------------------------------
+[2025-04-16T10:04:51.488Z] [INFO] Successfully fetched market data
+{
+  "ticker": "CTG",
+  "latestEntry": {
+    "open": 37800,
+    "high": 38000,
+    "low": 37200,
+    "close": 37750,
+    "volume": 10259616,
+    "tradingDate": "2025-04-15T00:00:00.000Z"
+  }
+}
+--------------------------------------------------------------------------------
+[2025-04-16T10:04:51.488Z] [INFO] Batch market data fetch completed
+{
+  "totalRequested": 1,
+  "successful": 1,
+  "failed": 0
+}
+--------------------------------------------------------------------------------
+[2025-04-16T10:04:51.523Z] [INFO] Market data request received
+{
+  "userId": "cm9jmvfrn0000ze7x00j5yfop",
+  "tickers": [
+    "CTG"
+  ]
+}
+--------------------------------------------------------------------------------
+[2025-04-16T10:04:51.523Z] [DEBUG] Starting batch market data fetch with timestamps
+{
+  "tickers": [
+    "CTG"
+  ],
+  "from": 1744625091,
+  "to": 1744711491,
+  "fromDate": "2025-04-14T10:04:51.000Z",
+  "toDate": "2025-04-15T10:04:51.000Z"
+}
+--------------------------------------------------------------------------------
+[2025-04-16T10:04:51.523Z] [INFO] Fetching market data
+{
+  "ticker": "CTG",
+  "from": 1744625091,
+  "to": 1744711491,
+  "url": "https://apipubaws.tcbs.com.vn/stock-insight/v1/stock/bars-long-term?ticker=CTG&type=stock&resolution=D&from=1744625091&to=1744711491"
+}
+--------------------------------------------------------------------------------
+[2025-04-16T10:04:51.602Z] [INFO] TCBS API response status
+{
+  "ticker": "CTG",
+  "status": 200
+}
+--------------------------------------------------------------------------------
+[2025-04-16T10:04:51.604Z] [DEBUG] API response structure
+{
+  "ticker": "CTG",
+  "keys": [
+    "ticker",
+    "data",
+    "dataT1"
+  ],
+  "sample": "{\"ticker\":\"CTG\",\"data\":[{\"open\":37800,\"high\":38000,\"low\":37200,\"close\":37750,\"volume\":10259616,\"tradingDate\":\"2025-04-15T00:00:00.000Z\"}],\"dataT1\":null}"
+}
+--------------------------------------------------------------------------------
+[2025-04-16T10:04:51.605Z] [INFO] Successfully fetched market data
+{
+  "ticker": "CTG",
+  "latestEntry": {
+    "open": 37800,
+    "high": 38000,
+    "low": 37200,
+    "close": 37750,
+    "volume": 10259616,
+    "tradingDate": "2025-04-15T00:00:00.000Z"
+  }
+}
+--------------------------------------------------------------------------------
+[2025-04-16T10:04:51.605Z] [INFO] Batch market data fetch completed
+{
+  "totalRequested": 1,
+  "successful": 1,
+  "failed": 0
+}
+--------------------------------------------------------------------------------
+[2025-04-16T10:05:24.769Z] [INFO] Market data request received
+{
+  "userId": "cm9jmvfrn0000ze7x00j5yfop",
+  "tickers": [
+    "CTG"
+  ]
+}
+--------------------------------------------------------------------------------
+[2025-04-16T10:05:24.769Z] [DEBUG] Starting batch market data fetch with timestamps
+{
+  "tickers": [
+    "CTG"
+  ],
+  "from": 1744625124,
+  "to": 1744711524,
+  "fromDate": "2025-04-14T10:05:24.000Z",
+  "toDate": "2025-04-15T10:05:24.000Z"
+}
+--------------------------------------------------------------------------------
+[2025-04-16T10:05:24.769Z] [INFO] Fetching market data
+{
+  "ticker": "CTG",
+  "from": 1744625124,
+  "to": 1744711524,
+  "url": "https://apipubaws.tcbs.com.vn/stock-insight/v1/stock/bars-long-term?ticker=CTG&type=stock&resolution=D&from=1744625124&to=1744711524"
+}
+--------------------------------------------------------------------------------
+[2025-04-16T10:05:25.244Z] [INFO] TCBS API response status
+{
+  "ticker": "CTG",
+  "status": 200
+}
+--------------------------------------------------------------------------------
+[2025-04-16T10:05:25.246Z] [DEBUG] API response structure
+{
+  "ticker": "CTG",
+  "keys": [
+    "ticker",
+    "data",
+    "dataT1"
+  ],
+  "sample": "{\"ticker\":\"CTG\",\"data\":[{\"open\":37800,\"high\":38000,\"low\":37200,\"close\":37750,\"volume\":10259616,\"tradingDate\":\"2025-04-15T00:00:00.000Z\"}],\"dataT1\":null}"
+}
+--------------------------------------------------------------------------------
+[2025-04-16T10:05:25.246Z] [INFO] Successfully fetched market data
+{
+  "ticker": "CTG",
+  "latestEntry": {
+    "open": 37800,
+    "high": 38000,
+    "low": 37200,
+    "close": 37750,
+    "volume": 10259616,
+    "tradingDate": "2025-04-15T00:00:00.000Z"
+  }
+}
+--------------------------------------------------------------------------------
+[2025-04-16T10:05:25.246Z] [INFO] Batch market data fetch completed
+{
+  "totalRequested": 1,
+  "successful": 1,
+  "failed": 0
+}
+--------------------------------------------------------------------------------
+[2025-04-16T10:05:25.295Z] [INFO] Market data request received
+{
+  "userId": "cm9jmvfrn0000ze7x00j5yfop",
+  "tickers": [
+    "CTG"
+  ]
+}
+--------------------------------------------------------------------------------
+[2025-04-16T10:05:25.295Z] [DEBUG] Starting batch market data fetch with timestamps
+{
+  "tickers": [
+    "CTG"
+  ],
+  "from": 1744625125,
+  "to": 1744711525,
+  "fromDate": "2025-04-14T10:05:25.000Z",
+  "toDate": "2025-04-15T10:05:25.000Z"
+}
+--------------------------------------------------------------------------------
+[2025-04-16T10:05:25.296Z] [INFO] Fetching market data
+{
+  "ticker": "CTG",
+  "from": 1744625125,
+  "to": 1744711525,
+  "url": "https://apipubaws.tcbs.com.vn/stock-insight/v1/stock/bars-long-term?ticker=CTG&type=stock&resolution=D&from=1744625125&to=1744711525"
+}
+--------------------------------------------------------------------------------
+[2025-04-16T10:05:25.404Z] [INFO] TCBS API response status
+{
+  "ticker": "CTG",
+  "status": 200
+}
+--------------------------------------------------------------------------------
+[2025-04-16T10:05:25.406Z] [DEBUG] API response structure
+{
+  "ticker": "CTG",
+  "keys": [
+    "ticker",
+    "data",
+    "dataT1"
+  ],
+  "sample": "{\"ticker\":\"CTG\",\"data\":[{\"open\":37800,\"high\":38000,\"low\":37200,\"close\":37750,\"volume\":10259616,\"tradingDate\":\"2025-04-15T00:00:00.000Z\"}],\"dataT1\":null}"
+}
+--------------------------------------------------------------------------------
+[2025-04-16T10:05:25.406Z] [INFO] Successfully fetched market data
+{
+  "ticker": "CTG",
+  "latestEntry": {
+    "open": 37800,
+    "high": 38000,
+    "low": 37200,
+    "close": 37750,
+    "volume": 10259616,
+    "tradingDate": "2025-04-15T00:00:00.000Z"
+  }
+}
+--------------------------------------------------------------------------------
+[2025-04-16T10:05:25.406Z] [INFO] Batch market data fetch completed
+{
+  "totalRequested": 1,
+  "successful": 1,
+  "failed": 0
+}
+--------------------------------------------------------------------------------
+[2025-04-16T10:20:13.105Z] [INFO] Market data request received
+{
+  "userId": "cm9jmvfrn0000ze7x00j5yfop",
+  "tickers": [
+    "CTG"
+  ],
+  "cacheDuration": "60 minutes"
+}
+--------------------------------------------------------------------------------
+[2025-04-16T10:20:13.106Z] [DEBUG] Starting market data fetch with caching
+{
+  "tickers": [
+    "CTG"
+  ]
+}
+--------------------------------------------------------------------------------
+[2025-04-16T10:20:13.110Z] [INFO] Cache MISS for CTG
+--------------------------------------------------------------------------------
+[2025-04-16T10:20:13.111Z] [INFO] Fetching market data from TCBS API
+{
+  "ticker": "CTG",
+  "from": 1744626013,
+  "to": 1744712413,
+  "url": "\"https://apipubaws.tcbs.com.vn\"\n/stock-insight/v1/stock/bars-long-term?ticker=CTG&type=stock&resolution=D&from=1744626013&to=1744712413"
+}
+--------------------------------------------------------------------------------
+[2025-04-16T10:20:13.114Z] [ERROR] Exception during TCBS API call
+{
+  "ticker": "CTG",
+  "error": "Failed to parse URL from \"https://apipubaws.tcbs.com.vn\"\n/stock-insight/v1/stock/bars-long-term?ticker=CTG&type=stock&resolution=D&from=1744626013&to=1744712413",
+  "stack": "TypeError: Failed to parse URL from \"https://apipubaws.tcbs.com.vn\"\n/stock-insight/v1/stock/bars-long-term?ticker=CTG&type=stock&resolution=D&from=1744626013&to=1744712413\n    at new Request (node:internal/deps/undici/undici:5057:19)\n    at dedupeFetch (webpack-internal:///(rsc)/./node_modules/next/dist/server/lib/dedupe-fetch.js:103:87)\n    at doOriginalFetch (webpack-internal:///(rsc)/./node_modules/next/dist/server/lib/patch-fetch.js:431:24)\n    at eval (webpack-internal:///(rsc)/./node_modules/next/dist/server/lib/patch-fetch.js:685:24)\n    at eval (webpack-internal:///(rsc)/./node_modules/next/dist/server/lib/trace/tracer.js:161:36)\n    at NoopContextManager.with (webpack-internal:///(rsc)/./node_modules/next/dist/compiled/@opentelemetry/api/index.js:1:7062)\n    at ContextAPI.with (webpack-internal:///(rsc)/./node_modules/next/dist/compiled/@opentelemetry/api/index.js:1:518)\n    at NoopTracer.startActiveSpan (webpack-internal:///(rsc)/./node_modules/next/dist/compiled/@opentelemetry/api/index.js:1:18093)\n    at ProxyTracer.startActiveSpan (webpack-internal:///(rsc)/./node_modules/next/dist/compiled/@opentelemetry/api/index.js:1:18854)\n    at eval (webpack-internal:///(rsc)/./node_modules/next/dist/server/lib/trace/tracer.js:143:103)\n    at NoopContextManager.with (webpack-internal:///(rsc)/./node_modules/next/dist/compiled/@opentelemetry/api/index.js:1:7062)\n    at ContextAPI.with (webpack-internal:///(rsc)/./node_modules/next/dist/compiled/@opentelemetry/api/index.js:1:518)\n    at NextTracerImpl.trace (webpack-internal:///(rsc)/./node_modules/next/dist/server/lib/trace/tracer.js:143:28)\n    at patched (webpack-internal:///(rsc)/./node_modules/next/dist/server/lib/patch-fetch.js:148:49)\n    at fetchMarketData (webpack-internal:///(rsc)/./app/api/market-data/route.js:33:32)\n    at getStockPriceWithCache (webpack-internal:///(rsc)/./app/api/market-data/route.js:156:33)\n    at async eval (webpack-internal:///(rsc)/./app/api/market-data/route.js:261:26)\n    at async Promise.all (index 0)\n    at async GET (webpack-internal:///(rsc)/./app/api/market-data/route.js:259:25)\n    at async AppRouteRouteModule.do (/home/wsladmin/trading-journal/node_modules/next/dist/compiled/next-server/app-route.runtime.dev.js:26:34112)\n    at async AppRouteRouteModule.handle (/home/wsladmin/trading-journal/node_modules/next/dist/compiled/next-server/app-route.runtime.dev.js:26:41338)\n    at async doRender (/home/wsladmin/trading-journal/node_modules/next/dist/server/base-server.js:1513:42)\n    at async DevServer.renderToResponseWithComponentsImpl (/home/wsladmin/trading-journal/node_modules/next/dist/server/base-server.js:1915:28)\n    at async DevServer.renderPageComponent (/home/wsladmin/trading-journal/node_modules/next/dist/server/base-server.js:2403:24)\n    at async DevServer.renderToResponseImpl (/home/wsladmin/trading-journal/node_modules/next/dist/server/base-server.js:2440:32)\n    at async DevServer.pipeImpl (/home/wsladmin/trading-journal/node_modules/next/dist/server/base-server.js:1007:25)\n    at async NextNodeServer.handleCatchallRenderRequest (/home/wsladmin/trading-journal/node_modules/next/dist/server/next-server.js:305:17)\n    at async DevServer.handleRequestImpl (/home/wsladmin/trading-journal/node_modules/next/dist/server/base-server.js:899:17)\n    at async /home/wsladmin/trading-journal/node_modules/next/dist/server/dev/next-dev-server.js:371:20\n    at async Span.traceAsyncFn (/home/wsladmin/trading-journal/node_modules/next/dist/trace/trace.js:157:20)\n    at async DevServer.handleRequest (/home/wsladmin/trading-journal/node_modules/next/dist/server/dev/next-dev-server.js:368:24)\n    at async invokeRender (/home/wsladmin/trading-journal/node_modules/next/dist/server/lib/router-server.js:237:21)\n    at async handleRequest (/home/wsladmin/trading-journal/node_modules/next/dist/server/lib/router-server.js:428:24)\n    at async requestHandlerImpl (/home/wsladmin/trading-journal/node_modules/next/dist/server/lib/router-server.js:452:13)\n    at async Server.requestListener (/home/wsladmin/trading-journal/node_modules/next/dist/server/lib/start-server.js:158:13)"
+}
+--------------------------------------------------------------------------------
+[2025-04-16T10:20:13.376Z] [ERROR] Failed to fetch fresh data for CTG
+{
+  "error": "Failed to parse URL from \"https://apipubaws.tcbs.com.vn\"\n/stock-insight/v1/stock/bars-long-term?ticker=CTG&type=stock&resolution=D&from=1744626013&to=1744712413"
+}
+--------------------------------------------------------------------------------
+[2025-04-16T10:20:13.376Z] [INFO] Market data fetch completed
+{
+  "totalRequested": 1,
+  "cacheHits": 0,
+  "cacheMisses": 0,
+  "errors": 1,
+  "duration": "273ms"
+}
+--------------------------------------------------------------------------------
+[2025-04-16T10:20:13.402Z] [INFO] Market data request received
+{
+  "userId": "cm9jmvfrn0000ze7x00j5yfop",
+  "tickers": [
+    "CTG"
+  ],
+  "cacheDuration": "60 minutes"
+}
+--------------------------------------------------------------------------------
+[2025-04-16T10:20:13.402Z] [DEBUG] Starting market data fetch with caching
+{
+  "tickers": [
+    "CTG"
+  ]
+}
+--------------------------------------------------------------------------------
+[2025-04-16T10:20:13.404Z] [INFO] Cache MISS for CTG
+--------------------------------------------------------------------------------
+[2025-04-16T10:20:13.405Z] [INFO] Fetching market data from TCBS API
+{
+  "ticker": "CTG",
+  "from": 1744626013,
+  "to": 1744712413,
+  "url": "\"https://apipubaws.tcbs.com.vn\"\n/stock-insight/v1/stock/bars-long-term?ticker=CTG&type=stock&resolution=D&from=1744626013&to=1744712413"
+}
+--------------------------------------------------------------------------------
+[2025-04-16T10:20:13.405Z] [ERROR] Exception during TCBS API call
+{
+  "ticker": "CTG",
+  "error": "Failed to parse URL from \"https://apipubaws.tcbs.com.vn\"\n/stock-insight/v1/stock/bars-long-term?ticker=CTG&type=stock&resolution=D&from=1744626013&to=1744712413",
+  "stack": "TypeError: Failed to parse URL from \"https://apipubaws.tcbs.com.vn\"\n/stock-insight/v1/stock/bars-long-term?ticker=CTG&type=stock&resolution=D&from=1744626013&to=1744712413\n    at new Request (node:internal/deps/undici/undici:5057:19)\n    at dedupeFetch (webpack-internal:///(rsc)/./node_modules/next/dist/server/lib/dedupe-fetch.js:103:87)\n    at doOriginalFetch (webpack-internal:///(rsc)/./node_modules/next/dist/server/lib/patch-fetch.js:431:24)\n    at eval (webpack-internal:///(rsc)/./node_modules/next/dist/server/lib/patch-fetch.js:685:24)\n    at eval (webpack-internal:///(rsc)/./node_modules/next/dist/server/lib/trace/tracer.js:161:36)\n    at NoopContextManager.with (webpack-internal:///(rsc)/./node_modules/next/dist/compiled/@opentelemetry/api/index.js:1:7062)\n    at ContextAPI.with (webpack-internal:///(rsc)/./node_modules/next/dist/compiled/@opentelemetry/api/index.js:1:518)\n    at NoopTracer.startActiveSpan (webpack-internal:///(rsc)/./node_modules/next/dist/compiled/@opentelemetry/api/index.js:1:18093)\n    at ProxyTracer.startActiveSpan (webpack-internal:///(rsc)/./node_modules/next/dist/compiled/@opentelemetry/api/index.js:1:18854)\n    at eval (webpack-internal:///(rsc)/./node_modules/next/dist/server/lib/trace/tracer.js:143:103)\n    at NoopContextManager.with (webpack-internal:///(rsc)/./node_modules/next/dist/compiled/@opentelemetry/api/index.js:1:7062)\n    at ContextAPI.with (webpack-internal:///(rsc)/./node_modules/next/dist/compiled/@opentelemetry/api/index.js:1:518)\n    at NextTracerImpl.trace (webpack-internal:///(rsc)/./node_modules/next/dist/server/lib/trace/tracer.js:143:28)\n    at patched (webpack-internal:///(rsc)/./node_modules/next/dist/server/lib/patch-fetch.js:148:49)\n    at fetchMarketData (webpack-internal:///(rsc)/./app/api/market-data/route.js:33:32)\n    at getStockPriceWithCache (webpack-internal:///(rsc)/./app/api/market-data/route.js:156:33)\n    at async eval (webpack-internal:///(rsc)/./app/api/market-data/route.js:261:26)\n    at async Promise.all (index 0)\n    at async GET (webpack-internal:///(rsc)/./app/api/market-data/route.js:259:25)\n    at async AppRouteRouteModule.do (/home/wsladmin/trading-journal/node_modules/next/dist/compiled/next-server/app-route.runtime.dev.js:26:34112)\n    at async AppRouteRouteModule.handle (/home/wsladmin/trading-journal/node_modules/next/dist/compiled/next-server/app-route.runtime.dev.js:26:41338)\n    at async doRender (/home/wsladmin/trading-journal/node_modules/next/dist/server/base-server.js:1513:42)\n    at async DevServer.renderToResponseWithComponentsImpl (/home/wsladmin/trading-journal/node_modules/next/dist/server/base-server.js:1915:28)\n    at async DevServer.renderPageComponent (/home/wsladmin/trading-journal/node_modules/next/dist/server/base-server.js:2403:24)\n    at async DevServer.renderToResponseImpl (/home/wsladmin/trading-journal/node_modules/next/dist/server/base-server.js:2440:32)\n    at async DevServer.pipeImpl (/home/wsladmin/trading-journal/node_modules/next/dist/server/base-server.js:1007:25)\n    at async NextNodeServer.handleCatchallRenderRequest (/home/wsladmin/trading-journal/node_modules/next/dist/server/next-server.js:305:17)\n    at async DevServer.handleRequestImpl (/home/wsladmin/trading-journal/node_modules/next/dist/server/base-server.js:899:17)\n    at async /home/wsladmin/trading-journal/node_modules/next/dist/server/dev/next-dev-server.js:371:20\n    at async Span.traceAsyncFn (/home/wsladmin/trading-journal/node_modules/next/dist/trace/trace.js:157:20)\n    at async DevServer.handleRequest (/home/wsladmin/trading-journal/node_modules/next/dist/server/dev/next-dev-server.js:368:24)\n    at async invokeRender (/home/wsladmin/trading-journal/node_modules/next/dist/server/lib/router-server.js:237:21)\n    at async handleRequest (/home/wsladmin/trading-journal/node_modules/next/dist/server/lib/router-server.js:428:24)\n    at async requestHandlerImpl (/home/wsladmin/trading-journal/node_modules/next/dist/server/lib/router-server.js:452:13)\n    at async Server.requestListener (/home/wsladmin/trading-journal/node_modules/next/dist/server/lib/start-server.js:158:13)"
+}
+--------------------------------------------------------------------------------
+[2025-04-16T10:20:13.520Z] [ERROR] Failed to fetch fresh data for CTG
+{
+  "error": "Failed to parse URL from \"https://apipubaws.tcbs.com.vn\"\n/stock-insight/v1/stock/bars-long-term?ticker=CTG&type=stock&resolution=D&from=1744626013&to=1744712413"
+}
+--------------------------------------------------------------------------------
+[2025-04-16T10:20:13.520Z] [INFO] Market data fetch completed
+{
+  "totalRequested": 1,
+  "cacheHits": 0,
+  "cacheMisses": 0,
+  "errors": 1,
+  "duration": "120ms"
+}
+--------------------------------------------------------------------------------
+[2025-04-16T10:22:36.443Z] [INFO] Market data request received
+{
+  "userId": "cm9jmvfrn0000ze7x00j5yfop",
+  "tickers": [
+    "CTG"
+  ],
+  "cacheDuration": "60 minutes"
+}
+--------------------------------------------------------------------------------
+[2025-04-16T10:22:36.443Z] [DEBUG] Starting market data fetch with caching
+{
+  "tickers": [
+    "CTG"
+  ]
+}
+--------------------------------------------------------------------------------
+[2025-04-16T10:22:36.447Z] [INFO] Cache MISS for CTG
+--------------------------------------------------------------------------------
+[2025-04-16T10:22:36.448Z] [INFO] Fetching market data from TCBS API
+{
+  "ticker": "CTG",
+  "from": 1744626156,
+  "to": 1744712556,
+  "url": "https://apipubaws.tcbs.com.vn/stock-insight/v1/stock/bars-long-term?ticker=CTG&type=stock&resolution=D&from=1744626156&to=1744712556"
+}
+--------------------------------------------------------------------------------
+[2025-04-16T10:22:36.721Z] [INFO] TCBS API response status
+{
+  "ticker": "CTG",
+  "status": 200
+}
+--------------------------------------------------------------------------------
+[2025-04-16T10:22:36.723Z] [DEBUG] API response structure
+{
+  "ticker": "CTG",
+  "keys": [
+    "ticker",
+    "data",
+    "dataT1"
+  ],
+  "sample": "{\"ticker\":\"CTG\",\"data\":[{\"open\":37800,\"high\":38000,\"low\":37200,\"close\":37750,\"volume\":10259616,\"tradingDate\":\"2025-04-15T00:00:00.000Z\"}],\"dataT1\":null}"
+}
+--------------------------------------------------------------------------------
+[2025-04-16T10:22:36.723Z] [INFO] Successfully fetched market data
+{
+  "ticker": "CTG",
+  "latestEntry": {
+    "open": 37800,
+    "high": 38000,
+    "low": 37200,
+    "close": 37750,
+    "volume": 10259616,
+    "tradingDate": "2025-04-15T00:00:00.000Z"
+  }
+}
+--------------------------------------------------------------------------------
+[2025-04-16T10:22:36.728Z] [INFO] Updated cache for CTG
+{
+  "price": 37750,
+  "timestamp": "2025-04-16T10:22:36.443Z"
+}
+--------------------------------------------------------------------------------
+[2025-04-16T10:22:36.729Z] [INFO] Market data fetch completed
+{
+  "totalRequested": 1,
+  "cacheHits": 0,
+  "cacheMisses": 1,
+  "errors": 0,
+  "duration": "298ms"
+}
+--------------------------------------------------------------------------------
+[2025-04-16T10:22:51.738Z] [INFO] Market data request received
+{
+  "userId": "cm9jmvfrn0000ze7x00j5yfop",
+  "tickers": [
+    "CTG"
+  ],
+  "cacheDuration": "60 minutes"
+}
+--------------------------------------------------------------------------------
+[2025-04-16T10:22:51.739Z] [DEBUG] Starting market data fetch with caching
+{
+  "tickers": [
+    "CTG"
+  ]
+}
+--------------------------------------------------------------------------------
+[2025-04-16T10:22:51.741Z] [INFO] Cache HIT for CTG
+{
+  "cacheAge": "0 minutes old"
+}
+--------------------------------------------------------------------------------
+[2025-04-16T10:22:51.741Z] [INFO] Market data fetch completed
+{
+  "totalRequested": 1,
+  "cacheHits": 1,
+  "cacheMisses": 0,
+  "errors": 0,
+  "duration": "6ms"
+}
+--------------------------------------------------------------------------------
+[2025-04-16T10:22:51.762Z] [INFO] Market data request received
+{
+  "userId": "cm9jmvfrn0000ze7x00j5yfop",
+  "tickers": [
+    "CTG"
+  ],
+  "cacheDuration": "60 minutes"
+}
+--------------------------------------------------------------------------------
+[2025-04-16T10:22:51.762Z] [DEBUG] Starting market data fetch with caching
+{
+  "tickers": [
+    "CTG"
+  ]
+}
+--------------------------------------------------------------------------------
+[2025-04-16T10:22:51.765Z] [INFO] Cache HIT for CTG
+{
+  "cacheAge": "0 minutes old"
+}
+--------------------------------------------------------------------------------
+[2025-04-16T10:22:51.765Z] [INFO] Market data fetch completed
+{
+  "totalRequested": 1,
+  "cacheHits": 1,
+  "cacheMisses": 0,
+  "errors": 0,
+  "duration": "12ms"
+}
+--------------------------------------------------------------------------------
+[2025-04-16T10:23:05.218Z] [INFO] Market data request received
+{
+  "userId": "cm9jmvfrn0000ze7x00j5yfop",
+  "tickers": [
+    "CTG"
+  ],
+  "cacheDuration": "60 minutes"
+}
+--------------------------------------------------------------------------------
+[2025-04-16T10:23:05.218Z] [DEBUG] Starting market data fetch with caching
+{
+  "tickers": [
+    "CTG"
+  ]
+}
+--------------------------------------------------------------------------------
+[2025-04-16T10:23:05.221Z] [INFO] Cache HIT for CTG
+{
+  "cacheAge": "0 minutes old"
+}
+--------------------------------------------------------------------------------
+[2025-04-16T10:23:05.221Z] [INFO] Market data fetch completed
+{
+  "totalRequested": 1,
+  "cacheHits": 1,
+  "cacheMisses": 0,
+  "errors": 0,
+  "duration": "5ms"
+}
+--------------------------------------------------------------------------------
+[2025-04-16T10:23:05.235Z] [INFO] Market data request received
+{
+  "userId": "cm9jmvfrn0000ze7x00j5yfop",
+  "tickers": [
+    "CTG"
+  ],
+  "cacheDuration": "60 minutes"
+}
+--------------------------------------------------------------------------------
+[2025-04-16T10:23:05.235Z] [DEBUG] Starting market data fetch with caching
+{
+  "tickers": [
+    "CTG"
+  ]
+}
+--------------------------------------------------------------------------------
+[2025-04-16T10:23:05.237Z] [INFO] Cache HIT for CTG
+{
+  "cacheAge": "0 minutes old"
+}
+--------------------------------------------------------------------------------
+[2025-04-16T10:23:05.237Z] [INFO] Market data fetch completed
+{
+  "totalRequested": 1,
+  "cacheHits": 1,
+  "cacheMisses": 0,
+  "errors": 0,
+  "duration": "6ms"
+}
+--------------------------------------------------------------------------------
+[2025-04-16T10:23:46.411Z] [INFO] Market data request received
+{
+  "userId": "cm9jmvfrn0000ze7x00j5yfop",
+  "tickers": [
+    "CTG"
+  ],
+  "cacheDuration": "60 minutes"
+}
+--------------------------------------------------------------------------------
+[2025-04-16T10:23:46.412Z] [DEBUG] Starting market data fetch with caching
+{
+  "tickers": [
+    "CTG"
+  ]
+}
+--------------------------------------------------------------------------------
+[2025-04-16T10:23:46.416Z] [INFO] Cache HIT for CTG
+{
+  "cacheAge": "1 minutes old"
+}
+--------------------------------------------------------------------------------
+[2025-04-16T10:23:46.416Z] [INFO] Market data fetch completed
+{
+  "totalRequested": 1,
+  "cacheHits": 1,
+  "cacheMisses": 0,
+  "errors": 0,
+  "duration": "7ms"
+}
+--------------------------------------------------------------------------------
+[2025-04-16T10:23:46.427Z] [INFO] Market data request received
+{
+  "userId": "cm9jmvfrn0000ze7x00j5yfop",
+  "tickers": [
+    "CTG"
+  ],
+  "cacheDuration": "60 minutes"
+}
+--------------------------------------------------------------------------------
+[2025-04-16T10:23:46.428Z] [DEBUG] Starting market data fetch with caching
+{
+  "tickers": [
+    "CTG"
+  ]
+}
+--------------------------------------------------------------------------------
+[2025-04-16T10:23:46.431Z] [INFO] Cache HIT for CTG
+{
+  "cacheAge": "1 minutes old"
+}
+--------------------------------------------------------------------------------
+[2025-04-16T10:23:46.431Z] [INFO] Market data fetch completed
+{
+  "totalRequested": 1,
+  "cacheHits": 1,
+  "cacheMisses": 0,
+  "errors": 0,
+  "duration": "6ms"
+}
+--------------------------------------------------------------------------------

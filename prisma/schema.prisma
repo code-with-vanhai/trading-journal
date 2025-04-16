@@ -106,3 +106,18 @@ model Strategy {
   @@index([createdAt(sort: Desc)]) // Index for fetching newest first
   @@index([userId])
 }
+
+// Stock price cache for optimizing TCBS API calls
+model StockPriceCache {
+  id            String   @id @default(cuid())
+  symbol        String   @unique // Stock ticker symbol
+  price         Float    // Last fetched price
+  lastUpdatedAt DateTime // When the price was last updated from TCBS
+  source        String   @default("tcbs") // Source of the price data, for future extensibility
+  metadata      Json?    // Additional data like high, low, volume, etc. (optional)
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  @@index([symbol])
+  @@index([lastUpdatedAt])
+}

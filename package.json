@@ -8,6 +8,8 @@
     "start": "next start",
     "lint": "next lint",
     "prisma:generate": "prisma generate",
+    "cleanup:cache": "node scripts/cleanup-cache.js",
+    "cleanup:cache:dry": "node scripts/cleanup-cache.js --dry-run",
     "debug:tcbs": "node debug-tcbs-api.js",
     "debug:market-data": "node check-market-data.js",
     "test:market-data": "node test-market-data-function.js"
