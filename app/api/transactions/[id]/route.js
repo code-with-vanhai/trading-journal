@@ -3,11 +3,29 @@ import { getServerSession } from 'next-auth/next';
 import { PrismaClient } from '@prisma/client';
 import { authOptions } from '../../auth/[...nextauth]/route';
 
-const prisma = new PrismaClient();
+// Create a single Prisma instance with query logging in development
+const globalForPrisma = global;
+
+// Enable query logging in development to help debug slow queries
+const prismaClientSingleton = () => {
+  const prisma = new PrismaClient({
+    log: process.env.NODE_ENV === 'development' ? ['query', 'error', 'warn'] : ['error'],
+  });
+  return prisma;
+};
+
+globalForPrisma.prisma = globalForPrisma.prisma || prismaClientSingleton();
+const prisma = globalForPrisma.prisma;
+
+// Improved caching with longer TTL for single transaction fetches
+const singleTransactionCache = new Map();
+const CACHE_TTL = 3 * 60 * 1000; // 3 minutes cache TTL for individual transactions
+const MAX_CACHE_SIZE = 1000; // Limit cache size to prevent memory leaks
 
 // GET - Fetch a transaction by ID
 export async function GET(request, { params }) {
   try {
+    const startTime = Date.now();
     const session = await getServerSession(authOptions);
     
     if (!session) {
@@ -17,22 +35,103 @@ export async function GET(request, { params }) {
     // Await params in Next.js 15
     const resolvedParams = await params;
     const id = resolvedParams.id;
+    
+    // Create cache key
+    const cacheKey = `${session.user.id}-${id}`;
+    
+    // Check cache first
+    const cachedTransaction = singleTransactionCache.get(cacheKey);
+    if (cachedTransaction && cachedTransaction.timestamp > Date.now() - CACHE_TTL) {
+      console.log(`[Transaction API] Cache hit for ID ${id} - ${Date.now() - startTime}ms`);
+      return NextResponse.json(cachedTransaction.data);
+    }
 
-    // Check if transaction exists and belongs to the current user
-    const transaction = await prisma.transaction.findUnique({
-      where: { 
-        id,
-        userId: session.user.id
-      },
-      include: {
-        journalEntry: true
-      }
-    });
+    // Optimize for direct primary key lookup with a raw query
+    // This avoids the ORM overhead for a simple primary key lookup
+    const transactions = await prisma.$queryRaw`
+      SELECT 
+        t.id, t.ticker, t.type, t.quantity, t.price, 
+        t."transactionDate", t.fee, t."taxRate", t."calculatedPl", 
+        t.notes, t."createdAt", t."updatedAt",
+        j.id as "journalId", j."emotionOnEntry", j."emotionOnExit", 
+        j."strategyUsed", j."postTradeReview", j."createdAt" as "journalCreatedAt", 
+        j."updatedAt" as "journalUpdatedAt"
+      FROM "Transaction" t
+      LEFT JOIN "JournalEntry" j ON t.id = j."transactionId"
+      WHERE t.id = ${id} AND t."userId" = ${session.user.id}
+      LIMIT 1
+    `;
 
-    if (!transaction) {
+    // If no transaction found, return 404
+    if (!transactions || transactions.length === 0) {
       return NextResponse.json({ message: 'Transaction not found' }, { status: 404 });
     }
 
+    const txData = transactions[0];
+
+    // Format the response in the expected structure
+    const transaction = {
+      id: txData.id,
+      userId: session.user.id,
+      ticker: txData.ticker,
+      type: txData.type,
+      quantity: txData.quantity,
+      price: txData.price,
+      transactionDate: txData.transactionDate,
+      fee: txData.fee,
+      taxRate: txData.taxRate,
+      calculatedPl: txData.calculatedPl,
+      notes: txData.notes,
+      createdAt: txData.createdAt,
+      updatedAt: txData.updatedAt,
+      journalEntry: txData.journalId ? {
+        id: txData.journalId,
+        emotionOnEntry: txData.emotionOnEntry,
+        emotionOnExit: txData.emotionOnExit,
+        strategyUsed: txData.strategyUsed,
+        postTradeReview: txData.postTradeReview,
+        createdAt: txData.journalCreatedAt,
+        updatedAt: txData.journalUpdatedAt,
+        tags: []
+      } : null
+    };
+
+    // Only fetch tags if there's a journal entry
+    if (txData.journalId) {
+      const tagResult = await prisma.$queryRaw`
+        SELECT t.id, t.name
+        FROM "Tag" t
+        JOIN "JournalEntryTag" jt ON t.id = jt."tagId"
+        WHERE jt."journalEntryId" = ${txData.journalId}
+      `;
+      
+      if (tagResult && tagResult.length > 0) {
+        transaction.journalEntry.tags = tagResult.map(tag => ({
+          id: tag.id,
+          name: tag.name
+        }));
+      }
+    }
+    
+    // Cache the result
+    singleTransactionCache.set(cacheKey, {
+      data: transaction,
+      timestamp: Date.now()
+    });
+    
+    // Limit cache size by removing oldest entries if needed
+    if (singleTransactionCache.size > MAX_CACHE_SIZE) {
+      const entries = Array.from(singleTransactionCache.entries());
+      entries.sort((a, b) => a[1].timestamp - b[1].timestamp);
+      
+      // Remove the oldest 10% of entries
+      const entriesToRemove = Math.ceil(MAX_CACHE_SIZE * 0.1);
+      for (let i = 0; i < entriesToRemove; i++) {
+        if (entries[i]) singleTransactionCache.delete(entries[i][0]);
+      }
+    }
+    
+    console.log(`[Transaction API] Fetch completed for ID ${id} in ${Date.now() - startTime}ms`);
     return NextResponse.json(transaction);
   } catch (error) {
     console.error('Error fetching transaction:', error);
@@ -64,19 +163,20 @@ export async function PUT(request, { params }) {
       where: { 
         id,
         userId: session.user.id
-      }
+      },
+      select: { id: true } // Only select the id field for performance
     });
 
     if (!existingTransaction) {
       return NextResponse.json({ message: 'Transaction not found' }, { status: 404 });
     }
 
-    // Calculate P/L for SELL transactions
+    // Calculate P/L for SELL transactions - implement properly here
     let calculatedPl = null;
     if (type === 'SELL') {
-      // Call the calculation function (reuse from the main route.js)
-      // For brevity, this is simplified here - in a real app you would refactor this to a shared util
-      calculatedPl = 0; // Placeholder
+      // For a production app, you'd implement the proper calculation
+      // For now, we'll just use a placeholder
+      calculatedPl = 0;
     }
 
     // Update the transaction
@@ -94,6 +194,17 @@ export async function PUT(request, { params }) {
         notes,
       },
     });
+
+    // Clear cache entries for this transaction
+    const cacheKey = `${session.user.id}-${id}`;
+    singleTransactionCache.delete(cacheKey);
+    
+    // Clear list cache entries for this user
+    for (const [key, _] of singleTransactionCache.entries()) {
+      if (key.startsWith(`recent-${session.user.id}`) || key.includes(`"userId":"${session.user.id}"`)) {
+        singleTransactionCache.delete(key);
+      }
+    }
 
     return NextResponse.json(updatedTransaction);
   } catch (error) {
@@ -118,12 +229,13 @@ export async function DELETE(request, { params }) {
     const resolvedParams = await params;
     const id = resolvedParams.id;
 
-    // Check if transaction exists and belongs to the current user
+    // Check if transaction exists and belongs to the current user - use a lightweight query
     const transaction = await prisma.transaction.findUnique({
       where: { 
         id,
         userId: session.user.id
-      }
+      },
+      select: { id: true } // Only select the id field for better performance
     });
 
     if (!transaction) {
@@ -134,6 +246,17 @@ export async function DELETE(request, { params }) {
     await prisma.transaction.delete({
       where: { id },
     });
+
+    // Clear related cache entries
+    const cacheKey = `${session.user.id}-${id}`;
+    singleTransactionCache.delete(cacheKey);
+    
+    // Clear list cache entries for this user
+    for (const [key, _] of singleTransactionCache.entries()) {
+      if (key.startsWith(`recent-${session.user.id}`) || key.includes(`"userId":"${session.user.id}"`)) {
+        singleTransactionCache.delete(key);
+      }
+    }
 
     return NextResponse.json({ message: 'Transaction deleted successfully' });
   } catch (error) {
