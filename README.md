@@ -1,6 +1,10 @@
 # Trading Journal
 
 A comprehensive web application for traders to log, analyze, and reflect on their stock market transactions, track portfolio performance, and share trading strategies.
+![image](https://github.com/user-attachments/assets/72ca3164-57a3-4578-bc86-7653e76a0fee)
+![image](https://github.com/user-attachments/assets/09b2f743-fbaf-49de-9cc6-74c9ffefe9ea)
+
+
 
 ## Tech Stack
 
