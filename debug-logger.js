@@ -13,6 +13,7 @@ const LOG_LEVELS = {
 const LOG_DIR = path.join(process.cwd(), 'logs');
 const LOG_FILE = path.join(LOG_DIR, 'api-calls.log');
 const TCBS_LOG_FILE = path.join(LOG_DIR, 'tcbs-api.log');
+const MAX_LOG_SIZE = 3 * 1024 * 1024; // 3MB in bytes
 
 // Ensure log directory exists
 try {
@@ -24,6 +25,36 @@ try {
 }
 
 /**
+ * Rotates the log file if it exceeds the maximum size
+ * Deletes old log content instead of keeping it
+ * @param {string} filePath - Path to the log file
+ */
+function rotateLogFileIfNeeded(filePath) {
+  try {
+    // Check if file exists first
+    if (!fs.existsSync(filePath)) {
+      return; // File doesn't exist yet, no need to rotate
+    }
+
+    const stats = fs.statSync(filePath);
+    
+    // If file size exceeds the maximum, delete it and create a new one
+    if (stats.size >= MAX_LOG_SIZE) {
+      // Delete the existing log file
+      fs.unlinkSync(filePath);
+      
+      // Create a new empty log file with rotation message
+      const rotationMessage = `[${new Date().toISOString()}] [INFO] Log file rotated. Old log was deleted to free up storage.\n`;
+      fs.writeFileSync(filePath, rotationMessage);
+      
+      console.log(`Rotated log file: ${filePath} - old content deleted`);
+    }
+  } catch (err) {
+    console.error('Error rotating log file:', err);
+  }
+}
+
+/**
  * Write log message to a specific file
  * @param {string} file - Log file path
  * @param {string} level - Log level
@@ -32,6 +63,11 @@ try {
  */
 function logToSpecificFile(file, level, message, data = null) {
   try {
+    // Check if file needs rotation before writing
+    if (file === TCBS_LOG_FILE) {
+      rotateLogFileIfNeeded(file);
+    }
+    
     const timestamp = new Date().toISOString();
     let logMessage = `[${timestamp}] [${level}] ${message}`;
     

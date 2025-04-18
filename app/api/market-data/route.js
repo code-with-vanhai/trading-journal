@@ -11,6 +11,9 @@ const prisma = globalForPrisma.prisma;
 
 // Cache duration in milliseconds (1 hour default)
 const CACHE_DURATION_MS = parseInt(process.env.STOCK_PRICE_CACHE_DURATION || '3600000', 10);
+// Add a memory cache to supplement the database cache
+const memoryCache = new Map();
+const MEMORY_CACHE_TTL = 10 * 60 * 1000; // 10 minutes
 
 export async function fetchMarketData(ticker, from, to) {
   // Fix: Use proper URL construction to avoid malformed URLs
@@ -111,19 +114,33 @@ export async function fetchMarketData(ticker, from, to) {
   }
 }
 
-// Check cache and update if needed
+// Update getStockPriceWithCache to first check memory cache
 async function getStockPriceWithCache(ticker) {
-  const now = new Date();
+  const now = Date.now();
+  const cacheKey = `price-${ticker}`;
   
   try {
-    // Check for existing cache entry
+    // Check memory cache first (fastest)
+    if (memoryCache.has(cacheKey)) {
+      const memData = memoryCache.get(cacheKey);
+      if (now - memData.timestamp < MEMORY_CACHE_TTL) {
+        tcbsLogger.debug(`Memory cache HIT for ${ticker}`);
+        return {
+          ...memData.data,
+          source: 'memory-cache',
+          cached: true
+        };
+      }
+    }
+    
+    // Check for existing cache entry in database
     const cacheEntry = await prisma.stockPriceCache.findUnique({
       where: { symbol: ticker }
     });
     
     // If cache entry exists and is not expired
     if (cacheEntry) {
-      const cacheAge = now.getTime() - cacheEntry.lastUpdatedAt.getTime();
+      const cacheAge = now - cacheEntry.lastUpdatedAt.getTime();
       
       if (cacheAge < CACHE_DURATION_MS) {
         // Cache hit - use cached data
@@ -131,12 +148,20 @@ async function getStockPriceWithCache(ticker) {
           cacheAge: `${Math.round(cacheAge / 1000 / 60)} minutes old`
         });
         
-        return {
+        const result = {
           price: cacheEntry.price,
-          source: 'cache',
+          source: 'db-cache',
           cached: true,
           metadata: cacheEntry.metadata
         };
+        
+        // Store in memory cache too
+        memoryCache.set(cacheKey, {
+          data: result,
+          timestamp: now
+        });
+        
+        return result;
       }
       
       // Cache expired
@@ -172,7 +197,7 @@ async function getStockPriceWithCache(ticker) {
       // If we have stale cache data, return it with a flag
       if (cacheEntry) {
         tcbsLogger.info(`Using stale cache for ${ticker} due to API error`);
-        return {
+        const result = {
           price: cacheEntry.price,
           source: 'stale-cache',
           cached: true,
@@ -180,6 +205,14 @@ async function getStockPriceWithCache(ticker) {
           error: freshData.error,
           metadata: cacheEntry.metadata
         };
+        
+        // Store in memory cache too (with a shorter TTL)
+        memoryCache.set(cacheKey, {
+          data: result,
+          timestamp: now - MEMORY_CACHE_TTL / 2 // Half the normal TTL for stale data
+        });
+        
+        return result;
       }
       
       // No cache data and API failed
@@ -190,19 +223,32 @@ async function getStockPriceWithCache(ticker) {
     const price = freshData.price;
     const metadata = freshData.metadata;
     
-    // Store in cache (upsert pattern)
+    // Store in memory cache
+    const result = {
+      price,
+      source: 'api',
+      cached: false,
+      metadata
+    };
+    
+    memoryCache.set(cacheKey, {
+      data: result,
+      timestamp: now
+    });
+    
+    // Store in database cache (upsert pattern)
     await prisma.stockPriceCache.upsert({
       where: { symbol: ticker },
       update: { 
         price,
-        lastUpdatedAt: now,
+        lastUpdatedAt: new Date(now),
         metadata: metadata || {},
-        updatedAt: now 
+        updatedAt: new Date(now)
       },
       create: {
         symbol: ticker,
         price,
-        lastUpdatedAt: now,
+        lastUpdatedAt: new Date(now),
         metadata: metadata || {},
         source: 'tcbs'
       }
@@ -213,12 +259,7 @@ async function getStockPriceWithCache(ticker) {
       timestamp: now
     });
     
-    return {
-      price,
-      source: 'api',
-      cached: false,
-      metadata
-    };
+    return result;
   } catch (error) {
     tcbsLogger.error(`Cache operation error for ${ticker}`, {
       error: error.message,
@@ -246,7 +287,7 @@ async function getStockPriceWithCache(ticker) {
 }
 
 export async function GET(request) {
-  const startTime = Date.now();
+  const startTime = performance.now();
   const session = await getServerSession(authOptions);
   
   if (!session) {
@@ -264,7 +305,21 @@ export async function GET(request) {
     return Response.json({ error: 'Missing tickers parameter' }, { status: 400 });
   }
   
-  const tickerArray = tickers.split(',');
+  const tickerArray = tickers.split(',').map(ticker => ticker.trim().toUpperCase());
+  
+  // Create a cache key for the entire request
+  const batchCacheKey = `batch-${tickerArray.sort().join(',')}`;
+  
+  // Check if we have a cached response for this exact batch of tickers
+  if (memoryCache.has(batchCacheKey)) {
+    const cachedBatch = memoryCache.get(batchCacheKey);
+    if (Date.now() - cachedBatch.timestamp < MEMORY_CACHE_TTL) {
+      tcbsLogger.info(`Batch cache HIT for [${tickerArray.join(',')}]`);
+      const endTime = performance.now();
+      tcbsLogger.info(`Market data API (cached batch) completed in ${Math.round(endTime - startTime)}ms`);
+      return Response.json(cachedBatch.data);
+    }
+  }
   
   tcbsLogger.info(`Market data request received`, { 
     userId: session.user.id,
@@ -277,27 +332,20 @@ export async function GET(request) {
       tickers: tickerArray
     });
     
-    // Fetch all prices with caching
+    // Use Promise.all for parallel processing
+    const fetchStart = performance.now();
     const results = await Promise.all(
       tickerArray.map(async (ticker) => {
-        const ticker_clean = ticker.trim().toUpperCase();
-        const data = await getStockPriceWithCache(ticker_clean);
-        return { ticker: ticker_clean, data };
+        const data = await getStockPriceWithCache(ticker);
+        return { ticker, data };
       })
     );
+    const fetchEnd = performance.now();
     
     // Count cache hits and misses
     const cacheHits = results.filter(r => r.data.cached).length;
     const cacheMisses = results.filter(r => !r.data.cached && !r.data.error).length;
     const errors = results.filter(r => r.data.error).length;
-    
-    tcbsLogger.info(`Market data fetch completed`, { 
-      totalRequested: tickerArray.length,
-      cacheHits,
-      cacheMisses,
-      errors,
-      duration: `${Date.now() - startTime}ms`
-    });
     
     // Convert results to an object with tickers as keys -> prices as values
     const marketData = results.reduce((acc, { ticker, data }) => {
@@ -306,12 +354,29 @@ export async function GET(request) {
       return acc;
     }, {});
     
+    // Cache the entire batch result
+    memoryCache.set(batchCacheKey, {
+      data: marketData,
+      timestamp: Date.now()
+    });
+    
+    const endTime = performance.now();
+    tcbsLogger.info(`Market data fetch completed`, { 
+      totalRequested: tickerArray.length,
+      cacheHits,
+      cacheMisses,
+      errors,
+      fetchTime: `${Math.round(fetchEnd - fetchStart)}ms`,
+      totalTime: `${Math.round(endTime - startTime)}ms`
+    });
+    
     return Response.json(marketData);
   } catch (error) {
+    const endTime = performance.now();
     tcbsLogger.error(`Global exception in market data API`, { 
       error: error.message, 
       stack: error.stack,
-      duration: `${Date.now() - startTime}ms`
+      duration: `${Math.round(endTime - startTime)}ms`
     });
     console.error('Error fetching market data:', error);
     return Response.json({ error: 'Failed to fetch market data' }, { status: 500 });

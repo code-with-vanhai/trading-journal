@@ -16,14 +16,14 @@ export default function HomePage() {
       if (status === 'authenticated') {
         try {
           setLoading(true);
-          const response = await fetch('/api/strategies');
+          const response = await fetch('/api/strategies/latest?limit=3');
           
           if (!response.ok) {
             throw new Error('Không thể lấy dữ liệu chiến lược');
           }
           
           const data = await response.json();
-          setStrategies(data.slice(0, 3)); // Only take the first 3 strategies
+          setStrategies(data);
         } catch (err) {
           console.error('Error fetching strategies:', err);
           setError(err.message);
@@ -120,7 +120,7 @@ export default function HomePage() {
               Chưa có chiến lược nào được chia sẻ. Hãy là người đầu tiên!
             </p>
             <div className="flex justify-center mt-4">
-              <Link href="/strategies" className="btn-primary">
+              <Link href="/strategies?create=true" className="btn-primary">
                 Tạo Chiến Lược
               </Link>
             </div>

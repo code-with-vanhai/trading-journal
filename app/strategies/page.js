@@ -2,24 +2,35 @@
 
 import { useState, useEffect } from 'react';
 import { useSession } from 'next-auth/react';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import StrategyForm from '../components/StrategyForm';
 import StrategyList from '../components/StrategyList';
 
 export default function StrategiesPage() {
   const { data: session, status } = useSession();
   const router = useRouter();
+  const searchParams = useSearchParams();
   const [strategies, setStrategies] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState('');
   const [showForm, setShowForm] = useState(false);
 
-  // Check authentication
+  // Check for query parameter and authentication
   useEffect(() => {
     if (status === 'unauthenticated') {
       router.push('/auth/signin');
+    } else if (status === 'authenticated') {
+      // Check if 'create=true' is in the query parameters
+      const shouldShowForm = searchParams.get('create') === 'true';
+      if (shouldShowForm) {
+        setShowForm(true);
+        // Remove the query parameter from URL to avoid form showing on refresh
+        const url = new URL(window.location.href);
+        url.searchParams.delete('create');
+        window.history.replaceState({}, '', url);
+      }
     }
-  }, [status, router]);
+  }, [status, router, searchParams]);
 
   // Fetch strategies
   useEffect(() => {
@@ -36,7 +47,8 @@ export default function StrategiesPage() {
         throw new Error('Failed to fetch strategies');
       }
       const data = await response.json();
-      setStrategies(data);
+      // Handle both new and old data structure
+      setStrategies(data.strategies || data);
     } catch (err) {
       setError('Error loading strategies: ' + err.message);
       console.error('Fetch error:', err);
