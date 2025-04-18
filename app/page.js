@@ -120,7 +120,7 @@ export default function HomePage() {
               Chưa có chiến lược nào được chia sẻ. Hãy là người đầu tiên!
             </p>
             <div className="flex justify-center mt-4">
-              <Link href="/strategies/new" className="btn-primary">
+              <Link href="/strategies" className="btn-primary">
                 Tạo Chiến Lược
               </Link>
             </div>
