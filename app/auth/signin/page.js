@@ -12,7 +12,7 @@ function SignInContent() {
   const successMessage = searchParams.get('success');
 
   const [formData, setFormData] = useState({
-    email: '',
+    login: '',
     password: '',
   });
   const [error, setError] = useState('');
@@ -42,12 +42,12 @@ function SignInContent() {
     try {
       const result = await signIn('credentials', {
         redirect: false,
-        email: formData.email,
+        login: formData.login,
         password: formData.password,
       });
 
       if (result.error) {
-        setError('Invalid email or password');
+        setError('Invalid email/username or password');
       } else {
         router.push('/'); // Redirect to home page after successful login
         router.refresh();
@@ -89,17 +89,18 @@ function SignInContent() {
         
         <form onSubmit={handleSubmit}>
           <div className="mb-4">
-            <label htmlFor="email" className="form-label">
-              Email
+            <label htmlFor="login" className="form-label">
+              Email or Username
             </label>
             <input
-              id="email"
-              name="email"
-              type="email"
+              id="login"
+              name="login"
+              type="text"
               className="input-field"
-              value={formData.email}
+              value={formData.login}
               onChange={handleChange}
               required
+              placeholder="Enter your email or username"
             />
           </div>
           

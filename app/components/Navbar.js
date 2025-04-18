@@ -19,6 +19,13 @@ export default function Navbar() {
     router.refresh();
   };
 
+  // Function to get the display name (prefer username over name)
+  const getDisplayName = () => {
+    if (session?.user?.username) return session.user.username;
+    if (session?.user?.name) return session.user.name;
+    return session?.user?.email || '';
+  };
+
   return (
     <nav className="bg-white shadow-md">
       <div className="container mx-auto px-4">
@@ -81,7 +88,7 @@ export default function Navbar() {
             {status === 'authenticated' ? (
               <div className="flex items-center gap-4">
                 <span className="text-sm text-gray-700">
-                  {session.user.name || session.user.email}
+                  {getDisplayName()}
                 </span>
                 <button
                   onClick={handleSignOut}
@@ -204,19 +211,17 @@ export default function Navbar() {
               <div className="flex-shrink-0">
                 <div className="h-10 w-10 rounded-full bg-gray-200 flex items-center justify-center">
                   <span className="text-gray-600 font-medium">
-                    {session.user.name?.charAt(0) || session.user.email?.charAt(0) || 'U'}
+                    {(session.user.username?.charAt(0) || session.user.name?.charAt(0) || session.user.email?.charAt(0) || 'U').toUpperCase()}
                   </span>
                 </div>
               </div>
               <div className="ml-3">
                 <div className="text-base font-medium text-gray-800">
-                  {session.user.name || session.user.email}
+                  {getDisplayName()}
                 </div>
-                {session.user.name && (
-                  <div className="text-sm font-medium text-gray-500">
-                    {session.user.email}
-                  </div>
-                )}
+                <div className="text-sm font-medium text-gray-500">
+                  {session.user.email}
+                </div>
               </div>
               <button
                 onClick={handleSignOut}

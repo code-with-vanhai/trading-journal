@@ -1303,3 +1303,389 @@
   "duration": "6ms"
 }
 --------------------------------------------------------------------------------
+[2025-04-18T06:46:21.925Z] [INFO] Market data request received
+{
+  "userId": "cm9mfa0v20000wil7vl0ggv36",
+  "tickers": [
+    "CTG"
+  ],
+  "cacheDuration": "60 minutes"
+}
+--------------------------------------------------------------------------------
+[2025-04-18T06:46:21.927Z] [DEBUG] Starting market data fetch with caching
+{
+  "tickers": [
+    "CTG"
+  ]
+}
+--------------------------------------------------------------------------------
+[2025-04-18T06:46:22.045Z] [INFO] Cache MISS for CTG
+--------------------------------------------------------------------------------
+[2025-04-18T06:46:22.045Z] [INFO] Fetching market data from TCBS API
+{
+  "ticker": "CTG",
+  "from": 1744785982,
+  "to": 1744872382,
+  "url": "https://apipubaws.tcbs.com.vn/stock-insight/v1/stock/bars-long-term?ticker=CTG&type=stock&resolution=D&from=1744785982&to=1744872382"
+}
+--------------------------------------------------------------------------------
+[2025-04-18T06:46:22.333Z] [INFO] TCBS API response status
+{
+  "ticker": "CTG",
+  "status": 200
+}
+--------------------------------------------------------------------------------
+[2025-04-18T06:46:22.334Z] [DEBUG] API response structure
+{
+  "ticker": "CTG",
+  "keys": [
+    "ticker",
+    "data",
+    "dataT1"
+  ],
+  "sample": "{\"ticker\":\"CTG\",\"data\":[{\"open\":37000,\"high\":37350,\"low\":36650,\"close\":37250,\"volume\":8702976,\"tradingDate\":\"2025-04-17T00:00:00.000Z\"}],\"dataT1\":null}"
+}
+--------------------------------------------------------------------------------
+[2025-04-18T06:46:22.334Z] [INFO] Successfully fetched market data
+{
+  "ticker": "CTG",
+  "latestEntry": {
+    "open": 37000,
+    "high": 37350,
+    "low": 36650,
+    "close": 37250,
+    "volume": 8702976,
+    "tradingDate": "2025-04-17T00:00:00.000Z"
+  }
+}
+--------------------------------------------------------------------------------
+[2025-04-18T06:46:22.479Z] [INFO] Updated cache for CTG
+{
+  "price": 37250,
+  "timestamp": "2025-04-18T06:46:21.927Z"
+}
+--------------------------------------------------------------------------------
+[2025-04-18T06:46:22.479Z] [INFO] Market data fetch completed
+{
+  "totalRequested": 1,
+  "cacheHits": 0,
+  "cacheMisses": 1,
+  "errors": 0,
+  "duration": "565ms"
+}
+--------------------------------------------------------------------------------
+[2025-04-18T06:46:22.494Z] [INFO] Market data request received
+{
+  "userId": "cm9mfa0v20000wil7vl0ggv36",
+  "tickers": [
+    "CTG"
+  ],
+  "cacheDuration": "60 minutes"
+}
+--------------------------------------------------------------------------------
+[2025-04-18T06:46:22.494Z] [DEBUG] Starting market data fetch with caching
+{
+  "tickers": [
+    "CTG"
+  ]
+}
+--------------------------------------------------------------------------------
+[2025-04-18T06:46:22.554Z] [INFO] Cache HIT for CTG
+{
+  "cacheAge": "0 minutes old"
+}
+--------------------------------------------------------------------------------
+[2025-04-18T06:46:22.554Z] [INFO] Market data fetch completed
+{
+  "totalRequested": 1,
+  "cacheHits": 1,
+  "cacheMisses": 0,
+  "errors": 0,
+  "duration": "63ms"
+}
+--------------------------------------------------------------------------------
+[2025-04-18T06:50:53.327Z] [INFO] Market data request received
+{
+  "userId": "cm9mfa0v20000wil7vl0ggv36",
+  "tickers": [
+    "CTG"
+  ],
+  "cacheDuration": "60 minutes"
+}
+--------------------------------------------------------------------------------
+[2025-04-18T06:50:53.328Z] [DEBUG] Starting market data fetch with caching
+{
+  "tickers": [
+    "CTG"
+  ]
+}
+--------------------------------------------------------------------------------
+[2025-04-18T06:50:53.444Z] [INFO] Cache HIT for CTG
+{
+  "cacheAge": "5 minutes old"
+}
+--------------------------------------------------------------------------------
+[2025-04-18T06:50:53.445Z] [INFO] Market data fetch completed
+{
+  "totalRequested": 1,
+  "cacheHits": 1,
+  "cacheMisses": 0,
+  "errors": 0,
+  "duration": "123ms"
+}
+--------------------------------------------------------------------------------
+[2025-04-18T06:50:53.459Z] [INFO] Market data request received
+{
+  "userId": "cm9mfa0v20000wil7vl0ggv36",
+  "tickers": [
+    "CTG"
+  ],
+  "cacheDuration": "60 minutes"
+}
+--------------------------------------------------------------------------------
+[2025-04-18T06:50:53.459Z] [DEBUG] Starting market data fetch with caching
+{
+  "tickers": [
+    "CTG"
+  ]
+}
+--------------------------------------------------------------------------------
+[2025-04-18T06:50:53.518Z] [INFO] Cache HIT for CTG
+{
+  "cacheAge": "5 minutes old"
+}
+--------------------------------------------------------------------------------
+[2025-04-18T06:50:53.518Z] [INFO] Market data fetch completed
+{
+  "totalRequested": 1,
+  "cacheHits": 1,
+  "cacheMisses": 0,
+  "errors": 0,
+  "duration": "62ms"
+}
+--------------------------------------------------------------------------------
+[2025-04-18T06:51:07.852Z] [INFO] Market data request received
+{
+  "userId": "cm9mfa0v20000wil7vl0ggv36",
+  "tickers": [
+    "CTG"
+  ],
+  "cacheDuration": "60 minutes"
+}
+--------------------------------------------------------------------------------
+[2025-04-18T06:51:07.853Z] [DEBUG] Starting market data fetch with caching
+{
+  "tickers": [
+    "CTG"
+  ]
+}
+--------------------------------------------------------------------------------
+[2025-04-18T06:51:07.972Z] [INFO] Cache HIT for CTG
+{
+  "cacheAge": "5 minutes old"
+}
+--------------------------------------------------------------------------------
+[2025-04-18T06:51:07.972Z] [INFO] Market data fetch completed
+{
+  "totalRequested": 1,
+  "cacheHits": 1,
+  "cacheMisses": 0,
+  "errors": 0,
+  "duration": "126ms"
+}
+--------------------------------------------------------------------------------
+[2025-04-18T06:51:07.984Z] [INFO] Market data request received
+{
+  "userId": "cm9mfa0v20000wil7vl0ggv36",
+  "tickers": [
+    "CTG"
+  ],
+  "cacheDuration": "60 minutes"
+}
+--------------------------------------------------------------------------------
+[2025-04-18T06:51:07.984Z] [DEBUG] Starting market data fetch with caching
+{
+  "tickers": [
+    "CTG"
+  ]
+}
+--------------------------------------------------------------------------------
+[2025-04-18T06:51:08.040Z] [INFO] Cache HIT for CTG
+{
+  "cacheAge": "5 minutes old"
+}
+--------------------------------------------------------------------------------
+[2025-04-18T06:51:08.041Z] [INFO] Market data fetch completed
+{
+  "totalRequested": 1,
+  "cacheHits": 1,
+  "cacheMisses": 0,
+  "errors": 0,
+  "duration": "60ms"
+}
+--------------------------------------------------------------------------------
+[2025-04-18T07:22:17.313Z] [INFO] Market data request received
+{
+  "userId": "cm9jmvfrn0000ze7x00j5yfop",
+  "tickers": [
+    "CTG"
+  ],
+  "cacheDuration": "60 minutes"
+}
+--------------------------------------------------------------------------------
+[2025-04-18T07:22:17.315Z] [DEBUG] Starting market data fetch with caching
+{
+  "tickers": [
+    "CTG"
+  ]
+}
+--------------------------------------------------------------------------------
+[2025-04-18T07:22:17.321Z] [INFO] Cache EXPIRED for CTG
+{
+  "cacheAge": "2700 minutes old",
+  "cacheDuration": "60 minutes"
+}
+--------------------------------------------------------------------------------
+[2025-04-18T07:22:17.321Z] [INFO] Fetching market data from TCBS API
+{
+  "ticker": "CTG",
+  "from": 1744788137,
+  "to": 1744874537,
+  "url": "https://apipubaws.tcbs.com.vn/stock-insight/v1/stock/bars-long-term?ticker=CTG&type=stock&resolution=D&from=1744788137&to=1744874537"
+}
+--------------------------------------------------------------------------------
+[2025-04-18T07:22:17.563Z] [INFO] TCBS API response status
+{
+  "ticker": "CTG",
+  "status": 200
+}
+--------------------------------------------------------------------------------
+[2025-04-18T07:22:17.564Z] [DEBUG] API response structure
+{
+  "ticker": "CTG",
+  "keys": [
+    "ticker",
+    "data",
+    "dataT1"
+  ],
+  "sample": "{\"ticker\":\"CTG\",\"data\":[{\"open\":37000,\"high\":37350,\"low\":36650,\"close\":37250,\"volume\":8702976,\"tradingDate\":\"2025-04-17T00:00:00.000Z\"}],\"dataT1\":null}"
+}
+--------------------------------------------------------------------------------
+[2025-04-18T07:22:17.564Z] [INFO] Successfully fetched market data
+{
+  "ticker": "CTG",
+  "latestEntry": {
+    "open": 37000,
+    "high": 37350,
+    "low": 36650,
+    "close": 37250,
+    "volume": 8702976,
+    "tradingDate": "2025-04-17T00:00:00.000Z"
+  }
+}
+--------------------------------------------------------------------------------
+[2025-04-18T07:22:17.571Z] [INFO] Updated cache for CTG
+{
+  "price": 37250,
+  "timestamp": "2025-04-18T07:22:17.315Z"
+}
+--------------------------------------------------------------------------------
+[2025-04-18T07:22:17.571Z] [INFO] Market data fetch completed
+{
+  "totalRequested": 1,
+  "cacheHits": 0,
+  "cacheMisses": 1,
+  "errors": 0,
+  "duration": "269ms"
+}
+--------------------------------------------------------------------------------
+[2025-04-18T07:22:17.582Z] [INFO] Market data request received
+{
+  "userId": "cm9jmvfrn0000ze7x00j5yfop",
+  "tickers": [
+    "CTG"
+  ],
+  "cacheDuration": "60 minutes"
+}
+--------------------------------------------------------------------------------
+[2025-04-18T07:22:17.582Z] [DEBUG] Starting market data fetch with caching
+{
+  "tickers": [
+    "CTG"
+  ]
+}
+--------------------------------------------------------------------------------
+[2025-04-18T07:22:17.584Z] [INFO] Cache HIT for CTG
+{
+  "cacheAge": "0 minutes old"
+}
+--------------------------------------------------------------------------------
+[2025-04-18T07:22:17.585Z] [INFO] Market data fetch completed
+{
+  "totalRequested": 1,
+  "cacheHits": 1,
+  "cacheMisses": 0,
+  "errors": 0,
+  "duration": "5ms"
+}
+--------------------------------------------------------------------------------
+[2025-04-18T07:22:21.690Z] [INFO] Market data request received
+{
+  "userId": "cm9jmvfrn0000ze7x00j5yfop",
+  "tickers": [
+    "CTG"
+  ],
+  "cacheDuration": "60 minutes"
+}
+--------------------------------------------------------------------------------
+[2025-04-18T07:22:21.690Z] [DEBUG] Starting market data fetch with caching
+{
+  "tickers": [
+    "CTG"
+  ]
+}
+--------------------------------------------------------------------------------
+[2025-04-18T07:22:21.692Z] [INFO] Cache HIT for CTG
+{
+  "cacheAge": "0 minutes old"
+}
+--------------------------------------------------------------------------------
+[2025-04-18T07:22:21.692Z] [INFO] Market data fetch completed
+{
+  "totalRequested": 1,
+  "cacheHits": 1,
+  "cacheMisses": 0,
+  "errors": 0,
+  "duration": "6ms"
+}
+--------------------------------------------------------------------------------
+[2025-04-18T07:22:21.704Z] [INFO] Market data request received
+{
+  "userId": "cm9jmvfrn0000ze7x00j5yfop",
+  "tickers": [
+    "CTG"
+  ],
+  "cacheDuration": "60 minutes"
+}
+--------------------------------------------------------------------------------
+[2025-04-18T07:22:21.704Z] [DEBUG] Starting market data fetch with caching
+{
+  "tickers": [
+    "CTG"
+  ]
+}
+--------------------------------------------------------------------------------
+[2025-04-18T07:22:21.706Z] [INFO] Cache HIT for CTG
+{
+  "cacheAge": "0 minutes old"
+}
+--------------------------------------------------------------------------------
+[2025-04-18T07:22:21.706Z] [INFO] Market data fetch completed
+{
+  "totalRequested": 1,
+  "cacheHits": 1,
+  "cacheMisses": 0,
+  "errors": 0,
+  "duration": "5ms"
+}
+--------------------------------------------------------------------------------

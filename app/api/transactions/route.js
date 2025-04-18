@@ -213,43 +213,68 @@ export async function GET(request) {
       }
       
       // Optimized query for recent transactions
-      const transactions = await prisma.$queryRaw`
-        SELECT 
-          id, ticker, type, quantity, price, "transactionDate", fee, "taxRate", "calculatedPl", notes,
-          EXISTS(SELECT 1 FROM "JournalEntry" WHERE "transactionId" = "Transaction".id) as "hasJournal"
-        FROM "Transaction"
-        WHERE "userId" = ${session.user.id}
-        ORDER BY "transactionDate" DESC, id DESC
-        LIMIT ${pageSize};
-      `;
+      try {
+        // Instead of using raw SQL which is prone to case sensitivity issues,
+        // let's use Prisma's findMany for better compatibility
+        const transactions = await prisma.transaction.findMany({
+          where: {
+            userId: session.user.id
+          },
+          select: {
+            id: true,
+            ticker: true,
+            type: true,
+            quantity: true,
+            price: true,
+            transactionDate: true,
+            fee: true,
+            taxRate: true,
+            calculatedPl: true,
+            notes: true,
+            journalEntry: {
+              select: {
+                id: true
+              }
+            }
+          },
+          orderBy: [
+            { transactionDate: 'desc' },
+            { id: 'desc' }
+          ],
+          take: pageSize
+        });
+        
+        // Format the results to match the expected structure
+        const formattedTransactions = transactions.map(tx => ({
+          ...tx,
+          journalEntry: tx.journalEntry ? { id: tx.journalEntry.id } : null
+        }));
       
-      // Format the raw results
-      const formattedTransactions = transactions.map(tx => ({
-        ...tx,
-        journalEntry: tx.hasJournal ? { id: true } : null
-      }));
-      
-      // Get count with a simple query
-      const totalCount = await prisma.transaction.count({
-        where: { userId: session.user.id }
-      });
-      
-      const result = {
-        transactions: formattedTransactions,
-        totalCount,
-        page,
-        pageSize,
-        totalPages: Math.ceil(totalCount / pageSize)
-      };
-      
-      // Cache the result with the recent key
-      transactionCache.set(recentCacheKey, {
-        data: result,
-        timestamp: Date.now()
-      });
-      
-      console.log(`[Transactions API] Optimized fetch completed in ${Date.now() - startTime}ms`);
-      return NextResponse.json(result);
+        // Get count with a simple query
+        const totalCount = await prisma.transaction.count({
+          where: { userId: session.user.id }
+        });
+        
+        const result = {
+          transactions: formattedTransactions,
+          totalCount,
+          page,
+          pageSize,
+          totalPages: Math.ceil(totalCount / pageSize)
+        };
+        
+        // Cache the result with the recent key
+        transactionCache.set(recentCacheKey, {
+          data: result,
+          timestamp: Date.now()
+        });
+        
+        console.log(`[Transactions API] Optimized fetch completed in ${Date.now() - startTime}ms`);
+        return NextResponse.json(result);
+      } catch (optimizedQueryError) {
+        console.error('Error in optimized query path:', optimizedQueryError);
+        // Fall through to standard query path if optimized path fails
+      }
     }
 
     // For non-common requests, use the regular approach with Promise.all for parallel execution

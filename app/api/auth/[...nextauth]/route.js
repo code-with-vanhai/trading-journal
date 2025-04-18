@@ -12,19 +12,40 @@ export const authOptions = {
     CredentialsProvider({
       name: 'Credentials',
       credentials: {
-        email: { label: 'Email', type: 'email' },
+        login: { label: 'Email or Username', type: 'text' },
         password: { label: 'Password', type: 'password' }
       },
       async authorize(credentials) {
-        if (!credentials?.email || !credentials?.password) {
+        if (!credentials?.login || !credentials?.password) {
           return null;
         }
 
-        const user = await prisma.user.findUnique({
-          where: {
-            email: credentials.email,
-          },
-        });
+        // Determine if input is email or username
+        const isEmail = credentials.login.includes('@');
+
+        // Find user by email or username
+        let user;
+        if (isEmail) {
+          // Find by email
+          user = await prisma.user.findUnique({
+            where: {
+              email: credentials.login,
+            },
+          });
+        } else {
+          try {
+            // Find by username
+            user = await prisma.user.findUnique({
+              where: {
+                username: credentials.login,
+              },
+            });
+          } catch (error) {
+            // If username field doesn't exist yet, fallback to email only
+            console.log('Username lookup error (expected if field not added yet):', error.message);
+            return null;
+          }
+        }
 
         if (!user || !user.passwordHash) {
           return null;
@@ -42,6 +63,7 @@ export const authOptions = {
         return {
           id: user.id,
           email: user.email,
+          username: user.username,
           name: user.name,
         };
       },
@@ -59,12 +81,18 @@ export const authOptions = {
     async jwt({ token, user }) {
       if (user) {
         token.id = user.id;
+        if (user.username) {
+          token.username = user.username;
+        }
       }
       return token;
     },
     async session({ session, token }) {
       if (token) {
         session.user.id = token.id;
+        if (token.username) {
+          session.user.username = token.username;
+        }
       }
       return session;
     },

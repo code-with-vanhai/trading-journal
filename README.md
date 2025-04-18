@@ -18,11 +18,15 @@ A comprehensive web application for traders to log, analyze, and reflect on thei
 - **Date Handling**: [date-fns](https://date-fns.org/)
 - **Environment Variables**: [dotenv](https://github.com/motdotla/dotenv)
 - **API Fetching (Backend/Scripts)**: [node-fetch](https://github.com/node-fetch/node-fetch)
+- **Logging**: Custom dual-environment logger (browser and server)
 
 ## Core Features
 
 ### User Management
 - Secure user registration and authentication (Email/Password via NextAuth.js)
+- Username-based login support (alongside email)
+- Session management with automatic timeout after 30 minutes of inactivity
+- Session expiration warnings and graceful re-authentication
 
 ### Transaction Management
 - Record BUY/SELL transactions (ticker, quantity, price, date)
@@ -43,8 +47,13 @@ A comprehensive web application for traders to log, analyze, and reflect on thei
 - Create and share general trading strategies (not tied to specific transactions)
 
 ### Data Handling
-- Filtering and searching capabilities for transactions (likely implemented in frontend/API)
-- Pagination for lists
+- Advanced filtering and searching capabilities for transactions
+  - Filter by ticker, transaction type, date range, and price range
+  - Server-side sorting for all columns with visual indicators
+  - Configurable page size (10, 25, 50, 100 items per page)
+  - URL parameter synchronization for sharing specific views
+- Smart pagination with page size selector and full navigation controls
+- Result count and summary information
 
 ## API Endpoints (Based on File Structure)
 
@@ -218,3 +227,32 @@ The application implements a database-backed caching system for stock prices:
 - Individual Transaction API: < 100ms average response time
 - Cached Responses: < 50ms average response time
 - Market Data API: < 50ms for cached responses, ~800ms for TCBS API calls
+
+## Recent Improvements
+
+### Browser-Safe Logging System
+- **Dual-environment logging**: Implemented a unified logging system that works in both client and server environments
+- **Client-side logging**: Browser-compatible logger that redirects output to console with appropriate logging levels
+- **Server-side logging**: File-based logging with detailed timestamps and structured data support
+- **API consistency**: Same interface in both environments for seamless development
+
+### Enhanced Session Management
+- **Automatic session timeout**: Sessions expire after 30 minutes of user inactivity
+- **Pre-expiration warnings**: Users receive a warning 2 minutes before their session expires
+- **Activity monitoring**: User interactions (clicks, keyboard, scrolling) automatically extend the session
+- **Graceful re-authentication**: Modal-based login when session expires without losing page context
+- **Fetch interception**: Detects 401 responses and triggers re-authentication automatically
+
+### User Interface Enhancements
+- **Username display**: Usernames are now prominently displayed in the navigation bar
+- **Display priority**: Properly prioritizes username > name > email for user identification
+- **Avatar initials**: Uses the first letter of the username in the mobile menu avatar
+- **Consistent styling**: Maintains the application's clean design language
+
+### Advanced Transaction Filtering
+- **Comprehensive filters**: Filter transactions by ticker symbol, type, date range, and price range
+- **Server-side sorting**: All columns can be sorted (ascending/descending) with clear visual indicators
+- **Configurable pagination**: Users can select page size (10/25/50/100 items per page)
+- **URL parameter synchronization**: All filter, sort, and pagination settings are reflected in the URL
+- **Result summary**: Clear display of total result count and applied filters
+- **Optimized performance**: Enhanced API efficiency with smart caching and query optimization

@@ -8,6 +8,7 @@ export default function SignUp() {
   const router = useRouter();
   const [formData, setFormData] = useState({
     name: '',
+    username: '',
     email: '',
     password: '',
     confirmPassword: '',
@@ -38,6 +39,19 @@ export default function SignUp() {
       setError('Password must be at least 8 characters');
       return;
     }
+    
+    // Validate username
+    if (!formData.username) {
+      setError('Username is required');
+      return;
+    }
+    
+    // Validate username format (letters, numbers, underscores, hyphens)
+    const usernameRegex = /^[a-zA-Z0-9_-]+$/;
+    if (!usernameRegex.test(formData.username)) {
+      setError('Username can only contain letters, numbers, underscores and hyphens');
+      return;
+    }
 
     setIsLoading(true);
 
@@ -49,6 +63,7 @@ export default function SignUp() {
         },
         body: JSON.stringify({
           name: formData.name,
+          username: formData.username,
           email: formData.email,
           password: formData.password,
         }),
@@ -94,6 +109,24 @@ export default function SignUp() {
               value={formData.name}
               onChange={handleChange}
             />
+          </div>
+          
+          <div className="mb-4">
+            <label htmlFor="username" className="form-label">
+              Username
+            </label>
+            <input
+              id="username"
+              name="username"
+              type="text"
+              className="input-field"
+              value={formData.username}
+              onChange={handleChange}
+              required
+            />
+            <p className="text-xs text-gray-500 mt-1">
+              Choose a unique username (letters, numbers, underscores, and hyphens only)
+            </p>
           </div>
           
           <div className="mb-4">
