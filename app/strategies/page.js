@@ -1,12 +1,13 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, Suspense } from 'react';
 import { useSession } from 'next-auth/react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import StrategyForm from '../components/StrategyForm';
 import StrategyList from '../components/StrategyList';
 
-export default function StrategiesPage() {
+// Wrapper component that uses searchParams
+function StrategiesContent() {
   const { data: session, status } = useSession();
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -126,4 +127,22 @@ export default function StrategiesPage() {
   }
 
   return null;
+}
+
+// Loading fallback component
+function StrategiesLoading() {
+  return (
+    <div className="flex justify-center items-center h-64">
+      <p>Loading strategies...</p>
+    </div>
+  );
+}
+
+// Main page component with Suspense boundary
+export default function StrategiesPage() {
+  return (
+    <Suspense fallback={<StrategiesLoading />}>
+      <StrategiesContent />
+    </Suspense>
+  );
 } 
