@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server';
 import { getServerSession } from 'next-auth';
 import { authOptions } from '../auth/[...nextauth]/route';
-import logger, { tcbsLogger } from '../../lib/logger';
+import { serverLogger as logger, tcbsServerLogger as tcbsLogger } from '../../lib/server-logger';
 import { PrismaClient } from '@prisma/client';
 
 // Create a singleton Prisma instance

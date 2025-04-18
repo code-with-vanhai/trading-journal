@@ -46,76 +46,45 @@ export async function GET(request, { params }) {
       return NextResponse.json(cachedTransaction.data);
     }
 
-    // Optimize for direct primary key lookup with a raw query
-    // This avoids the ORM overhead for a simple primary key lookup
-    const transactions = await prisma.$queryRaw`
-      SELECT 
-        t.id, t.ticker, t.type, t.quantity, t.price, 
-        t."transactionDate", t.fee, t."taxRate", t."calculatedPl", 
-        t.notes, t."createdAt", t."updatedAt",
-        j.id as "journalId", j."emotionOnEntry", j."emotionOnExit", 
-        j."strategyUsed", j."postTradeReview", j."createdAt" as "journalCreatedAt", 
-        j."updatedAt" as "journalUpdatedAt"
-      FROM "Transaction" t
-      LEFT JOIN "JournalEntry" j ON t.id = j."transactionId"
-      WHERE t.id = ${id} AND t."userId" = ${session.user.id}
-      LIMIT 1
-    `;
+    // Use Prisma's standard query approach instead of raw SQL
+    const transaction = await prisma.transaction.findUnique({
+      where: {
+        id: id,
+        userId: session.user.id
+      },
+      include: {
+        journalEntry: {
+          include: {
+            tags: {
+              include: {
+                tag: true
+              }
+            }
+          }
+        }
+      }
+    });
 
     // If no transaction found, return 404
-    if (!transactions || transactions.length === 0) {
+    if (!transaction) {
       return NextResponse.json({ message: 'Transaction not found' }, { status: 404 });
     }
 
-    const txData = transactions[0];
-
-    // Format the response in the expected structure
-    const transaction = {
-      id: txData.id,
-      userId: session.user.id,
-      ticker: txData.ticker,
-      type: txData.type,
-      quantity: txData.quantity,
-      price: txData.price,
-      transactionDate: txData.transactionDate,
-      fee: txData.fee,
-      taxRate: txData.taxRate,
-      calculatedPl: txData.calculatedPl,
-      notes: txData.notes,
-      createdAt: txData.createdAt,
-      updatedAt: txData.updatedAt,
-      journalEntry: txData.journalId ? {
-        id: txData.journalId,
-        emotionOnEntry: txData.emotionOnEntry,
-        emotionOnExit: txData.emotionOnExit,
-        strategyUsed: txData.strategyUsed,
-        postTradeReview: txData.postTradeReview,
-        createdAt: txData.journalCreatedAt,
-        updatedAt: txData.journalUpdatedAt,
-        tags: []
+    // Format the response to match the expected structure
+    const formattedTransaction = {
+      ...transaction,
+      journalEntry: transaction.journalEntry ? {
+        ...transaction.journalEntry,
+        tags: transaction.journalEntry.tags.map(tagRelation => ({
+          id: tagRelation.tag.id,
+          name: tagRelation.tag.name
+        }))
       } : null
     };
-
-    // Only fetch tags if there's a journal entry
-    if (txData.journalId) {
-      const tagResult = await prisma.$queryRaw`
-        SELECT t.id, t.name
-        FROM "Tag" t
-        JOIN "JournalEntryTag" jt ON t.id = jt."tagId"
-        WHERE jt."journalEntryId" = ${txData.journalId}
-      `;
-      
-      if (tagResult && tagResult.length > 0) {
-        transaction.journalEntry.tags = tagResult.map(tag => ({
-          id: tag.id,
-          name: tag.name
-        }));
-      }
-    }
     
     // Cache the result
     singleTransactionCache.set(cacheKey, {
-      data: transaction,
+      data: formattedTransaction,
       timestamp: Date.now()
     });
     
@@ -132,7 +101,7 @@ export async function GET(request, { params }) {
     }
     
     console.log(`[Transaction API] Fetch completed for ID ${id} in ${Date.now() - startTime}ms`);
-    return NextResponse.json(transaction);
+    return NextResponse.json(formattedTransaction);
   } catch (error) {
     console.error('Error fetching transaction:', error);
     return NextResponse.json(
