@@ -70,9 +70,22 @@ export default function PortfolioPage() {
         return;
       }
 
+      // Check if transactions have been updated
+      let shouldFetchFresh = false;
+      
+      if (typeof window !== 'undefined') {
+        const portfolioUpdatedAt = localStorage.getItem('portfolioDataUpdated');
+        if (portfolioUpdatedAt) {
+          // Clear the flag immediately
+          localStorage.removeItem('portfolioDataUpdated');
+          shouldFetchFresh = true;
+          console.log('[Portfolio] Transaction changes detected, refreshing data');
+        }
+      }
+
       // Check if we need to fetch new data
       const now = Date.now();
-      if (lastFetchTimestamp && now - lastFetchTimestamp < CACHE_DURATION) {
+      if (!shouldFetchFresh && lastFetchTimestamp && now - lastFetchTimestamp < CACHE_DURATION) {
         console.log('[Portfolio] Using cached data');
         return;
       }

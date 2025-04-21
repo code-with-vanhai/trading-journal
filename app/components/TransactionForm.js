@@ -93,6 +93,9 @@ export default function TransactionForm({ transaction = null, onSuccess }) {
         throw new Error(data.message || 'Không thể lưu giao dịch');
       }
 
+      // Signal that transactions have been updated - set a flag with timestamp
+      localStorage.setItem('portfolioDataUpdated', Date.now().toString());
+      
       // Success handling
       if (onSuccess) {
         onSuccess();

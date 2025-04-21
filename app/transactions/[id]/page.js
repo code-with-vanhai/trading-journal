@@ -72,6 +72,9 @@ export default function TransactionDetail({ params }) {
           throw new Error('Không thể xóa giao dịch');
         }
         
+        // Signal that transactions have been updated
+        localStorage.setItem('portfolioDataUpdated', Date.now().toString());
+        
         router.push('/transactions');
       } catch (err) {
         console.error('Delete error:', err);
