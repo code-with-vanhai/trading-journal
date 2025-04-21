@@ -178,12 +178,14 @@ async function getStockPriceWithCache(ticker) {
     const today = new Date();
     const yesterday = new Date(today);
     yesterday.setDate(today.getDate() - 1);
-    const twoDaysAgo = new Date(today);
-    twoDaysAgo.setDate(today.getDate() - 2);
+
+    // Set specific times (7:00 AM)
+    yesterday.setHours(7, 0, 0, 0); // Yesterday at 7:00 AM
+    today.setHours(7, 0, 0, 0);     // Today at 7:00 AM
 
     // Convert dates to Unix timestamps (in seconds)
-    const from = Math.floor(twoDaysAgo.getTime() / 1000);
-    const to = Math.floor(yesterday.getTime() / 1000);
+    const from = Math.floor(yesterday.getTime() / 1000);
+    const to = Math.floor(today.getTime() / 1000);
     
     // Fetch fresh data from TCBS API
     const freshData = await fetchMarketData(ticker, from, to);
@@ -270,10 +272,13 @@ async function getStockPriceWithCache(ticker) {
     const today = new Date();
     const yesterday = new Date(today);
     yesterday.setDate(today.getDate() - 1);
-    const twoDaysAgo = new Date(today);
-    twoDaysAgo.setDate(today.getDate() - 2);
-    const from = Math.floor(twoDaysAgo.getTime() / 1000);
-    const to = Math.floor(yesterday.getTime() / 1000);
+    
+    // Set specific times (7:00 AM)
+    yesterday.setHours(7, 0, 0, 0); // Yesterday at 7:00 AM
+    today.setHours(7, 0, 0, 0);     // Today at 7:00 AM
+    
+    const from = Math.floor(yesterday.getTime() / 1000);
+    const to = Math.floor(today.getTime() / 1000);
     
     try {
       return await fetchMarketData(ticker, from, to);
