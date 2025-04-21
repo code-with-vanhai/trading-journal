@@ -15,13 +15,21 @@ const LOG_FILE = path.join(LOG_DIR, 'api-calls.log');
 const TCBS_LOG_FILE = path.join(LOG_DIR, 'tcbs-api.log');
 const MAX_LOG_SIZE = 3 * 1024 * 1024; // 3MB in bytes
 
-// Ensure log directory exists
-try {
-  if (!fs.existsSync(LOG_DIR)) {
-    fs.mkdirSync(LOG_DIR, { recursive: true });
+// Check if running on Vercel or other serverless environments
+// Vercel sets this environment variable
+const isVercel = process.env.VERCEL === '1';
+// Check for other serverless environments that might have read-only file systems
+const isServerless = isVercel || process.env.AWS_LAMBDA_FUNCTION_NAME || process.env.NETLIFY;
+
+// Only create log directory if we're not in a serverless environment
+if (!isServerless) {
+  try {
+    if (!fs.existsSync(LOG_DIR)) {
+      fs.mkdirSync(LOG_DIR, { recursive: true });
+    }
+  } catch (err) {
+    console.error('Error creating log directory:', err);
   }
-} catch (err) {
-  console.error('Error creating log directory:', err);
 }
 
 /**
@@ -30,6 +38,8 @@ try {
  * @param {string} filePath - Path to the log file
  */
 function rotateLogFileIfNeeded(filePath) {
+  if (isServerless) return; // No-op in serverless environments
+  
   try {
     // Check if file exists first
     if (!fs.existsSync(filePath)) {
@@ -55,24 +65,41 @@ function rotateLogFileIfNeeded(filePath) {
 }
 
 /**
- * Write log message to a specific file
- * @param {string} file - Log file path
+ * Write log message to stdout/stderr or a specific file
+ * @param {string} file - Log file path (used in non-serverless environments)
  * @param {string} level - Log level
  * @param {string} message - Log message
  * @param {Object} data - Additional data to log
+ * @param {boolean} isTCBS - Whether this is a TCBS log entry
  */
-function logToSpecificFile(file, level, message, data = null) {
+function logToSpecificFile(file, level, message, data = null, isTCBS = false) {
+  const timestamp = new Date().toISOString();
+  let logType = isTCBS ? 'TCBS' : 'API';
+  let logMessage = `[${timestamp}] [${level}] [${logType}] ${message}`;
+  
+  if (data) {
+    if (typeof data === 'object') {
+      logMessage += `\n${JSON.stringify(data, null, 2)}`;
+    } else {
+      logMessage += `\n${data}`;
+    }
+  }
+  
+  // In serverless environments, write to stdout/stderr
+  if (isServerless) {
+    if (level === LOG_LEVELS.ERROR) {
+      console.error(logMessage);
+    } else {
+      console.log(logMessage);
+    }
+    return;
+  }
+  
+  // Regular file-based logging for non-serverless environments
   try {
     // Check if file needs rotation before writing
     if (file === TCBS_LOG_FILE) {
       rotateLogFileIfNeeded(file);
-    }
-    
-    const timestamp = new Date().toISOString();
-    let logMessage = `[${timestamp}] [${level}] ${message}`;
-    
-    if (data) {
-      logMessage += `\n${JSON.stringify(data, null, 2)}`;
     }
     
     logMessage += '\n' + '-'.repeat(80) + '\n';
@@ -80,6 +107,12 @@ function logToSpecificFile(file, level, message, data = null) {
     fs.appendFileSync(file, logMessage);
   } catch (err) {
     console.error('Error writing to log file:', err);
+    // Fallback to console if file write fails
+    if (level === LOG_LEVELS.ERROR) {
+      console.error(logMessage);
+    } else {
+      console.log(logMessage);
+    }
   }
 }
 
@@ -90,7 +123,7 @@ function logToSpecificFile(file, level, message, data = null) {
  * @param {Object} data - Additional data to log
  */
 function logToFile(level, message, data = null) {
-  logToSpecificFile(LOG_FILE, level, message, data);
+  logToSpecificFile(LOG_FILE, level, message, data, false);
 }
 
 // Logger functions
@@ -103,10 +136,10 @@ const logger = {
 
 // TCBS API specific logger
 const tcbsLogger = {
-  debug: (message, data) => logToSpecificFile(TCBS_LOG_FILE, LOG_LEVELS.DEBUG, message, data),
-  info: (message, data) => logToSpecificFile(TCBS_LOG_FILE, LOG_LEVELS.INFO, message, data),
-  warning: (message, data) => logToSpecificFile(TCBS_LOG_FILE, LOG_LEVELS.WARNING, message, data),
-  error: (message, data) => logToSpecificFile(TCBS_LOG_FILE, LOG_LEVELS.ERROR, message, data),
+  debug: (message, data) => logToSpecificFile(TCBS_LOG_FILE, LOG_LEVELS.DEBUG, message, data, true),
+  info: (message, data) => logToSpecificFile(TCBS_LOG_FILE, LOG_LEVELS.INFO, message, data, true),
+  warning: (message, data) => logToSpecificFile(TCBS_LOG_FILE, LOG_LEVELS.WARNING, message, data, true),
+  error: (message, data) => logToSpecificFile(TCBS_LOG_FILE, LOG_LEVELS.ERROR, message, data, true),
 };
 
 module.exports = {
