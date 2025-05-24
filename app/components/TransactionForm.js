@@ -15,11 +15,42 @@ export default function TransactionForm({ transaction = null, onSuccess }) {
     transactionDate: new Date().toISOString().split('T')[0],
     fee: '0',
     taxRate: '0.1',
-    notes: ''
+    notes: '',
+    stockAccountId: ''
   });
   
+  const [stockAccounts, setStockAccounts] = useState([]);
+  const [isLoadingAccounts, setIsLoadingAccounts] = useState(true);
   const [error, setError] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
+
+  // Load stock accounts
+  useEffect(() => {
+    const fetchStockAccounts = async () => {
+      try {
+        const response = await fetch('/api/stock-accounts');
+        if (response.ok) {
+          const accounts = await response.json();
+          setStockAccounts(accounts);
+          
+          // Auto-select the first account (which should be the default account)
+          if (!isEditing && accounts.length > 0 && !formData.stockAccountId) {
+            setFormData(prev => ({
+              ...prev,
+              stockAccountId: accounts[0].id
+            }));
+          }
+        }
+      } catch (err) {
+        console.error('Error fetching stock accounts:', err);
+        setError('Không thể tải danh sách tài khoản. Vui lòng thử lại.');
+      } finally {
+        setIsLoadingAccounts(false);
+      }
+    };
+
+    fetchStockAccounts();
+  }, []);
 
   // If editing, populate form with transaction data
   useEffect(() => {
@@ -32,7 +63,8 @@ export default function TransactionForm({ transaction = null, onSuccess }) {
         transactionDate: new Date(transaction.transactionDate).toISOString().split('T')[0],
         fee: transaction.fee.toString(),
         taxRate: transaction.taxRate.toString(),
-        notes: transaction.notes || ''
+        notes: transaction.notes || '',
+        stockAccountId: transaction.stockAccountId || ''
       });
     }
   }, [transaction]);
@@ -64,7 +96,7 @@ export default function TransactionForm({ transaction = null, onSuccess }) {
         throw new Error('Giá phải là số dương');
       }
 
-      // Construct data for API
+      // Construct data for API (stockAccountId is optional now, backend will use default if not provided)
       const transactionData = {
         ...formData,
         quantity: parseFloat(formData.quantity),
@@ -72,6 +104,11 @@ export default function TransactionForm({ transaction = null, onSuccess }) {
         fee: parseFloat(formData.fee),
         taxRate: parseFloat(formData.taxRate),
       };
+      
+      // Only include stockAccountId if it's set
+      if (formData.stockAccountId) {
+        transactionData.stockAccountId = formData.stockAccountId;
+      }
       
       // API call
       const url = isEditing 
@@ -111,6 +148,21 @@ export default function TransactionForm({ transaction = null, onSuccess }) {
     }
   };
 
+  const handleCreateAccount = () => {
+    router.push('/accounts');
+  };
+
+  if (isLoadingAccounts) {
+    return (
+      <div className="card">
+        <div className="flex justify-center items-center py-8">
+          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
+          <span className="ml-3 text-gray-600">Đang tải...</span>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="card">
       <h2 className="text-xl font-semibold mb-4">
@@ -125,6 +177,38 @@ export default function TransactionForm({ transaction = null, onSuccess }) {
       
       <form onSubmit={handleSubmit}>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+          {/* Stock Account Selector - Only show if accounts are loaded */}
+          {stockAccounts.length > 0 && (
+            <div className="md:col-span-2">
+              <label htmlFor="stockAccountId" className="form-label">
+                Tài Khoản Chứng Khoán
+              </label>
+              <select
+                id="stockAccountId"
+                name="stockAccountId"
+                className="input-field"
+                value={formData.stockAccountId}
+                onChange={handleChange}
+              >
+                {stockAccounts.map((account) => (
+                  <option key={account.id} value={account.id}>
+                    {account.name} {account.brokerName ? `(${account.brokerName})` : ''}
+                  </option>
+                ))}
+              </select>
+              <p className="text-sm text-gray-500 mt-1">
+                Nếu không chọn, giao dịch sẽ được gán cho tài khoản mặc định.{' '}
+                <button
+                  type="button"
+                  onClick={handleCreateAccount}
+                  className="text-blue-600 hover:text-blue-800 underline"
+                >
+                  Quản lý tài khoản
+                </button>
+              </p>
+            </div>
+          )}
+
           <div>
             <label htmlFor="ticker" className="form-label">
               Mã Cổ Phiếu

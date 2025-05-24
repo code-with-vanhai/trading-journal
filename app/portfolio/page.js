@@ -4,20 +4,47 @@ import { useState, useEffect, useCallback } from 'react';
 import { useSession } from 'next-auth/react';
 import { Spinner } from '../components/ui/Spinner';
 import PortfolioPieChart from '../components/PortfolioPieChart';
+import AccountAllocationPieChart from '../components/AccountAllocationPieChart';
 import Link from 'next/link';
 
 export default function PortfolioPage() {
   const { data: session, status } = useSession();
   const [portfolio, setPortfolio] = useState([]);
+  const [accountAllocations, setAccountAllocations] = useState([]);
+  const [stockAccounts, setStockAccounts] = useState([]);
+  const [selectedAccountId, setSelectedAccountId] = useState('');
   const [marketData, setMarketData] = useState({});
   const [enrichedPortfolio, setEnrichedPortfolio] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [loadingAccounts, setLoadingAccounts] = useState(true);
   const [marketDataLoading, setMarketDataLoading] = useState(false);
   const [error, setError] = useState(null);
   const [lastFetchTimestamp, setLastFetchTimestamp] = useState(null);
   
   // Cache duration in milliseconds (5 minutes)
   const CACHE_DURATION = 5 * 60 * 1000;
+
+  // Load stock accounts
+  useEffect(() => {
+    const fetchStockAccounts = async () => {
+      if (status !== 'authenticated') return;
+      
+      try {
+        setLoadingAccounts(true);
+        const response = await fetch('/api/stock-accounts');
+        if (response.ok) {
+          const accounts = await response.json();
+          setStockAccounts(accounts);
+        }
+      } catch (err) {
+        console.error('Error fetching stock accounts:', err);
+      } finally {
+        setLoadingAccounts(false);
+      }
+    };
+
+    fetchStockAccounts();
+  }, [status]);
 
   // Memoized market data fetch function
   const fetchMarketData = useCallback(async (tickers) => {
@@ -94,7 +121,12 @@ export default function PortfolioPage() {
         setLoading(true);
         console.log('[Portfolio] Fetching portfolio data');
         
-        const response = await fetch('/api/portfolio');
+        // Build URL with account filter if selected
+        const url = selectedAccountId 
+          ? `/api/portfolio?stockAccountId=${selectedAccountId}`
+          : '/api/portfolio';
+        
+        const response = await fetch(url);
         
         if (!response.ok) {
           throw new Error('Failed to fetch portfolio data');
@@ -108,6 +140,11 @@ export default function PortfolioPage() {
         } else {
           console.log(`[Portfolio] Loaded ${data.portfolio.length} holdings`);
           setPortfolio(data.portfolio);
+          
+          // Set account allocations (only available when not filtering by specific account)
+          if (data.accountAllocations) {
+            setAccountAllocations(data.accountAllocations);
+          }
           
           // Fetch market data if we have holdings
           if (data.portfolio.length > 0) {
@@ -126,7 +163,7 @@ export default function PortfolioPage() {
     };
 
     fetchData();
-  }, [status, fetchMarketData, lastFetchTimestamp]);
+  }, [status, selectedAccountId, fetchMarketData, lastFetchTimestamp]);
 
   // Calculate enriched portfolio data
   useEffect(() => {
@@ -175,6 +212,13 @@ export default function PortfolioPage() {
     setEnrichedPortfolio(finalEnriched);
   }, [portfolio, marketData]);
 
+  // Handle account selection change
+  const handleAccountChange = (e) => {
+    const accountId = e.target.value;
+    setSelectedAccountId(accountId);
+    setLastFetchTimestamp(null); // Force a fresh fetch
+  };
+
   // Loading state
   if (status === 'loading') {
     return (
@@ -219,7 +263,33 @@ export default function PortfolioPage() {
 
   return (
     <div className="container mx-auto p-4">
-      <h1 className="text-2xl font-bold mb-6">Danh mục đầu tư</h1>
+      <div className="flex justify-between items-center mb-6">
+        <h1 className="text-2xl font-bold">Danh mục đầu tư</h1>
+        
+        {/* Account Filter */}
+        <div className="flex items-center space-x-3">
+          <label htmlFor="accountFilter" className="text-sm font-medium text-gray-700">
+            Tài khoản:
+          </label>
+          {loadingAccounts ? (
+            <div className="w-48 h-10 bg-gray-100 rounded animate-pulse"></div>
+          ) : (
+            <select
+              id="accountFilter"
+              value={selectedAccountId}
+              onChange={handleAccountChange}
+              className="w-48 px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+            >
+              <option value="">Tất cả tài khoản</option>
+              {stockAccounts.map((account) => (
+                <option key={account.id} value={account.id}>
+                  {account.name} {account.brokerName ? `(${account.brokerName})` : ''}
+                </option>
+              ))}
+            </select>
+          )}
+        </div>
+      </div>
       
       {loading ? (
         <div className="flex justify-center items-center h-64">
@@ -227,7 +297,11 @@ export default function PortfolioPage() {
         </div>
       ) : portfolio.length === 0 ? (
         <div className="text-center p-8 bg-gray-50 rounded-lg shadow">
-          <p className="text-lg text-gray-600">Bạn chưa có cổ phiếu nào trong danh mục.</p>
+          <p className="text-lg text-gray-600">
+            {selectedAccountId 
+              ? 'Tài khoản này chưa có cổ phiếu nào trong danh mục.' 
+              : 'Bạn chưa có cổ phiếu nào trong danh mục.'}
+          </p>
           <Link 
             href="/transactions/new" 
             className="mt-4 inline-block px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition-colors"
@@ -239,7 +313,10 @@ export default function PortfolioPage() {
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
           <div className="lg:col-span-2">
             <div className="bg-white p-4 rounded-lg shadow mb-6">
-              <h2 className="text-lg font-semibold mb-4">Tổng quan</h2>
+              <h2 className="text-lg font-semibold mb-4">
+                Tổng quan {selectedAccountId && stockAccounts.find(acc => acc.id === selectedAccountId)?.name && 
+                  `- ${stockAccounts.find(acc => acc.id === selectedAccountId).name}`}
+              </h2>
               {marketDataLoading ? (
                 <div className="flex justify-center items-center py-4">
                   <Spinner size="medium" />
@@ -306,6 +383,11 @@ export default function PortfolioPage() {
                     <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                       Lãi/Lỗ (%)
                     </th>
+                    {!selectedAccountId && (
+                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        Tài khoản
+                      </th>
+                    )}
                     <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                       Hành động
                     </th>
@@ -371,6 +453,18 @@ export default function PortfolioPage() {
                             <div className="text-sm text-gray-500">N/A</div>
                           )}
                         </td>
+                        {!selectedAccountId && (
+                          <td className="px-6 py-4 whitespace-nowrap">
+                            <div className="text-sm text-gray-900">
+                              {holding.stockAccount?.name || 'N/A'}
+                              {holding.stockAccount?.brokerName && (
+                                <div className="text-xs text-gray-500">
+                                  {holding.stockAccount.brokerName}
+                                </div>
+                              )}
+                            </div>
+                          </td>
+                        )}
                         <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
                           <Link
                             href={`/transactions?ticker=${holding.ticker || ''}`}
@@ -387,7 +481,8 @@ export default function PortfolioPage() {
             </div>
           </div>
           
-          <div className="lg:col-span-1">
+          <div className="lg:col-span-1 space-y-6">
+            {/* Portfolio Allocation Chart */}
             {marketDataLoading ? (
               <div className="flex justify-center items-center h-64 bg-white rounded-lg shadow">
                 <Spinner size="large" />
@@ -395,6 +490,13 @@ export default function PortfolioPage() {
             ) : (
               <PortfolioPieChart 
                 holdings={enrichedPortfolio.filter(h => h.marketValue && h.marketValue > 0)} 
+              />
+            )}
+            
+            {/* Account Allocation Chart - Only show when viewing all accounts */}
+            {!selectedAccountId && (
+              <AccountAllocationPieChart 
+                accountAllocations={accountAllocations}
               />
             )}
           </div>

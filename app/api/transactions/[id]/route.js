@@ -22,6 +22,60 @@ const singleTransactionCache = new Map();
 const CACHE_TTL = 3 * 60 * 1000; // 3 minutes cache TTL for individual transactions
 const MAX_CACHE_SIZE = 1000; // Limit cache size to prevent memory leaks
 
+// Calculate profit/loss for a SELL transaction
+const calculateProfitLoss = async (userId, stockAccountId, ticker, quantity, sellPrice, fee, taxRate) => {
+  // Get all BUY transactions for this ticker in the same stock account, ordered by date (FIFO method)
+  const buyTransactions = await prisma.transaction.findMany({
+    where: {
+      userId,
+      stockAccountId, // Only consider transactions from the same stock account
+      ticker,
+      type: 'BUY',
+    },
+    orderBy: {
+      transactionDate: 'asc',
+    },
+    select: {
+      quantity: true,
+      price: true,
+    }
+  });
+  
+  if (buyTransactions.length === 0) {
+    return 0; // No buy transactions found
+  }
+  
+  let remainingQuantity = quantity;
+  let totalCost = 0;
+  
+  // Calculate cost basis using FIFO method
+  for (const buyTx of buyTransactions) {
+    if (remainingQuantity <= 0) break;
+    
+    const quantityToUse = Math.min(remainingQuantity, buyTx.quantity);
+    totalCost += quantityToUse * buyTx.price;
+    remainingQuantity -= quantityToUse;
+  }
+  
+  // If we couldn't find enough BUY transactions
+  if (remainingQuantity > 0) {
+    return 0; // Not enough buy transactions to calculate P/L
+  }
+  
+  // Calculate gross profit
+  const grossProfit = (sellPrice * quantity) - totalCost;
+  
+  // Subtract fees
+  const netProfit = grossProfit - fee;
+  
+  // Apply tax (if applicable)
+  const afterTaxProfit = netProfit > 0 
+    ? netProfit * (1 - (taxRate / 100)) 
+    : netProfit;
+  
+  return afterTaxProfit;
+};
+
 // GET - Fetch a transaction by ID
 export async function GET(request, { params }) {
   try {
@@ -53,6 +107,15 @@ export async function GET(request, { params }) {
         userId: session.user.id
       },
       include: {
+        stockAccount: { // Include stock account details
+          select: {
+            id: true,
+            name: true,
+            brokerName: true,
+            accountNumber: true,
+            description: true
+          }
+        },
         journalEntry: {
           include: {
             tags: {
@@ -125,7 +188,7 @@ export async function PUT(request, { params }) {
     const id = resolvedParams.id;
     
     const body = await request.json();
-    const { ticker, type, quantity, price, transactionDate, fee, taxRate, notes } = body;
+    const { ticker, type, quantity, price, transactionDate, fee, taxRate, notes, stockAccountId } = body;
 
     // Check if transaction exists and belongs to the current user
     const existingTransaction = await prisma.transaction.findUnique({
@@ -133,19 +196,47 @@ export async function PUT(request, { params }) {
         id,
         userId: session.user.id
       },
-      select: { id: true } // Only select the id field for performance
+      select: { 
+        id: true, 
+        stockAccountId: true,
+        type: true 
+      } // Get current values for comparison
     });
 
     if (!existingTransaction) {
       return NextResponse.json({ message: 'Transaction not found' }, { status: 404 });
     }
 
-    // Calculate P/L for SELL transactions - implement properly here
+    // If stockAccountId is being updated, verify the new stock account belongs to the user
+    if (stockAccountId && stockAccountId !== existingTransaction.stockAccountId) {
+      const stockAccount = await prisma.stockAccount.findFirst({
+        where: {
+          id: stockAccountId,
+          userId: session.user.id
+        }
+      });
+
+      if (!stockAccount) {
+        return NextResponse.json(
+          { message: 'Invalid stock account or account does not belong to user' },
+          { status: 400 }
+        );
+      }
+    }
+
+    // Calculate P/L for SELL transactions using the correct stock account
     let calculatedPl = null;
     if (type === 'SELL') {
-      // For a production app, you'd implement the proper calculation
-      // For now, we'll just use a placeholder
-      calculatedPl = 0;
+      const accountToUse = stockAccountId || existingTransaction.stockAccountId;
+      calculatedPl = await calculateProfitLoss(
+        session.user.id,
+        accountToUse,
+        ticker,
+        quantity,
+        price,
+        fee || 0,
+        taxRate || 0
+      );
     }
 
     // Update the transaction
@@ -161,7 +252,17 @@ export async function PUT(request, { params }) {
         taxRate,
         calculatedPl: type === 'SELL' ? calculatedPl : null,
         notes,
+        stockAccountId: stockAccountId || undefined, // Only update if provided
       },
+      include: {
+        stockAccount: {
+          select: {
+            id: true,
+            name: true,
+            brokerName: true
+          }
+        }
+      }
     });
 
     // Clear cache entries for this transaction

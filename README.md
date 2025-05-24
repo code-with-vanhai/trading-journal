@@ -1,258 +1,375 @@
-# Trading Journal
+# Trading Journal & Strategy Sharing Platform
 
-A comprehensive web application for traders to log, analyze, and reflect on their stock market transactions, track portfolio performance, and share trading strategies.
-![image](https://github.com/user-attachments/assets/72ca3164-57a3-4578-bc86-7653e76a0fee)
-![image](https://github.com/user-attachments/assets/09b2f743-fbaf-49de-9cc6-74c9ffefe9ea)
+A comprehensive web application designed for stock traders to systematically log, analyze, and reflect on their trading activities. This platform enables users to track portfolio performance, maintain detailed trading journals, and share strategies within a community of traders.
 
+![Trading Journal Dashboard](https://github.com/user-attachments/assets/72ca3164-57a3-4578-bc86-7653e76a0fee)
+![Portfolio Analysis](https://github.com/user-attachments/assets/09b2f743-fbaf-49de-9cc6-74c9ffefe9ea)
 
+## 🎯 Purpose & Vision
 
-## Tech Stack
+The Trading Journal platform addresses the critical need for systematic record-keeping and performance analysis in stock trading. By providing tools for transaction logging, emotional reflection, and strategy documentation, it helps traders:
 
-- **Framework**: [Next.js](https://nextjs.org/) (App Router)
-- **Language**: JavaScript/React
-- **Database**: PostgreSQL (using [Prisma ORM](https://www.prisma.io/))
-- **Authentication**: [NextAuth.js](https://next-auth.js.org/) (with Prisma Adapter)
-- **Styling**: [Tailwind CSS](https://tailwindcss.com/)
-- **Charting**: [Chart.js](https://www.chartjs.org/) / [react-chartjs-2](https://react-chartjs-2.js.org/), [Recharts](https://recharts.org/)
-- **Password Hashing**: [bcrypt](https://github.com/kelektiv/node.bcrypt.js)
-- **Date Handling**: [date-fns](https://date-fns.org/)
-- **Environment Variables**: [dotenv](https://github.com/motdotla/dotenv)
-- **API Fetching (Backend/Scripts)**: [node-fetch](https://github.com/node-fetch/node-fetch)
-- **Logging**: Custom dual-environment logger (browser and server)
+- **Improve Trading Discipline**: Systematic logging encourages consistent trading practices
+- **Learn from Past Decisions**: Detailed journal entries with emotional context help identify patterns
+- **Track Performance**: Real-time portfolio analysis with profit/loss calculations
+- **Share Knowledge**: Community-driven strategy sharing to learn from other traders
+- **Make Data-Driven Decisions**: Historical analysis and market data integration for informed trading
 
-## Core Features
-
-### User Management
-- Secure user registration and authentication (Email/Password via NextAuth.js)
-- Username-based login support (alongside email)
-- Session management with automatic timeout after 30 minutes of inactivity
-- Session expiration warnings and graceful re-authentication
+## 🚀 Core Functions
 
 ### Transaction Management
-- Record BUY/SELL transactions (ticker, quantity, price, date)
-- Track fees and taxes per transaction
-- Optional notes field for transactions
-- Calculated Profit/Loss field (calculation logic TBD)
+- **Buy/Sell Recording**: Log all stock transactions with precise details
+- **Fee & Tax Tracking**: Account for all trading costs and tax implications
+- **Real-time Portfolio**: Calculate current positions from transaction history
+- **Performance Analytics**: Automated profit/loss calculations and performance metrics
 
-### Portfolio Tracking
-- Overview of current positions (derived from transactions)
-- Visualization of portfolio data (using charting libraries)
+### Trading Psychology
+- **Emotional Journaling**: Record emotions during entry and exit points
+- **Strategy Documentation**: Link specific strategies to individual trades
+- **Post-Trade Reviews**: Systematic reflection on trading decisions
+- **Tag System**: Categorize trades and journal entries for easy analysis
 
-### Trading Journal
-- Attach detailed journal entries to specific transactions
-- Record emotions (entry/exit), strategy used for the trade, and post-trade reviews
-- Personal tag system for categorizing journal entries (Many-to-Many)
+### Market Data Integration
+- **Vietnamese Stock Market**: Real-time data via TCBS (Techcom Securities) API
+- **Price Caching**: Intelligent caching system to minimize API calls and improve performance
+- **Historical Charts**: Visual representation of stock performance and portfolio trends
+
+### Community Features
+- **Strategy Sharing**: Publish and discover trading strategies
+- **Knowledge Exchange**: Learn from successful traders in the community
+- **Performance Benchmarking**: Compare trading results with peer strategies
+
+## 🛠️ Technology Stack
+
+### Frontend Framework
+- **[Next.js](https://nextjs.org/)** (App Router) - React-based full-stack framework
+- **[React 18](https://reactjs.org/)** - Component-based UI library
+- **[Tailwind CSS](https://tailwindcss.com/)** - Utility-first CSS framework for responsive design
+
+### Backend & Database
+- **[PostgreSQL](https://www.postgresql.org/)** - Primary relational database
+- **[Prisma ORM](https://www.prisma.io/)** - Type-safe database toolkit and query builder
+- **[NextAuth.js](https://next-auth.js.org/)** - Complete authentication solution with session management
+
+### Data Visualization
+- **[Chart.js](https://www.chartjs.org/)** - Flexible charting library
+- **[react-chartjs-2](https://react-chartjs-2.js.org/)** - React wrapper for Chart.js
+- **[Recharts](https://recharts.org/)** - React-native charting library
+
+### Security & Performance
+- **[bcrypt](https://github.com/kelektiv/node.bcrypt.js)** - Password hashing and security
+- **In-memory Caching** - Custom caching layer for API optimization
+- **[date-fns](https://date-fns.org/)** - Modern date utility library
+
+### External APIs
+- **TCBS API** (Techcom Securities) - Vietnamese stock market data provider
+- **[node-fetch](https://github.com/node-fetch/node-fetch)** - HTTP client for API calls
+
+### Development Tools
+- **[dotenv](https://github.com/motdotla/dotenv)** - Environment variable management
+- **Custom Logging System** - Dual-environment logging for development and production
+
+## ✨ Core Features
+
+### 🔐 User Management
+- **Secure Authentication**: Email/username login with NextAuth.js integration
+- **Session Management**: 30-minute automatic timeout with activity monitoring
+- **Session Warnings**: Pre-expiration notifications and graceful re-authentication
+- **User Profiles**: Customizable user information and preferences
+
+### 📊 Advanced Transaction Management
+- **Comprehensive Recording**: BUY/SELL transactions with ticker, quantity, price, and date
+- **Cost Tracking**: Detailed fee and tax management per transaction
+- **Smart Filtering**: Filter by ticker, type, date range, and price range
+- **Server-Side Sorting**: All columns sortable with visual indicators
+- **Flexible Pagination**: Configurable page sizes (10/25/50/100 items)
+- **URL Synchronization**: Shareable filtered views via URL parameters
+
+### 📈 Portfolio Tracking & Analytics
+- **Real-Time Positions**: Automatically calculated from transaction history
+- **P&L Analysis**: Profit/loss calculations with detailed breakdowns
+- **Performance Metrics**: ROI, win/loss ratios, and trend analysis
+- **Visual Dashboards**: Interactive charts and graphs for portfolio visualization
+- **Market Data Integration**: Live stock prices with intelligent caching
+
+### 📝 Trading Journal & Psychology
+- **Transaction-Linked Journals**: One-to-one relationship between trades and journal entries
+- **Emotional Tracking**: Record entry and exit emotions for psychological analysis
+- **Strategy Documentation**: Link specific strategies to individual trades
+- **Post-Trade Reviews**: Systematic reflection and learning documentation
+- **Personal Tag System**: Many-to-many tagging for categorization and analysis
+
+### 🤝 Strategy Sharing Community
+- **Public Strategy Library**: Browse and discover trading strategies
+- **Personal Strategy Management**: Create, edit, and manage your own strategies
+- **Community Interaction**: Learn from other traders' experiences and approaches
+- **Strategy Analytics**: Track which strategies are most popular and effective
+
+### ⚡ Performance Optimizations
+- **Intelligent Caching**: 5-minute TTL for transaction lists, 3-minute for individual transactions
+- **Stock Price Caching**: Database-backed caching to minimize TCBS API calls
+- **Query Optimization**: Raw SQL queries for performance-critical operations
+- **Memory Management**: Singleton Prisma instance and LRU cache eviction
+- **Response Times**: <200ms for cached requests, <50ms for highly cached data
+
+## 🗄️ Database Schema
+
+### Core Models
+
+#### **User**
+- User credentials, profile information, and authentication data
+- Links to all user-owned data (transactions, journals, tags, strategies)
+- Supports both email and username-based authentication
+
+#### **Transaction**
+- Individual stock trading records (BUY/SELL operations)
+- Financial details: ticker, quantity, price, fees, taxes
+- Calculated profit/loss and transaction notes
+- Optimized with indexes on userId+transactionDate and userId+ticker
+
+#### **JournalEntry**
+- Personal reflections linked one-to-one with transactions
+- Emotional tracking (entry/exit emotions)
+- Strategy documentation and post-trade reviews
+- Many-to-many relationship with personal tags
+
+#### **Tag**
+- User-defined categorization system for journal entries
+- Personal to each user (isolated tag namespaces)
+- Enables advanced filtering and analysis of trading patterns
+
+#### **Strategy**
+- Public trading strategies shared within the community
+- User-authored content with title and detailed descriptions
+- Indexed for efficient browsing and discovery
+
+#### **StockPriceCache**
+- Database-backed caching for stock prices from TCBS API
+- Configurable cache duration (default: 1 hour)
+- Includes metadata for additional market data
+- Optimized with indexes on symbol and lastUpdatedAt
+
+## 🔌 API Endpoints
+
+### Authentication & User Management
+```
+GET/POST /api/auth/[...nextauth]  # NextAuth.js authentication routes
+POST      /api/auth/register      # User registration endpoint
+```
+
+### Transaction Management
+```
+GET     /api/transactions           # List with filtering, pagination, sorting
+POST    /api/transactions           # Create new transaction
+GET     /api/transactions/:id       # Get specific transaction details
+PUT     /api/transactions/:id       # Update existing transaction
+DELETE  /api/transactions/:id       # Delete transaction
+```
+
+### Journal & Tags
+```
+GET     /api/journal                # List user's journal entries
+POST    /api/journal                # Create journal entry for transaction
+GET     /api/journal/tags           # List user's personal tags
+POST    /api/journal/tags           # Create new tag
+DELETE  /api/journal/tags/:id       # Delete specific tag
+```
 
 ### Strategy Sharing
-- Create and share general trading strategies (not tied to specific transactions)
+```
+GET     /api/strategies             # List public strategies
+POST    /api/strategies             # Create new strategy
+GET     /api/strategies/me          # User's own strategies
+GET     /api/strategies/latest      # Latest public strategies
+GET     /api/strategies/:id         # Get specific strategy
+PUT     /api/strategies/:id         # Update strategy
+DELETE  /api/strategies/:id         # Delete strategy
+```
 
-### Data Handling
-- Advanced filtering and searching capabilities for transactions
-  - Filter by ticker, transaction type, date range, and price range
-  - Server-side sorting for all columns with visual indicators
-  - Configurable page size (10, 25, 50, 100 items per page)
-  - URL parameter synchronization for sharing specific views
-- Smart pagination with page size selector and full navigation controls
-- Result count and summary information
+### Analytics & Market Data
+```
+GET     /api/portfolio              # User's portfolio data and analytics
+GET     /api/analysis               # Trading performance analysis
+GET     /api/market-data            # Market data with TCBS integration
+```
 
-## API Endpoints (Based on File Structure)
+## 🚀 Setup & Installation
 
-### Authentication
-- `GET/POST /api/auth/[...nextauth]` - NextAuth.js authentication routes
-- `POST /api/auth/register` - User registration
+### Prerequisites
+- **Node.js** (v18+ recommended)
+- **PostgreSQL** (v12+ recommended)
+- **Git** for version control
 
-### Transactions
-- `GET /api/transactions` - List transactions with filtering, pagination, and optimized caching
-  - Supports filtering by ticker, type, date range, and price range
-  - Server-side sorting with consistent ordering
-  - Optimized query path for common requests
-  - Response time < 200ms for cached requests
-- `POST /api/transactions` - Create a new transaction
-- `GET /api/transactions/:id` - Get a specific transaction with optimized data loading
-- `PUT /api/transactions/:id` - Update a transaction
-- `DELETE /api/transactions/:id` - Delete a transaction
+### 1. Clone Repository
+```bash
+git clone <repository-url>
+cd trading-journal
+```
 
-### Journal Entries & Tags
-- `POST /api/journal` - Create a journal entry (likely requires `transactionId` in body)
-- `GET /api/journal` - List journal entries (likely for the logged-in user)
-- `GET /api/journal/tags` - List user's tags
-- `POST /api/journal/tags` - Create a new tag
-- `DELETE /api/journal/tags/:id` - Delete a specific tag
-*Note: Specific journal entry updates/deletes might be handled via transaction-specific routes or within the main journal routes.*
+### 2. Install Dependencies
+```bash
+npm install
+```
 
-### Strategies
-- `GET /api/strategies` - List public strategies
-- `POST /api/strategies` - Create a new strategy
-- `GET /api/strategies/me` - List strategies created by the logged-in user
-- `GET /api/strategies/:id` - Get a specific strategy
-- `PUT /api/strategies/:id` - Update a strategy
-- `DELETE /api/strategies/:id` - Delete a strategy
+### 3. Database Setup
 
-### Portfolio
-- `GET /api/portfolio` - Get current portfolio data for the user
+#### Install PostgreSQL
+**Ubuntu/Debian:**
+```bash
+sudo apt update
+sudo apt install postgresql postgresql-contrib
+```
 
-### Other
-- `GET /api/analysis` - Endpoint for analysis (details TBD)
-- `GET /api/market-data` - Endpoint for market data (details TBD)
+**macOS (Homebrew):**
+```bash
+brew install postgresql
+brew services start postgresql
+```
 
-## Database Schema (Prisma Models)
+**Windows:**
+Download from [PostgreSQL official website](https://www.postgresql.org/download/windows/)
 
-- **User**: Stores user credentials and links to related data.
-- **Transaction**: Records details of individual stock trades.
-- **JournalEntry**: Contains personal reflections and details linked one-to-one with a Transaction.
-- **Tag**: User-defined tags for categorizing Journal Entries.
-- **JournalEntryTag**: Join table for the many-to-many relationship between JournalEntry and Tag.
-- **Strategy**: Stores user-authored trading strategies.
+#### Create Database
+```bash
+sudo -u postgres psql
+```
 
-## Setup and Installation
+```sql
+CREATE DATABASE trading_journal;
+CREATE USER tjuser WITH ENCRYPTED PASSWORD 'your_secure_password';
+GRANT ALL PRIVILEGES ON DATABASE trading_journal TO tjuser;
+\q
+```
 
-1.  **Clone the repository:**
-    ```bash
-    git clone <repository-url>
-    cd trading-journal
-    ```
+### 4. Environment Configuration
 
-2.  **Install dependencies:**
-    ```bash
-    npm install
-    ```
+Create `.env` file in project root:
+```env
+# Database connection
+DATABASE_URL="postgresql://tjuser:your_secure_password@localhost:5432/trading_journal"
 
-3.  **Set up PostgreSQL:**
-    - Install PostgreSQL on your local machine or use a cloud service
-    - Create a new database:
-      ```sql
-      CREATE DATABASE trading_journal;
-      ```
-    - Create a database user (optional, you can use the postgres default user):
-      ```sql
-      CREATE USER tjuser WITH PASSWORD 'your_password';
-      GRANT ALL PRIVILEGES ON DATABASE trading_journal TO tjuser;
-      ```
+# NextAuth.js configuration
+NEXTAUTH_SECRET="your_generated_secret_key"
+NEXTAUTH_URL="http://localhost:3000"
 
-4.  **Set up environment variables:**
-    Create a `.env` file in the root directory and add the following variables (adjust values as needed):
-    ```dotenv
-    # PostgreSQL connection string
-    DATABASE_URL="postgresql://username:password@localhost:5432/trading_journal"
+# TCBS API (Vietnamese stock market data)
+TCBS_API_URL="https://apipubaws.tcbs.com.vn"
 
-    # Generate a strong secret: https://generate-secret.vercel.app/32
-    NEXTAUTH_SECRET="YOUR_NEXTAUTH_SECRET"
-    NEXTAUTH_URL="http://localhost:3000" # Or your deployment URL
+# Stock price cache duration (1 hour = 3600000ms)
+STOCK_PRICE_CACHE_DURATION=3600000
+```
 
-    # Add any other required environment variables for external APIs (e.g., TCBS, Market Data)
-    ```
+**Generate NextAuth Secret:**
+Visit [https://generate-secret.vercel.app/32](https://generate-secret.vercel.app/32) for a secure secret key.
 
-5.  **Set up the database:**
-    Apply migrations to create the database schema:
-    ```bash
-    npx prisma migrate dev
-    ```
-    Generate the Prisma Client:
-    ```bash
-    npx prisma generate
-    ```
+### 5. Database Migration
+```bash
+# Generate Prisma client
+npx prisma generate
 
-6.  **Run the development server:**
-    ```bash
-    npm run dev
-    ```
+# Apply database schema
+npx prisma migrate dev
 
-7.  Open [http://localhost:3000](http://localhost:3000) in your browser.
+# Optional: View database in Prisma Studio
+npx prisma studio
+```
 
-## License
+### 6. Development Server
+```bash
+npm run dev
+```
 
-ISC (Based on package.json - Please verify and update if necessary)
+Navigate to [http://localhost:3000](http://localhost:3000)
 
-## Acknowledgements
+### 7. Production Build
+```bash
+npm run build
+npm start
+```
 
-- Built for traders seeking to improve through journaling and analysis.
-- Thanks to the communities behind Next.js, Prisma, Tailwind CSS, NextAuth.js, and other libraries used.
+## 📋 Available Scripts
 
-## Performance Optimizations
+- `npm run dev` - Start development server
+- `npm run build` - Create production build
+- `npm start` - Start production server
+- `npm run lint` - Run ESLint
+- `npm run prisma:generate` - Generate Prisma client
+- `npm run cleanup:cache` - Clean application cache
+- `npm run debug:tcbs` - Debug TCBS API connection
+- `npm run debug:market-data` - Test market data functionality
+- `npm run test:market-data` - Run market data function tests
+
+## 🔧 Configuration
+
+### Stock Price Caching
+The application implements intelligent caching for stock prices:
+- **Default Duration**: 1 hour (configurable via `STOCK_PRICE_CACHE_DURATION`)
+- **Automatic Refresh**: Expired cache triggers new API requests
+- **Fallback Mechanism**: Uses stale cache data if API fails
+- **Performance Impact**: Up to 10x faster loading for cached data
+
+### Session Management
+- **Timeout**: 30 minutes of inactivity
+- **Warning Period**: 2 minutes before expiration
+- **Activity Tracking**: Mouse, keyboard, and scroll events extend session
+- **Graceful Re-auth**: Modal-based login without page refresh
 
 ### API Performance
-The application implements several performance optimizations to ensure fast response times:
+- **Response Times**: <200ms average for transaction lists
+- **Caching Strategy**: In-memory with TTL-based expiration
+- **Query Optimization**: Raw SQL for performance-critical paths
+- **Error Handling**: Comprehensive logging and user-friendly error messages
 
-1. **Caching Strategy**
-   - In-memory caching for frequently accessed data
-   - 5-minute TTL for transaction lists
-   - 3-minute TTL for individual transactions
-   - Separate cache for common "recent transactions" queries
-   - Smart cache invalidation on data modifications
-   - **Database caching for stock prices to minimize TCBS API calls**
+## 🌐 Deployment Considerations
 
-2. **Query Optimization**
-   - Raw SQL queries for performance-critical paths
-   - Optimized database index utilization
-   - Efficient field selection to minimize data transfer
-   - Parallel query execution where beneficial
-   - Combined queries to reduce database roundtrips
+### Production Database
+- Use managed PostgreSQL service (AWS RDS, Google Cloud SQL, etc.)
+- Configure connection pooling for better performance
+- Set up automated backups and monitoring
+- Enable SSL/TLS for secure connections
 
-3. **Memory Management**
-   - Singleton Prisma instance to reduce connection overhead
-   - Maximum cache size limits to prevent memory leaks
-   - LRU-like cache eviction for older entries
-   - Periodic cache cleanup to maintain performance
+### Environment Variables
+- Use secure secret management for production
+- Configure proper CORS settings for API endpoints
+- Set appropriate cache durations based on usage patterns
+- Monitor API rate limits for TCBS integration
 
-4. **Development Tools**
-   - Query logging in development mode
-   - Performance timing measurements
-   - Detailed error tracking and reporting
+### Performance Monitoring
+- Implement application performance monitoring (APM)
+- Set up database query monitoring
+- Configure alerts for API failures and high response times
+- Regular cache cleanup and optimization
 
-### Stock Price Caching System
-The application implements a database-backed caching system for stock prices:
+## 🤝 Contributing
 
-1. **How it works**
-   - Stock prices are cached in the database with timestamps
-   - Default cache duration is 1 hour (configurable via environment variable)
-   - Expired cache entries trigger new API requests to TCBS
-   - API failures fall back to stale cache data if available
-   - Cache misses (new tickers) are automatically populated
+1. Fork the repository
+2. Create a feature branch (`git checkout -b feature/new-feature`)
+3. Commit your changes (`git commit -m 'Add new feature'`)
+4. Push to the branch (`git push origin feature/new-feature`)
+5. Open a Pull Request
 
-2. **Benefits**
-   - Significantly reduces external API calls to TCBS
-   - Improves portfolio page load time (up to 10x faster for cached data)
-   - Reduces risk of hitting TCBS API rate limits
-   - Provides resilience against temporary API outages
+## 📄 License
 
-3. **Configuration**
-   Add to your `.env` file:
-   ```
-   # Stock price cache duration in milliseconds (1 hour = 3600000)
-   STOCK_PRICE_CACHE_DURATION=3600000
-   ```
+This project is licensed under the ISC License. See the LICENSE file for details.
 
-### Response Times
-- List Transactions API: < 200ms average response time
-- Individual Transaction API: < 100ms average response time
-- Cached Responses: < 50ms average response time
-- Market Data API: < 50ms for cached responses, ~800ms for TCBS API calls
+## 🙏 Acknowledgements
 
-## Recent Improvements
+- **Vietnamese Trading Community** for requirements and feedback
+- **TCBS (Techcom Securities)** for providing market data API
+- **Open Source Libraries** that make this project possible:
+  - Next.js team for the amazing framework
+  - Prisma team for the excellent ORM
+  - NextAuth.js for authentication solutions
+  - Chart.js and Recharts for visualization tools
+  - Tailwind CSS for the utility-first styling approach
 
-### Browser-Safe Logging System
-- **Dual-environment logging**: Implemented a unified logging system that works in both client and server environments
-- **Client-side logging**: Browser-compatible logger that redirects output to console with appropriate logging levels
-- **Server-side logging**: File-based logging with detailed timestamps and structured data support
-- **API consistency**: Same interface in both environments for seamless development
+## 📞 Support
 
-### Enhanced Session Management
-- **Automatic session timeout**: Sessions expire after 30 minutes of user inactivity
-- **Pre-expiration warnings**: Users receive a warning 2 minutes before their session expires
-- **Activity monitoring**: User interactions (clicks, keyboard, scrolling) automatically extend the session
-- **Graceful re-authentication**: Modal-based login when session expires without losing page context
-- **Fetch interception**: Detects 401 responses and triggers re-authentication automatically
+For questions, issues, or feature requests:
+- Open an issue on GitHub
+- Check existing documentation and FAQ
+- Review the troubleshooting section in POSTGRES_MIGRATION.md
 
-### User Interface Enhancements
-- **Username display**: Usernames are now prominently displayed in the navigation bar
-- **Display priority**: Properly prioritizes username > name > email for user identification
-- **Avatar initials**: Uses the first letter of the username in the mobile menu avatar
-- **Consistent styling**: Maintains the application's clean design language
+---
 
-### Advanced Transaction Filtering
-- **Comprehensive filters**: Filter transactions by ticker symbol, type, date range, and price range
-- **Server-side sorting**: All columns can be sorted (ascending/descending) with clear visual indicators
-- **Configurable pagination**: Users can select page size (10/25/50/100 items per page)
-- **URL parameter synchronization**: All filter, sort, and pagination settings are reflected in the URL
-- **Result summary**: Clear display of total result count and applied filters
-- **Optimized performance**: Enhanced API efficiency with smart caching and query optimization
+**Built for traders, by traders** 📈 **Happy Trading!** 🚀

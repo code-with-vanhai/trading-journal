@@ -1,10 +1,31 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 export default function TransactionFilters({ filters, onFilterChange, onResetFilters }) {
   const [isExpanded, setIsExpanded] = useState(false);
   const [localFilters, setLocalFilters] = useState(filters);
+  const [stockAccounts, setStockAccounts] = useState([]);
+  const [isLoadingAccounts, setIsLoadingAccounts] = useState(true);
+
+  // Load stock accounts for filtering
+  useEffect(() => {
+    const fetchStockAccounts = async () => {
+      try {
+        const response = await fetch('/api/stock-accounts');
+        if (response.ok) {
+          const accounts = await response.json();
+          setStockAccounts(accounts);
+        }
+      } catch (err) {
+        console.error('Error fetching stock accounts:', err);
+      } finally {
+        setIsLoadingAccounts(false);
+      }
+    };
+
+    fetchStockAccounts();
+  }, []);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -57,6 +78,32 @@ export default function TransactionFilters({ filters, onFilterChange, onResetFil
         <div className="p-4">
           <form onSubmit={handleSubmit}>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+              {/* Stock Account filter */}
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  Tài khoản chứng khoán
+                </label>
+                {isLoadingAccounts ? (
+                  <div className="input-field w-full bg-gray-50 flex items-center justify-center">
+                    <span className="text-gray-500 text-sm">Đang tải...</span>
+                  </div>
+                ) : (
+                  <select
+                    name="stockAccountId"
+                    value={localFilters.stockAccountId || ''}
+                    onChange={handleChange}
+                    className="input-field w-full"
+                  >
+                    <option value="">Tất cả tài khoản</option>
+                    {stockAccounts.map((account) => (
+                      <option key={account.id} value={account.id}>
+                        {account.name} {account.brokerName ? `(${account.brokerName})` : ''}
+                      </option>
+                    ))}
+                  </select>
+                )}
+              </div>
+
               {/* Ticker filter */}
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">

@@ -22,12 +22,13 @@ const transactionCache = new Map();
 const CACHE_TTL = 5 * 60 * 1000; // 5 minutes cache TTL for better hit ratio
 
 // Calculate profit/loss for a SELL transaction
-const calculateProfitLoss = async (userId, ticker, quantity, sellPrice, fee, taxRate) => {
-  // Get all BUY transactions for this ticker, ordered by date (FIFO method)
+const calculateProfitLoss = async (userId, stockAccountId, ticker, quantity, sellPrice, fee, taxRate) => {
+  // Get all BUY transactions for this ticker in the same stock account, ordered by date (FIFO method)
   // Using a more efficient query with only required fields
   const buyTransactions = await prisma.transaction.findMany({
     where: {
       userId,
+      stockAccountId, // Only consider transactions from the same stock account
       ticker,
       type: 'BUY',
     },
@@ -90,6 +91,7 @@ export async function GET(request) {
     // Extract filter parameters
     const ticker = searchParams.get('ticker');
     const type = searchParams.get('type');
+    const stockAccountId = searchParams.get('stockAccountId'); // New filter for stock account
     const dateFrom = searchParams.get('dateFrom');
     const dateTo = searchParams.get('dateTo');
     const minAmount = searchParams.get('minAmount');
@@ -104,7 +106,7 @@ export async function GET(request) {
     // Create a cache key based on the request params
     const cacheKey = JSON.stringify({
       userId: session.user.id,
-      ticker, type, dateFrom, dateTo, minAmount, maxAmount,
+      ticker, type, stockAccountId, dateFrom, dateTo, minAmount, maxAmount,
       sortBy, sortOrder, page, pageSize
     });
     
@@ -126,6 +128,11 @@ export async function GET(request) {
     // Apply primary filters first (using indexed fields)
     if (type) {
       whereClause.type = type;
+    }
+    
+    // Stock account filter
+    if (stockAccountId) {
+      whereClause.stockAccountId = stockAccountId;
     }
     
     if (ticker) {
@@ -197,18 +204,15 @@ export async function GET(request) {
                            pageSize === 10 && 
                            sortBy === 'transactionDate' && 
                            sortOrder === 'desc' &&
-                           !ticker && !type && !dateFrom && !dateTo && !minAmount && !maxAmount;
+                           !ticker && !type && !stockAccountId && !dateFrom && !dateTo && !minAmount && !maxAmount;
 
-    // For common requests, use a simpler, faster query
     if (isCommonRequest) {
-      console.log('[Transactions API] Using optimized path for common request');
-      
-      // Get from cache with a different key for recent transactions
-      const recentCacheKey = `recent-${session.user.id}`;
+      // Use a separate cache key for this common request pattern
+      const recentCacheKey = `recent_${session.user.id}_${pageSize}`;
       const cachedRecent = transactionCache.get(recentCacheKey);
       
       if (cachedRecent && cachedRecent.timestamp > Date.now() - CACHE_TTL) {
-        console.log(`[Transactions API] Recent transactions cache hit - ${Date.now() - startTime}ms`);
+        console.log(`[Transactions API] Recent cache hit - ${Date.now() - startTime}ms`);
         return NextResponse.json(cachedRecent.data);
       }
       
@@ -231,6 +235,14 @@ export async function GET(request) {
             taxRate: true,
             calculatedPl: true,
             notes: true,
+            stockAccountId: true, // Include stock account ID
+            stockAccount: { // Include stock account details
+              select: {
+                id: true,
+                name: true,
+                brokerName: true
+              }
+            },
             journalEntry: {
               select: {
                 id: true
@@ -297,6 +309,14 @@ export async function GET(request) {
           taxRate: true,
           calculatedPl: true,
           notes: true,
+          stockAccountId: true, // Include stock account ID
+          stockAccount: { // Include stock account details
+            select: {
+              id: true,
+              name: true,
+              brokerName: true
+            }
+          },
           journalEntry: {
             select: {
               id: true,
@@ -353,14 +373,65 @@ export async function POST(request) {
     }
 
     const body = await request.json();
-    const { ticker, type, quantity, price, transactionDate, fee = 0, taxRate = 0, notes } = body;
+    const { ticker, type, quantity, price, transactionDate, fee = 0, taxRate = 0, notes, stockAccountId } = body;
 
     // Validate required fields
     if (!ticker || !type || !quantity || !price || !transactionDate) {
       return NextResponse.json(
-        { message: 'Missing required fields' },
+        { message: 'Missing required fields: ticker, type, quantity, price, and transactionDate are required' },
         { status: 400 }
       );
+    }
+
+    let finalStockAccountId = stockAccountId;
+
+    // If no stockAccountId provided, get or create default account
+    if (!finalStockAccountId) {
+      // Try to find existing accounts for the user
+      let stockAccounts = await prisma.stockAccount.findMany({
+        where: {
+          userId: session.user.id
+        },
+        orderBy: {
+          createdAt: 'asc'
+        }
+      });
+
+      // If no accounts exist, create a default one
+      if (stockAccounts.length === 0) {
+        console.log(`Creating default account for user ${session.user.id} during transaction creation`);
+        
+        const defaultAccount = await prisma.stockAccount.create({
+          data: {
+            name: 'Tài khoản mặc định',
+            brokerName: null,
+            accountNumber: null,
+            description: 'Tài khoản mặc định được tạo tự động',
+            userId: session.user.id
+          }
+        });
+
+        finalStockAccountId = defaultAccount.id;
+      } else {
+        // Use the first account (which should be default if it exists, or oldest account)
+        const defaultAccount = stockAccounts.find(account => account.name === 'Tài khoản mặc định') || stockAccounts[0];
+        finalStockAccountId = defaultAccount.id;
+      }
+    } else {
+      // Verify that the provided stock account belongs to the user
+      const stockAccount = await prisma.stockAccount.findFirst({
+        where: {
+          id: stockAccountId,
+          userId: session.user.id
+        }
+      });
+
+      if (!stockAccount) {
+        return NextResponse.json(
+          { message: 'Invalid stock account or account does not belong to user' },
+          { status: 400 }
+        );
+      }
     }
 
     // Calculate P/L for SELL transactions
@@ -368,6 +439,7 @@ export async function POST(request) {
     if (type === 'SELL') {
       calculatedPl = await calculateProfitLoss(
         session.user.id,
+        finalStockAccountId, // Pass stockAccountId to calculate P/L within the same account
         ticker,
         quantity,
         price,
@@ -380,6 +452,7 @@ export async function POST(request) {
     const transaction = await prisma.transaction.create({
       data: {
         userId: session.user.id,
+        stockAccountId: finalStockAccountId,
         ticker: ticker.toUpperCase(),
         type,
         quantity,
@@ -390,6 +463,15 @@ export async function POST(request) {
         calculatedPl,
         notes,
       },
+      include: {
+        stockAccount: {
+          select: {
+            id: true,
+            name: true,
+            brokerName: true
+          }
+        }
+      }
     });
 
     // Clear relevant cache entries when adding new transactions
