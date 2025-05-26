@@ -71,8 +71,8 @@ export const authOptions = {
   ],
   session: {
     strategy: 'jwt',
-    maxAge: 60 * 60, // 1 hour (in seconds)
-    updateAge: 5 * 60, // 5 minutes (refresh session if active)
+    maxAge: 24 * 60 * 60, // 24 hours (in seconds)
+    updateAge: 60 * 60, // 1 hour (refresh session if active for 1 hour)
   },
   jwt: {
     secret: process.env.NEXTAUTH_SECRET,
@@ -103,7 +103,6 @@ export const authOptions = {
   },
   secret: process.env.NEXTAUTH_SECRET,
   debug: process.env.NODE_ENV === 'development',
-  debug: false,
 };
 
 const handler = NextAuth(authOptions);

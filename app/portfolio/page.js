@@ -2,13 +2,16 @@
 
 import { useState, useEffect, useCallback } from 'react';
 import { useSession } from 'next-auth/react';
+import { useRouter } from 'next/navigation';
 import { Spinner } from '../components/ui/Spinner';
 import PortfolioPieChart from '../components/PortfolioPieChart';
 import AccountAllocationPieChart from '../components/AccountAllocationPieChart';
+import TransferStocksModal from '../components/TransferStocksModal';
 import Link from 'next/link';
 
 export default function PortfolioPage() {
   const { data: session, status } = useSession();
+  const router = useRouter();
   const [portfolio, setPortfolio] = useState([]);
   const [accountAllocations, setAccountAllocations] = useState([]);
   const [stockAccounts, setStockAccounts] = useState([]);
@@ -21,8 +24,19 @@ export default function PortfolioPage() {
   const [error, setError] = useState(null);
   const [lastFetchTimestamp, setLastFetchTimestamp] = useState(null);
   
+  // Transfer functionality state
+  const [selectedStocks, setSelectedStocks] = useState([]);
+  const [transferModalOpen, setTransferModalOpen] = useState(false);
+  
   // Cache duration in milliseconds (5 minutes)
   const CACHE_DURATION = 5 * 60 * 1000;
+
+  // Check authentication and redirect if needed
+  useEffect(() => {
+    if (status === 'unauthenticated') {
+      router.push('/auth/signin');
+    }
+  }, [status, router]);
 
   // Load stock accounts
   useEffect(() => {
@@ -199,104 +213,146 @@ export default function PortfolioPage() {
       };
     });
 
-    // Calculate allocations
-    const totalMarketValue = enriched.reduce((sum, h) => sum + (h.marketValue || 0), 0);
-    
-    const finalEnriched = enriched.map(holding => ({
-      ...holding,
-      allocationPercentage: totalMarketValue > 0 && holding.marketValue 
-        ? (holding.marketValue / totalMarketValue * 100)
-        : 0
-    }));
-
-    setEnrichedPortfolio(finalEnriched);
+    setEnrichedPortfolio(enriched);
   }, [portfolio, marketData]);
 
-  // Handle account selection change
   const handleAccountChange = (e) => {
-    const accountId = e.target.value;
-    setSelectedAccountId(accountId);
-    setLastFetchTimestamp(null); // Force a fresh fetch
+    setSelectedAccountId(e.target.value);
+    // Clear selections when changing accounts
+    setSelectedStocks([]);
   };
 
-  // Loading state
-  if (status === 'loading') {
+  // Stock selection handlers
+  const handleStockSelect = (holding, isSelected) => {
+    if (isSelected) {
+      setSelectedStocks(prev => [...prev, {
+        ticker: holding.ticker,
+        accountId: holding.stockAccount?.id,
+        accountName: holding.stockAccount?.name
+      }]);
+    } else {
+      setSelectedStocks(prev => prev.filter(stock => stock.ticker !== holding.ticker));
+    }
+  };
+
+  const handleSelectAll = (isSelected) => {
+    if (isSelected) {
+      const allStocks = (enrichedPortfolio.length > 0 ? enrichedPortfolio : portfolio).map(holding => ({
+        ticker: holding.ticker,
+        accountId: holding.stockAccount?.id,
+        accountName: holding.stockAccount?.name
+      }));
+      setSelectedStocks(allStocks);
+    } else {
+      setSelectedStocks([]);
+    }
+  };
+
+  const isStockSelected = (ticker) => {
+    return selectedStocks.some(stock => stock.ticker === ticker);
+  };
+
+  const isAllSelected = () => {
+    const currentPortfolio = enrichedPortfolio.length > 0 ? enrichedPortfolio : portfolio;
+    return currentPortfolio.length > 0 && selectedStocks.length === currentPortfolio.length;
+  };
+
+  const isSomeSelected = () => {
+    return selectedStocks.length > 0 && !isAllSelected();
+  };
+
+  // Transfer handlers
+  const handleOpenTransferModal = () => {
+    setTransferModalOpen(true);
+  };
+
+  const handleCloseTransferModal = () => {
+    setTransferModalOpen(false);
+  };
+
+  const handleTransferSuccess = (message) => {
+    alert(message);
+    setSelectedStocks([]);
+    setTransferModalOpen(false);
+    
+    // Trigger data refresh
+    if (typeof window !== 'undefined') {
+      localStorage.setItem('portfolioDataUpdated', Date.now().toString());
+    }
+    
+    // Force refresh
+    setLastFetchTimestamp(null);
+  };
+
+  if (status === 'loading' || loading) {
     return (
-      <div className="flex justify-center items-center h-64">
-        <Spinner size="large" />
+      <div className="max-w-6xl mx-auto p-4">
+        <div className="flex justify-center items-center h-64">
+          <Spinner size="large" />
+        </div>
       </div>
     );
   }
 
-  // Authentication check
   if (status === 'unauthenticated') {
     return (
-      <div className="flex flex-col items-center justify-center h-64">
-        <p className="text-lg mb-4">Please log in to view your portfolio.</p>
-        <Link 
-          href="/auth/signin" 
-          className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition-colors"
-        >
-          Sign In
-        </Link>
+      <div className="max-w-6xl mx-auto p-4">
+        <div className="text-center">
+          <p className="text-gray-600 mb-4">Vui lòng đăng nhập để xem danh mục đầu tư</p>
+          <Link href="/auth/signin" className="btn-primary">
+            Đăng nhập
+          </Link>
+        </div>
       </div>
     );
   }
 
-  // Error state
   if (error) {
     return (
-      <div className="text-center p-4 text-red-600">
-        <p className="text-lg">Error: {error}</p>
-        <button 
-          onClick={() => {
-            setError(null);
-            setLastFetchTimestamp(null); // Force a fresh fetch
-          }} 
-          className="mt-4 px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition-colors"
-        >
-          Retry
-        </button>
+      <div className="max-w-6xl mx-auto p-4">
+        <div className="bg-red-50 text-red-600 p-4 rounded-md">
+          <p>Lỗi khi tải dữ liệu: {error}</p>
+        </div>
       </div>
     );
   }
 
   return (
-    <div className="container mx-auto p-4">
+    <div className="max-w-6xl mx-auto p-4">
       <div className="flex justify-between items-center mb-6">
-        <h1 className="text-2xl font-bold">Danh mục đầu tư</h1>
+        <h1 className="text-2xl font-bold">Danh Mục Đầu Tư</h1>
         
         {/* Account Filter */}
-        <div className="flex items-center space-x-3">
-          <label htmlFor="accountFilter" className="text-sm font-medium text-gray-700">
-            Tài khoản:
-          </label>
+        <div className="flex items-center space-x-4">
           {loadingAccounts ? (
-            <div className="w-48 h-10 bg-gray-100 rounded animate-pulse"></div>
+            <Spinner size="small" />
           ) : (
-            <select
-              id="accountFilter"
-              value={selectedAccountId}
-              onChange={handleAccountChange}
-              className="w-48 px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-            >
-              <option value="">Tất cả tài khoản</option>
-              {stockAccounts.map((account) => (
-                <option key={account.id} value={account.id}>
-                  {account.name} {account.brokerName ? `(${account.brokerName})` : ''}
-                </option>
-              ))}
-            </select>
+            stockAccounts.length > 0 && (
+              <div className="flex items-center space-x-2">
+                <label htmlFor="accountFilter" className="text-sm font-medium text-gray-700">
+                  Tài khoản:
+                </label>
+                <select
+                  id="accountFilter"
+                  value={selectedAccountId}
+                  onChange={handleAccountChange}
+                  className="px-3 py-2 border border-gray-300 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white min-w-[200px]"
+                >
+                  <option value="">Tất cả tài khoản</option>
+                  {stockAccounts.map((account) => (
+                    <option key={account.id} value={account.id}>
+                      {account.name} {account.brokerName ? `(${account.brokerName})` : ''}
+                    </option>
+                  ))}
+                </select>
+              </div>
+            )
           )}
         </div>
       </div>
-      
-      {loading ? (
-        <div className="flex justify-center items-center h-64">
-          <Spinner size="large" />
-        </div>
-      ) : portfolio.length === 0 ? (
-        <div className="text-center p-8 bg-gray-50 rounded-lg shadow">
+
+      {portfolio.length === 0 ? (
+        <div className="text-center py-10">
           <p className="text-lg text-gray-600">
             {selectedAccountId 
               ? 'Tài khoản này chưa có cổ phiếu nào trong danh mục.' 
@@ -358,10 +414,43 @@ export default function PortfolioPage() {
               )}
             </div>
             
+            {/* Transfer Controls */}
+            {!selectedAccountId && (
+              <div className="bg-white p-4 rounded-lg shadow mb-4">
+                <div className="flex justify-between items-center">
+                  <div className="flex items-center space-x-2">
+                    <span className="text-sm text-gray-600">
+                      {selectedStocks.length > 0 ? `Đã chọn ${selectedStocks.length} cổ phiếu` : 'Chọn cổ phiếu để chuyển tài khoản'}
+                    </span>
+                  </div>
+                  <button
+                    onClick={handleOpenTransferModal}
+                    disabled={selectedStocks.length === 0}
+                    className="px-4 py-2 bg-orange-600 text-white rounded hover:bg-orange-700 disabled:bg-gray-400 disabled:cursor-not-allowed transition-colors"
+                  >
+                    Chuyển Tài Khoản
+                  </button>
+                </div>
+              </div>
+            )}
+            
             <div className="overflow-x-auto bg-white rounded-lg shadow">
               <table className="min-w-full divide-y divide-gray-200">
                 <thead className="bg-gray-100">
                   <tr>
+                    {!selectedAccountId && (
+                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        <input
+                          type="checkbox"
+                          checked={isAllSelected()}
+                          ref={input => {
+                            if (input) input.indeterminate = isSomeSelected();
+                          }}
+                          onChange={(e) => handleSelectAll(e.target.checked)}
+                          className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
+                        />
+                      </th>
+                    )}
                     <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                       Mã CP
                     </th>
@@ -399,6 +488,16 @@ export default function PortfolioPage() {
                     
                     return (
                       <tr key={holding.ticker || 'unknown'} className="hover:bg-gray-50">
+                        {!selectedAccountId && (
+                          <td className="px-6 py-4 whitespace-nowrap">
+                            <input
+                              type="checkbox"
+                              checked={isStockSelected(holding.ticker)}
+                              onChange={(e) => handleStockSelect(holding, e.target.checked)}
+                              className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
+                            />
+                          </td>
+                        )}
                         <td className="px-6 py-4 whitespace-nowrap">
                           <div className="text-sm font-medium text-gray-900">{holding.ticker || 'N/A'}</div>
                         </td>
@@ -502,6 +601,14 @@ export default function PortfolioPage() {
           </div>
         </div>
       )}
+
+      {/* Transfer Stocks Modal */}
+      <TransferStocksModal
+        isOpen={transferModalOpen}
+        onClose={handleCloseTransferModal}
+        selectedStocks={selectedStocks}
+        onTransferSuccess={handleTransferSuccess}
+      />
     </div>
   );
 } 

@@ -5,17 +5,21 @@ import Link from 'next/link';
 import { format } from 'date-fns';
 import { vi } from 'date-fns/locale';
 import TransactionDetailModal from './TransactionDetailModal';
+import EditTransactionModal from './EditTransactionModal';
 
 export default function TransactionList({ 
   transactions, 
   onDeleteTransaction,
   sortField = 'transactionDate',
   sortDirection = 'desc',
-  onSortChange
+  onSortChange,
+  onEditSuccess 
 }) {
   const [deletingId, setDeletingId] = useState(null);
   const [modalOpen, setModalOpen] = useState(false);
   const [selectedTransactionId, setSelectedTransactionId] = useState(null);
+  const [editModalOpen, setEditModalOpen] = useState(false);
+  const [transactionToEdit, setTransactionToEdit] = useState(null);
 
   const handleSort = (field) => {
     if (onSortChange) {
@@ -65,6 +69,28 @@ export default function TransactionList({
 
   const closeTransactionModal = () => {
     setModalOpen(false);
+  };
+
+  const openEditModal = (transaction) => {
+    setTransactionToEdit(transaction);
+    setEditModalOpen(true);
+  };
+
+  const closeEditModal = () => {
+    setEditModalOpen(false);
+    setTransactionToEdit(null);
+  };
+
+  const handleEditSuccess = (message) => {
+    // Show success message
+    alert(message);
+    
+    // Notify parent to refresh the data
+    if (onEditSuccess) {
+      onEditSuccess();
+    }
+    
+    closeEditModal();
   };
 
   // Format currency to VND with thousands separators
@@ -193,26 +219,28 @@ export default function TransactionList({
                     </Link>
                   )}
                 </td>
-                <td className="px-4 py-2 whitespace-nowrap text-right text-sm font-medium flex justify-end space-x-2">
-                  <button
-                    onClick={() => openTransactionModal(transaction.id)}
-                    className="text-indigo-600 hover:text-indigo-900"
-                  >
-                    Xem
-                  </button>
-                  <Link
-                    href={`/transactions/${transaction.id}/edit`}
-                    className="text-blue-600 hover:text-blue-900"
-                  >
-                    Sửa
-                  </Link>
-                  <button
-                    onClick={() => handleDelete(transaction.id)}
-                    disabled={deletingId === transaction.id}
-                    className="text-red-600 hover:text-red-900"
-                  >
-                    {deletingId === transaction.id ? 'Đang xóa...' : 'Xóa'}
-                  </button>
+                <td className="px-4 py-2 whitespace-nowrap text-right text-sm font-medium">
+                  <div className="flex justify-end space-x-2">
+                    <button
+                      onClick={() => openTransactionModal(transaction.id)}
+                      className="text-indigo-600 hover:text-indigo-900"
+                    >
+                      Xem
+                    </button>
+                    <button
+                      onClick={() => openEditModal(transaction)}
+                      className="text-blue-600 hover:text-blue-900"
+                    >
+                      Sửa
+                    </button>
+                    <button
+                      onClick={() => handleDelete(transaction.id)}
+                      disabled={deletingId === transaction.id}
+                      className="text-red-600 hover:text-red-900"
+                    >
+                      {deletingId === transaction.id ? 'Đang xóa...' : 'Xóa'}
+                    </button>
+                  </div>
                 </td>
               </tr>
             ))}
@@ -225,6 +253,14 @@ export default function TransactionList({
         isOpen={modalOpen}
         onClose={closeTransactionModal}
         transactionId={selectedTransactionId}
+      />
+
+      {/* Edit Transaction Modal */}
+      <EditTransactionModal
+        isOpen={editModalOpen}
+        onClose={closeEditModal}
+        transaction={transactionToEdit}
+        onEditSuccess={handleEditSuccess}
       />
     </div>
   );

@@ -15,7 +15,7 @@ ChartJS.register(ArcElement, Tooltip, Legend, Colors);
 export default function PortfolioPieChart({ holdings }) {
   if (!holdings || holdings.length === 0) {
     return (
-      <div className="bg-white p-4 rounded-lg shadow text-center">
+      <div className="bg-white p-4 rounded-lg shadow text-center h-96 flex flex-col justify-center">
         <h2 className="text-lg font-semibold mb-4">Tỷ Trọng Danh Mục</h2>
         <p className="text-gray-500">Không có dữ liệu để hiển thị biểu đồ tỷ trọng</p>
       </div>
@@ -60,6 +60,7 @@ export default function PortfolioPieChart({ holdings }) {
 
   const options = {
     responsive: true,
+    maintainAspectRatio: false,
     plugins: {
       legend: {
         position: 'right',
@@ -67,7 +68,9 @@ export default function PortfolioPieChart({ holdings }) {
           usePointStyle: true,
           font: {
             size: 12
-          }
+          },
+          boxWidth: 12,
+          padding: 15
         }
       },
       tooltip: {
@@ -81,13 +84,20 @@ export default function PortfolioPieChart({ holdings }) {
         }
       }
     },
-    maintainAspectRatio: false,
+    layout: {
+      padding: {
+        top: 10,
+        bottom: 10,
+        left: 10,
+        right: 10
+      }
+    }
   };
 
   return (
-    <div className="bg-white p-4 rounded-lg shadow">
-      <h2 className="text-lg font-semibold mb-4 text-center">Tỷ Trọng Danh Mục</h2>
-      <div className="h-64">
+    <div className="bg-white p-4 rounded-lg shadow h-96 flex flex-col">
+      <h2 className="text-lg font-semibold mb-4 text-center flex-shrink-0">Tỷ Trọng Danh Mục</h2>
+      <div className="flex-1 min-h-0">
         <Pie data={data} options={options} />
       </div>
     </div>

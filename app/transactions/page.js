@@ -123,6 +123,11 @@ function TransactionsContent() {
     setTransactions(transactions.filter(t => t.id !== id));
   };
 
+  const handleEditSuccess = () => {
+    // Refresh transactions data after successful edit
+    fetchTransactions();
+  };
+
   const handlePageChange = (newPage) => {
     setCurrentPage(newPage);
   };
@@ -202,6 +207,7 @@ function TransactionsContent() {
             <TransactionList 
               transactions={transactions} 
               onDeleteTransaction={handleDeleteTransaction}
+              onEditSuccess={handleEditSuccess}
               sortField={filters.sortBy}
               sortDirection={filters.sortOrder}
               onSortChange={(field, direction) => handleFilterChange({ sortBy: field, sortOrder: direction })}

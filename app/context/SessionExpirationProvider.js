@@ -43,7 +43,7 @@ export const SessionExpirationProvider = ({ children }) => {
     setShowWarning(false);
     setIsActive(false);
     logger.info('User initiated logout due to session expiration');
-    signOut({ callbackUrl: '/login' });
+    signOut({ callbackUrl: '/auth/signin' });
   }, []);
 
   // Set up activity listeners
