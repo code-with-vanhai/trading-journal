@@ -1,9 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
-// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
-
 generator client {
   provider = "prisma-client-js"
 }
@@ -14,135 +8,120 @@ datasource db {
 }
 
 model User {
-  id            String    @id @default(cuid())
-  email         String    @unique
-  username      String    @unique  // Required and unique username
-  name          String?
-  passwordHash  String?   // For local credentials login
-  createdAt     DateTime  @default(now())
-  updatedAt     DateTime  @updatedAt
-
-  transactions   Transaction[]
+  id             String         @id @default(cuid())
+  email          String         @unique
+  name           String?
+  passwordHash   String?
+  createdAt      DateTime       @default(now())
+  updatedAt      DateTime       @updatedAt
+  username       String         @unique
   journalEntries JournalEntry[]
+  StockAccount   StockAccount[]
+  strategies     Strategy[]
   tags           Tag[]
-  strategies     Strategy[]     // Strategies shared by this user
-  stockAccounts  StockAccount[] // Multiple stock accounts per user
-}
-
-// New model for managing multiple stock trading accounts
-model StockAccount {
-  id            String    @id @default(cuid())
-  name          String    // Account name, e.g., "TCBS Personal", "VNDS Margin"
-  brokerName    String?   // Brokerage firm name, e.g., "TCBS", "VNDS" (optional)
-  accountNumber String?   // Account number (optional)
-  description   String?   // Additional description (optional)
-
-  userId        String
-  user          User      @relation(fields: [userId], references: [id], onDelete: Cascade) // If User is deleted, their StockAccounts are also deleted
-
-  transactions  Transaction[] // An account can have many transactions
-
-  createdAt     DateTime  @default(now())
-  updatedAt     DateTime  @updatedAt
-
-  @@unique([userId, name]) // Each user cannot have two accounts with the same name
-  @@index([userId])
+  transactions   Transaction[]
 }
 
 model Transaction {
   id              String        @id @default(cuid())
   userId          String
-  stockAccountId  String        // New field linking to StockAccount
   ticker          String
-  type            String        // "BUY" or "SELL"
+  type            String
   quantity        Float
   price           Float
   transactionDate DateTime
   fee             Float         @default(0)
   taxRate         Float         @default(0)
   calculatedPl    Float?
-  notes           String?       // Private notes for the transaction
+  notes           String?
   createdAt       DateTime      @default(now())
   updatedAt       DateTime      @updatedAt
-
+  stockAccountId  String
+  journalEntry    JournalEntry?
+  StockAccount    StockAccount  @relation(fields: [stockAccountId], references: [id])
   user            User          @relation(fields: [userId], references: [id], onDelete: Cascade)
-  stockAccount    StockAccount  @relation(fields: [stockAccountId], references: [id], onDelete: Restrict) // Prevents deleting StockAccount if it still has linked Transactions
-  journalEntry    JournalEntry? // One-to-one relation to personal journal entry
 
   @@index([userId, transactionDate])
   @@index([userId, ticker])
   @@index([stockAccountId])
 }
 
-// Personal Journal linked TO a specific Transaction
 model JournalEntry {
-  id                String   @id @default(cuid())
-  transactionId     String   @unique // Ensures one journal per transaction
-  userId            String
-  emotionOnEntry    String?
-  emotionOnExit     String?
-  strategyUsed      String?  // Strategy SPECIFIC to this trade
-  postTradeReview   String?
-  createdAt         DateTime @default(now())
-  updatedAt         DateTime @updatedAt
-
-  transaction       Transaction @relation(fields: [transactionId], references: [id], onDelete: Cascade)
-  user              User     @relation(fields: [userId], references: [id], onDelete: Cascade) // Link to user for easier querying if needed
-  tags              JournalEntryTag[]
+  id              String            @id @default(cuid())
+  transactionId   String            @unique
+  userId          String
+  emotionOnEntry  String?
+  emotionOnExit   String?
+  strategyUsed    String?
+  postTradeReview String?
+  createdAt       DateTime          @default(now())
+  updatedAt       DateTime          @updatedAt
+  transaction     Transaction       @relation(fields: [transactionId], references: [id], onDelete: Cascade)
+  user            User              @relation(fields: [userId], references: [id], onDelete: Cascade)
+  tags            JournalEntryTag[]
 
   @@index([userId])
 }
 
-// Tags for PERSONAL Journal Entries
 model Tag {
-  id             String   @id @default(cuid())
-  userId         String   // Tags are personal to the user
+  id             String            @id @default(cuid())
+  userId         String
   name           String
-  createdAt      DateTime @default(now())
-
-  user           User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  createdAt      DateTime          @default(now())
   journalEntries JournalEntryTag[]
+  user           User              @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@unique([userId, name])
 }
 
-// Join table for JournalEntry and Tag (Many-to-Many)
 model JournalEntryTag {
   journalEntryId String
   tagId          String
-
   journalEntry   JournalEntry @relation(fields: [journalEntryId], references: [id], onDelete: Cascade)
   tag            Tag          @relation(fields: [tagId], references: [id], onDelete: Cascade)
 
   @@id([journalEntryId, tagId])
 }
 
-// Public Strategies (NOT linked to a specific transaction)
 model Strategy {
   id        String   @id @default(cuid())
-  userId    String   // Author of the strategy
-  title     String?  // Optional title
-  content   String   // The shared strategy content
+  userId    String
+  title     String?
+  content   String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-
   user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 
-  @@index([createdAt(sort: Desc)]) // Index for fetching newest first
+  @@index([createdAt(sort: Desc)])
   @@index([userId])
 }
 
-// Stock price cache for optimizing TCBS API calls
 model StockPriceCache {
   id            String   @id @default(cuid())
-  symbol        String   @unique // Stock ticker symbol
-  price         Float    // Last fetched price
-  lastUpdatedAt DateTime // When the price was last updated from TCBS
-  source        String   @default("tcbs") // Source of the price data, for future extensibility
-  metadata      Json?    // Additional data like high, low, volume, etc. (optional)
+  symbol        String   @unique
+  price         Float
+  lastUpdatedAt DateTime
+  source        String   @default("tcbs")
+  metadata      Json?
   createdAt     DateTime @default(now())
   updatedAt     DateTime @updatedAt
 
   @@index([symbol])
   @@index([lastUpdatedAt])
+}
+
+model StockAccount {
+  id            String        @id
+  name          String
+  brokerName    String?
+  accountNumber String?
+  description   String?
+  userId        String
+  createdAt     DateTime      @default(now())
+  updatedAt     DateTime
+  User          User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  Transaction   Transaction[]
+
+  @@unique([userId, name])
+  @@index([userId])
 }
