@@ -61,7 +61,7 @@ export async function GET(request) {
         price: true,
         transactionDate: true,
         stockAccountId: true,
-        stockAccount: {
+        StockAccount: {
           select: {
             id: true,
             name: true,
@@ -96,7 +96,7 @@ export async function GET(request) {
     
     // Process transactions in a single pass
     for (const transaction of transactions) {
-      const { ticker, type, quantity, price, stockAccountId: txAccountId, stockAccount } = transaction;
+      const { ticker, type, quantity, price, stockAccountId: txAccountId, StockAccount: stockAccount } = transaction;
       const position = portfolio[ticker];
       
       // Store account information (use the latest transaction's account)
@@ -144,7 +144,7 @@ export async function GET(request) {
           price: true,
           transactionDate: true,
           stockAccountId: true,
-          stockAccount: {
+          StockAccount: {
             select: {
               id: true,
               name: true,
@@ -161,7 +161,7 @@ export async function GET(request) {
       const accountPortfolios = {};
       
       for (const transaction of allTransactions) {
-        const { ticker, type, quantity, price, stockAccountId: txAccountId, stockAccount } = transaction;
+        const { ticker, type, quantity, price, stockAccountId: txAccountId, StockAccount: stockAccount } = transaction;
         
         if (!txAccountId) continue;
         

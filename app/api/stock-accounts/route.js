@@ -24,7 +24,7 @@ export async function GET(request) {
       include: {
         _count: {
           select: {
-            transactions: true
+            Transaction: true
           }
         }
       },
@@ -39,6 +39,7 @@ export async function GET(request) {
       
       const defaultAccount = await prisma.stockAccount.create({
         data: {
+          id: `default-${session.user.id}`,
           name: 'Tài khoản mặc định',
           brokerName: null,
           accountNumber: null,
@@ -48,7 +49,7 @@ export async function GET(request) {
         include: {
           _count: {
             select: {
-              transactions: true
+              Transaction: true
             }
           }
         }
@@ -129,6 +130,7 @@ export async function POST(request) {
     // Create the new stock account
     const newAccount = await prisma.stockAccount.create({
       data: {
+        id: `${session.user.id}-${Date.now()}`,
         name: name.trim(),
         brokerName: brokerName?.trim() || null,
         accountNumber: accountNumber?.trim() || null,

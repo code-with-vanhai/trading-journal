@@ -236,7 +236,7 @@ export async function GET(request) {
             calculatedPl: true,
             notes: true,
             stockAccountId: true, // Include stock account ID
-            stockAccount: { // Include stock account details
+            StockAccount: { // Include stock account details
               select: {
                 id: true,
                 name: true,
@@ -310,7 +310,7 @@ export async function GET(request) {
           calculatedPl: true,
           notes: true,
           stockAccountId: true, // Include stock account ID
-          stockAccount: { // Include stock account details
+          StockAccount: { // Include stock account details
             select: {
               id: true,
               name: true,

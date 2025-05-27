@@ -12,7 +12,19 @@
     "cleanup:cache:dry": "node scripts/cleanup-cache.js --dry-run",
     "debug:tcbs": "node debug-tcbs-api.js",
     "debug:market-data": "node check-market-data.js",
-    "test:market-data": "node test-market-data-function.js"
+    "test:market-data": "node test-market-data-function.js",
+    "test": "jest",
+    "test:watch": "jest --watch",
+    "test:coverage": "jest --coverage",
+    "test:api": "jest --testPathPattern=tests/api",
+    "test:components": "jest --testPathPattern=tests/components",
+    "test:integration": "jest --testPathPattern=tests/integration",
+    "test:e2e": "playwright test",
+    "test:db:setup": "node tests/setup/db-setup.js",
+    "test:db:migrate": "node tests/setup/db-migrate.js",
+    "test:db:seed": "node tests/setup/db-seed.js",
+    "test:db:clean": "node tests/setup/db-clean.js",
+    "test:db-migration": "node tests/db-migration-suite.js"
   },
   "keywords": [
     "trading",
@@ -39,8 +51,35 @@
     "recharts": "^2.15.2"
   },
   "devDependencies": {
+    "@babel/preset-env": "^7.27.2",
+    "@playwright/test": "^1.52.0",
+    "@testing-library/jest-dom": "^6.6.3",
+    "@testing-library/react": "^14.3.1",
+    "@testing-library/user-event": "^14.6.1",
     "autoprefixer": "^10.4.16",
+    "babel-jest": "^30.0.0-beta.3",
+    "jest": "^29.7.0",
+    "jest-environment-jsdom": "^29.7.0",
     "postcss": "^8.4.31",
+    "supertest": "^6.3.4",
     "tailwindcss": "^3.3.5"
+  },
+  "jest": {
+    "testEnvironment": "node",
+    "collectCoverageFrom": [
+      "app/**/*.{js,jsx}",
+      "lib/**/*.{js,jsx}",
+      "!app/**/layout.js",
+      "!app/**/page.js",
+      "!**/*.config.js"
+    ],
+    "coverageThreshold": {
+      "global": {
+        "branches": 70,
+        "functions": 70,
+        "lines": 70,
+        "statements": 70
+      }
+    }
   }
 }

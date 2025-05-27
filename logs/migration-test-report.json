@@ -1,0 +1,174 @@
+{
+  "timestamp": "2025-05-27T07:00:55.777Z",
+  "summary": {
+    "passed": 4,
+    "failed": 23,
+    "warnings": 0,
+    "successRate": "14.8%"
+  },
+  "details": [
+    {
+      "name": "Database Connection",
+      "status": "FAILED",
+      "duration": 0,
+      "error": "\nInvalid `prisma.$queryRaw()` invocation:\n\n\nRaw query failed. Code: `42P05`. Message: `ERROR: prepared statement \"s1\" already exists`"
+    },
+    {
+      "name": "Database Version Check",
+      "status": "FAILED",
+      "duration": 0,
+      "error": "\nInvalid `prisma.$queryRaw()` invocation:\n\n\nRaw query failed. Code: `42P05`. Message: `ERROR: prepared statement \"s2\" already exists`"
+    },
+    {
+      "name": "Connection Pool Test",
+      "status": "FAILED",
+      "duration": 0,
+      "error": "\nInvalid `prisma.$queryRaw()` invocation:\n\n\nRaw query failed. Code: `08P01`. Message: `ERROR: bind message supplies 0 parameters, but prepared statement \"s5\" requires 1`"
+    },
+    {
+      "name": "Table Existence Check",
+      "status": "FAILED",
+      "duration": 0,
+      "error": "\nInvalid `prisma.$queryRaw()` invocation:\n\n\nRaw query failed. Code: `42P05`. Message: `ERROR: prepared statement \"s13\" already exists`"
+    },
+    {
+      "name": "Index Verification",
+      "status": "FAILED",
+      "duration": 447,
+      "error": "Test returned false"
+    },
+    {
+      "name": "Foreign Key Constraints",
+      "status": "PASSED",
+      "duration": 204
+    },
+    {
+      "name": "Column Data Types",
+      "status": "FAILED",
+      "duration": 132,
+      "error": "Test returned false"
+    },
+    {
+      "name": "Create Test User",
+      "status": "FAILED",
+      "duration": 0,
+      "error": "\nInvalid `this.prisma.user.create()` invocation in\n/home/wsladmin/trading-journal/tests/db-migration-suite.js:246:51\n\n  243 await this.runTest('Create Test User', async () => {\n  244   const hashedPassword = await bcrypt.hash('testpassword123', 10);\n  245   \n→ 246   this.testData.user = await this.prisma.user.create(\nError occurred during query execution:\nConnectorError(ConnectorError { user_facing_error: None, kind: QueryError(PostgresError { code: \"42P05\", message: \"prepared statement \\\"s17\\\" already exists\", severity: \"ERROR\", detail: None, column: None, hint: None }), transient: false })"
+    },
+    {
+      "name": "Create Stock Account",
+      "status": "FAILED",
+      "duration": 0,
+      "error": "Cannot read properties of undefined (reading 'id')"
+    },
+    {
+      "name": "Create Transactions",
+      "status": "FAILED",
+      "duration": 0,
+      "error": "Stock account not created yet"
+    },
+    {
+      "name": "Create Journal Entry",
+      "status": "FAILED",
+      "duration": 0,
+      "error": "Transactions not created yet"
+    },
+    {
+      "name": "Create Tags",
+      "status": "FAILED",
+      "duration": 0,
+      "error": "Cannot read properties of undefined (reading 'id')"
+    },
+    {
+      "name": "Create Strategy",
+      "status": "FAILED",
+      "duration": 0,
+      "error": "Cannot read properties of undefined (reading 'id')"
+    },
+    {
+      "name": "User Authentication",
+      "status": "FAILED",
+      "duration": 0,
+      "error": "Cannot read properties of undefined (reading 'id')"
+    },
+    {
+      "name": "Transaction Queries",
+      "status": "FAILED",
+      "duration": 0,
+      "error": "User not created yet"
+    },
+    {
+      "name": "Portfolio Calculation",
+      "status": "FAILED",
+      "duration": 0,
+      "error": "User not created yet"
+    },
+    {
+      "name": "Journal Entry Relationships",
+      "status": "FAILED",
+      "duration": 0,
+      "error": "Cannot read properties of undefined (reading 'id')"
+    },
+    {
+      "name": "Strategy Queries",
+      "status": "FAILED",
+      "duration": 0,
+      "error": "Cannot read properties of undefined (reading 'id')"
+    },
+    {
+      "name": "Transaction List Query Performance",
+      "status": "FAILED",
+      "duration": 0,
+      "error": "Cannot read properties of undefined (reading 'id')"
+    },
+    {
+      "name": "Complex Portfolio Query Performance",
+      "status": "FAILED",
+      "duration": 0,
+      "error": "Cannot read properties of undefined (reading 'id')"
+    },
+    {
+      "name": "Concurrent Query Performance",
+      "status": "FAILED",
+      "duration": 0,
+      "error": "Cannot read properties of undefined (reading 'id')"
+    },
+    {
+      "name": "Stock Price Cache Creation",
+      "status": "FAILED",
+      "duration": 0,
+      "error": "\nInvalid `this.prisma.stockPriceCache.create()` invocation in\n/home/wsladmin/trading-journal/tests/db-migration-suite.js:511:60\n\n  508 log.header('Cache System Tests');\n  509 \n  510 await this.runTest('Stock Price Cache Creation', async () => {\n→ 511   const cacheEntry = await this.prisma.stockPriceCache.create(\nError occurred during query execution:\nConnectorError(ConnectorError { user_facing_error: None, kind: QueryError(PostgresError { code: \"42P05\", message: \"prepared statement \\\"s18\\\" already exists\", severity: \"ERROR\", detail: None, column: None, hint: None }), transient: false })"
+    },
+    {
+      "name": "Cache Retrieval Performance",
+      "status": "FAILED",
+      "duration": 124,
+      "error": "Test returned false"
+    },
+    {
+      "name": "Cache Expiration Logic",
+      "status": "PASSED",
+      "duration": 195
+    },
+    {
+      "name": "Password Hashing Verification",
+      "status": "PASSED",
+      "duration": 128
+    },
+    {
+      "name": "User Data Isolation",
+      "status": "FAILED",
+      "duration": 0,
+      "error": "\nInvalid `this.prisma.user.create()` invocation in\n/home/wsladmin/trading-journal/tests/db-migration-suite.js:570:48\n\n  567 \n  568 await this.runTest('User Data Isolation', async () => {\n  569   // Create another user\n→ 570   const otherUser = await this.prisma.user.create(\nUnique constraint failed on the fields: (`email`)"
+    },
+    {
+      "name": "SQL Injection Prevention",
+      "status": "PASSED",
+      "duration": 124
+    }
+  ],
+  "environment": {
+    "nodeVersion": "v18.19.1",
+    "databaseUrl": "SET",
+    "cacheConfig": "DEFAULT"
+  }
+}
