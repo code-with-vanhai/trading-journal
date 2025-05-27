@@ -1,58 +1,57 @@
 {
-  "timestamp": "2025-05-27T07:00:55.777Z",
+  "timestamp": "2025-05-27T07:24:20.172Z",
   "summary": {
-    "passed": 4,
-    "failed": 23,
+    "passed": 5,
+    "failed": 22,
     "warnings": 0,
-    "successRate": "14.8%"
+    "successRate": "18.5%"
   },
   "details": [
     {
       "name": "Database Connection",
       "status": "FAILED",
       "duration": 0,
-      "error": "\nInvalid `prisma.$queryRaw()` invocation:\n\n\nRaw query failed. Code: `42P05`. Message: `ERROR: prepared statement \"s1\" already exists`"
+      "error": "\nInvalid `prisma.$queryRaw()` invocation:\n\n\nRaw query failed. Code: `42P05`. Message: `ERROR: prepared statement \"s7\" already exists`"
     },
     {
       "name": "Database Version Check",
-      "status": "FAILED",
-      "duration": 0,
-      "error": "\nInvalid `prisma.$queryRaw()` invocation:\n\n\nRaw query failed. Code: `42P05`. Message: `ERROR: prepared statement \"s2\" already exists`"
+      "status": "PASSED",
+      "duration": 142
     },
     {
       "name": "Connection Pool Test",
       "status": "FAILED",
       "duration": 0,
-      "error": "\nInvalid `prisma.$queryRaw()` invocation:\n\n\nRaw query failed. Code: `08P01`. Message: `ERROR: bind message supplies 0 parameters, but prepared statement \"s5\" requires 1`"
+      "error": "\nInvalid `prisma.$queryRaw()` invocation:\n\n\nRaw query failed. Code: `26000`. Message: `ERROR: prepared statement \"s14\" does not exist`"
     },
     {
       "name": "Table Existence Check",
       "status": "FAILED",
       "duration": 0,
-      "error": "\nInvalid `prisma.$queryRaw()` invocation:\n\n\nRaw query failed. Code: `42P05`. Message: `ERROR: prepared statement \"s13\" already exists`"
+      "error": "Missing tables: User, StockAccount, Transaction, JournalEntry, Tag, JournalEntryTag, Strategy, StockPriceCache"
     },
     {
       "name": "Index Verification",
       "status": "FAILED",
-      "duration": 447,
+      "duration": 189,
       "error": "Test returned false"
     },
     {
       "name": "Foreign Key Constraints",
       "status": "PASSED",
-      "duration": 204
+      "duration": 168
     },
     {
       "name": "Column Data Types",
       "status": "FAILED",
-      "duration": 132,
+      "duration": 178,
       "error": "Test returned false"
     },
     {
       "name": "Create Test User",
       "status": "FAILED",
       "duration": 0,
-      "error": "\nInvalid `this.prisma.user.create()` invocation in\n/home/wsladmin/trading-journal/tests/db-migration-suite.js:246:51\n\n  243 await this.runTest('Create Test User', async () => {\n  244   const hashedPassword = await bcrypt.hash('testpassword123', 10);\n  245   \n→ 246   this.testData.user = await this.prisma.user.create(\nError occurred during query execution:\nConnectorError(ConnectorError { user_facing_error: None, kind: QueryError(PostgresError { code: \"42P05\", message: \"prepared statement \\\"s17\\\" already exists\", severity: \"ERROR\", detail: None, column: None, hint: None }), transient: false })"
+      "error": "\nInvalid `this.prisma.user.create()` invocation in\n/home/wsladmin/trading-journal/tests/db-migration-suite.js:246:51\n\n  243 await this.runTest('Create Test User', async () => {\n  244   const hashedPassword = await bcrypt.hash('testpassword123', 10);\n  245   \n→ 246   this.testData.user = await this.prisma.user.create(\nUnique constraint failed on the fields: (`email`)"
     },
     {
       "name": "Create Stock Account",
@@ -136,23 +135,23 @@
       "name": "Stock Price Cache Creation",
       "status": "FAILED",
       "duration": 0,
-      "error": "\nInvalid `this.prisma.stockPriceCache.create()` invocation in\n/home/wsladmin/trading-journal/tests/db-migration-suite.js:511:60\n\n  508 log.header('Cache System Tests');\n  509 \n  510 await this.runTest('Stock Price Cache Creation', async () => {\n→ 511   const cacheEntry = await this.prisma.stockPriceCache.create(\nError occurred during query execution:\nConnectorError(ConnectorError { user_facing_error: None, kind: QueryError(PostgresError { code: \"42P05\", message: \"prepared statement \\\"s18\\\" already exists\", severity: \"ERROR\", detail: None, column: None, hint: None }), transient: false })"
+      "error": "\nInvalid `this.prisma.stockPriceCache.create()` invocation in\n/home/wsladmin/trading-journal/tests/db-migration-suite.js:511:60\n\n  508 log.header('Cache System Tests');\n  509 \n  510 await this.runTest('Stock Price Cache Creation', async () => {\n→ 511   const cacheEntry = await this.prisma.stockPriceCache.create(\nUnique constraint failed on the fields: (`symbol`)"
     },
     {
       "name": "Cache Retrieval Performance",
       "status": "FAILED",
-      "duration": 124,
+      "duration": 131,
       "error": "Test returned false"
     },
     {
       "name": "Cache Expiration Logic",
       "status": "PASSED",
-      "duration": 195
+      "duration": 257
     },
     {
       "name": "Password Hashing Verification",
       "status": "PASSED",
-      "duration": 128
+      "duration": 131
     },
     {
       "name": "User Data Isolation",
@@ -163,7 +162,7 @@
     {
       "name": "SQL Injection Prevention",
       "status": "PASSED",
-      "duration": 124
+      "duration": 137
     }
   ],
   "environment": {
