@@ -17,6 +17,22 @@ export async function GET(request) {
       );
     }
 
+    // Verify user exists in database to prevent foreign key constraint violations
+    // TEMPORARILY DISABLED - uncomment after fixing session
+    /*
+    const userExists = await prisma.user.findUnique({
+      where: { id: session.user.id },
+      select: { id: true }
+    });
+
+    if (!userExists) {
+      return NextResponse.json(
+        { error: 'User not found in database. Please log out and log in again.' }, 
+        { status: 404 }
+      );
+    }
+    */
+
     let stockAccounts = await prisma.stockAccount.findMany({
       where: {
         userId: session.user.id

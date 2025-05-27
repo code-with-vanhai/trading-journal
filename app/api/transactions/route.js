@@ -372,6 +372,19 @@ export async function POST(request) {
       return NextResponse.json({ message: 'Unauthorized' }, { status: 401 });
     }
 
+    // Verify user exists in database to prevent foreign key constraint violations
+    const userExists = await prisma.user.findUnique({
+      where: { id: session.user.id },
+      select: { id: true }
+    });
+
+    if (!userExists) {
+      return NextResponse.json(
+        { message: 'User not found in database. Please log out and log in again.' }, 
+        { status: 404 }
+      );
+    }
+
     const body = await request.json();
     const { ticker, type, quantity, price, transactionDate, fee = 0, taxRate = 0, notes, stockAccountId } = body;
 
@@ -403,6 +416,7 @@ export async function POST(request) {
         
         const defaultAccount = await prisma.stockAccount.create({
           data: {
+            id: `default-${session.user.id}`,
             name: 'Tài khoản mặc định',
             brokerName: null,
             accountNumber: null,
@@ -464,7 +478,7 @@ export async function POST(request) {
         notes,
       },
       include: {
-        stockAccount: {
+        StockAccount: {
           select: {
             id: true,
             name: true,

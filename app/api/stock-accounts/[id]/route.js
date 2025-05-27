@@ -17,7 +17,7 @@ export async function GET(request, { params }) {
       );
     }
 
-    const { id } = params;
+    const { id } = await params;
     
     const stockAccount = await prisma.stockAccount.findFirst({
       where: {
@@ -27,7 +27,7 @@ export async function GET(request, { params }) {
       include: {
         _count: {
           select: {
-            transactions: true
+            Transaction: true
           }
         }
       }
@@ -63,7 +63,7 @@ export async function PUT(request, { params }) {
       );
     }
 
-    const { id } = params;
+    const { id } = await params;
     const body = await request.json();
     const { name, brokerName, accountNumber, description } = body;
 
@@ -129,7 +129,7 @@ export async function PUT(request, { params }) {
       include: {
         _count: {
           select: {
-            transactions: true
+            Transaction: true
           }
         }
       }
@@ -167,7 +167,7 @@ export async function DELETE(request, { params }) {
       );
     }
 
-    const { id } = params;
+    const { id } = await params;
     
     // Check if the account exists and belongs to the user
     const existingAccount = await prisma.stockAccount.findFirst({
@@ -178,7 +178,7 @@ export async function DELETE(request, { params }) {
       include: {
         _count: {
           select: {
-            transactions: true
+            Transaction: true
           }
         }
       }
@@ -192,10 +192,10 @@ export async function DELETE(request, { params }) {
     }
 
     // Check if account has transactions (prevent deletion)
-    if (existingAccount._count.transactions > 0) {
+    if (existingAccount._count.Transaction > 0) {
       return NextResponse.json(
         { 
-          error: `Cannot delete account. It has ${existingAccount._count.transactions} transaction(s) linked to it. Please move or delete the transactions first.` 
+          error: `Cannot delete account. It has ${existingAccount._count.Transaction} transaction(s) linked to it. Please move or delete the transactions first.` 
         }, 
         { status: 409 }
       );
