@@ -40,7 +40,7 @@ export async function POST(request) {
         userId: session.user.id
       },
       include: {
-        stockAccount: true
+        StockAccount: true
       }
     });
 
@@ -135,7 +135,7 @@ export async function PUT(request) {
     const transactions = await prisma.transaction.findMany({
       where: whereClause,
       include: {
-        stockAccount: true
+        StockAccount: true
       }
     });
 
@@ -146,7 +146,7 @@ export async function PUT(request) {
     }
 
     // Group by source account for reporting
-    const sourceAccounts = [...new Set(transactions.map(t => t.stockAccount?.name || 'Tài khoản không xác định'))];
+    const sourceAccounts = [...new Set(transactions.map(t => t.StockAccount?.name || 'Tài khoản không xác định'))];
 
     // Perform the transfer in a transaction
     const result = await prisma.$transaction(async (tx) => {

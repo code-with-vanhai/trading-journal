@@ -10,6 +10,7 @@ function SignInContent() {
   const { status } = useSession();
   const searchParams = useSearchParams();
   const successMessage = searchParams.get('success');
+  const logoutReason = searchParams.get('reason');
 
   const [formData, setFormData] = useState({
     login: '',
@@ -18,6 +19,20 @@ function SignInContent() {
   const [error, setError] = useState('');
   const [success, setSuccess] = useState(successMessage || '');
   const [isLoading, setIsLoading] = useState(false);
+
+  // Get logout reason message
+  const getLogoutReasonMessage = () => {
+    switch (logoutReason) {
+      case 'inactivity':
+        return 'Your session expired due to 15 minutes of inactivity. Please sign in again.';
+      case 'max_age':
+        return 'Your session expired after 60 minutes for security reasons. Please sign in again.';
+      default:
+        return null;
+    }
+  };
+
+  const logoutMessage = getLogoutReasonMessage();
 
   // Redirect if already authenticated
   useEffect(() => {
@@ -78,6 +93,18 @@ function SignInContent() {
         {error && (
           <div className="bg-red-50 text-red-500 p-3 rounded mb-4">
             {error}
+          </div>
+        )}
+
+        {logoutMessage && (
+          <div className="bg-amber-50 text-amber-700 p-3 rounded mb-4">
+            <div className="flex items-center">
+              <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" 
+                      d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+              {logoutMessage}
+            </div>
           </div>
         )}
 

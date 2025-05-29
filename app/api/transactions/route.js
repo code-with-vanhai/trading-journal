@@ -2,6 +2,7 @@ import { NextResponse } from 'next/server';
 import { getServerSession } from 'next-auth/next';
 import { PrismaClient } from '@prisma/client';
 import { authOptions } from '../auth/[...nextauth]/route';
+import { processBuyTransaction, processSellTransaction } from '../../lib/cost-basis-calculator-wrapper';
 
 // Create a single Prisma instance with query logging in development
 const globalForPrisma = global;
@@ -21,60 +22,11 @@ const prisma = globalForPrisma.prisma;
 const transactionCache = new Map();
 const CACHE_TTL = 5 * 60 * 1000; // 5 minutes cache TTL for better hit ratio
 
-// Calculate profit/loss for a SELL transaction
-const calculateProfitLoss = async (userId, stockAccountId, ticker, quantity, sellPrice, fee, taxRate) => {
-  // Get all BUY transactions for this ticker in the same stock account, ordered by date (FIFO method)
-  // Using a more efficient query with only required fields
-  const buyTransactions = await prisma.transaction.findMany({
-    where: {
-      userId,
-      stockAccountId, // Only consider transactions from the same stock account
-      ticker,
-      type: 'BUY',
-    },
-    orderBy: {
-      transactionDate: 'asc',
-    },
-    select: {
-      quantity: true,
-      price: true,
-    }
-  });
-  
-  if (buyTransactions.length === 0) {
-    return 0; // No buy transactions found
-  }
-  
-  let remainingQuantity = quantity;
-  let totalCost = 0;
-  
-  // Calculate cost basis using FIFO method
-  for (const buyTx of buyTransactions) {
-    if (remainingQuantity <= 0) break;
-    
-    const quantityToUse = Math.min(remainingQuantity, buyTx.quantity);
-    totalCost += quantityToUse * buyTx.price;
-    remainingQuantity -= quantityToUse;
-  }
-  
-  // If we couldn't find enough BUY transactions
-  if (remainingQuantity > 0) {
-    return 0; // Not enough buy transactions to calculate P/L
-  }
-  
-  // Calculate gross profit
-  const grossProfit = (sellPrice * quantity) - totalCost;
-  
-  // Subtract fees
-  const netProfit = grossProfit - fee;
-  
-  // Apply tax (if applicable)
-  const afterTaxProfit = netProfit > 0 
-    ? netProfit * (1 - (taxRate / 100)) 
-    : netProfit;
-  
-  return afterTaxProfit;
-};
+// Legacy calculateProfitLoss function - replaced by new FIFO system
+// const calculateProfitLoss = async (userId, stockAccountId, ticker, quantity, sellPrice, fee, taxRate) => {
+//   // Old logic has been replaced by processSellTransaction in cost-basis-calculator.js
+//   return 0;
+// };
 
 // GET - Fetch all transactions for current user with filtering and pagination
 export async function GET(request) {
@@ -448,17 +400,44 @@ export async function POST(request) {
       }
     }
 
-    // Calculate P/L for SELL transactions
+    // Process transaction with new cost basis system
     let calculatedPl = null;
-    if (type === 'SELL') {
-      calculatedPl = await calculateProfitLoss(
-        session.user.id,
-        finalStockAccountId, // Pass stockAccountId to calculate P/L within the same account
-        ticker,
-        quantity,
-        price,
-        fee,
-        taxRate
+    let purchaseLot = null;
+
+    try {
+      if (type === 'BUY') {
+        // Tạo lô mua mới
+        purchaseLot = await processBuyTransaction(
+          session.user.id,
+          finalStockAccountId,
+          ticker,
+          quantity,
+          price,
+          fee,
+          transactionDate
+        );
+        
+        // Với giao dịch mua, P/L = 0
+        calculatedPl = 0;
+      } else if (type === 'SELL') {
+        // Xử lý giao dịch bán với FIFO nghiêm ngặt
+        const sellResult = await processSellTransaction(
+          session.user.id,
+          finalStockAccountId,
+          ticker,
+          quantity,
+          price,
+          fee,
+          taxRate,
+          transactionDate
+        );
+        
+        calculatedPl = sellResult.profitOrLoss;
+      }
+    } catch (costBasisError) {
+      return NextResponse.json(
+        { message: 'Error processing cost basis: ' + costBasisError.message },
+        { status: 400 }
       );
     }
 

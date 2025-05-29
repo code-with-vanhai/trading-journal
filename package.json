@@ -13,6 +13,7 @@
     "debug:tcbs": "node debug-tcbs-api.js",
     "debug:market-data": "node check-market-data.js",
     "test:market-data": "node test-market-data-function.js",
+    "migrate:cost-basis": "node migrate-cost-basis.js",
     "test": "jest",
     "test:watch": "jest --watch",
     "test:coverage": "jest --coverage",

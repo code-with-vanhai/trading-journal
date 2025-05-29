@@ -107,7 +107,7 @@ export async function GET(request, { params }) {
         userId: session.user.id
       },
       include: {
-        stockAccount: { // Include stock account details
+        StockAccount: { // Include stock account details
           select: {
             id: true,
             name: true,
@@ -255,7 +255,7 @@ export async function PUT(request, { params }) {
         stockAccountId: stockAccountId || undefined, // Only update if provided
       },
       include: {
-        stockAccount: {
+        StockAccount: {
           select: {
             id: true,
             name: true,
