@@ -5,6 +5,7 @@ import { useSession } from 'next-auth/react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import StrategyForm from '../components/StrategyForm';
 import StrategyList from '../components/StrategyList';
+import SigninModal from '../components/SigninModal';
 
 // Wrapper component that uses searchParams
 function StrategiesContent() {
@@ -15,11 +16,14 @@ function StrategiesContent() {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState('');
   const [showForm, setShowForm] = useState(false);
+  
+  // Signin modal state
+  const [signinModalOpen, setSigninModalOpen] = useState(false);
 
   // Check for query parameter and authentication
   useEffect(() => {
     if (status === 'unauthenticated') {
-      router.push('/auth/signin');
+      setSigninModalOpen(true);
     } else if (status === 'authenticated') {
       // Check if 'create=true' is in the query parameters
       const shouldShowForm = searchParams.get('create') === 'true';
@@ -88,45 +92,95 @@ function StrategiesContent() {
     );
   }
 
-  if (status === 'authenticated') {
-    return (
-      <div className="max-w-4xl mx-auto">
-        <div className="flex justify-between items-center mb-6">
-          <h1 className="text-2xl font-bold">Trading Strategies</h1>
-          <button
-            className="btn-primary"
-            onClick={() => setShowForm(!showForm)}
-          >
-            {showForm ? 'Cancel' : 'Share New Strategy'}
-          </button>
+  return (
+    <div className="min-h-screen bg-gray-50">
+      {/* Hero Header Section */}
+      <div className="gradient-bg text-white py-16">
+        <div className="max-w-4xl mx-auto px-4">
+          <div className="flex justify-between items-center">
+            <div>
+              <h1 className="text-4xl font-bold mb-4">Chiến Lược Giao Dịch</h1>
+              <p className="text-xl opacity-90">Chia sẻ và học hỏi các chiến lược giao dịch từ cộng đồng</p>
+            </div>
+            {status === 'authenticated' && (
+              <button
+                className="bg-white text-blue-900 px-6 py-3 rounded-lg font-bold hover:bg-blue-100 transition shadow-lg"
+                onClick={() => setShowForm(!showForm)}
+              >
+                <i className={`fas ${showForm ? 'fa-times' : 'fa-plus'} mr-2`}></i>
+                {showForm ? 'Hủy' : 'Chia Sẻ Chiến Lược'}
+              </button>
+            )}
+          </div>
         </div>
+      </div>
 
+      {/* Main Content */}
+      <div className="max-w-4xl mx-auto p-4 -mt-8">
         {error && (
-          <div className="bg-red-50 text-red-500 p-3 rounded mb-4">
-            {error}
+          <div className="bg-red-50 border-l-4 border-red-500 text-red-700 p-4 rounded mb-6">
+            <div className="flex items-center">
+              <i className="fas fa-exclamation-triangle mr-2"></i>
+              {error}
+            </div>
           </div>
         )}
 
-        {showForm && (
-          <div className="mb-6">
-            <StrategyForm onSubmit={handleStrategySubmit} />
+        {status === 'unauthenticated' ? (
+          <div className="bg-white rounded-lg shadow-lg p-12 text-center">
+            <div className="flex flex-col items-center">
+              <i className="fas fa-chess text-gray-400 text-6xl mb-6"></i>
+              <h3 className="text-2xl font-semibold text-gray-700 mb-4">Đăng nhập để xem chiến lược</h3>
+              <p className="text-gray-500 mb-6">Vui lòng đăng nhập để truy cập và chia sẻ chiến lược giao dịch</p>
+            </div>
           </div>
-        )}
-
-        {isLoading ? (
-          <div className="text-center py-10">Loading strategies...</div>
         ) : (
-          <StrategyList
-            strategies={strategies}
-            onStrategyDeleted={fetchStrategies}
-            currentUserId={session.user.id}
-          />
+          <>
+            {showForm && (
+              <div className="bg-white rounded-lg shadow-lg p-6 mb-6">
+                <div className="flex items-center mb-6">
+                  <i className="fas fa-edit text-blue-600 text-xl mr-3"></i>
+                  <h2 className="text-xl font-bold text-gray-800">Tạo Chiến Lược Mới</h2>
+                </div>
+                <StrategyForm onSubmit={handleStrategySubmit} />
+              </div>
+            )}
+
+            {isLoading ? (
+              <div className="bg-white rounded-lg shadow-lg p-12 text-center">
+                <div className="flex flex-col items-center">
+                  <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mb-4"></div>
+                  <p className="text-gray-600">Đang tải chiến lược...</p>
+                </div>
+              </div>
+            ) : (
+              <div className="bg-white rounded-lg shadow-lg overflow-hidden">
+                <div className="p-6 bg-gradient-to-r from-blue-50 to-indigo-50 border-b border-gray-200">
+                  <div className="flex items-center">
+                    <i className="fas fa-chart-line text-blue-600 text-xl mr-3"></i>
+                    <h3 className="font-semibold text-gray-800">Danh sách chiến lược ({strategies.length})</h3>
+                  </div>
+                </div>
+                <div className="p-6">
+                  <StrategyList
+                    strategies={strategies}
+                    onStrategyDeleted={fetchStrategies}
+                    currentUserId={session?.user?.id}
+                  />
+                </div>
+              </div>
+            )}
+          </>
         )}
       </div>
-    );
-  }
 
-  return null;
+      {/* Signin Modal */}
+      <SigninModal
+        isOpen={signinModalOpen}
+        onClose={() => setSigninModalOpen(false)}
+      />
+    </div>
+  );
 }
 
 // Loading fallback component

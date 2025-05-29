@@ -7,6 +7,7 @@ import Link from 'next/link';
 import TransactionList from '../components/TransactionList';
 import TransactionFilters from '../components/TransactionFilters';
 import Pagination from '../components/Pagination';
+import SigninModal from '../components/SigninModal';
 
 function TransactionsContent() {
   const { data: session, status } = useSession();
@@ -35,12 +36,15 @@ function TransactionsContent() {
     pageSize: searchParams.get('pageSize') || '10'
   });
 
-  // Check authentication
+  // Signin modal state
+  const [signinModalOpen, setSigninModalOpen] = useState(false);
+
+  // Check authentication and show signin modal if needed
   useEffect(() => {
     if (status === 'unauthenticated') {
-      router.push('/auth/signin');
+      setSigninModalOpen(true);
     }
-  }, [status, router]);
+  }, [status]);
 
   // Fetch transactions with filters
   useEffect(() => {
@@ -157,76 +161,119 @@ function TransactionsContent() {
     );
   }
 
-  if (status === 'authenticated') {
-    return (
-      <div className="max-w-6xl mx-auto p-4">
-        <div className="flex justify-between items-center mb-6">
-          <h1 className="text-2xl font-bold">Giao Dịch</h1>
-          <Link href="/transactions/new" className="btn-primary">
-            Thêm Giao Dịch
-          </Link>
-        </div>
-
-        {/* Filter Section */}
-        <TransactionFilters 
-          filters={filters} 
-          onFilterChange={handleFilterChange}
-          onResetFilters={handleResetFilters}
-        />
-
-        {error && (
-          <div className="bg-red-50 text-red-500 p-3 rounded mb-6">
-            {error}
-          </div>
-        )}
-
-        {isLoading ? (
-          <div className="text-center py-10">Đang tải giao dịch...</div>
-        ) : (
-          <div className="bg-white rounded-lg shadow overflow-hidden">
-            <div className="p-4 bg-gray-50 border-b border-gray-200 flex justify-between items-center">
-              <div className="font-medium">Kết quả: {totalItems} giao dịch</div>
-              <div className="flex items-center space-x-2">
-                <label className="text-sm text-gray-500">Hiển thị:</label>
-                <select
-                  value={pageSize}
-                  onChange={(e) => {
-                    setPageSize(parseInt(e.target.value, 10));
-                    handleFilterChange({ pageSize: e.target.value, page: '1' });
-                  }}
-                  className="input-field text-sm py-1 px-2"
-                >
-                  <option value="10">10</option>
-                  <option value="25">25</option>
-                  <option value="50">50</option>
-                  <option value="100">100</option>
-                </select>
-              </div>
+  return (
+    <div className="min-h-screen bg-gray-50">
+      {/* Hero Header Section */}
+      <div className="gradient-bg text-white py-16">
+        <div className="max-w-6xl mx-auto px-4">
+          <div className="flex justify-between items-center">
+            <div>
+              <h1 className="text-4xl font-bold mb-4">Quản lý Giao dịch</h1>
+              <p className="text-xl opacity-90">Theo dõi và phân tích tất cả các giao dịch chứng khoán của bạn</p>
             </div>
-            
-            <TransactionList 
-              transactions={transactions} 
-              onDeleteTransaction={handleDeleteTransaction}
-              onEditSuccess={handleEditSuccess}
-              sortField={filters.sortBy}
-              sortDirection={filters.sortOrder}
-              onSortChange={(field, direction) => handleFilterChange({ sortBy: field, sortOrder: direction })}
-            />
-            
-            {totalItems > 0 && (
-              <Pagination 
-                currentPage={currentPage}
-                totalPages={Math.ceil(totalItems / pageSize)}
-                onPageChange={handlePageChange}
-              />
+            {status === 'authenticated' && (
+              <Link href="/transactions/new" className="bg-white text-blue-900 px-6 py-3 rounded-lg font-bold hover:bg-blue-100 transition shadow-lg">
+                <i className="fas fa-plus mr-2"></i>
+                Thêm Giao Dịch
+              </Link>
             )}
           </div>
+        </div>
+      </div>
+
+      {/* Main Content */}
+      <div className="max-w-6xl mx-auto p-4 -mt-8">
+        {status === 'unauthenticated' ? (
+          <div className="bg-white rounded-lg shadow-lg p-12 text-center">
+            <div className="flex flex-col items-center">
+              <i className="fas fa-chart-line text-gray-400 text-6xl mb-6"></i>
+              <h3 className="text-2xl font-semibold text-gray-700 mb-4">Đăng nhập để xem giao dịch</h3>
+              <p className="text-gray-500 mb-6">Vui lòng đăng nhập để truy cập thông tin giao dịch của bạn</p>
+            </div>
+          </div>
+        ) : (
+          <>
+            {/* Filter Section */}
+            <div className="bg-white rounded-lg shadow-lg p-6 mb-6">
+              <TransactionFilters 
+                filters={filters} 
+                onFilterChange={handleFilterChange}
+                onResetFilters={handleResetFilters}
+              />
+            </div>
+
+            {error && (
+              <div className="bg-red-50 border-l-4 border-red-500 text-red-700 p-4 rounded mb-6">
+                <div className="flex items-center">
+                  <i className="fas fa-exclamation-triangle mr-2"></i>
+                  {error}
+                </div>
+              </div>
+            )}
+
+            {isLoading ? (
+              <div className="bg-white rounded-lg shadow-lg p-12 text-center">
+                <div className="flex flex-col items-center">
+                  <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mb-4"></div>
+                  <p className="text-gray-600">Đang tải giao dịch...</p>
+                </div>
+              </div>
+            ) : (
+              <div className="bg-white rounded-lg shadow-lg overflow-hidden">
+                <div className="p-6 bg-gradient-to-r from-blue-50 to-indigo-50 border-b border-gray-200 flex justify-between items-center">
+                  <div className="flex items-center">
+                    <i className="fas fa-chart-bar text-blue-600 text-xl mr-3"></i>
+                    <div className="font-semibold text-gray-800">Kết quả: {totalItems} giao dịch</div>
+                  </div>
+                  <div className="flex items-center space-x-2">
+                    <label className="text-sm text-gray-600 font-medium">Hiển thị:</label>
+                    <select
+                      value={pageSize}
+                      onChange={(e) => {
+                        setPageSize(parseInt(e.target.value, 10));
+                        handleFilterChange({ pageSize: e.target.value, page: '1' });
+                      }}
+                      className="border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    >
+                      <option value="10">10</option>
+                      <option value="25">25</option>
+                      <option value="50">50</option>
+                      <option value="100">100</option>
+                    </select>
+                  </div>
+                </div>
+                
+                <TransactionList 
+                  transactions={transactions} 
+                  onDeleteTransaction={handleDeleteTransaction}
+                  onEditSuccess={handleEditSuccess}
+                  sortField={filters.sortBy}
+                  sortDirection={filters.sortOrder}
+                  onSortChange={(field, direction) => handleFilterChange({ sortBy: field, sortOrder: direction })}
+                />
+                
+                {totalItems > 0 && (
+                  <div className="p-6 border-t border-gray-200 bg-gray-50">
+                    <Pagination 
+                      currentPage={currentPage}
+                      totalPages={Math.ceil(totalItems / pageSize)}
+                      onPageChange={handlePageChange}
+                    />
+                  </div>
+                )}
+              </div>
+            )}
+          </>
         )}
       </div>
-    );
-  }
 
-  return null;
+      {/* Signin Modal */}
+      <SigninModal
+        isOpen={signinModalOpen}
+        onClose={() => setSigninModalOpen(false)}
+      />
+    </div>
+  );
 }
 
 export default function TransactionsPage() {

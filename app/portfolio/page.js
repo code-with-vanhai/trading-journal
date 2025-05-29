@@ -7,6 +7,7 @@ import { Spinner } from '../components/ui/Spinner';
 import PortfolioPieChart from '../components/PortfolioPieChart';
 import AccountAllocationPieChart from '../components/AccountAllocationPieChart';
 import TransferStocksModal from '../components/TransferStocksModal';
+import SigninModal from '../components/SigninModal';
 import Link from 'next/link';
 
 export default function PortfolioPage() {
@@ -28,15 +29,18 @@ export default function PortfolioPage() {
   const [selectedStocks, setSelectedStocks] = useState([]);
   const [transferModalOpen, setTransferModalOpen] = useState(false);
   
+  // Signin modal state
+  const [signinModalOpen, setSigninModalOpen] = useState(false);
+  
   // Cache duration in milliseconds (5 minutes)
   const CACHE_DURATION = 5 * 60 * 1000;
 
-  // Check authentication and redirect if needed
+  // Check authentication and show signin modal if needed
   useEffect(() => {
     if (status === 'unauthenticated') {
-      router.push('/auth/signin');
+      setSigninModalOpen(true);
     }
-  }, [status, router]);
+  }, [status]);
 
   // Load stock accounts
   useEffect(() => {
@@ -296,13 +300,35 @@ export default function PortfolioPage() {
 
   if (status === 'unauthenticated') {
     return (
-      <div className="max-w-6xl mx-auto p-4">
-        <div className="text-center">
-          <p className="text-gray-600 mb-4">Vui lòng đăng nhập để xem danh mục đầu tư</p>
-          <Link href="/auth/signin" className="btn-primary">
-            Đăng nhập
-          </Link>
+      <div className="min-h-screen bg-gray-50">
+        {/* Hero Header Section */}
+        <div className="gradient-bg text-white py-16">
+          <div className="max-w-6xl mx-auto px-4">
+            <div className="flex justify-between items-center">
+              <div>
+                <h1 className="text-4xl font-bold mb-4">Danh Mục Đầu Tư</h1>
+                <p className="text-xl opacity-90">Theo dõi hiệu suất và quản lý danh mục đầu tư của bạn</p>
+              </div>
+            </div>
+          </div>
         </div>
+
+        {/* Main Content */}
+        <div className="max-w-6xl mx-auto p-4 -mt-8">
+          <div className="bg-white rounded-lg shadow-lg p-12 text-center">
+            <div className="flex flex-col items-center">
+              <i className="fas fa-chart-pie text-gray-400 text-6xl mb-6"></i>
+              <h3 className="text-2xl font-semibold text-gray-700 mb-4">Đăng nhập để xem danh mục</h3>
+              <p className="text-gray-500 mb-6">Vui lòng đăng nhập để truy cập thông tin danh mục đầu tư của bạn</p>
+            </div>
+          </div>
+        </div>
+
+        {/* Signin Modal */}
+        <SigninModal
+          isOpen={signinModalOpen}
+          onClose={() => setSigninModalOpen(false)}
+        />
       </div>
     );
   }
@@ -318,297 +344,345 @@ export default function PortfolioPage() {
   }
 
   return (
-    <div className="max-w-6xl mx-auto p-4">
-      <div className="flex justify-between items-center mb-6">
-        <h1 className="text-2xl font-bold">Danh Mục Đầu Tư</h1>
-        
-        {/* Account Filter */}
-        <div className="flex items-center space-x-4">
-          {loadingAccounts ? (
-            <Spinner size="small" />
-          ) : (
-            stockAccounts.length > 0 && (
-              <div className="flex items-center space-x-2">
-                <label htmlFor="accountFilter" className="text-sm font-medium text-gray-700">
-                  Tài khoản:
-                </label>
-                <select
-                  id="accountFilter"
-                  value={selectedAccountId}
-                  onChange={handleAccountChange}
-                  className="px-3 py-2 border border-gray-300 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white min-w-[200px]"
-                >
-                  <option value="">Tất cả tài khoản</option>
-                  {stockAccounts.map((account) => (
-                    <option key={account.id} value={account.id}>
-                      {account.name} {account.brokerName ? `(${account.brokerName})` : ''}
-                    </option>
-                  ))}
-                </select>
-              </div>
-            )
-          )}
+    <div className="min-h-screen bg-gray-50">
+      {/* Hero Header Section */}
+      <div className="gradient-bg text-white py-16">
+        <div className="max-w-6xl mx-auto px-4">
+          <div className="flex justify-between items-center">
+            <div>
+              <h1 className="text-4xl font-bold mb-4">Danh Mục Đầu Tư</h1>
+              <p className="text-xl opacity-90">Theo dõi hiệu suất và quản lý danh mục đầu tư của bạn</p>
+            </div>
+            {/* Account Filter */}
+            <div className="flex items-center space-x-4">
+              {loadingAccounts ? (
+                <Spinner size="small" />
+              ) : (
+                stockAccounts.length > 0 && (
+                  <div className="flex items-center space-x-3">
+                    <label htmlFor="accountFilter" className="text-sm font-medium text-white">
+                      Tài khoản:
+                    </label>
+                    <select
+                      id="accountFilter"
+                      value={selectedAccountId}
+                      onChange={handleAccountChange}
+                      className="px-4 py-2 border border-white/20 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-white/50 bg-white/10 text-white min-w-[200px] backdrop-blur-sm"
+                    >
+                      <option value="" className="text-gray-900">Tất cả tài khoản</option>
+                      {stockAccounts.map((account) => (
+                        <option key={account.id} value={account.id} className="text-gray-900">
+                          {account.name} {account.brokerName ? `(${account.brokerName})` : ''}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+                )
+              )}
+            </div>
+          </div>
         </div>
       </div>
 
-      {portfolio.length === 0 ? (
-        <div className="text-center py-10">
-          <p className="text-lg text-gray-600">
-            {selectedAccountId 
-              ? 'Tài khoản này chưa có cổ phiếu nào trong danh mục.' 
-              : 'Bạn chưa có cổ phiếu nào trong danh mục.'}
-          </p>
-          <Link 
-            href="/transactions/new" 
-            className="mt-4 inline-block px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition-colors"
-          >
-            Thêm giao dịch mới
-          </Link>
-        </div>
-      ) : (
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-          <div className="lg:col-span-2">
-            <div className="bg-white p-4 rounded-lg shadow mb-6">
-              <h2 className="text-lg font-semibold mb-4">
-                Tổng quan {selectedAccountId && stockAccounts.find(acc => acc.id === selectedAccountId)?.name && 
-                  `- ${stockAccounts.find(acc => acc.id === selectedAccountId).name}`}
-              </h2>
-              {marketDataLoading ? (
-                <div className="flex justify-center items-center py-4">
-                  <Spinner size="medium" />
+      {/* Main Content */}
+      <div className="max-w-6xl mx-auto p-4 -mt-8">
+        {portfolio.length === 0 ? (
+          <div className="bg-white rounded-lg shadow-lg p-12 text-center">
+            <div className="flex flex-col items-center">
+              <i className="fas fa-chart-pie text-gray-400 text-6xl mb-6"></i>
+              <h3 className="text-2xl font-semibold text-gray-700 mb-4">
+                {selectedAccountId 
+                  ? 'Tài khoản này chưa có cổ phiếu nào trong danh mục' 
+                  : 'Bạn chưa có cổ phiếu nào trong danh mục'}
+              </h3>
+              <p className="text-gray-500 mb-6">Bắt đầu bằng cách thêm giao dịch đầu tiên của bạn</p>
+              <Link 
+                href="/transactions/new" 
+                className="bg-blue-600 text-white px-8 py-3 rounded-lg font-bold hover:bg-blue-700 transition shadow-lg"
+              >
+                <i className="fas fa-plus mr-2"></i>
+                Thêm giao dịch mới
+              </Link>
+            </div>
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            <div className="lg:col-span-2">
+              {/* Overview Stats */}
+              <div className="bg-white rounded-lg shadow-lg p-6 mb-6">
+                <div className="flex items-center mb-6">
+                  <i className="fas fa-chart-line text-blue-600 text-2xl mr-3"></i>
+                  <h2 className="text-xl font-bold text-gray-800">
+                    Tổng quan {selectedAccountId && stockAccounts.find(acc => acc.id === selectedAccountId)?.name && 
+                      `- ${stockAccounts.find(acc => acc.id === selectedAccountId).name}`}
+                  </h2>
                 </div>
-              ) : (
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                  <div className="bg-gray-50 p-4 rounded">
-                    <h3 className="text-sm text-gray-500 mb-1">Tổng Giá Vốn</h3>
-                    <p className="text-xl font-semibold">
-                      {portfolio.reduce((sum, item) => sum + (item.quantity * item.avgCost), 0)
-                        .toLocaleString('vi-VN')} VND
-                    </p>
+                {marketDataLoading ? (
+                  <div className="flex justify-center items-center py-8">
+                    <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mr-4"></div>
+                    <span className="text-gray-600">Đang cập nhật dữ liệu thị trường...</span>
                   </div>
-                  <div className="bg-gray-50 p-4 rounded">
-                    <h3 className="text-sm text-gray-500 mb-1">Tổng Giá Trị Thị Trường</h3>
-                    <p className="text-xl font-semibold">
-                      {marketData && enrichedPortfolio.length > 0 
-                        ? enrichedPortfolio.reduce((sum, item) => sum + (item.marketValue || 0), 0)
-                            .toLocaleString('vi-VN')
-                        : 'N/A'} VND
-                    </p>
+                ) : (
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <div className="bg-gradient-to-r from-blue-50 to-blue-100 p-6 rounded-lg border-l-4 border-blue-500">
+                      <div className="flex items-center justify-between">
+                        <div>
+                          <h3 className="text-sm text-blue-700 font-medium mb-2">Tổng Giá Vốn</h3>
+                          <p className="text-2xl font-bold text-blue-900">
+                            {portfolio.reduce((sum, item) => sum + (item.quantity * item.avgCost), 0)
+                              .toLocaleString('vi-VN')} VND
+                          </p>
+                        </div>
+                        <i className="fas fa-coins text-blue-500 text-2xl"></i>
+                      </div>
+                    </div>
+                    <div className="bg-gradient-to-r from-green-50 to-green-100 p-6 rounded-lg border-l-4 border-green-500">
+                      <div className="flex items-center justify-between">
+                        <div>
+                          <h3 className="text-sm text-green-700 font-medium mb-2">Tổng Giá Trị Thị Trường</h3>
+                          <p className="text-2xl font-bold text-green-900">
+                            {marketData && enrichedPortfolio.length > 0 
+                              ? enrichedPortfolio.reduce((sum, item) => sum + (item.marketValue || 0), 0)
+                                  .toLocaleString('vi-VN')
+                              : 'N/A'} VND
+                          </p>
+                        </div>
+                        <i className="fas fa-chart-area text-green-500 text-2xl"></i>
+                      </div>
+                    </div>
+                    <div className="bg-gradient-to-r from-purple-50 to-purple-100 p-6 rounded-lg border-l-4 border-purple-500">
+                      <div className="flex items-center justify-between">
+                        <div>
+                          <h3 className="text-sm text-purple-700 font-medium mb-2">Tổng Lãi/Lỗ Tạm tính</h3>
+                          {marketData && enrichedPortfolio.length > 0 ? (
+                            <p className={`text-2xl font-bold ${
+                              enrichedPortfolio.reduce((sum, item) => sum + (item.unrealizedPL || 0), 0) >= 0 
+                                ? 'text-green-600' 
+                                : 'text-red-600'
+                            }`}>
+                              {enrichedPortfolio.reduce((sum, item) => sum + (item.unrealizedPL || 0), 0) >= 0 ? '+' : ''}
+                              {enrichedPortfolio.reduce((sum, item) => sum + (item.unrealizedPL || 0), 0)
+                                .toLocaleString('vi-VN')} VND
+                            </p>
+                          ) : (
+                            <p className="text-2xl font-bold text-gray-600">N/A</p>
+                          )}
+                        </div>
+                        <i className={`fas fa-chart-line text-2xl ${
+                          marketData && enrichedPortfolio.length > 0 && enrichedPortfolio.reduce((sum, item) => sum + (item.unrealizedPL || 0), 0) >= 0 
+                            ? 'text-green-500' 
+                            : 'text-red-500'
+                        }`}></i>
+                      </div>
+                    </div>
                   </div>
-                  <div className="bg-gray-50 p-4 rounded">
-                    <h3 className="text-sm text-gray-500 mb-1">Tổng Lãi/Lỗ Tạm tính</h3>
-                    {marketData && enrichedPortfolio.length > 0 ? (
-                      <p className={`text-xl font-semibold ${
-                        enrichedPortfolio.reduce((sum, item) => sum + (item.unrealizedPL || 0), 0) >= 0 
-                          ? 'text-green-600' 
-                          : 'text-red-600'
-                      }`}>
-                        {enrichedPortfolio.reduce((sum, item) => sum + (item.unrealizedPL || 0), 0)
-                          .toLocaleString('vi-VN')} VND
-                      </p>
-                    ) : (
-                      <p className="text-xl font-semibold">N/A</p>
-                    )}
+                )}
+              </div>
+              
+              {/* Transfer Controls */}
+              {!selectedAccountId && (
+                <div className="bg-white rounded-lg shadow-lg p-4 mb-6">
+                  <div className="flex justify-between items-center">
+                    <div className="flex items-center space-x-3">
+                      <i className="fas fa-exchange-alt text-orange-600"></i>
+                      <span className="text-sm text-gray-700 font-medium">
+                        {selectedStocks.length > 0 ? `Đã chọn ${selectedStocks.length} cổ phiếu` : 'Chọn cổ phiếu để chuyển tài khoản'}
+                      </span>
+                    </div>
+                    <button
+                      onClick={handleOpenTransferModal}
+                      disabled={selectedStocks.length === 0}
+                      className="px-6 py-2 bg-orange-600 text-white rounded-lg font-medium hover:bg-orange-700 disabled:bg-gray-400 disabled:cursor-not-allowed transition-colors shadow-md"
+                    >
+                      <i className="fas fa-arrow-right mr-2"></i>
+                      Chuyển Tài Khoản
+                    </button>
                   </div>
                 </div>
               )}
-            </div>
-            
-            {/* Transfer Controls */}
-            {!selectedAccountId && (
-              <div className="bg-white p-4 rounded-lg shadow mb-4">
-                <div className="flex justify-between items-center">
-                  <div className="flex items-center space-x-2">
-                    <span className="text-sm text-gray-600">
-                      {selectedStocks.length > 0 ? `Đã chọn ${selectedStocks.length} cổ phiếu` : 'Chọn cổ phiếu để chuyển tài khoản'}
-                    </span>
+              
+              <div className="overflow-x-auto bg-white rounded-lg shadow-lg">
+                <div className="p-4 bg-gradient-to-r from-gray-50 to-gray-100 border-b border-gray-200">
+                  <div className="flex items-center">
+                    <i className="fas fa-table text-gray-600 mr-2"></i>
+                    <h3 className="font-semibold text-gray-800">Chi tiết danh mục</h3>
                   </div>
-                  <button
-                    onClick={handleOpenTransferModal}
-                    disabled={selectedStocks.length === 0}
-                    className="px-4 py-2 bg-orange-600 text-white rounded hover:bg-orange-700 disabled:bg-gray-400 disabled:cursor-not-allowed transition-colors"
-                  >
-                    Chuyển Tài Khoản
-                  </button>
                 </div>
-              </div>
-            )}
-            
-            <div className="overflow-x-auto bg-white rounded-lg shadow">
-              <table className="min-w-full divide-y divide-gray-200">
-                <thead className="bg-gray-100">
-                  <tr>
-                    {!selectedAccountId && (
+                <table className="min-w-full divide-y divide-gray-200">
+                  <thead className="bg-gray-100">
+                    <tr>
+                      {!selectedAccountId && (
+                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                          <input
+                            type="checkbox"
+                            checked={isAllSelected()}
+                            ref={input => {
+                              if (input) input.indeterminate = isSomeSelected();
+                            }}
+                            onChange={(e) => handleSelectAll(e.target.checked)}
+                            className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
+                          />
+                        </th>
+                      )}
                       <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                        <input
-                          type="checkbox"
-                          checked={isAllSelected()}
-                          ref={input => {
-                            if (input) input.indeterminate = isSomeSelected();
-                          }}
-                          onChange={(e) => handleSelectAll(e.target.checked)}
-                          className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
-                        />
+                        Mã CP
                       </th>
-                    )}
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                      Mã CP
-                    </th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                      Số lượng
-                    </th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                      Giá vốn TB
-                    </th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                      Giá đóng cửa hôm nay
-                    </th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                      Giá trị thị trường
-                    </th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                      Lãi/Lỗ
-                    </th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                      Lãi/Lỗ (%)
-                    </th>
-                    {!selectedAccountId && (
                       <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                        Tài khoản
+                        Số lượng
                       </th>
-                    )}
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                      Hành động
-                    </th>
-                  </tr>
-                </thead>
-                <tbody className="bg-white divide-y divide-gray-200">
-                  {(enrichedPortfolio.length > 0 ? enrichedPortfolio : portfolio).map((holding) => {
-                    if (!holding || typeof holding !== 'object') return null;
-                    
-                    return (
-                      <tr key={holding.ticker || 'unknown'} className="hover:bg-gray-50">
-                        {!selectedAccountId && (
+                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        Giá vốn TB
+                      </th>
+                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        Giá đóng cửa hôm nay
+                      </th>
+                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        Giá trị thị trường
+                      </th>
+                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        Lãi/Lỗ
+                      </th>
+                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        Lãi/Lỗ (%)
+                      </th>
+                      {!selectedAccountId && (
+                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                          Tài khoản
+                        </th>
+                      )}
+                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        Hành động
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody className="bg-white divide-y divide-gray-200">
+                    {(enrichedPortfolio.length > 0 ? enrichedPortfolio : portfolio).map((holding) => {
+                      if (!holding || typeof holding !== 'object') return null;
+                      
+                      return (
+                        <tr key={holding.ticker || 'unknown'} className="hover:bg-gray-50">
+                          {!selectedAccountId && (
+                            <td className="px-6 py-4 whitespace-nowrap">
+                              <input
+                                type="checkbox"
+                                checked={isStockSelected(holding.ticker)}
+                                onChange={(e) => handleStockSelect(holding, e.target.checked)}
+                                className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
+                              />
+                            </td>
+                          )}
                           <td className="px-6 py-4 whitespace-nowrap">
-                            <input
-                              type="checkbox"
-                              checked={isStockSelected(holding.ticker)}
-                              onChange={(e) => handleStockSelect(holding, e.target.checked)}
-                              className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
-                            />
+                            <div className="text-sm font-medium text-gray-900">{holding.ticker || 'N/A'}</div>
                           </td>
-                        )}
-                        <td className="px-6 py-4 whitespace-nowrap">
-                          <div className="text-sm font-medium text-gray-900">{holding.ticker || 'N/A'}</div>
-                        </td>
-                        <td className="px-6 py-4 whitespace-nowrap">
-                          <div className="text-sm text-gray-900">
-                            {holding.quantity ? holding.quantity.toLocaleString() : '0'}
-                          </div>
-                        </td>
-                        <td className="px-6 py-4 whitespace-nowrap">
-                          <div className="text-sm text-gray-900">
-                            {holding.avgCost ? holding.avgCost.toLocaleString('vi-VN', { 
-                              minimumFractionDigits: 0,
-                              maximumFractionDigits: 0 
-                            }) : '0'} VND
-                          </div>
-                        </td>
-                        <td className="px-6 py-4 whitespace-nowrap">
-                          <div className="text-sm text-gray-900">
-                            {marketDataLoading ? (
-                              <Spinner size="small" />
-                            ) : holding.currentPrice ? (
-                              holding.currentPrice.toLocaleString('vi-VN')
-                            ) : (
-                              'N/A'
-                            )} VND
-                          </div>
-                        </td>
-                        <td className="px-6 py-4 whitespace-nowrap">
-                          <div className="text-sm text-gray-900">
-                            {holding.marketValue ? (
-                              holding.marketValue.toLocaleString('vi-VN')
-                            ) : (
-                              'N/A'
-                            )} VND
-                          </div>
-                        </td>
-                        <td className="px-6 py-4 whitespace-nowrap">
-                          {holding.unrealizedPL != null ? (
-                            <div className={`text-sm ${holding.unrealizedPL >= 0 ? 'text-green-600' : 'text-red-600'}`}>
-                              {holding.unrealizedPL.toLocaleString('vi-VN')} VND
-                            </div>
-                          ) : (
-                            <div className="text-sm text-gray-500">N/A</div>
-                          )}
-                        </td>
-                        <td className="px-6 py-4 whitespace-nowrap">
-                          {holding.plPercentage != null ? (
-                            <div className={`text-sm ${holding.plPercentage >= 0 ? 'text-green-600' : 'text-red-600'}`}>
-                              {holding.plPercentage.toFixed(2)}%
-                            </div>
-                          ) : (
-                            <div className="text-sm text-gray-500">N/A</div>
-                          )}
-                        </td>
-                        {!selectedAccountId && (
                           <td className="px-6 py-4 whitespace-nowrap">
                             <div className="text-sm text-gray-900">
-                              {holding.stockAccount?.name || 'N/A'}
-                              {holding.stockAccount?.brokerName && (
-                                <div className="text-xs text-gray-500">
-                                  {holding.stockAccount.brokerName}
-                                </div>
-                              )}
+                              {holding.quantity ? holding.quantity.toLocaleString() : '0'}
                             </div>
                           </td>
-                        )}
-                        <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                          <Link
-                            href={`/transactions?ticker=${holding.ticker || ''}`}
-                            className="text-indigo-600 hover:text-indigo-900 mr-4"
-                          >
-                            Lịch sử giao dịch
-                          </Link>
-                        </td>
-                      </tr>
-                    );
-                  })}
-                </tbody>
-              </table>
+                          <td className="px-6 py-4 whitespace-nowrap">
+                            <div className="text-sm text-gray-900">
+                              {holding.avgCost ? holding.avgCost.toLocaleString('vi-VN', { 
+                                minimumFractionDigits: 0,
+                                maximumFractionDigits: 0 
+                              }) : '0'} VND
+                            </div>
+                          </td>
+                          <td className="px-6 py-4 whitespace-nowrap">
+                            <div className="text-sm text-gray-900">
+                              {marketDataLoading ? (
+                                <Spinner size="small" />
+                              ) : holding.currentPrice ? (
+                                holding.currentPrice.toLocaleString('vi-VN')
+                              ) : (
+                                'N/A'
+                              )} VND
+                            </div>
+                          </td>
+                          <td className="px-6 py-4 whitespace-nowrap">
+                            <div className="text-sm text-gray-900">
+                              {holding.marketValue ? (
+                                holding.marketValue.toLocaleString('vi-VN')
+                              ) : (
+                                'N/A'
+                              )} VND
+                            </div>
+                          </td>
+                          <td className="px-6 py-4 whitespace-nowrap">
+                            {holding.unrealizedPL != null ? (
+                              <div className={`text-sm ${holding.unrealizedPL >= 0 ? 'text-green-600' : 'text-red-600'}`}>
+                                {holding.unrealizedPL.toLocaleString('vi-VN')} VND
+                              </div>
+                            ) : (
+                              <div className="text-sm text-gray-500">N/A</div>
+                            )}
+                          </td>
+                          <td className="px-6 py-4 whitespace-nowrap">
+                            {holding.plPercentage != null ? (
+                              <div className={`text-sm ${holding.plPercentage >= 0 ? 'text-green-600' : 'text-red-600'}`}>
+                                {holding.plPercentage.toFixed(2)}%
+                              </div>
+                            ) : (
+                              <div className="text-sm text-gray-500">N/A</div>
+                            )}
+                          </td>
+                          {!selectedAccountId && (
+                            <td className="px-6 py-4 whitespace-nowrap">
+                              <div className="text-sm text-gray-900">
+                                {holding.stockAccount?.name || 'N/A'}
+                                {holding.stockAccount?.brokerName && (
+                                  <div className="text-xs text-gray-500">
+                                    {holding.stockAccount.brokerName}
+                                  </div>
+                                )}
+                              </div>
+                            </td>
+                          )}
+                          <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                            <Link
+                              href={`/transactions?ticker=${holding.ticker || ''}`}
+                              className="text-indigo-600 hover:text-indigo-900 mr-4"
+                            >
+                              Lịch sử giao dịch
+                            </Link>
+                          </td>
+                        </tr>
+                      );
+                    })}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+            
+            <div className="lg:col-span-1 space-y-6">
+              {/* Portfolio Allocation Chart */}
+              {marketDataLoading ? (
+                <div className="flex justify-center items-center h-64 bg-white rounded-lg shadow">
+                  <Spinner size="large" />
+                </div>
+              ) : (
+                <PortfolioPieChart 
+                  holdings={enrichedPortfolio.filter(h => h.marketValue && h.marketValue > 0)} 
+                />
+              )}
+              
+              {/* Account Allocation Chart - Only show when viewing all accounts */}
+              {!selectedAccountId && (
+                <AccountAllocationPieChart 
+                  accountAllocations={accountAllocations}
+                />
+              )}
             </div>
           </div>
-          
-          <div className="lg:col-span-1 space-y-6">
-            {/* Portfolio Allocation Chart */}
-            {marketDataLoading ? (
-              <div className="flex justify-center items-center h-64 bg-white rounded-lg shadow">
-                <Spinner size="large" />
-              </div>
-            ) : (
-              <PortfolioPieChart 
-                holdings={enrichedPortfolio.filter(h => h.marketValue && h.marketValue > 0)} 
-              />
-            )}
-            
-            {/* Account Allocation Chart - Only show when viewing all accounts */}
-            {!selectedAccountId && (
-              <AccountAllocationPieChart 
-                accountAllocations={accountAllocations}
-              />
-            )}
-          </div>
-        </div>
-      )}
+        )}
 
-      {/* Transfer Stocks Modal */}
-      <TransferStocksModal
-        isOpen={transferModalOpen}
-        onClose={handleCloseTransferModal}
-        selectedStocks={selectedStocks}
-        onTransferSuccess={handleTransferSuccess}
-      />
+        {/* Transfer Stocks Modal */}
+        <TransferStocksModal
+          isOpen={transferModalOpen}
+          onClose={handleCloseTransferModal}
+          selectedStocks={selectedStocks}
+          onTransferSuccess={handleTransferSuccess}
+        />
+      </div>
     </div>
   );
 } 

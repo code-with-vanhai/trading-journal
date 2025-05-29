@@ -1,24 +1,23 @@
 import { Inter } from 'next/font/google';
 import './globals.css';
 import { AuthProvider } from './context/AuthContext';
-import Navbar from './components/Navbar';
+import ConditionalLayout from './components/ConditionalLayout';
 
 const inter = Inter({ subsets: ['latin'] });
 
 export const metadata = {
-  title: 'Trading Journal & Strategy Sharing',
-  description: 'A comprehensive app for tracking trades and sharing strategies',
+  title: 'Trading Journal - Nhật ký giao dịch chứng khoán thông minh',
+  description: 'Nền tảng nhật ký giao dịch chứng khoán thông minh hàng đầu Việt Nam',
 };
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en">
+    <html lang="vi">
       <body className={`${inter.className} bg-background min-h-screen`}>
         <AuthProvider>
-          <Navbar />
-          <main className="container mx-auto px-4 py-8">
+          <ConditionalLayout>
             {children}
-          </main>
+          </ConditionalLayout>
         </AuthProvider>
       </body>
     </html>

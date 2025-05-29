@@ -2,6 +2,9 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Font Awesome CDN - Add this for icons */
+@import url('https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.0.0/css/all.min.css');
+
 :root {
   --foreground-rgb: 0, 0, 0;
   --background-rgb: 249, 250, 251;
@@ -38,5 +41,86 @@ body {
   
   .card {
     @apply bg-white shadow-md rounded-lg p-6;
+  }
+
+  /* Landing page specific styles */
+  .gradient-bg {
+    background: linear-gradient(90deg, #1a237e 0%, #0d47a1 100%);
+  }
+
+  .feature-card {
+    transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+  }
+
+  .feature-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 10px 15px rgba(0,0,0,0.1);
+  }
+
+  .leaderboard-tab {
+    padding: 0.75rem 1.5rem;
+    border-bottom: 2px solid transparent;
+    cursor: pointer;
+    transition: color 0.3s ease, border-color 0.3s ease;
+    font-weight: 500;
+    color: #555;
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+
+  .leaderboard-tab:hover {
+    color: #3b82f6;
+    border-color: #bfdbfe;
+  }
+
+  .leaderboard-tab.active {
+    color: #2563eb;
+    border-color: #2563eb;
+    font-weight: 700;
+  }
+
+  .chart-container {
+    height: 350px;
+    position: relative;
+  }
+
+  .mobile-menu {
+    transition: transform 0.3s ease-in-out;
+    transform: translateX(100%);
+    z-index: 40;
+  }
+
+  .mobile-menu.is-active {
+    transform: translateX(0);
+  }
+
+  .overlay {
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 30;
+  }
+
+  .testimonial-card {
+    position: relative;
+    overflow: hidden;
+  }
+
+  .testimonial-card::before {
+    content: "\f10e";
+    font-family: "Font Awesome 5 Free";
+    font-weight: 900;
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    font-size: 3rem;
+    color: rgba(59, 130, 246, 0.2);
+    z-index: 1;
+  }
+
+  .hero-image-preview {
+    transition: opacity 0.5s ease-in-out;
+    opacity: 0;
+  }
+  .hero-image-preview.is-loaded {
+    opacity: 1;
   }
 } 
