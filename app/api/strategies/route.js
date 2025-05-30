@@ -3,6 +3,7 @@ import { getServerSession } from 'next-auth/next';
 import { PrismaClient } from '@prisma/client';
 import { authOptions } from '../auth/[...nextauth]/route';
 import { serverLogger as logger } from '../../lib/server-logger';
+import { sanitizeError, secureLog } from '../../lib/error-handler';
 
 // Use a singleton Prisma instance to avoid connection overhead
 const globalForPrisma = global;
@@ -104,11 +105,20 @@ export async function GET(request) {
 
     return NextResponse.json(result);
   } catch (error) {
-    logger.error('Error fetching strategies:', { error: error.message, stack: error.stack });
-    console.error('Error fetching strategies:', error);
+    // SECURITY FIX: Use secure logging and sanitized error responses
+    secureLog(error, {
+      userId: session?.user?.id,
+      endpoint: 'GET /api/strategies',
+      userAgent: request.headers.get('user-agent')
+    });
+    
+    const sanitizedError = sanitizeError(error);
     return NextResponse.json(
-      { message: 'Failed to fetch strategies', error: error.message },
-      { status: 500 }
+      { 
+        message: sanitizedError.message,
+        code: sanitizedError.code
+      },
+      { status: sanitizedError.status }
     );
   }
 }
@@ -155,11 +165,20 @@ export async function POST(request) {
 
     return NextResponse.json(strategy, { status: 201 });
   } catch (error) {
-    logger.error('Error creating strategy:', { error: error.message, stack: error.stack });
-    console.error('Error creating strategy:', error);
+    // SECURITY FIX: Use secure logging and sanitized error responses
+    secureLog(error, {
+      userId: session?.user?.id,
+      endpoint: 'POST /api/strategies',
+      userAgent: request.headers.get('user-agent')
+    });
+    
+    const sanitizedError = sanitizeError(error);
     return NextResponse.json(
-      { message: 'Failed to create strategy', error: error.message },
-      { status: 500 }
+      { 
+        message: sanitizedError.message,
+        code: sanitizedError.code
+      },
+      { status: sanitizedError.status }
     );
   }
 } 

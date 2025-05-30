@@ -1,0 +1,174 @@
+[2025-05-30T09:52:16.464Z] [INFO] [TCBS] Market data request received
+{
+  "userId": "cmb6ahtk10000gq50si3n8mci",
+  "tickers": [
+    "NKG",
+    "NTL"
+  ],
+  "cacheDuration": "60 minutes"
+}
+--------------------------------------------------------------------------------
+[2025-05-30T09:52:16.466Z] [DEBUG] [TCBS] Starting market data fetch with caching
+{
+  "tickers": [
+    "NKG",
+    "NTL"
+  ]
+}
+--------------------------------------------------------------------------------
+[2025-05-30T09:52:16.574Z] [INFO] [TCBS] Cache EXPIRED for NKG
+{
+  "cacheAge": "79 minutes old",
+  "cacheDuration": "60 minutes"
+}
+--------------------------------------------------------------------------------
+[2025-05-30T09:52:16.575Z] [INFO] [TCBS] Fetching market data from TCBS API
+{
+  "ticker": "NKG",
+  "from": 1748476800,
+  "to": 1748563200,
+  "url": "https://apipubaws.tcbs.com.vn/stock-insight/v1/stock/bars-long-term?ticker=NKG&type=stock&resolution=D&from=1748476800&to=1748563200"
+}
+--------------------------------------------------------------------------------
+[2025-05-30T09:52:16.585Z] [INFO] [TCBS] Cache EXPIRED for NTL
+{
+  "cacheAge": "79 minutes old",
+  "cacheDuration": "60 minutes"
+}
+--------------------------------------------------------------------------------
+[2025-05-30T09:52:16.586Z] [INFO] [TCBS] Fetching market data from TCBS API
+{
+  "ticker": "NTL",
+  "from": 1748476800,
+  "to": 1748563200,
+  "url": "https://apipubaws.tcbs.com.vn/stock-insight/v1/stock/bars-long-term?ticker=NTL&type=stock&resolution=D&from=1748476800&to=1748563200"
+}
+--------------------------------------------------------------------------------
+[2025-05-30T09:52:16.815Z] [INFO] [TCBS] TCBS API response status
+{
+  "ticker": "NKG",
+  "status": 200
+}
+--------------------------------------------------------------------------------
+[2025-05-30T09:52:16.817Z] [DEBUG] [TCBS] API response structure
+{
+  "ticker": "NKG",
+  "keys": [
+    "ticker",
+    "data",
+    "dataT1"
+  ],
+  "sample": "{\"ticker\":\"NKG\",\"data\":[{\"open\":13250,\"high\":13800,\"low\":13200,\"close\":13350,\"volume\":16629400,\"tradingDate\":\"2025-05-30T07:59:00.000Z\"}],\"dataT1\":null}"
+}
+--------------------------------------------------------------------------------
+[2025-05-30T09:52:16.817Z] [INFO] [TCBS] Successfully fetched market data
+{
+  "ticker": "NKG",
+  "latestEntry": {
+    "open": 13250,
+    "high": 13800,
+    "low": 13200,
+    "close": 13350,
+    "volume": 16629400,
+    "tradingDate": "2025-05-30T07:59:00.000Z"
+  }
+}
+--------------------------------------------------------------------------------
+[2025-05-30T09:52:16.850Z] [INFO] [TCBS] TCBS API response status
+{
+  "ticker": "NTL",
+  "status": 200
+}
+--------------------------------------------------------------------------------
+[2025-05-30T09:52:16.851Z] [DEBUG] [TCBS] API response structure
+{
+  "ticker": "NTL",
+  "keys": [
+    "ticker",
+    "data",
+    "dataT1"
+  ],
+  "sample": "{\"ticker\":\"NTL\",\"data\":[{\"open\":17100,\"high\":17550,\"low\":16800,\"close\":17250,\"volume\":8063700,\"tradingDate\":\"2025-05-30T07:59:00.000Z\"}],\"dataT1\":null}"
+}
+--------------------------------------------------------------------------------
+[2025-05-30T09:52:16.852Z] [INFO] [TCBS] Successfully fetched market data
+{
+  "ticker": "NTL",
+  "latestEntry": {
+    "open": 17100,
+    "high": 17550,
+    "low": 16800,
+    "close": 17250,
+    "volume": 8063700,
+    "tradingDate": "2025-05-30T07:59:00.000Z"
+  }
+}
+--------------------------------------------------------------------------------
+[2025-05-30T09:52:16.952Z] [INFO] [TCBS] Updated cache for NKG
+{
+  "price": 13350,
+  "timestamp": 1748598736466
+}
+--------------------------------------------------------------------------------
+[2025-05-30T09:52:17.488Z] [INFO] [TCBS] Updated cache for NTL
+{
+  "price": 17250,
+  "timestamp": 1748598736466
+}
+--------------------------------------------------------------------------------
+[2025-05-30T09:52:17.488Z] [INFO] [TCBS] Market data fetch completed
+{
+  "totalRequested": 2,
+  "cacheHits": 0,
+  "cacheMisses": 2,
+  "errors": 0,
+  "fetchTime": "1023ms",
+  "totalTime": "1030ms"
+}
+--------------------------------------------------------------------------------
+[2025-05-30T09:52:17.504Z] [INFO] [TCBS] Batch cache HIT for [NKG,NTL]
+--------------------------------------------------------------------------------
+[2025-05-30T09:52:17.504Z] [INFO] [TCBS] Market data API (cached batch) completed in 3ms
+--------------------------------------------------------------------------------
+[2025-05-30T09:52:32.793Z] [INFO] [TCBS] Market data request received
+{
+  "userId": "cmb6ahtk10000gq50si3n8mci",
+  "tickers": [
+    "NKG",
+    "NTL"
+  ],
+  "cacheDuration": "60 minutes"
+}
+--------------------------------------------------------------------------------
+[2025-05-30T09:52:32.794Z] [DEBUG] [TCBS] Starting market data fetch with caching
+{
+  "tickers": [
+    "NKG",
+    "NTL"
+  ]
+}
+--------------------------------------------------------------------------------
+[2025-05-30T09:52:32.942Z] [INFO] [TCBS] Cache HIT for NKG
+{
+  "cacheAge": "0 minutes old"
+}
+--------------------------------------------------------------------------------
+[2025-05-30T09:52:32.943Z] [INFO] [TCBS] Cache HIT for NTL
+{
+  "cacheAge": "0 minutes old"
+}
+--------------------------------------------------------------------------------
+[2025-05-30T09:52:32.943Z] [INFO] [TCBS] Market data fetch completed
+{
+  "totalRequested": 2,
+  "cacheHits": 2,
+  "cacheMisses": 0,
+  "errors": 0,
+  "fetchTime": "149ms",
+  "totalTime": "152ms"
+}
+--------------------------------------------------------------------------------
+[2025-05-30T09:52:32.958Z] [INFO] [TCBS] Batch cache HIT for [NKG,NTL]
+--------------------------------------------------------------------------------
+[2025-05-30T09:52:32.958Z] [INFO] [TCBS] Market data API (cached batch) completed in 3ms
+--------------------------------------------------------------------------------

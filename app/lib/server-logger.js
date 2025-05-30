@@ -1,5 +1,6 @@
 import fs from 'fs';
 import path from 'path';
+import { sanitizeLogData } from './error-handler.js';
 
 // Define log levels
 const LOG_LEVELS = {
@@ -45,10 +46,13 @@ export function logToSpecificFile(file, level, message, data = null, isTCBS = fa
   let logMessage = `[${timestamp}] [${level}] [${logType}] ${message}`;
   
   if (data) {
-    if (typeof data === 'object') {
-      logMessage += `\n${JSON.stringify(data, null, 2)}`;
+    // SECURITY FIX: Sanitize data before logging to prevent sensitive information disclosure
+    const sanitizedData = sanitizeLogData(data);
+    
+    if (typeof sanitizedData === 'object') {
+      logMessage += `\n${JSON.stringify(sanitizedData, null, 2)}`;
     } else {
-      logMessage += `\n${data}`;
+      logMessage += `\n${sanitizedData}`;
     }
   }
   
@@ -88,20 +92,38 @@ export function logToFile(level, message, data = null) {
   logToSpecificFile(LOG_FILE, level, message, data, false);
 }
 
-// Logger functions
+// Logger functions with enhanced security
 export const serverLogger = {
-  debug: (message, data) => logToFile(LOG_LEVELS.DEBUG, message, data),
+  debug: (message, data) => {
+    // Only log debug in development
+    if (process.env.NODE_ENV === 'development') {
+      logToFile(LOG_LEVELS.DEBUG, message, data);
+    }
+  },
   info: (message, data) => logToFile(LOG_LEVELS.INFO, message, data),
   warning: (message, data) => logToFile(LOG_LEVELS.WARNING, message, data),
-  error: (message, data) => logToFile(LOG_LEVELS.ERROR, message, data)
+  error: (message, data) => {
+    // For error logging, ensure we sanitize the data and include security context
+    const secureData = data ? sanitizeLogData(data) : null;
+    logToFile(LOG_LEVELS.ERROR, message, secureData);
+  }
 };
 
-// TCBS API specific logger
+// TCBS API specific logger with enhanced security
 export const tcbsServerLogger = {
-  debug: (message, data) => logToSpecificFile(TCBS_LOG_FILE, LOG_LEVELS.DEBUG, message, data, true),
+  debug: (message, data) => {
+    // Only log debug in development
+    if (process.env.NODE_ENV === 'development') {
+      logToSpecificFile(TCBS_LOG_FILE, LOG_LEVELS.DEBUG, message, data, true);
+    }
+  },
   info: (message, data) => logToSpecificFile(TCBS_LOG_FILE, LOG_LEVELS.INFO, message, data, true),
   warning: (message, data) => logToSpecificFile(TCBS_LOG_FILE, LOG_LEVELS.WARNING, message, data, true),
-  error: (message, data) => logToSpecificFile(TCBS_LOG_FILE, LOG_LEVELS.ERROR, message, data, true),
+  error: (message, data) => {
+    // For error logging, ensure we sanitize the data
+    const secureData = data ? sanitizeLogData(data) : null;
+    logToSpecificFile(TCBS_LOG_FILE, LOG_LEVELS.ERROR, message, secureData, true);
+  }
 };
 
 export default serverLogger; 

@@ -3,6 +3,7 @@ import { getServerSession } from 'next-auth';
 import { authOptions } from '../auth/[...nextauth]/route';
 import { serverLogger as logger, tcbsServerLogger as tcbsLogger } from '../../lib/server-logger';
 import { PrismaClient } from '@prisma/client';
+import { sanitizeError, secureLog } from '../../lib/error-handler';
 
 // Create a singleton Prisma instance
 const globalForPrisma = global;
@@ -263,9 +264,11 @@ async function getStockPriceWithCache(ticker) {
     
     return result;
   } catch (error) {
-    tcbsLogger.error(`Cache operation error for ${ticker}`, {
-      error: error.message,
-      stack: error.stack
+    // SECURITY FIX: Use secure logging and sanitized error responses
+    secureLog(error, {
+      ticker,
+      operation: 'cache_operation',
+      endpoint: 'getStockPriceWithCache'
     });
     
     // If cache fails, try to get fresh data directly
@@ -283,10 +286,17 @@ async function getStockPriceWithCache(ticker) {
     try {
       return await fetchMarketData(ticker, from, to);
     } catch (fetchError) {
-      tcbsLogger.error(`Failed to fetch data after cache error for ${ticker}`, {
-        error: fetchError.message
+      // SECURITY FIX: Use secure logging and return sanitized error
+      secureLog(fetchError, {
+        ticker,
+        operation: 'fetch_after_cache_error',
+        endpoint: 'getStockPriceWithCache'
       });
-      return { error: `Cache error: ${error.message}, Fetch error: ${fetchError.message}` };
+      
+      // Return sanitized error message instead of raw error details
+      return { 
+        error: 'Market data temporarily unavailable' 
+      };
     }
   }
 }
@@ -377,13 +387,22 @@ export async function GET(request) {
     
     return Response.json(marketData);
   } catch (error) {
-    const endTime = performance.now();
-    tcbsLogger.error(`Global exception in market data API`, { 
-      error: error.message, 
-      stack: error.stack,
-      duration: `${Math.round(endTime - startTime)}ms`
+    // SECURITY FIX: Use secure logging and sanitized error responses
+    secureLog(error, {
+      userId: session?.user?.id,
+      endpoint: 'GET /api/market-data',
+      tickers: tickerArray,
+      userAgent: request.headers.get('user-agent'),
+      duration: `${Math.round(performance.now() - startTime)}ms`
     });
-    console.error('Error fetching market data:', error);
-    return Response.json({ error: 'Failed to fetch market data' }, { status: 500 });
+    
+    const sanitizedError = sanitizeError(error);
+    return Response.json(
+      { 
+        error: sanitizedError.message,
+        code: sanitizedError.code 
+      }, 
+      { status: sanitizedError.status }
+    );
   }
 } 

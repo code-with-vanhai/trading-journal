@@ -3,6 +3,7 @@ import { getServerSession } from 'next-auth/next';
 import { PrismaClient } from '@prisma/client';
 import { authOptions } from '../auth/[...nextauth]/route';
 import { processBuyTransaction, processSellTransaction } from '../../lib/cost-basis-calculator-wrapper';
+import { sanitizeError, secureLog } from '../../lib/error-handler';
 
 // Create a single Prisma instance with query logging in development
 const globalForPrisma = global;
@@ -30,8 +31,9 @@ const CACHE_TTL = 5 * 60 * 1000; // 5 minutes cache TTL for better hit ratio
 
 // GET - Fetch all transactions for current user with filtering and pagination
 export async function GET(request) {
+  const startTime = Date.now();
+
   try {
-    const startTime = Date.now();
     const session = await getServerSession(authOptions);
     
     if (!session) {
@@ -307,10 +309,20 @@ export async function GET(request) {
     console.log(`[Transactions API] Fetch completed in ${Date.now() - startTime}ms`);
     return NextResponse.json(result);
   } catch (error) {
-    console.error('Error fetching transactions:', error);
+    // SECURITY FIX: Use secure logging and sanitized error responses
+    secureLog(error, {
+      userId: session?.user?.id,
+      endpoint: 'GET /api/transactions',
+      userAgent: request.headers.get('user-agent')
+    });
+    
+    const sanitizedError = sanitizeError(error);
     return NextResponse.json(
-      { message: 'Failed to fetch transactions', error: error.message },
-      { status: 500 }
+      { 
+        message: sanitizedError.message,
+        code: sanitizedError.code
+      },
+      { status: sanitizedError.status }
     );
   }
 }
@@ -476,10 +488,20 @@ export async function POST(request) {
 
     return NextResponse.json(transaction, { status: 201 });
   } catch (error) {
-    console.error('Error creating transaction:', error);
+    // SECURITY FIX: Use secure logging and sanitized error responses
+    secureLog(error, {
+      userId: session?.user?.id,
+      endpoint: 'POST /api/transactions',
+      userAgent: request.headers.get('user-agent')
+    });
+    
+    const sanitizedError = sanitizeError(error);
     return NextResponse.json(
-      { message: 'Failed to create transaction', error: error.message },
-      { status: 500 }
+      { 
+        message: sanitizedError.message,
+        code: sanitizedError.code
+      },
+      { status: sanitizedError.status }
     );
   }
 }
