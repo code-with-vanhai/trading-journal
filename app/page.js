@@ -459,8 +459,30 @@ export default function HomePage() {
               </nav>
               {/* Auth Links */}
               <div className="hidden md:flex items-center space-x-4 font-medium">
-                <Link href="/auth/signin" className="hover:text-blue-200 transition">Đăng nhập</Link>
-                <Link href="/auth/signup" className="bg-white text-blue-900 px-5 py-2 rounded-lg font-medium hover:bg-blue-100 transition shadow-md">Đăng ký</Link>
+                {status === 'authenticated' ? (
+                  <div className="flex items-center gap-4">
+                    <span className="text-sm text-blue-100 flex items-center">
+                      <i className="fas fa-user-circle mr-2"></i>
+                      {session?.user?.username || session?.user?.name || session?.user?.email || ''}
+                    </span>
+                    <button
+                      onClick={async () => {
+                        const { signOut } = await import('next-auth/react');
+                        await signOut({ redirect: false });
+                        window.location.reload();
+                      }}
+                      className="text-sm text-blue-200 hover:text-white transition-colors"
+                    >
+                      <i className="fas fa-sign-out-alt mr-1"></i>
+                      Đăng xuất
+                    </button>
+                  </div>
+                ) : (
+                  <>
+                    <Link href="/auth/signin" className="hover:text-blue-200 transition">Đăng nhập</Link>
+                    <Link href="/auth/signup" className="bg-white text-blue-900 px-5 py-2 rounded-lg font-medium hover:bg-blue-100 transition shadow-md">Đăng ký</Link>
+                  </>
+                )}
               </div>
               {/* Mobile Menu Button */}
               <div className="md:hidden">
@@ -484,11 +506,41 @@ export default function HomePage() {
                 <li><a href="#features" className="block hover:text-blue-200 transition">Tính năng</a></li>
                 <li><a href="#performance-showcase" className="block hover:text-blue-200 transition">Hiệu quả</a></li>
                 <li><a href="#pricing" className="block hover:text-blue-200 transition">Bảng giá</a></li>
-                <li className="pt-4 border-t border-blue-800"><Link href="/transactions" className="block hover:text-blue-200 transition">Giao dịch</Link></li>
-                <li><Link href="/portfolio" className="block hover:text-blue-200 transition">Danh mục</Link></li>
-                <li><Link href="/strategies" className="block hover:text-blue-200 transition">Chiến lược</Link></li>
-                <li className="pt-4 border-t border-blue-800"><Link href="/auth/signin" className="block hover:text-blue-200 transition">Đăng nhập</Link></li>
-                <li><Link href="/auth/signup" className="block bg-white text-blue-900 px-4 py-2 rounded-lg text-center font-medium hover:bg-blue-100 transition shadow-md">Đăng ký</Link></li>
+                {status === 'authenticated' && (
+                  <>
+                    <li className="pt-4 border-t border-blue-800"><Link href="/transactions" className="block hover:text-blue-200 transition">Giao dịch</Link></li>
+                    <li><Link href="/portfolio" className="block hover:text-blue-200 transition">Danh mục</Link></li>
+                    <li><Link href="/strategies" className="block hover:text-blue-200 transition">Chiến lược</Link></li>
+                  </>
+                )}
+                {status === 'authenticated' ? (
+                  <>
+                    <li className="pt-4 border-t border-blue-800">
+                      <span className="block text-blue-100 mb-2">
+                        <i className="fas fa-user-circle mr-2"></i>
+                        {session?.user?.username || session?.user?.name || session?.user?.email || ''}
+                      </span>
+                    </li>
+                    <li>
+                      <button
+                        onClick={async () => {
+                          const { signOut } = await import('next-auth/react');
+                          await signOut({ redirect: false });
+                          window.location.reload();
+                        }}
+                        className="block hover:text-blue-200 transition w-full text-left"
+                      >
+                        <i className="fas fa-sign-out-alt mr-2"></i>
+                        Đăng xuất
+                      </button>
+                    </li>
+                  </>
+                ) : (
+                  <>
+                    <li className="pt-4 border-t border-blue-800"><Link href="/auth/signin" className="block hover:text-blue-200 transition">Đăng nhập</Link></li>
+                    <li><Link href="/auth/signup" className="block bg-white text-blue-900 px-4 py-2 rounded-lg text-center font-medium hover:bg-blue-100 transition shadow-md">Đăng ký</Link></li>
+                  </>
+                )}
               </ul>
             </nav>
           </div>
@@ -500,7 +552,7 @@ export default function HomePage() {
             <div className="md:w-1/2 mb-12 md:mb-0 md:pr-8">
               {status === 'authenticated' ? (
                 <>
-                  <h1 className="text-4xl md:text-5xl font-bold mb-6 leading-tight">Chào mừng trở lại, {session?.user?.username || session?.user?.name || 'bạn'}!</h1>
+                  <h1 className="text-4xl md:text-5xl font-bold mb-6 leading-tight">Chào mừng trở lại, {session?.user?.name || session?.user?.username || 'bạn'}!</h1>
                   <p className="text-xl mb-8 opacity-90 max-w-lg">Tiếp tục quản lý danh mục đầu tư và theo dõi giao dịch chứng khoán của bạn với Trading Journal.</p>
                   <div className="flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-4">
                     <Link href="/transactions" className="cta-button bg-white text-blue-900 px-10 py-4 rounded-lg font-bold text-lg shadow-lg hover:bg-blue-100 text-center">
