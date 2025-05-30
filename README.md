@@ -8,8 +8,8 @@
 > **Nền tảng nhật ký giao dịch chứng khoán thông minh hàng đầu Việt Nam**  
 > Theo dõi, phân tích và tối ưu hóa chiến lược đầu tư của bạn với công nghệ AI và dữ liệu thị trường thời gian thực.
 
-(![image](https://github.com/user-attachments/assets/709283c7-5ab5-45de-a959-11291952ecb2))
-(![image](https://github.com/user-attachments/assets/cf63349a-7218-496a-bc40-c40a220fedac))
+![image](https://github.com/user-attachments/assets/709283c7-5ab5-45de-a959-11291952ecb2)
+![image](https://github.com/user-attachments/assets/cf63349a-7218-496a-bc40-c40a220fedac)
 
 
 ## 🎯 Tổng quan
