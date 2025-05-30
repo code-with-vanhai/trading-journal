@@ -525,7 +525,7 @@ export default function HomePage() {
               )}
             </div>
             <div className="md:w-1/2 flex justify-center">
-              <img id="hero-dashboard-preview" src="https://via.placeholder.com/700x450?text=Mockup+Dashboard+Preview" alt="Giao diện Dashboard Trading Journal" className="w-full max-w-md md:max-w-full rounded-lg shadow-2xl hero-image-preview"/>
+              <img id="hero-dashboard-preview" src="/images/trading-dashboard-hero.jpg" alt="Giao diện Dashboard Trading Journal với nhiều màn hình hiển thị biểu đồ giao dịch chứng khoán" className="w-full max-w-md md:max-w-full rounded-lg shadow-2xl hero-image-preview"/>
             </div>
           </div>
         </section>
