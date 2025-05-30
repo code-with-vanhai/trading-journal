@@ -16,20 +16,6 @@
 
 Trading Journal là nền tảng toàn diện giúp nhà đầu tư Việt Nam quản lý danh mục, theo dõi giao dịch và phân tích hiệu suất một cách khoa học. Với tích hợp dữ liệu thị trường từ TCBS và công nghệ AI, chúng tôi giúp bạn đưa ra quyết định đầu tư thông minh hơn.
 
-### 🏆 Thành tích nổi bật
-- 🚀 **10,000+** nhà đầu tư tin dùng
-- 📊 **1.5 triệu** giao dịch được ghi nhận
-- 📈 **25%** tăng hiệu quả đầu tư trung bình
-- ⚡ **99.9%** thời gian hoạt động
-
-### 💡 Tại sao chọn Trading Journal?
-- **Nhật ký giao dịch chi tiết** với phân tích tâm lý
-- **AI đề xuất chiến lược** dựa trên lịch sử giao dịch
-- **Đồng bộ tự động** với tài khoản chứng khoán
-- **Cộng đồng chia sẻ** kiến thức và chiến lược
-- **Phân tích hiệu suất** vượt trội so với VN-Index
-- **Ứng dụng di động** tiện lợi mọi lúc mọi nơi
-
 ## ✨ Tính năng chính
 
 ### 🔐 Quản lý tài khoản nâng cao
