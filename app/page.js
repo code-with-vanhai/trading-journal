@@ -412,15 +412,16 @@ export default function HomePage() {
         }
 
         .testimonial-card::before {
-          content: "\\f10e";
-          font-family: "Font Awesome 5 Free";
-          font-weight: 900;
+          content: '"';
+          font-family: Georgia, serif;
+          font-weight: bold;
           position: absolute;
           top: 10px;
-          right: 10px;
+          right: 15px;
           font-size: 3rem;
           color: rgba(59, 130, 246, 0.2);
           z-index: 1;
+          line-height: 1;
         }
 
         .hero-image-preview {

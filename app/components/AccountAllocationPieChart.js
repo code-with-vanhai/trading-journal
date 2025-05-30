@@ -1,5 +1,6 @@
 'use client';
 
+import { useState } from 'react';
 import { Pie } from 'react-chartjs-2';
 import {
   Chart as ChartJS,
@@ -13,6 +14,9 @@ import {
 ChartJS.register(ArcElement, Tooltip, Legend, Colors);
 
 export default function AccountAllocationPieChart({ accountAllocations }) {
+  const [hoveredAccount, setHoveredAccount] = useState(null);
+  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
+
   if (!accountAllocations || accountAllocations.length === 0) {
     return (
       <div className="bg-white p-4 rounded-lg shadow text-center h-96 flex flex-col justify-center">
@@ -41,13 +45,18 @@ export default function AccountAllocationPieChart({ accountAllocations }) {
     return Array(count).fill().map((_, index) => colors[index % colors.length]);
   };
 
-  // Prepare data for the chart
-  const labels = accountAllocations.map(account => {
-    const accountName = account.accountInfo?.name || 'Tài khoản không xác định';
-    const brokerInfo = account.accountInfo?.brokerName ? ` (${account.accountInfo.brokerName})` : '';
-    return accountName + brokerInfo;
-  });
+  // Helper function to truncate account name to 4 characters
+  const truncateAccountName = (name) => {
+    if (!name) return 'N/A';
+    return name.length > 4 ? name.substring(0, 4) : name;
+  };
+
+  // Prepare data for the chart - only use account names, no broker info
+  const fullAccountNames = accountAllocations.map(account => 
+    account.accountInfo?.name || 'Tài khoản không xác định'
+  );
   
+  const labels = fullAccountNames.map(name => truncateAccountName(name));
   const values = accountAllocations.map(account => account.totalValue);
   const backgroundColors = getAccountColors(accountAllocations.length);
   
@@ -77,13 +86,56 @@ export default function AccountAllocationPieChart({ accountAllocations }) {
             size: 12
           },
           boxWidth: 12,
-          padding: 15
+          padding: 15,
+          generateLabels: (chart) => {
+            const data = chart.data;
+            if (data.labels.length && data.datasets.length) {
+              return data.labels.map((label, i) => {
+                const dataset = data.datasets[0];
+                const backgroundColor = dataset.backgroundColor[i];
+                
+                return {
+                  text: label,
+                  fillStyle: backgroundColor,
+                  strokeStyle: backgroundColor,
+                  lineWidth: 0,
+                  pointStyle: 'circle',
+                  datasetIndex: 0,
+                  index: i
+                };
+              });
+            }
+            return [];
+          }
+        },
+        onClick: (event, legendItem, legend) => {
+          // Custom legend click handler with tooltip
+          const index = legendItem.index;
+          const fullName = fullAccountNames[index];
+          setHoveredAccount(fullName);
+          
+          // Hide tooltip after 2 seconds
+          setTimeout(() => {
+            setHoveredAccount(null);
+          }, 2000);
+        },
+        onHover: (event, legendItem, legend) => {
+          if (legendItem) {
+            const index = legendItem.index;
+            const fullName = fullAccountNames[index];
+            setHoveredAccount(fullName);
+          } else {
+            setHoveredAccount(null);
+          }
+        },
+        onLeave: () => {
+          setHoveredAccount(null);
         }
       },
       tooltip: {
         callbacks: {
           label: (context) => {
-            const accountName = accountAllocations[context.dataIndex].accountInfo?.name || 'N/A';
+            const accountName = fullAccountNames[context.dataIndex];
             const value = context.raw;
             const percent = ((value / totalValue) * 100).toFixed(1);
             const positionsCount = accountAllocations[context.dataIndex].positionsCount;
@@ -105,15 +157,55 @@ export default function AccountAllocationPieChart({ accountAllocations }) {
         left: 10,
         right: 10
       }
-    }
+    },
+    // Ensure consistent chart diameter by controlling the radius
+    elements: {
+      arc: {
+        borderWidth: 0
+      }
+    },
+    // Control chart sizing to match PortfolioPieChart
+    aspectRatio: 1,
+    cutout: 0
+  };
+
+  const handleMouseMove = (event) => {
+    const rect = event.currentTarget.getBoundingClientRect();
+    setMousePosition({ 
+      x: event.clientX - rect.left, 
+      y: event.clientY - rect.top 
+    });
+  };
+
+  const handleMouseLeave = () => {
+    setHoveredAccount(null);
   };
 
   return (
-    <div className="bg-white p-4 rounded-lg shadow h-96 flex flex-col">
+    <div className="bg-white p-4 rounded-lg shadow h-96 flex flex-col relative"
+         onMouseMove={handleMouseMove} 
+         onMouseLeave={handleMouseLeave}>
       <h2 className="text-lg font-semibold mb-4 text-center flex-shrink-0">Phân Bổ Tài Khoản</h2>
       <div className="flex-1 min-h-0">
         <Pie data={data} options={options} />
       </div>
+      
+      {/* Custom Tooltip - follows mouse cursor */}
+      {hoveredAccount && (
+        <div 
+          className="absolute z-50 bg-gray-800 text-white text-sm px-3 py-2 rounded-lg shadow-lg pointer-events-none whitespace-nowrap"
+          style={{
+            left: `${Math.min(mousePosition.x + 10, 350)}px`, // Offset from cursor, prevent overflow
+            top: `${Math.max(mousePosition.y - 35, 10)}px`, // Above cursor, stay within bounds
+            transform: mousePosition.x > 250 ? 'translateX(-100%)' : 'translateX(0)'
+          }}
+        >
+          {hoveredAccount}
+          <div className={`absolute top-full w-0 h-0 border-l-4 border-r-4 border-t-4 border-transparent border-t-gray-800 ${
+            mousePosition.x > 250 ? 'right-3' : 'left-3'
+          }`}></div>
+        </div>
+      )}
     </div>
   );
 } 

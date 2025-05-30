@@ -406,8 +406,8 @@ export default function PortfolioPage() {
             </div>
           </div>
         ) : (
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-            <div className="lg:col-span-2">
+          <div className="grid grid-cols-1 lg:grid-cols-10 gap-6">
+            <div className="lg:col-span-7">
               {/* Overview Stats */}
               <div className="bg-white rounded-lg shadow-lg p-6 mb-6">
                 <div className="flex items-center mb-6">
@@ -653,7 +653,7 @@ export default function PortfolioPage() {
               </div>
             </div>
             
-            <div className="lg:col-span-1 space-y-6">
+            <div className="lg:col-span-3 space-y-6">
               {/* Portfolio Allocation Chart */}
               {marketDataLoading ? (
                 <div className="flex justify-center items-center h-64 bg-white rounded-lg shadow">
