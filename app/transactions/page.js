@@ -164,7 +164,7 @@ function TransactionsContent() {
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Hero Header Section */}
-      <div className="gradient-bg text-white py-16">
+      <div className="gradient-bg text-white py-12">
         <div className="max-w-6xl mx-auto px-4">
           <div className="flex justify-between items-center">
             <div>
@@ -182,7 +182,7 @@ function TransactionsContent() {
       </div>
 
       {/* Main Content */}
-      <div className="max-w-6xl mx-auto p-4 -mt-8">
+      <div className="max-w-6xl mx-auto p-4 mt-6">
         {status === 'unauthenticated' ? (
           <div className="bg-white rounded-lg shadow-lg p-12 text-center">
             <div className="flex flex-col items-center">
@@ -194,7 +194,7 @@ function TransactionsContent() {
         ) : (
           <>
             {/* Filter Section */}
-            <div className="bg-white rounded-lg shadow-lg p-6 mb-6">
+            <div className="bg-white rounded-lg shadow-lg p-6 mb-8">
               <TransactionFilters 
                 filters={filters} 
                 onFilterChange={handleFilterChange}
