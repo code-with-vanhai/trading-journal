@@ -8,6 +8,7 @@ import TransactionList from '../components/TransactionList';
 import TransactionFilters from '../components/TransactionFilters';
 import Pagination from '../components/Pagination';
 import SigninModal from '../components/SigninModal';
+import ProfitStatistics from '../components/ProfitStatistics';
 
 function TransactionsContent() {
   const { data: session, status } = useSession();
@@ -15,6 +16,7 @@ function TransactionsContent() {
   const searchParams = useSearchParams();
   
   const [transactions, setTransactions] = useState([]);
+  const [profitStats, setProfitStats] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState('');
   
@@ -87,6 +89,7 @@ function TransactionsContent() {
       const data = await response.json();
       setTransactions(data.transactions);
       setTotalItems(data.totalCount);
+      setProfitStats(data.profitStats);
       
       // Calculate total pages
       const total = Math.ceil(data.totalCount / pageSize);
@@ -194,13 +197,19 @@ function TransactionsContent() {
         ) : (
           <>
             {/* Filter Section */}
-            <div className="bg-white rounded-lg shadow-lg p-6 mb-8">
+            <div className="bg-white rounded-lg shadow-lg p-6 mb-6">
               <TransactionFilters 
                 filters={filters} 
                 onFilterChange={handleFilterChange}
                 onResetFilters={handleResetFilters}
               />
             </div>
+
+            {/* Profit Statistics Section */}
+            <ProfitStatistics 
+              profitStats={profitStats}
+              isVisible={!isLoading && !error}
+            />
 
             {error && (
               <div className="bg-red-50 border-l-4 border-red-500 text-red-700 p-4 rounded mb-6">

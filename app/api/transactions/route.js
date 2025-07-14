@@ -5,6 +5,54 @@ import { authOptions } from '../auth/[...nextauth]/route';
 import { processBuyTransaction, processSellTransaction } from '../../lib/cost-basis-calculator-wrapper';
 import { sanitizeError, secureLog } from '../../lib/error-handler';
 
+// Function to calculate profit/loss statistics
+function calculateProfitStats(transactions) {
+  const sellTransactions = transactions.filter(tx => tx.type === 'SELL');
+  
+  if (sellTransactions.length === 0) {
+    return {
+      totalProfitLoss: 0,
+      profitableTransactions: 0,
+      unprofitableTransactions: 0,
+      totalTransactions: 0,
+      successRate: 0,
+      averageProfit: 0,
+      totalProfit: 0,
+      totalLoss: 0
+    };
+  }
+
+  const profitLosses = sellTransactions.map(tx => tx.calculatedPl || 0);
+  const totalProfitLoss = profitLosses.reduce((sum, pl) => sum + pl, 0);
+  
+  const profitableTransactions = sellTransactions.filter(tx => (tx.calculatedPl || 0) > 0).length;
+  const unprofitableTransactions = sellTransactions.filter(tx => (tx.calculatedPl || 0) < 0).length;
+  const breakEvenTransactions = sellTransactions.filter(tx => (tx.calculatedPl || 0) === 0).length;
+  
+  const totalProfit = sellTransactions
+    .filter(tx => (tx.calculatedPl || 0) > 0)
+    .reduce((sum, tx) => sum + (tx.calculatedPl || 0), 0);
+    
+  const totalLoss = sellTransactions
+    .filter(tx => (tx.calculatedPl || 0) < 0)
+    .reduce((sum, tx) => sum + (tx.calculatedPl || 0), 0);
+
+  const successRate = sellTransactions.length > 0 ? (profitableTransactions / sellTransactions.length) * 100 : 0;
+  const averageProfit = sellTransactions.length > 0 ? totalProfitLoss / sellTransactions.length : 0;
+
+  return {
+    totalProfitLoss: Math.round(totalProfitLoss),
+    profitableTransactions,
+    unprofitableTransactions,
+    breakEvenTransactions,
+    totalTransactions: sellTransactions.length,
+    successRate: Math.round(successRate * 100) / 100, // Round to 2 decimal places
+    averageProfit: Math.round(averageProfit),
+    totalProfit: Math.round(totalProfit),
+    totalLoss: Math.round(totalLoss)
+  };
+}
+
 // Create a single Prisma instance with query logging in development
 const globalForPrisma = global;
 
@@ -221,12 +269,16 @@ export async function GET(request) {
           where: { userId: session.user.id }
         });
         
+        // Calculate profit/loss statistics for recent transactions
+        const profitStats = calculateProfitStats(formattedTransactions);
+
         const result = {
           transactions: formattedTransactions,
           totalCount,
           page,
           pageSize,
-          totalPages: Math.ceil(totalCount / pageSize)
+          totalPages: Math.ceil(totalCount / pageSize),
+          profitStats
         };
         
         // Cache the result with the recent key
@@ -282,12 +334,16 @@ export async function GET(request) {
       })
     ]);
 
+    // Calculate profit/loss statistics for filtered transactions
+    const profitStats = calculateProfitStats(transactions);
+
     const result = {
       transactions,
       totalCount,
       page,
       pageSize,
-      totalPages: Math.ceil(totalCount / pageSize)
+      totalPages: Math.ceil(totalCount / pageSize),
+      profitStats // Add profit statistics
     };
     
     // Cache the result
