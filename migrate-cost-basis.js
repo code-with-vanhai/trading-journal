@@ -117,7 +117,7 @@ async function migrateExistingTransactions() {
             if (remainingToSell <= 0) break;
 
             const quantityFromThisLot = Math.min(remainingToSell, lot.remainingQuantity);
-            const costPerShare = lot.totalCost / lot.quantity;
+            const costPerShare = Math.round(lot.totalCost / lot.quantity); // Làm tròn giá vốn mỗi cổ phiếu
             const cogsFromThisLot = quantityFromThisLot * costPerShare;
 
             totalCOGS += cogsFromThisLot;
@@ -140,7 +140,7 @@ async function migrateExistingTransactions() {
 
           // Tính P/L cho giao dịch bán
           const grossSellValue = tx.price * tx.quantity;
-          const sellingTax = grossSellValue * (tx.taxRate / 100);
+          const sellingTax = Math.round(grossSellValue * (tx.taxRate / 100)); // Làm tròn thuế
           const netProceeds = grossSellValue - tx.fee - sellingTax;
           const profitOrLoss = netProceeds - totalCOGS;
 

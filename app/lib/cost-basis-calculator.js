@@ -70,7 +70,7 @@ async function processSellTransaction(userId, stockAccountId, ticker, quantity, 
     if (remainingToSell <= 0) break;
     
     const quantityFromThisLot = Math.min(remainingToSell, lot.remainingQuantity);
-    const costPerShare = lot.totalCost / lot.quantity; // Giá vốn thực tế mỗi cổ phiếu (đã bao gồm phí mua)
+    const costPerShare = Math.round(lot.totalCost / lot.quantity); // Làm tròn giá vốn mỗi cổ phiếu
     const cogsFromThisLot = quantityFromThisLot * costPerShare;
     
     totalCOGS += cogsFromThisLot;
@@ -87,7 +87,7 @@ async function processSellTransaction(userId, stockAccountId, ticker, quantity, 
   
   // Tính tiền thu về ròng
   const grossSellValue = price * quantity;
-  const sellingTax = grossSellValue * (taxRate / 100);
+  const sellingTax = Math.round(grossSellValue * (taxRate / 100)); // Làm tròn thuế
   const netProceeds = grossSellValue - fee - sellingTax;
   
   // Tính lãi/lỗ
@@ -132,7 +132,7 @@ async function getCurrentAvgCost(userId, stockAccountId, ticker) {
   
   const totalQuantity = activeLots.reduce((sum, lot) => sum + lot.remainingQuantity, 0);
   const totalCost = activeLots.reduce((sum, lot) => {
-    const costPerShare = lot.totalCost / lot.quantity;
+    const costPerShare = Math.round(lot.totalCost / lot.quantity); // Làm tròn giá vốn mỗi cổ phiếu
     return sum + (lot.remainingQuantity * costPerShare);
   }, 0);
   
@@ -180,9 +180,9 @@ async function calculatePortfolioWithNewCostBasis(userId, stockAccountId = null)
       };
     }
     
-    const costPerShare = lot.totalCost / lot.quantity;
-    portfolio[key].quantity += lot.remainingQuantity;
-    portfolio[key].totalCost += lot.remainingQuantity * costPerShare;
+          const costPerShare = Math.round(lot.totalCost / lot.quantity); // Làm tròn giá vốn mỗi cổ phiếu
+      portfolio[key].quantity += lot.remainingQuantity;
+      portfolio[key].totalCost += lot.remainingQuantity * costPerShare;
   }
   
   // Tính giá vốn trung bình cho mỗi ticker
