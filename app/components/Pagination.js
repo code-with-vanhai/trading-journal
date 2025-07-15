@@ -11,68 +11,69 @@ export default function Pagination({
 
   // Generate page numbers array with dots for ellipsis
   const generatePaginationItems = () => {
+    // For small number of pages, just show all pages
+    if (totalPages <= 7) {
+      return Array.from({ length: totalPages }, (_, i) => i + 1);
+    }
+
     const range = (start, end) => {
       return Array.from({ length: end - start + 1 }, (_, i) => start + i);
     };
 
-    // Always show first boundary pages
-    const startPages = range(1, Math.min(boundaryCount, totalPages));
-    
-    // Always show last boundary pages
-    const endPages = range(
-      Math.max(totalPages - boundaryCount + 1, boundaryCount + 1),
-      totalPages
-    );
-
-    // Calculate sibling pages around the current page
-    const siblingStart = Math.max(
-      Math.min(
-        // Current page - siblings
-        currentPage - siblingsCount,
-        // Last page - (siblings + boundary pages + 1 for dot symbol)
-        totalPages - siblingsCount - boundaryCount - 1
-      ),
-      // Make sure siblings don't overlap with boundary pages
-      boundaryCount + 2
-    );
-
-    const siblingEnd = Math.min(
-      Math.max(
-        // Current page + siblings
-        currentPage + siblingsCount,
-        // First page + (siblings + boundary + 1 for dot symbol)
-        boundaryCount + siblingsCount + 2
-      ),
-      // Make sure siblings don't overlap with boundary pages
-      endPages.length > 0 ? endPages[0] - 2 : totalPages - 1
-    );
-
     const items = [];
-
-    // Add first boundary pages
-    items.push(...startPages);
-
-    // Add ellipsis if needed
-    if (siblingStart > boundaryCount + 2) {
+    
+    // Always show first page
+    items.push(1);
+    
+    // Calculate the start and end of the middle section
+    const leftSibling = Math.max(currentPage - siblingsCount, 1);
+    const rightSibling = Math.min(currentPage + siblingsCount, totalPages);
+    
+    // Determine if we need dots on the left
+    const shouldShowLeftDots = leftSibling > 2;
+    // Determine if we need dots on the right  
+    const shouldShowRightDots = rightSibling < totalPages - 1;
+    
+    // If we need left dots
+    if (shouldShowLeftDots) {
       items.push('...');
-    } else if (boundaryCount + 1 < siblingStart) {
-      items.push(boundaryCount + 1);
+    } else if (leftSibling === 2) {
+      // If leftSibling is 2, just add page 2 instead of dots
+      items.push(2);
     }
-
-    // Add sibling pages
-    items.push(...range(siblingStart, siblingEnd));
-
-    // Add ellipsis if needed
-    if (siblingEnd < totalPages - boundaryCount - 1) {
+    
+    // Add the middle section (around current page)
+    for (let i = leftSibling; i <= rightSibling; i++) {
+      if (i !== 1 && i !== totalPages) {
+        items.push(i);
+      }
+    }
+    
+    // If we need right dots
+    if (shouldShowRightDots) {
       items.push('...');
-    } else if (siblingEnd < totalPages - boundaryCount) {
-      items.push(totalPages - boundaryCount);
+    } else if (rightSibling === totalPages - 1) {
+      // If rightSibling is totalPages - 1, just add that page instead of dots
+      items.push(totalPages - 1);
     }
-
-    // Add last boundary pages
-    items.push(...endPages);
-
-    return items;
+    
+    // Always show last page (if it's not page 1)
+    if (totalPages > 1) {
+      items.push(totalPages);
+    }
+    
+    // Remove duplicates while preserving order
+    const uniqueItems = [];
+    const seen = new Set();
+    
+    for (const item of items) {
+      if (!seen.has(item)) {
+        seen.add(item);
+        uniqueItems.push(item);
+      }
+    }
+    
+    return uniqueItems;
   };
 
   const pages = generatePaginationItems();
@@ -85,10 +86,11 @@ export default function Pagination({
           onClick={() => onPageChange(currentPage - 1)}
           disabled={currentPage === 1}
           className={`
-            px-3 py-1 rounded-md text-sm font-medium
+            px-3 py-2 rounded-md text-sm font-medium border
             ${currentPage === 1
-              ? 'text-gray-400 cursor-not-allowed'
-              : 'text-gray-700 hover:bg-gray-200'}
+              ? 'text-gray-400 cursor-not-allowed border-gray-200 bg-gray-50'
+              : 'text-gray-700 hover:bg-gray-100 border-gray-300 bg-white'}
+            transition-colors duration-200
           `}
         >
           ←
@@ -101,12 +103,12 @@ export default function Pagination({
             onClick={() => typeof page === 'number' && onPageChange(page)}
             disabled={page === '...'}
             className={`
-              px-3 py-1 rounded-md text-sm font-medium
+              px-3 py-2 rounded-md text-sm font-medium border transition-colors duration-200
               ${page === currentPage
-                ? 'bg-primary text-white'
+                ? 'bg-blue-600 text-white border-blue-600'
                 : page === '...'
-                  ? 'text-gray-500 cursor-default'
-                  : 'text-gray-700 hover:bg-gray-200'}
+                  ? 'text-gray-500 cursor-default border-transparent bg-transparent'
+                  : 'text-gray-700 hover:bg-gray-100 border-gray-300 bg-white'}
             `}
           >
             {page}
@@ -118,10 +120,11 @@ export default function Pagination({
           onClick={() => onPageChange(currentPage + 1)}
           disabled={currentPage === totalPages}
           className={`
-            px-3 py-1 rounded-md text-sm font-medium
+            px-3 py-2 rounded-md text-sm font-medium border
             ${currentPage === totalPages
-              ? 'text-gray-400 cursor-not-allowed'
-              : 'text-gray-700 hover:bg-gray-200'}
+              ? 'text-gray-400 cursor-not-allowed border-gray-200 bg-gray-50'
+              : 'text-gray-700 hover:bg-gray-100 border-gray-300 bg-white'}
+            transition-colors duration-200
           `}
         >
           →
