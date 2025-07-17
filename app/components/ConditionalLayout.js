@@ -7,18 +7,19 @@ export default function ConditionalLayout({ children }) {
   const pathname = usePathname();
   const isHomePage = pathname === '/';
 
-  if (isHomePage) {
-    // Landing page layout - no navbar, no container
-    return children;
-  }
-
-  // Regular page layout - with navbar and container
+  // All pages now use the same navbar
   return (
     <>
       <Navbar />
-      <main className="container mx-auto px-4 py-4">
-        {children}
-      </main>
+      {isHomePage ? (
+        // Landing page layout - no container
+        children
+      ) : (
+        // Regular page layout - with container
+        <main className="container mx-auto px-4 py-4">
+          {children}
+        </main>
+      )}
     </>
   );
 } 

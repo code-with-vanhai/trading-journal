@@ -21,6 +21,7 @@ model User {
   tags           Tag[]
   transactions   Transaction[]
   purchaseLots   PurchaseLot[]
+  accountFees    AccountFee[]
 }
 
 model Transaction {
@@ -122,6 +123,7 @@ model StockAccount {
   updatedAt     DateTime      @updatedAt
   User          User          @relation(fields: [userId], references: [id], onDelete: Cascade)
   Transaction   Transaction[]
+  AccountFee    AccountFee[]
 
   @@unique([userId, name])
   @@index([userId])
@@ -144,4 +146,40 @@ model PurchaseLot {
 
   @@index([userId, ticker, stockAccountId])
   @@index([purchaseDate])
+}
+
+enum FeeType {
+  CUSTODY_FEE           // Phí lưu ký chứng khoán
+  ADVANCE_SELLING_FEE   // Phí ứng trước tiền bán
+  ACCOUNT_MAINTENANCE   // Phí duy trì tài khoản
+  TRANSFER_FEE          // Phí chuyển nhượng
+  DIVIDEND_TAX          // Thuế cổ tức
+  INTEREST_FEE          // Phí lãi vay margin
+  DATA_FEED_FEE         // Phí cung cấp dữ liệu
+  SMS_NOTIFICATION_FEE  // Phí SMS thông báo
+  STATEMENT_FEE         // Phí sao kê
+  WITHDRAWAL_FEE        // Phí rút tiền
+  OTHER_FEE             // Phí khác
+}
+
+model AccountFee {
+  id              String       @id @default(cuid())
+  userId          String
+  stockAccountId  String
+  feeType         FeeType
+  amount          Float        // Số tiền phí (VND)
+  description     String?      // Mô tả chi tiết
+  feeDate         DateTime     // Ngày phát sinh phí
+  referenceNumber String?      // Số tham chiếu từ công ty chứng khoán
+  attachmentUrl   String?      // Link đến file đính kèm (hóa đơn, thông báo)
+  isActive        Boolean      @default(true)
+  createdAt       DateTime     @default(now())
+  updatedAt       DateTime     @updatedAt
+  
+  user            User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+  stockAccount    StockAccount @relation(fields: [stockAccountId], references: [id], onDelete: Cascade)
+  
+  @@index([userId, stockAccountId])
+  @@index([feeType])
+  @@index([feeDate])
 }

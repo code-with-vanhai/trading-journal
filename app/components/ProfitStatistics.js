@@ -14,7 +14,9 @@ export default function ProfitStatistics({ profitStats, isVisible = true }) {
     successRate,
     averageProfit,
     totalProfit,
-    totalLoss
+    totalLoss,
+    accountFeesTotal = 0,
+    grossProfitLoss = 0
   } = profitStats;
 
   const formatCurrency = (amount) => {
@@ -63,9 +65,12 @@ export default function ProfitStatistics({ profitStats, isVisible = true }) {
           <div className={`p-4 rounded-lg border-2 ${getProfitLossBgColor(totalProfitLoss)}`}>
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm font-medium text-gray-600">Tổng P/L</p>
+                <p className="text-sm font-medium text-gray-600">Tổng P/L (Ròng)</p>
                 <p className={`text-2xl font-bold ${getProfitLossColor(totalProfitLoss)}`}>
                   {formatCurrency(totalProfitLoss)}
+                </p>
+                <p className="text-xs text-gray-500">
+                  {accountFeesTotal > 0 ? `Đã trừ phí ${formatCurrency(accountFeesTotal)}` : 'Chưa có phí tài khoản'}
                 </p>
               </div>
               <div className={`p-3 rounded-full ${totalProfitLoss >= 0 ? 'bg-green-100' : 'bg-red-100'}`}>
@@ -120,12 +125,12 @@ export default function ProfitStatistics({ profitStats, isVisible = true }) {
           <div className={`p-4 rounded-lg border-2 ${getProfitLossBgColor(averageProfit)} md:col-span-2`}>
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm font-medium text-gray-600">P/L trung bình mỗi giao dịch</p>
+                <p className="text-sm font-medium text-gray-600">P/L trung bình mỗi giao dịch (Ròng)</p>
                 <p className={`text-xl font-bold ${getProfitLossColor(averageProfit)}`}>
                   {formatCurrency(averageProfit)}
                 </p>
                 <p className="text-xs text-gray-500">
-                  Dựa trên {formatNumber(totalTransactions)} giao dịch bán
+                  Dựa trên {formatNumber(totalTransactions)} giao dịch bán, đã trừ phí tài khoản
                 </p>
               </div>
               <div className={`p-3 rounded-full ${averageProfit >= 0 ? 'bg-green-100' : 'bg-red-100'}`}>

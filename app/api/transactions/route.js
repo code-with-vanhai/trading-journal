@@ -5,25 +5,76 @@ import { authOptions } from '../auth/[...nextauth]/route';
 import { processBuyTransaction, processSellTransaction } from '../../lib/cost-basis-calculator-wrapper';
 import { sanitizeError, secureLog } from '../../lib/error-handler';
 
-// Function to calculate profit/loss statistics
-function calculateProfitStats(transactions) {
+// Function to get account fees total based on filters
+async function getAccountFeesTotal(userId, filters) {
+  const whereClause = {
+    userId,
+    isActive: true
+  };
+
+  // Apply filters similar to transactions
+  if (filters.stockAccountId) {
+    whereClause.stockAccountId = filters.stockAccountId;
+  }
+
+  if (filters.dateFrom || filters.dateTo) {
+    whereClause.feeDate = {};
+    if (filters.dateFrom) {
+      whereClause.feeDate.gte = new Date(filters.dateFrom);
+    }
+    if (filters.dateTo) {
+      const endDate = new Date(filters.dateTo);
+      endDate.setHours(23, 59, 59, 999);
+      whereClause.feeDate.lte = endDate;
+    }
+  }
+
+  try {
+    const result = await prisma.accountFee.aggregate({
+      where: whereClause,
+      _sum: {
+        amount: true
+      },
+      _count: {
+        id: true
+      }
+    });
+
+    return {
+      totalAmount: result._sum.amount || 0,
+      totalCount: result._count.id || 0
+    };
+  } catch (error) {
+    console.error('Error calculating account fees total:', error);
+    return {
+      totalAmount: 0,
+      totalCount: 0
+    };
+  }
+}
+
+// Function to calculate profit/loss statistics including account fees
+function calculateProfitStats(transactions, accountFeesTotal = 0) {
   const sellTransactions = transactions.filter(tx => tx.type === 'SELL');
   
   if (sellTransactions.length === 0) {
     return {
-      totalProfitLoss: 0,
+      totalProfitLoss: -accountFeesTotal,
       profitableTransactions: 0,
       unprofitableTransactions: 0,
       totalTransactions: 0,
       successRate: 0,
-      averageProfit: 0,
+      averageProfit: sellTransactions.length > 0 ? -accountFeesTotal / sellTransactions.length : 0,
       totalProfit: 0,
-      totalLoss: 0
+      totalLoss: 0,
+      accountFeesTotal: accountFeesTotal,
+      grossProfitLoss: 0 // P/L from transactions only
     };
   }
 
   const profitLosses = sellTransactions.map(tx => tx.calculatedPl || 0);
-  const totalProfitLoss = profitLosses.reduce((sum, pl) => sum + pl, 0);
+  const grossProfitLoss = profitLosses.reduce((sum, pl) => sum + pl, 0);
+  const totalProfitLoss = grossProfitLoss - accountFeesTotal;
   
   const profitableTransactions = sellTransactions.filter(tx => (tx.calculatedPl || 0) > 0).length;
   const unprofitableTransactions = sellTransactions.filter(tx => (tx.calculatedPl || 0) < 0).length;
@@ -49,7 +100,9 @@ function calculateProfitStats(transactions) {
     successRate: Math.round(successRate * 100) / 100, // Round to 2 decimal places
     averageProfit: Math.round(averageProfit),
     totalProfit: Math.round(totalProfit),
-    totalLoss: Math.round(totalLoss)
+    totalLoss: Math.round(totalLoss),
+    accountFeesTotal: Math.round(accountFeesTotal),
+    grossProfitLoss: Math.round(grossProfitLoss) // P/L from transactions only
   };
 }
 
@@ -269,8 +322,15 @@ export async function GET(request) {
           where: { userId: session.user.id }
         });
         
-        // Calculate profit/loss statistics for recent transactions
-        const profitStats = calculateProfitStats(formattedTransactions);
+        // Get account fees total for the same period
+        const accountFeesData = await getAccountFeesTotal(session.user.id, {
+          stockAccountId: stockAccountId,
+          dateFrom: dateFrom,
+          dateTo: dateTo
+        });
+
+        // Calculate profit/loss statistics for recent transactions including account fees
+        const profitStats = calculateProfitStats(formattedTransactions, accountFeesData.totalAmount);
 
         const result = {
           transactions: formattedTransactions,
@@ -334,8 +394,15 @@ export async function GET(request) {
       })
     ]);
 
-    // Calculate profit/loss statistics for filtered transactions
-    const profitStats = calculateProfitStats(transactions);
+    // Get account fees total for the same filters
+    const accountFeesData = await getAccountFeesTotal(session.user.id, {
+      stockAccountId: stockAccountId,
+      dateFrom: dateFrom,
+      dateTo: dateTo
+    });
+
+    // Calculate profit/loss statistics for filtered transactions including account fees
+    const profitStats = calculateProfitStats(transactions, accountFeesData.totalAmount);
 
     const result = {
       transactions,
