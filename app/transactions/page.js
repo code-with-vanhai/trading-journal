@@ -5,6 +5,7 @@ import { useSession } from 'next-auth/react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import TransactionList from '../components/TransactionList';
+import AddTransactionModal from '../components/AddTransactionModal';
 import TransactionFilters from '../components/TransactionFilters';
 import Pagination from '../components/Pagination';
 import SigninModal from '../components/SigninModal';
@@ -42,8 +43,9 @@ function TransactionsContent() {
   // Signin modal state
   const [signinModalOpen, setSigninModalOpen] = useState(false);
 
-  // Dropdown and dividend modal states
+  // Dropdown and modal states
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const [isAddModalOpen, setIsAddModalOpen] = useState(false);
   const [isDividendModalOpen, setIsDividendModalOpen] = useState(false);
   const [stockAccounts, setStockAccounts] = useState([]);
 
@@ -53,6 +55,13 @@ function TransactionsContent() {
       setSigninModalOpen(true);
     }
   }, [status]);
+
+  // Listen for custom event to open add modal
+  useEffect(() => {
+    const handleOpenAddModal = () => setIsAddModalOpen(true);
+    window.addEventListener('openAddModal', handleOpenAddModal);
+    return () => window.removeEventListener('openAddModal', handleOpenAddModal);
+  }, []);
 
   // Fetch transactions with filters
   useEffect(() => {
@@ -228,17 +237,19 @@ function TransactionsContent() {
                 {isDropdownOpen && (
                   <div className="absolute right-0 mt-2 w-56 bg-white rounded-lg shadow-xl z-50 border border-gray-200">
                     <div className="py-2">
-                      <Link 
-                        href="/transactions/new"
-                        className="flex items-center px-4 py-3 text-gray-700 hover:bg-blue-50 hover:text-blue-900 transition-colors"
-                        onClick={() => setIsDropdownOpen(false)}
+                      <button
+                        onClick={() => {
+                          setIsDropdownOpen(false);
+                          setIsAddModalOpen(true);
+                        }}
+                        className="w-full flex items-center px-4 py-3 text-gray-700 hover:bg-blue-50 hover:text-blue-900 transition-colors"
                       >
                         <i className="fas fa-chart-line text-blue-600 mr-3 w-4"></i>
                         <div>
                           <div className="font-medium">Thêm Giao Dịch</div>
                           <div className="text-sm text-gray-500">Mua/bán cổ phiếu</div>
                         </div>
-                      </Link>
+                      </button>
                       
                       <hr className="my-1 border-gray-200" />
                       
@@ -388,6 +399,16 @@ function TransactionsContent() {
           </div>
         </div>
       )}
+
+      {/* Add Transaction Modal */}
+      <AddTransactionModal
+        isOpen={isAddModalOpen}
+        onClose={() => setIsAddModalOpen(false)}
+        onSuccess={(message) => {
+          alert(message);
+          fetchTransactions();
+        }}
+      />
     </div>
   );
 }

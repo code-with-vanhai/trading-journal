@@ -43,11 +43,21 @@ export default function TransactionList({
       try {
         const response = await fetch(`/api/transactions/${id}`, {
           method: 'DELETE',
+          headers: {
+            'Content-Type': 'application/json',
+          },
         });
         
         if (!response.ok) {
-          throw new Error('Không thể xóa giao dịch');
+          const errorData = await response.json().catch(() => ({}));
+          const errorMessage = errorData.message || errorData.error || `HTTP ${response.status}: ${response.statusText}`;
+          throw new Error(errorMessage);
         }
+        
+        const result = await response.json();
+        
+        // Show success message
+        alert(result.message || 'Xóa giao dịch thành công!');
         
         // Notify parent to refresh the list
         if (onDeleteTransaction) {
@@ -55,7 +65,18 @@ export default function TransactionList({
         }
       } catch (err) {
         console.error('Delete error:', err);
-        alert('Không thể xóa giao dịch');
+        
+        // Show detailed error message
+        let errorMessage = 'Không thể xóa giao dịch';
+        if (err.message.includes('Unauthorized')) {
+          errorMessage = 'Phiên đăng nhập đã hết hạn. Vui lòng đăng nhập lại.';
+        } else if (err.message.includes('not found')) {
+          errorMessage = 'Giao dịch không tồn tại hoặc đã bị xóa.';
+        } else if (err.message) {
+          errorMessage = err.message;
+        }
+        
+        alert(errorMessage);
       } finally {
         setDeletingId(null);
       }
@@ -105,9 +126,12 @@ export default function TransactionList({
     return (
       <div className="text-center py-10">
         <p className="text-gray-500 mb-4">Chưa có giao dịch nào được ghi lại.</p>
-        <Link href="/transactions/new" className="btn-primary">
+        <button 
+          onClick={() => window.dispatchEvent(new CustomEvent('openAddModal'))}
+          className="btn-primary"
+        >
           Thêm Giao Dịch Đầu Tiên
-        </Link>
+        </button>
       </div>
     );
   }

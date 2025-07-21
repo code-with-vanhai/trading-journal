@@ -269,17 +269,27 @@ export async function DELETE(request, { params }) {
     const resolvedParams = await params;
     const id = resolvedParams.id;
 
-    // Check if transaction exists and belongs to the current user - use a lightweight query
+    // Get full transaction info before deleting (need for FIFO restoration)
     const transaction = await prisma.transaction.findUnique({
       where: { 
         id,
         userId: session.user.id
-      },
-      select: { id: true } // Only select the id field for better performance
+      }
     });
 
     if (!transaction) {
       return NextResponse.json({ message: 'Transaction not found' }, { status: 404 });
+    }
+
+    // If it's a SELL transaction, we need to restore the PurchaseLots
+    if (transaction.type === 'SELL') {
+      await restorePurchaseLotsForDeletedSell(
+        transaction.userId,
+        transaction.stockAccountId,
+        transaction.ticker,
+        transaction.quantity,
+        transaction.transactionDate
+      );
     }
 
     // Delete the transaction (cascade should handle journal entry deletion)
@@ -305,5 +315,55 @@ export async function DELETE(request, { params }) {
       { message: 'Failed to delete transaction', error: error.message },
       { status: 500 }
     );
+  }
+}
+
+/**
+ * Restore PurchaseLots when a SELL transaction is deleted
+ * This reverses the FIFO deduction that was applied when the SELL was created
+ */
+async function restorePurchaseLotsForDeletedSell(userId, stockAccountId, ticker, sellQuantity, sellDate) {
+  // Get all purchase lots for this ticker in the same account, ordered by purchase date (FIFO)
+  const purchaseLots = await prisma.purchaseLot.findMany({
+    where: {
+      userId,
+      stockAccountId,
+      ticker,
+      purchaseDate: {
+        lte: sellDate // Only lots purchased before or on the sell date
+      }
+    },
+    orderBy: {
+      purchaseDate: 'asc' // FIFO order
+    }
+  });
+
+  // Apply FIFO logic in reverse to restore quantities
+  let quantityToRestore = sellQuantity;
+
+  for (const lot of purchaseLots) {
+    if (quantityToRestore <= 0) break;
+
+    // Calculate how much this lot was used in the original sell
+    const usedQuantity = lot.quantity - lot.remainingQuantity;
+    if (usedQuantity <= 0) continue; // This lot wasn't used
+
+    // Restore quantity (but not more than what was originally sold from this lot)
+    const restoreAmount = Math.min(quantityToRestore, usedQuantity);
+    
+    await prisma.purchaseLot.update({
+      where: { id: lot.id },
+      data: {
+        remainingQuantity: lot.remainingQuantity + restoreAmount
+      }
+    });
+
+    quantityToRestore -= restoreAmount;
+  }
+
+  // If we couldn't restore all quantity, it means there was an inconsistency
+  // Log this for debugging but don't fail the delete operation
+  if (quantityToRestore > 0) {
+    console.warn(`Could not restore all quantity for deleted SELL. Remaining: ${quantityToRestore}, Ticker: ${ticker}`);
   }
 } 

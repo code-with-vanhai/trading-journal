@@ -7,6 +7,7 @@ import { Spinner } from '../components/ui/Spinner';
 import PortfolioPieChart from '../components/PortfolioPieChart';
 import AccountAllocationPieChart from '../components/AccountAllocationPieChart';
 import TransferStocksModal from '../components/TransferStocksModal';
+import AddTransactionModal from '../components/AddTransactionModal';
 import SigninModal from '../components/SigninModal';
 import Link from 'next/link';
 
@@ -27,8 +28,9 @@ export default function PortfolioPage() {
   
   // Transfer functionality state
   const [selectedStocks, setSelectedStocks] = useState([]);
-  const [transferModalOpen, setTransferModalOpen] = useState(false);
-  
+    const [transferModalOpen, setTransferModalOpen] = useState(false);
+  const [isAddModalOpen, setIsAddModalOpen] = useState(false);
+
   // Signin modal state
   const [signinModalOpen, setSigninModalOpen] = useState(false);
   
@@ -396,13 +398,13 @@ export default function PortfolioPage() {
                   : 'Bạn chưa có cổ phiếu nào trong danh mục'}
               </h3>
               <p className="text-gray-500 mb-6">Bắt đầu bằng cách thêm giao dịch đầu tiên của bạn</p>
-              <Link 
-                href="/transactions/new" 
+              <button
+                onClick={() => setIsAddModalOpen(true)}
                 className="bg-blue-600 text-white px-8 py-3 rounded-lg font-bold hover:bg-blue-700 transition shadow-lg"
               >
                 <i className="fas fa-plus mr-2"></i>
                 Thêm giao dịch mới
-              </Link>
+              </button>
             </div>
           </div>
         ) : (
@@ -681,6 +683,16 @@ export default function PortfolioPage() {
           onClose={handleCloseTransferModal}
           selectedStocks={selectedStocks}
           onTransferSuccess={handleTransferSuccess}
+        />
+
+        {/* Add Transaction Modal */}
+        <AddTransactionModal
+          isOpen={isAddModalOpen}
+          onClose={() => setIsAddModalOpen(false)}
+          onSuccess={(message) => {
+            alert(message);
+            fetchData();
+          }}
         />
       </div>
     </div>
