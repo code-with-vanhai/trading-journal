@@ -11,5 +11,9 @@ export const {
   processBuyTransaction,
   processSellTransaction,
   getCurrentAvgCost,
-  calculatePortfolioWithNewCostBasis
+  calculatePortfolioWithNewCostBasis,
+  // New adjustment-enabled functions
+  calculatePortfolioWithAdjustments,
+  getCurrentAvgCostWithAdjustments,
+  processSellTransactionWithAdjustments
 } = calculator; 

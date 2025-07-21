@@ -9,6 +9,7 @@ import TransactionFilters from '../components/TransactionFilters';
 import Pagination from '../components/Pagination';
 import SigninModal from '../components/SigninModal';
 import ProfitStatistics from '../components/ProfitStatistics';
+import DividendEventForm from '../components/DividendEventForm';
 
 function TransactionsContent() {
   const { data: session, status } = useSession();
@@ -41,6 +42,11 @@ function TransactionsContent() {
   // Signin modal state
   const [signinModalOpen, setSigninModalOpen] = useState(false);
 
+  // Dropdown and dividend modal states
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const [isDividendModalOpen, setIsDividendModalOpen] = useState(false);
+  const [stockAccounts, setStockAccounts] = useState([]);
+
   // Check authentication and show signin modal if needed
   useEffect(() => {
     if (status === 'unauthenticated') {
@@ -52,6 +58,7 @@ function TransactionsContent() {
   useEffect(() => {
     if (status === 'authenticated') {
       fetchTransactions();
+      fetchStockAccounts();
     }
   }, [status, filters]);
 
@@ -61,6 +68,18 @@ function TransactionsContent() {
       handleFilterChange({ page: currentPage.toString(), pageSize: pageSize.toString() });
     }
   }, [currentPage, pageSize, status]);
+
+  const fetchStockAccounts = async () => {
+    try {
+      const response = await fetch('/api/stock-accounts');
+      if (response.ok) {
+        const accounts = await response.json();
+        setStockAccounts(Array.isArray(accounts) ? accounts : []);
+      }
+    } catch (error) {
+      console.error('Error fetching stock accounts:', error);
+    }
+  };
 
   const fetchTransactions = async () => {
     setIsLoading(true);
@@ -156,6 +175,27 @@ function TransactionsContent() {
     router.push('/transactions');
   };
 
+  const handleDividendSuccess = (result) => {
+    console.log('Dividend created successfully:', result);
+    setIsDividendModalOpen(false);
+    // Show success message
+    alert(`✅ ${result.adjustmentType} cho ${result.ticker} đã được tạo thành công!`);
+    // Refresh transactions to show updated cost basis
+    fetchTransactions();
+  };
+
+  // Close dropdown when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (isDropdownOpen && !event.target.closest('.dropdown-container')) {
+        setIsDropdownOpen(false);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, [isDropdownOpen]);
+
   if (status === 'loading') {
     return (
       <div className="flex justify-center items-center h-64">
@@ -175,10 +215,50 @@ function TransactionsContent() {
               <p className="text-xl opacity-90">Theo dõi và phân tích tất cả các giao dịch chứng khoán của bạn</p>
             </div>
             {status === 'authenticated' && (
-              <Link href="/transactions/new" className="bg-white text-blue-900 px-6 py-3 rounded-lg font-bold hover:bg-blue-100 transition shadow-lg">
-                <i className="fas fa-plus mr-2"></i>
-                Thêm Giao Dịch
-              </Link>
+              <div className="relative dropdown-container">
+                <button
+                  onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+                  className="bg-white text-blue-900 px-6 py-3 rounded-lg font-bold hover:bg-blue-100 transition shadow-lg flex items-center"
+                >
+                  <i className="fas fa-plus mr-2"></i>
+                  Thêm Mới
+                  <i className={`fas fa-chevron-down ml-2 transition-transform ${isDropdownOpen ? 'rotate-180' : ''}`}></i>
+                </button>
+                
+                {isDropdownOpen && (
+                  <div className="absolute right-0 mt-2 w-56 bg-white rounded-lg shadow-xl z-50 border border-gray-200">
+                    <div className="py-2">
+                      <Link 
+                        href="/transactions/new"
+                        className="flex items-center px-4 py-3 text-gray-700 hover:bg-blue-50 hover:text-blue-900 transition-colors"
+                        onClick={() => setIsDropdownOpen(false)}
+                      >
+                        <i className="fas fa-chart-line text-blue-600 mr-3 w-4"></i>
+                        <div>
+                          <div className="font-medium">Thêm Giao Dịch</div>
+                          <div className="text-sm text-gray-500">Mua/bán cổ phiếu</div>
+                        </div>
+                      </Link>
+                      
+                      <hr className="my-1 border-gray-200" />
+                      
+                      <button
+                        onClick={() => {
+                          setIsDropdownOpen(false);
+                          setIsDividendModalOpen(true);
+                        }}
+                        className="w-full flex items-center px-4 py-3 text-gray-700 hover:bg-green-50 hover:text-green-900 transition-colors"
+                      >
+                        <i className="fas fa-coins text-green-600 mr-3 w-4"></i>
+                        <div className="text-left">
+                          <div className="font-medium">Thêm Cổ Tức</div>
+                          <div className="text-sm text-gray-500">Nhập thông tin chia cổ tức</div>
+                        </div>
+                      </button>
+                    </div>
+                  </div>
+                )}
+              </div>
             )}
           </div>
         </div>
@@ -281,6 +361,33 @@ function TransactionsContent() {
         isOpen={signinModalOpen}
         onClose={() => setSigninModalOpen(false)}
       />
+
+      {/* Dividend Modal */}
+      {isDividendModalOpen && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+          <div className="bg-white rounded-lg shadow-xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
+            <div className="flex items-center justify-between p-6 border-b border-gray-200">
+              <div className="flex items-center">
+                <i className="fas fa-coins text-green-600 text-xl mr-3"></i>
+                <h2 className="text-xl font-bold text-gray-900">Thêm Thông Tin Cổ Tức</h2>
+              </div>
+              <button
+                onClick={() => setIsDividendModalOpen(false)}
+                className="text-gray-400 hover:text-gray-600 transition-colors"
+              >
+                <i className="fas fa-times text-xl"></i>
+              </button>
+            </div>
+            
+            <div className="p-6">
+              <DividendEventForm
+                stockAccounts={stockAccounts}
+                onSuccess={handleDividendSuccess}
+              />
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

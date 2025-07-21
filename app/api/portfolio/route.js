@@ -3,7 +3,7 @@ import { getServerSession } from 'next-auth';
 import { PrismaClient } from '@prisma/client';
 import { authOptions } from '../auth/[...nextauth]/route';
 import { serverLogger as logger } from '../../lib/server-logger';
-import { calculatePortfolioWithNewCostBasis } from '../../lib/cost-basis-calculator-wrapper';
+import { calculatePortfolioWithNewCostBasis, calculatePortfolioWithAdjustments } from '../../lib/cost-basis-calculator-wrapper';
 
 // Use a singleton pattern for Prisma to avoid connection overhead
 const globalForPrisma = global;
@@ -26,22 +26,25 @@ export async function GET(request) {
     const userId = session.user.id;
     const { searchParams } = new URL(request.url);
     const stockAccountId = searchParams.get('stockAccountId');
+    const includeAdjustments = searchParams.get('includeAdjustments') === 'true';
     
-    const cacheKey = `portfolio-${userId}-${stockAccountId || 'all'}`;
+    const cacheKey = `portfolio-${userId}-${stockAccountId || 'all'}-${includeAdjustments ? 'adj' : 'orig'}`;
     
     // Check cache first
     const cachedData = portfolioCache.get(cacheKey);
     if (cachedData && cachedData.timestamp > Date.now() - CACHE_TTL) {
-      logger.info(`Portfolio cache hit for user ${userId}, account: ${stockAccountId || 'all'}`);
+      logger.info(`Portfolio cache hit for user ${userId}, account: ${stockAccountId || 'all'}, adjustments: ${includeAdjustments}`);
       const endTime = performance.now();
       logger.info(`Portfolio API (cached) completed in ${Math.round(endTime - startTime)}ms`);
       return NextResponse.json(cachedData.data);
     }
     
-    logger.info(`Portfolio cache miss for user ${userId}, account: ${stockAccountId || 'all'}, calculating...`);
+    logger.info(`Portfolio cache miss for user ${userId}, account: ${stockAccountId || 'all'}, adjustments: ${includeAdjustments}, calculating...`);
 
-    // Use new cost basis calculation system
-    const activePositions = await calculatePortfolioWithNewCostBasis(userId, stockAccountId);
+    // Use appropriate cost basis calculation system
+    const activePositions = includeAdjustments 
+      ? await calculatePortfolioWithAdjustments(userId, stockAccountId, true)
+      : await calculatePortfolioWithNewCostBasis(userId, stockAccountId);
 
     const dbTime = performance.now();
     logger.info(`Portfolio calculation completed in ${Math.round(dbTime - startTime)}ms`);

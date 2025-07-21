@@ -222,5 +222,180 @@ module.exports = {
   processBuyTransaction,
   processSellTransaction,
   getCurrentAvgCost,
-  calculatePortfolioWithNewCostBasis
-}; 
+  calculatePortfolioWithNewCostBasis,
+  // New functions for adjustment integration
+  calculatePortfolioWithAdjustments,
+  getCurrentAvgCostWithAdjustments,
+  processSellTransactionWithAdjustments
+};
+
+/**
+ * Tính toán portfolio với cost basis adjustments
+ * @param {string} userId 
+ * @param {string} stockAccountId - optional
+ * @param {boolean} includeAdjustments - whether to apply cost basis adjustments
+ * @returns {Array} Portfolio với adjusted cost basis
+ */
+async function calculatePortfolioWithAdjustments(userId, stockAccountId = null, includeAdjustments = true) {
+  // Import cost basis adjuster (lazy loading)
+  const { calculateAdjustedPortfolio } = require('./cost-basis-adjuster');
+  
+  if (includeAdjustments) {
+    console.log('🔄 Using adjusted cost basis calculation...');
+    try {
+      // Sử dụng calculation mới với adjustments
+      const adjustedPositions = await calculateAdjustedPortfolio(userId, stockAccountId);
+      
+      // Convert to format compatible with existing code
+      const portfolioResults = [];
+      
+      for (const position of adjustedPositions) {
+        // Get stock account info
+        const stockAccount = await prisma.stockAccount.findFirst({
+          where: { id: position.stockAccountId },
+          select: { id: true, name: true, brokerName: true }
+        });
+        
+        portfolioResults.push({
+          ticker: position.ticker,
+          stockAccountId: position.stockAccountId,
+          quantity: position.totalQuantity,
+          totalCost: position.totalCost,
+          avgCost: position.averageCostBasis,
+          stockAccount: stockAccount,
+          // Additional fields for adjustment tracking
+          appliedAdjustmentsCount: position.appliedAdjustmentsCount,
+          adjustedLots: position.adjustedLots,
+          adjustments: position.adjustments
+        });
+      }
+      
+      console.log(`✅ Portfolio with adjustments: ${portfolioResults.length} positions`);
+      return portfolioResults;
+      
+    } catch (error) {
+      console.error('❌ Error calculating adjusted portfolio, falling back to original:', error.message);
+      // Fall back to original calculation
+      return await calculatePortfolioWithNewCostBasis(userId, stockAccountId);
+    }
+  } else {
+    console.log('🔄 Using original cost basis calculation...');
+    return await calculatePortfolioWithNewCostBasis(userId, stockAccountId);
+  }
+}
+
+/**
+ * Lấy average cost hiện tại với adjustments
+ * @param {string} userId 
+ * @param {string} stockAccountId 
+ * @param {string} ticker 
+ * @param {boolean} includeAdjustments 
+ * @returns {Object} Cost basis info
+ */
+async function getCurrentAvgCostWithAdjustments(userId, stockAccountId, ticker, includeAdjustments = true) {
+  if (includeAdjustments) {
+    try {
+      const { calculateAdjustedCostBasis } = require('./cost-basis-adjuster');
+      const adjustedData = await calculateAdjustedCostBasis(userId, stockAccountId, ticker);
+      
+      return {
+        avgCost: adjustedData.averageCostBasis,
+        totalQuantity: adjustedData.totalQuantity,
+        totalCost: adjustedData.totalCost,
+        appliedAdjustments: adjustedData.appliedAdjustmentsCount
+      };
+      
+    } catch (error) {
+      console.error(`❌ Error getting adjusted cost basis for ${ticker}, falling back:`, error.message);
+      // Fall back to original
+      return await getCurrentAvgCost(userId, stockAccountId, ticker);
+    }
+  } else {
+    return await getCurrentAvgCost(userId, stockAccountId, ticker);
+  }
+}
+
+/**
+ * Xử lý giao dịch bán với adjustments (FIFO + cost basis adjustments)
+ * @param {string} userId 
+ * @param {string} stockAccountId 
+ * @param {string} ticker 
+ * @param {number} quantity 
+ * @param {number} price 
+ * @param {number} fee 
+ * @param {number} taxRate 
+ * @param {Date} transactionDate 
+ * @param {boolean} includeAdjustments 
+ * @returns {Object} Sell transaction result
+ */
+async function processSellTransactionWithAdjustments(userId, stockAccountId, ticker, quantity, price, fee, taxRate, transactionDate, includeAdjustments = true) {
+  if (includeAdjustments) {
+    console.log(`🔄 Processing sell transaction with adjustments for ${ticker}...`);
+    
+    try {
+      const { calculateAdjustedCostBasis } = require('./cost-basis-adjuster');
+      
+      // 1. Get adjusted cost basis data
+      const adjustedData = await calculateAdjustedCostBasis(userId, stockAccountId, ticker);
+      
+      if (adjustedData.totalQuantity < quantity) {
+        throw new Error(`Không đủ số lượng để bán. Có: ${adjustedData.totalQuantity}, cần bán: ${quantity}`);
+      }
+      
+      // 2. Apply FIFO với adjusted cost basis
+      let remainingToSell = quantity;
+      let totalCOGS = 0;
+      const lotsUsed = [];
+      
+      for (const adjustedLot of adjustedData.adjustedLots) {
+        if (remainingToSell <= 0) break;
+        
+        const quantityFromThisLot = Math.min(remainingToSell, adjustedLot.remainingQuantity);
+        const cogsFromThisLot = quantityFromThisLot * adjustedLot.adjustedCostPerShare;
+        
+        totalCOGS += cogsFromThisLot;
+        remainingToSell -= quantityFromThisLot;
+        
+        // Update original lot remaining quantity
+        await prisma.purchaseLot.update({
+          where: { id: adjustedLot.id },
+          data: { remainingQuantity: adjustedLot.remainingQuantity - quantityFromThisLot }
+        });
+        
+        lotsUsed.push({
+          lotId: adjustedLot.id,
+          quantityUsed: quantityFromThisLot,
+          costPerShare: adjustedLot.adjustedCostPerShare,
+          cogsFromThisLot
+        });
+      }
+      
+      // 3. Calculate P/L
+      const grossSellValue = price * quantity;
+      const sellingTax = Math.round(grossSellValue * (taxRate / 100));
+      const netProceeds = grossSellValue - fee - sellingTax;
+      const profitOrLoss = netProceeds - totalCOGS;
+      
+      console.log(`✅ Sell with adjustments completed: P/L = ${profitOrLoss.toLocaleString('vi-VN')} VND`);
+      
+      return {
+        profitOrLoss,
+        totalCOGS,
+        grossSellValue,
+        sellingTax,
+        netProceeds,
+        lotsUsed,
+        usedAdjustments: true,
+        adjustedCostBasis: true
+      };
+      
+    } catch (error) {
+      console.error(`❌ Error processing sell with adjustments for ${ticker}, falling back:`, error.message);
+      // Fall back to original sell processing
+      return await processSellTransaction(userId, stockAccountId, ticker, quantity, price, fee, taxRate, transactionDate);
+    }
+  } else {
+    console.log(`🔄 Processing sell transaction without adjustments for ${ticker}...`);
+    return await processSellTransaction(userId, stockAccountId, ticker, quantity, price, fee, taxRate, transactionDate);
+  }
+} 

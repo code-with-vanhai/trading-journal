@@ -8,40 +8,30 @@ datasource db {
 }
 
 model User {
-  id             String         @id @default(cuid())
-  email          String         @unique
-  name           String?
-  passwordHash   String?
-  createdAt      DateTime       @default(now())
-  updatedAt      DateTime       @updatedAt
-  username       String         @unique
-  journalEntries JournalEntry[]
-  StockAccount   StockAccount[]
-  strategies     Strategy[]
-  tags           Tag[]
-  transactions   Transaction[]
-  purchaseLots   PurchaseLot[]
-  accountFees    AccountFee[]
+  id           String   @id @default(cuid())
+  email        String   @unique
+  name         String?
+  passwordHash String?
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+  username     String   @unique
 }
 
 model Transaction {
-  id              String        @id @default(cuid())
+  id              String   @id @default(cuid())
   userId          String
   ticker          String
   type            String
   quantity        Float
   price           Float
   transactionDate DateTime
-  fee             Float         @default(0)
-  taxRate         Float         @default(0)
+  fee             Float    @default(0)
+  taxRate         Float    @default(0)
   calculatedPl    Float?
   notes           String?
-  createdAt       DateTime      @default(now())
-  updatedAt       DateTime      @updatedAt
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
   stockAccountId  String
-  journalEntry    JournalEntry?
-  StockAccount    StockAccount  @relation(fields: [stockAccountId], references: [id])
-  user            User          @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@index([userId, transactionDate])
   @@index([userId, ticker])
@@ -49,29 +39,24 @@ model Transaction {
 }
 
 model JournalEntry {
-  id              String            @id @default(cuid())
-  transactionId   String            @unique
+  id              String   @id @default(cuid())
+  transactionId   String   @unique
   userId          String
   emotionOnEntry  String?
   emotionOnExit   String?
   strategyUsed    String?
   postTradeReview String?
-  createdAt       DateTime          @default(now())
-  updatedAt       DateTime          @updatedAt
-  transaction     Transaction       @relation(fields: [transactionId], references: [id], onDelete: Cascade)
-  user            User              @relation(fields: [userId], references: [id], onDelete: Cascade)
-  tags            JournalEntryTag[]
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
 
   @@index([userId])
 }
 
 model Tag {
-  id             String            @id @default(cuid())
-  userId         String
-  name           String
-  createdAt      DateTime          @default(now())
-  journalEntries JournalEntryTag[]
-  user           User              @relation(fields: [userId], references: [id], onDelete: Cascade)
+  id        String   @id @default(cuid())
+  userId    String
+  name      String
+  createdAt DateTime @default(now())
 
   @@unique([userId, name])
 }
@@ -79,8 +64,6 @@ model Tag {
 model JournalEntryTag {
   journalEntryId String
   tagId          String
-  journalEntry   JournalEntry @relation(fields: [journalEntryId], references: [id], onDelete: Cascade)
-  tag            Tag          @relation(fields: [tagId], references: [id], onDelete: Cascade)
 
   @@id([journalEntryId, tagId])
 }
@@ -92,7 +75,6 @@ model Strategy {
   content   String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@index([createdAt(sort: Desc)])
   @@index([userId])
@@ -113,73 +95,94 @@ model StockPriceCache {
 }
 
 model StockAccount {
-  id            String        @id
+  id            String   @id
   name          String
   brokerName    String?
   accountNumber String?
   description   String?
   userId        String
-  createdAt     DateTime      @default(now())
-  updatedAt     DateTime      @updatedAt
-  User          User          @relation(fields: [userId], references: [id], onDelete: Cascade)
-  Transaction   Transaction[]
-  AccountFee    AccountFee[]
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
 
   @@unique([userId, name])
   @@index([userId])
 }
 
 model PurchaseLot {
-  id                String    @id @default(cuid())
+  id                String   @id @default(cuid())
   userId            String
   stockAccountId    String
   ticker            String
   purchaseDate      DateTime
   quantity          Float
   pricePerShare     Float
-  totalCost         Float     // (pricePerShare * quantity) + buyFee
-  buyFee            Float     @default(0)
-  remainingQuantity Float     // Số lượng còn lại chưa bán
-  createdAt         DateTime  @default(now())
-  updatedAt         DateTime  @updatedAt
-  user              User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  totalCost         Float
+  buyFee            Float    @default(0)
+  remainingQuantity Float
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
 
   @@index([userId, ticker, stockAccountId])
   @@index([purchaseDate])
 }
 
-enum FeeType {
-  CUSTODY_FEE           // Phí lưu ký chứng khoán
-  ADVANCE_SELLING_FEE   // Phí ứng trước tiền bán
-  ACCOUNT_MAINTENANCE   // Phí duy trì tài khoản
-  TRANSFER_FEE          // Phí chuyển nhượng
-  DIVIDEND_TAX          // Thuế cổ tức
-  INTEREST_FEE          // Phí lãi vay margin
-  DATA_FEED_FEE         // Phí cung cấp dữ liệu
-  SMS_NOTIFICATION_FEE  // Phí SMS thông báo
-  STATEMENT_FEE         // Phí sao kê
-  WITHDRAWAL_FEE        // Phí rút tiền
-  OTHER_FEE             // Phí khác
-}
-
 model AccountFee {
-  id              String       @id @default(cuid())
+  id              String   @id @default(cuid())
   userId          String
   stockAccountId  String
   feeType         FeeType
-  amount          Float        // Số tiền phí (VND)
-  description     String?      // Mô tả chi tiết
-  feeDate         DateTime     // Ngày phát sinh phí
-  referenceNumber String?      // Số tham chiếu từ công ty chứng khoán
-  attachmentUrl   String?      // Link đến file đính kèm (hóa đơn, thông báo)
-  isActive        Boolean      @default(true)
-  createdAt       DateTime     @default(now())
-  updatedAt       DateTime     @updatedAt
-  
-  user            User         @relation(fields: [userId], references: [id], onDelete: Cascade)
-  stockAccount    StockAccount @relation(fields: [stockAccountId], references: [id], onDelete: Cascade)
-  
+  amount          Float
+  description     String?
+  feeDate         DateTime
+  referenceNumber String?
+  attachmentUrl   String?
+  isActive        Boolean  @default(true)
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
   @@index([userId, stockAccountId])
   @@index([feeType])
   @@index([feeDate])
+}
+
+model CostBasisAdjustment {
+  id               String         @id @default(cuid())
+  userId           String
+  stockAccountId   String
+  ticker           String
+  adjustmentType   AdjustmentType
+  eventDate        DateTime
+  dividendPerShare Float?
+  taxRate          Float          @default(0.05)
+  splitRatio       Float?
+  description      String?
+  externalRef      String?
+  isActive         Boolean        @default(true)
+  processedAt      DateTime?
+  createdAt        DateTime       @default(now())
+  updatedAt        DateTime       @updatedAt
+  createdBy        String?
+}
+
+enum FeeType {
+  CUSTODY_FEE
+  ADVANCE_SELLING_FEE
+  ACCOUNT_MAINTENANCE
+  TRANSFER_FEE
+  DIVIDEND_TAX
+  INTEREST_FEE
+  DATA_FEED_FEE
+  SMS_NOTIFICATION_FEE
+  STATEMENT_FEE
+  WITHDRAWAL_FEE
+  OTHER_FEE
+}
+
+enum AdjustmentType {
+  CASH_DIVIDEND
+  STOCK_DIVIDEND
+  STOCK_SPLIT
+  REVERSE_SPLIT
+  MERGER
+  SPINOFF
 }
