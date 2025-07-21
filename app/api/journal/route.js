@@ -112,16 +112,32 @@ export async function POST(request) {
       where: {
         id: journalEntry.id,
       },
-      include: {
-        tags: {
-          include: {
-            tag: true,
-          },
-        },
+    });
+
+    // Manually get tags for this journal entry
+    const entryTags = await prisma.journalEntryTag.findMany({
+      where: {
+        journalEntryId: journalEntry.id,
       },
     });
 
-    return NextResponse.json(entryWithTags, { 
+    const tagIds = entryTags.map(et => et.tagId);
+    const entryTagsList = tagIds.length > 0 ? await prisma.tag.findMany({
+      where: {
+        id: { in: tagIds }
+      }
+    }) : [];
+
+    const entryWithTagsData = {
+      ...entryWithTags,
+      tags: entryTags.map(et => ({
+        journalEntryId: et.journalEntryId,
+        tagId: et.tagId,
+        tag: entryTagsList.find(tag => tag.id === et.tagId)
+      }))
+    };
+
+    return NextResponse.json(entryWithTagsData, { 
       status: existingEntry ? 200 : 201 
     });
   } catch (error) {
@@ -158,15 +174,45 @@ export async function GET(request) {
         transactionId,
         userId: session.user.id,
       },
-      include: {
-        tags: {
-          include: {
-            tag: true,
-          },
-        },
-        transaction: true,
-      },
     });
+
+    if (!journalEntry) {
+      return NextResponse.json(
+        { message: 'Journal entry not found' },
+        { status: 404 }
+      );
+    }
+
+    // Manually get tags and transaction data
+    const [entryTags, transaction] = await Promise.all([
+      prisma.journalEntryTag.findMany({
+        where: {
+          journalEntryId: journalEntry.id,
+        },
+      }),
+      prisma.transaction.findFirst({
+        where: {
+          id: transactionId,
+        },
+      })
+    ]);
+
+         const tagIds = entryTags.map(et => et.tagId);
+     const journalTagsList = tagIds.length > 0 ? await prisma.tag.findMany({
+       where: {
+         id: { in: tagIds }
+       }
+     }) : [];
+
+     const journalEntryWithData = {
+       ...journalEntry,
+       tags: entryTags.map(et => ({
+         journalEntryId: et.journalEntryId,
+         tagId: et.tagId,
+         tag: journalTagsList.find(tag => tag.id === et.tagId)
+       })),
+       transaction
+     };
 
     if (!journalEntry) {
       return NextResponse.json(

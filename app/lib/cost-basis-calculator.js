@@ -157,10 +157,7 @@ async function calculatePortfolioWithNewCostBasis(userId, stockAccountId = null)
   }
   
   const activeLots = await prisma.purchaseLot.findMany({
-    where: whereClause,
-    include: {
-      user: true
-    }
+    where: whereClause
   });
   
   // Nhóm theo ticker và tài khoản

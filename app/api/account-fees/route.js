@@ -107,14 +107,6 @@ export async function GET(request) {
     const [accountFees, totalCount] = await Promise.all([
       prisma.accountFee.findMany({
         where: whereClause,
-        include: {
-          stockAccount: {
-            select: {
-              name: true,
-              brokerName: true
-            }
-          }
-        },
         orderBy,
         skip,
         take: pageSize
@@ -123,6 +115,30 @@ export async function GET(request) {
         where: whereClause
       })
     ]);
+
+    // Manually populate stockAccount information
+    const stockAccountIds = [...new Set(accountFees.map(fee => fee.stockAccountId))];
+    const stockAccounts = await prisma.stockAccount.findMany({
+      where: {
+        id: { in: stockAccountIds }
+      },
+      select: {
+        id: true,
+        name: true,
+        brokerName: true
+      }
+    });
+
+    const stockAccountMap = stockAccounts.reduce((map, account) => {
+      map[account.id] = account;
+      return map;
+    }, {});
+
+    // Add stockAccount info to each fee
+    const accountFeesWithStockAccount = accountFees.map(fee => ({
+      ...fee,
+      stockAccount: stockAccountMap[fee.stockAccountId] || null
+    }));
     
     // Calculate summary statistics
     const summaryStats = await prisma.accountFee.groupBy({
@@ -139,7 +155,7 @@ export async function GET(request) {
     const totalPages = Math.ceil(totalCount / pageSize);
     
     const result = {
-      accountFees,
+      accountFees: accountFeesWithStockAccount,
       totalCount,
       page,
       pageSize,
@@ -236,21 +252,23 @@ export async function POST(request) {
         feeDate: new Date(feeDate),
         referenceNumber: body.referenceNumber || null,
         attachmentUrl: body.attachmentUrl || null
-      },
-      include: {
-        stockAccount: {
-          select: {
-            name: true,
-            brokerName: true
-          }
-        }
       }
     });
+
+    // Add stockAccount info manually to the response
+    const accountFeeWithStockAccount = {
+      ...accountFee,
+      stockAccount: {
+        id: stockAccount.id,
+        name: stockAccount.name,
+        brokerName: stockAccount.brokerName
+      }
+    };
     
     // Clear cache
     accountFeesCache.clear();
     
-    return NextResponse.json(accountFee, { status: 201 });
+    return NextResponse.json(accountFeeWithStockAccount, { status: 201 });
     
   } catch (error) {
     console.error('Error creating account fee:', error);

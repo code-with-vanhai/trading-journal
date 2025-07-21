@@ -28,14 +28,6 @@ export async function GET(request, { params }) {
         id,
         userId: session.user.id,
         isActive: true
-      },
-      include: {
-        stockAccount: {
-          select: {
-            name: true,
-            brokerName: true
-          }
-        }
       }
     });
     
@@ -142,14 +134,6 @@ export async function PUT(request, { params }) {
         feeDate: new Date(feeDate),
         referenceNumber: body.referenceNumber || null,
         attachmentUrl: body.attachmentUrl || null
-      },
-      include: {
-        stockAccount: {
-          select: {
-            name: true,
-            brokerName: true
-          }
-        }
       }
     });
     

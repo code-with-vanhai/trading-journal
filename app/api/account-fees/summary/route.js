@@ -154,14 +154,6 @@ export async function GET(request) {
       // Recent fees (last 10)
       prisma.accountFee.findMany({
         where: whereClause,
-        include: {
-          stockAccount: {
-            select: {
-              name: true,
-              brokerName: true
-            }
-          }
-        },
         orderBy: {
           feeDate: 'desc'
         },

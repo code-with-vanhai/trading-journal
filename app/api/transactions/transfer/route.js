@@ -38,9 +38,6 @@ export async function POST(request) {
       where: {
         id: { in: transactionIds },
         userId: session.user.id
-      },
-      include: {
-        StockAccount: true
       }
     });
 
@@ -133,10 +130,7 @@ export async function PUT(request) {
 
     // Find all transactions for the specified tickers
     const transactions = await prisma.transaction.findMany({
-      where: whereClause,
-      include: {
-        StockAccount: true
-      }
+      where: whereClause
     });
 
     if (transactions.length === 0) {

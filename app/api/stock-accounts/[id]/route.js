@@ -23,15 +23,20 @@ export async function GET(request, { params }) {
       where: {
         id: id,
         userId: session.user.id // Ensure user owns this account
-      },
-      include: {
-        _count: {
-          select: {
-            Transaction: true
-          }
-        }
       }
     });
+
+    // Manually count transactions for this account
+    const transactionCount = await prisma.transaction.count({
+      where: {
+        stockAccountId: id
+      }
+    });
+
+    const stockAccountWithCount = stockAccount ? {
+      ...stockAccount,
+      _count: { Transaction: transactionCount }
+    } : null;
 
     if (!stockAccount) {
       return NextResponse.json(
@@ -40,7 +45,7 @@ export async function GET(request, { params }) {
       );
     }
 
-    return NextResponse.json(stockAccount);
+    return NextResponse.json(stockAccountWithCount);
 
   } catch (error) {
     console.error('Error fetching stock account:', error);
@@ -125,17 +130,22 @@ export async function PUT(request, { params }) {
         brokerName: brokerName?.trim() || null,
         accountNumber: accountNumber?.trim() || null,
         description: description?.trim() || null
-      },
-      include: {
-        _count: {
-          select: {
-            Transaction: true
-          }
-        }
       }
     });
 
-    return NextResponse.json(updatedAccount);
+    // Manually add transaction count
+    const updateTransactionCount = await prisma.transaction.count({
+      where: {
+        stockAccountId: id
+      }
+    });
+
+    const updatedAccountWithCount = {
+      ...updatedAccount,
+      _count: { Transaction: updateTransactionCount }
+    };
+
+    return NextResponse.json(updatedAccountWithCount);
 
   } catch (error) {
     console.error('Error updating stock account:', error);
@@ -174,13 +184,6 @@ export async function DELETE(request, { params }) {
       where: {
         id: id,
         userId: session.user.id
-      },
-      include: {
-        _count: {
-          select: {
-            Transaction: true
-          }
-        }
       }
     });
 

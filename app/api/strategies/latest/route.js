@@ -47,16 +47,6 @@ export async function GET(request) {
       orderBy: {
         createdAt: 'desc',
       },
-      include: {
-        user: {
-          select: {
-            id: true,
-            name: true,
-            email: true,
-            username: true,
-          },
-        },
-      },
       take: limit,
     });
     

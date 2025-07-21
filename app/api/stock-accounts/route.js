@@ -37,17 +37,20 @@ export async function GET(request) {
       where: {
         userId: session.user.id
       },
-      include: {
-        _count: {
-          select: {
-            Transaction: true
-          }
-        }
-      },
       orderBy: {
         createdAt: 'asc'
       }
     });
+
+    // Manually count transactions for each account
+    for (let account of stockAccounts) {
+      const transactionCount = await prisma.transaction.count({
+        where: {
+          stockAccountId: account.id
+        }
+      });
+      account._count = { Transaction: transactionCount };
+    }
 
     // If user has no accounts, create a default one
     if (stockAccounts.length === 0) {
@@ -61,15 +64,11 @@ export async function GET(request) {
           accountNumber: null,
           description: 'Tài khoản mặc định được tạo tự động',
           userId: session.user.id
-        },
-        include: {
-          _count: {
-            select: {
-              Transaction: true
-            }
-          }
         }
       });
+
+      // Add transaction count for new account (will be 0)
+      defaultAccount._count = { Transaction: 0 };
 
       stockAccounts = [defaultAccount];
     }
@@ -152,15 +151,11 @@ export async function POST(request) {
         accountNumber: accountNumber?.trim() || null,
         description: description?.trim() || null,
         userId: session.user.id
-      },
-      include: {
-        _count: {
-          select: {
-            transactions: true
-          }
-        }
       }
     });
+
+    // Add transaction count for new account (will be 0)
+    newAccount._count = { transactions: 0 };
 
     return NextResponse.json(newAccount, { status: 201 });
 

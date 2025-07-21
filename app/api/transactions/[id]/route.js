@@ -103,28 +103,7 @@ export async function GET(request, { params }) {
     // Use Prisma's standard query approach instead of raw SQL
     const transaction = await prisma.transaction.findUnique({
       where: {
-        id: id,
-        userId: session.user.id
-      },
-      include: {
-        StockAccount: { // Include stock account details
-          select: {
-            id: true,
-            name: true,
-            brokerName: true,
-            accountNumber: true,
-            description: true
-          }
-        },
-        journalEntry: {
-          include: {
-            tags: {
-              include: {
-                tag: true
-              }
-            }
-          }
-        }
+        id: id
       }
     });
 
@@ -253,15 +232,6 @@ export async function PUT(request, { params }) {
         calculatedPl: type === 'SELL' ? calculatedPl : null,
         notes,
         stockAccountId: stockAccountId || undefined, // Only update if provided
-      },
-      include: {
-        StockAccount: {
-          select: {
-            id: true,
-            name: true,
-            brokerName: true
-          }
-        }
       }
     });
 

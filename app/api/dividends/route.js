@@ -53,24 +53,42 @@ export async function GET(request) {
       // Get adjustments with related data
       const adjustments = await prisma.costBasisAdjustment.findMany({
         where: whereClause,
-        include: {
-          stockAccount: {
-            select: { id: true, name: true, brokerName: true }
-          }
-        },
         orderBy: [
           { eventDate: 'desc' },
           { createdAt: 'desc' }
         ]
       });
 
-      console.log(`✅ Found ${adjustments.length} dividend adjustments`);
-
-      return NextResponse.json({
-        success: true,
-        data: adjustments,
-        count: adjustments.length
+      // Manually populate stockAccount information
+      const stockAccountIds = [...new Set(adjustments.map(adj => adj.stockAccountId))];
+      const stockAccounts = await prisma.stockAccount.findMany({
+        where: {
+          id: { in: stockAccountIds }
+        },
+        select: {
+          id: true,
+          name: true,
+          brokerName: true
+        }
       });
+
+      const stockAccountMap = stockAccounts.reduce((map, account) => {
+        map[account.id] = account;
+        return map;
+      }, {});
+
+      const adjustmentsWithStockAccount = adjustments.map(adjustment => ({
+        ...adjustment,
+        stockAccount: stockAccountMap[adjustment.stockAccountId] || null
+      }));
+
+              console.log(`✅ Found ${adjustmentsWithStockAccount.length} dividend adjustments`);
+
+              return NextResponse.json({ 
+          success: true, 
+          data: adjustmentsWithStockAccount,
+          count: adjustmentsWithStockAccount.length
+        });
 
     } finally {
       await prisma.$disconnect();

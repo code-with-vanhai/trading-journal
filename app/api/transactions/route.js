@@ -133,9 +133,10 @@ const CACHE_TTL = 5 * 60 * 1000; // 5 minutes cache TTL for better hit ratio
 // GET - Fetch all transactions for current user with filtering and pagination
 export async function GET(request) {
   const startTime = Date.now();
+  let session; // Declare session in outer scope for error handler
 
   try {
-    const session = await getServerSession(authOptions);
+    session = await getServerSession(authOptions);
     
     if (!session) {
       return NextResponse.json({ message: 'Unauthorized' }, { status: 401 });
@@ -291,18 +292,9 @@ export async function GET(request) {
             calculatedPl: true,
             notes: true,
             stockAccountId: true, // Include stock account ID
-            StockAccount: { // Include stock account details
-              select: {
-                id: true,
-                name: true,
-                brokerName: true
-              }
-            },
-            journalEntry: {
-              select: {
-                id: true
-              }
-            }
+            userId: true,
+            createdAt: true,
+            updatedAt: true
           },
           orderBy: [
             { transactionDate: 'desc' },
@@ -310,11 +302,49 @@ export async function GET(request) {
           ],
           take: pageSize
         });
+
+        // Manually populate StockAccount and JournalEntry data
+        const stockAccountIds = [...new Set(transactions.map(tx => tx.stockAccountId))];
+        const transactionIds = transactions.map(tx => tx.id);
+
+        const [stockAccounts, journalEntries] = await Promise.all([
+          prisma.stockAccount.findMany({
+            where: {
+              id: { in: stockAccountIds }
+            },
+            select: {
+              id: true,
+              name: true,
+              brokerName: true
+            }
+          }),
+          prisma.journalEntry.findMany({
+            where: {
+              transactionId: { in: transactionIds }
+            },
+            select: {
+              id: true,
+              transactionId: true
+            }
+          })
+        ]);
+
+        // Create maps for quick lookup
+        const stockAccountMap = stockAccounts.reduce((map, account) => {
+          map[account.id] = account;
+          return map;
+        }, {});
+
+        const journalEntryMap = journalEntries.reduce((map, entry) => {
+          map[entry.transactionId] = entry;
+          return map;
+        }, {});
         
         // Format the results to match the expected structure
         const formattedTransactions = transactions.map(tx => ({
           ...tx,
-          journalEntry: tx.journalEntry ? { id: tx.journalEntry.id } : null
+          StockAccount: stockAccountMap[tx.stockAccountId] || null,
+          journalEntry: journalEntryMap[tx.id] ? { id: journalEntryMap[tx.id].id } : null
         }));
       
         // Get count with a simple query
@@ -376,18 +406,9 @@ export async function GET(request) {
           calculatedPl: true,
           notes: true,
           stockAccountId: true, // Include stock account ID
-          StockAccount: { // Include stock account details
-            select: {
-              id: true,
-              name: true,
-              brokerName: true
-            }
-          },
-          journalEntry: {
-            select: {
-              id: true,
-            },
-          },
+          userId: true,
+          createdAt: true,
+          updatedAt: true
         },
         skip,
         take: pageSize,
@@ -590,17 +611,23 @@ export async function POST(request) {
         taxRate,
         calculatedPl,
         notes,
-      },
-      include: {
-        StockAccount: {
-          select: {
-            id: true,
-            name: true,
-            brokerName: true
-          }
-        }
       }
     });
+
+    // Manually add stockAccount information to the created transaction
+    const stockAccount = await prisma.stockAccount.findFirst({
+      where: { id: stockAccountId },
+      select: {
+        id: true,
+        name: true,
+        brokerName: true
+      }
+    });
+
+    const transactionWithStockAccount = {
+      ...transaction,
+      StockAccount: stockAccount || null
+    };
 
     // Clear relevant cache entries when adding new transactions
     for (const [key, _] of transactionCache.entries()) {
@@ -609,7 +636,7 @@ export async function POST(request) {
       }
     }
 
-    return NextResponse.json(transaction, { status: 201 });
+    return NextResponse.json(transactionWithStockAccount, { status: 201 });
   } catch (error) {
     // SECURITY FIX: Use secure logging and sanitized error responses
     secureLog(error, {
