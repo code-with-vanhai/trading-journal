@@ -269,7 +269,7 @@ export default function EditTransactionModal({
               value={formData.fee}
               onChange={handleChange}
               min="0"
-              step="1000"
+              step="1"
               className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
               placeholder="0"
             />
