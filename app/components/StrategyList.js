@@ -2,8 +2,10 @@
 
 import { useState } from 'react';
 import { formatDistanceToNow } from 'date-fns';
+import { useNotification } from './Notification';
 
 export default function StrategyList({ strategies, onStrategyDeleted, currentUserId }) {
+  const { showError } = useNotification();
   const [deletingId, setDeletingId] = useState(null);
 
   const handleDelete = async (id) => {
@@ -23,7 +25,7 @@ export default function StrategyList({ strategies, onStrategyDeleted, currentUse
         onStrategyDeleted();
       } catch (err) {
         console.error('Delete error:', err);
-        alert('Failed to delete strategy');
+        showError('Failed to delete strategy');
       } finally {
         setDeletingId(null);
       }
@@ -51,9 +53,14 @@ export default function StrategyList({ strategies, onStrategyDeleted, currentUse
               <button
                 onClick={() => handleDelete(strategy.id)}
                 disabled={deletingId === strategy.id}
-                className="text-red-500 hover:text-red-700 text-sm"
+                className="text-red-500 hover:text-red-700 p-2 rounded hover:bg-red-50 transition-colors disabled:opacity-50"
+                title={deletingId === strategy.id ? "Đang xóa chiến lược..." : "Xóa chiến lược"}
               >
-                {deletingId === strategy.id ? 'Deleting...' : 'Delete'}
+                {deletingId === strategy.id ? (
+                  <i className="fas fa-spinner fa-spin text-sm"></i>
+                ) : (
+                  <i className="fas fa-trash text-sm"></i>
+                )}
               </button>
             )}
           </div>

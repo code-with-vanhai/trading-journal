@@ -101,6 +101,7 @@ export default function Navbar() {
                     <li><Link href="/account-fees" className="hover:text-blue-200 transition">Phí giao dịch</Link></li>
                     <li><Link href="/transactions" className="hover:text-blue-200 transition">Giao dịch</Link></li>
                     <li><Link href="/portfolio" className="hover:text-blue-200 transition">Danh mục</Link></li>
+                    <li><Link href="/cost-basis-adjustments" className="hover:text-blue-200 transition">Sự kiện quyền</Link></li>
                     <li><Link href="/strategies" className="hover:text-blue-200 transition">Chiến lược</Link></li>
                   </>
                 )}
@@ -155,6 +156,7 @@ export default function Navbar() {
                   <li className="pt-4 border-t border-blue-800"><Link href="/account-fees" className="block hover:text-blue-200 transition">Phí giao dịch</Link></li>
                   <li><Link href="/transactions" className="block hover:text-blue-200 transition">Giao dịch</Link></li>
                   <li><Link href="/portfolio" className="block hover:text-blue-200 transition">Danh mục</Link></li>
+                  <li><Link href="/cost-basis-adjustments" className="block hover:text-blue-200 transition">Sự kiện quyền</Link></li>
                   <li><Link href="/strategies" className="block hover:text-blue-200 transition">Chiến lược</Link></li>
                 </>
               )}

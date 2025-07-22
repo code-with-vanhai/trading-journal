@@ -72,3 +72,147 @@
 --------------------------------------------------------------------------------
 [2025-07-21T09:49:54.986Z] [INFO] [API] Portfolio API (cached) completed in 1ms
 --------------------------------------------------------------------------------
+[2025-07-22T07:02:04.364Z] [INFO] [API] Portfolio cache miss for user cmdcw5pb60000dcyk0t6zw3c2, account: all, adjustments: false, calculating...
+--------------------------------------------------------------------------------
+[2025-07-22T07:02:05.141Z] [INFO] [API] Portfolio calculation completed in 799ms
+--------------------------------------------------------------------------------
+[2025-07-22T07:02:05.925Z] [INFO] [API] Portfolio API completed in 1582ms
+--------------------------------------------------------------------------------
+[2025-07-22T07:02:05.939Z] [INFO] [API] Portfolio cache hit for user cmdcw5pb60000dcyk0t6zw3c2, account: all, adjustments: false
+--------------------------------------------------------------------------------
+[2025-07-22T07:02:05.939Z] [INFO] [API] Portfolio API (cached) completed in 3ms
+--------------------------------------------------------------------------------
+[2025-07-22T08:07:18.666Z] [INFO] [API] Portfolio cache miss for user cmdcw5pb60000dcyk0t6zw3c2, account: all, adjustments: false, calculating...
+--------------------------------------------------------------------------------
+[2025-07-22T08:07:19.255Z] [INFO] [API] Portfolio calculation completed in 596ms
+--------------------------------------------------------------------------------
+[2025-07-22T08:07:19.925Z] [INFO] [API] Portfolio API completed in 1266ms
+--------------------------------------------------------------------------------
+[2025-07-22T08:07:19.945Z] [INFO] [API] Portfolio cache hit for user cmdcw5pb60000dcyk0t6zw3c2, account: all, adjustments: false
+--------------------------------------------------------------------------------
+[2025-07-22T08:07:19.945Z] [INFO] [API] Portfolio API (cached) completed in 7ms
+--------------------------------------------------------------------------------
+[2025-07-22T08:33:22.918Z] [INFO] [API] Portfolio cache miss for user cmdcw5pb60000dcyk0t6zw3c2, account: all, adjustments: false, calculating...
+--------------------------------------------------------------------------------
+[2025-07-22T08:33:23.695Z] [INFO] [API] Portfolio calculation completed in 783ms
+--------------------------------------------------------------------------------
+[2025-07-22T08:33:24.371Z] [INFO] [API] Portfolio API completed in 1459ms
+--------------------------------------------------------------------------------
+[2025-07-22T08:33:24.389Z] [INFO] [API] Portfolio cache hit for user cmdcw5pb60000dcyk0t6zw3c2, account: all, adjustments: false
+--------------------------------------------------------------------------------
+[2025-07-22T08:33:24.390Z] [INFO] [API] Portfolio API (cached) completed in 3ms
+--------------------------------------------------------------------------------
+[2025-07-22T08:42:59.760Z] [INFO] [API] Portfolio cache miss for user cmdcw5pb60000dcyk0t6zw3c2, account: all, adjustments: true, calculating...
+--------------------------------------------------------------------------------
+[2025-07-22T08:43:01.416Z] [INFO] [API] Portfolio calculation completed in 1670ms
+--------------------------------------------------------------------------------
+[2025-07-22T08:43:01.799Z] [INFO] [API] Portfolio API completed in 2053ms
+--------------------------------------------------------------------------------
+[2025-07-22T08:43:01.814Z] [INFO] [API] Portfolio cache hit for user cmdcw5pb60000dcyk0t6zw3c2, account: all, adjustments: true
+--------------------------------------------------------------------------------
+[2025-07-22T08:43:01.814Z] [INFO] [API] Portfolio API (cached) completed in 3ms
+--------------------------------------------------------------------------------
+[2025-07-22T08:43:47.481Z] [INFO] [API] Portfolio cache miss for user cmdcw5pb60000dcyk0t6zw3c2, account: all, adjustments: true, calculating...
+--------------------------------------------------------------------------------
+[2025-07-22T08:43:48.956Z] [INFO] [API] Portfolio calculation completed in 1479ms
+--------------------------------------------------------------------------------
+[2025-07-22T08:43:49.691Z] [INFO] [API] Portfolio API completed in 2215ms
+--------------------------------------------------------------------------------
+[2025-07-22T08:44:05.968Z] [INFO] [API] Portfolio cache hit for user cmdcw5pb60000dcyk0t6zw3c2, account: all, adjustments: true
+--------------------------------------------------------------------------------
+[2025-07-22T08:44:05.969Z] [INFO] [API] Portfolio API (cached) completed in 3ms
+--------------------------------------------------------------------------------
+[2025-07-22T08:47:13.937Z] [INFO] [API] Portfolio cache miss for user cmdcw5pb60000dcyk0t6zw3c2, account: all, adjustments: true, calculating...
+--------------------------------------------------------------------------------
+[2025-07-22T08:47:15.544Z] [INFO] [API] Portfolio calculation completed in 1621ms
+--------------------------------------------------------------------------------
+[2025-07-22T08:47:16.233Z] [INFO] [API] Portfolio API completed in 2310ms
+--------------------------------------------------------------------------------
+[2025-07-22T08:47:16.251Z] [INFO] [API] Portfolio cache hit for user cmdcw5pb60000dcyk0t6zw3c2, account: all, adjustments: true
+--------------------------------------------------------------------------------
+[2025-07-22T08:47:16.251Z] [INFO] [API] Portfolio API (cached) completed in 2ms
+--------------------------------------------------------------------------------
+[2025-07-22T08:48:43.163Z] [INFO] [API] Portfolio cache miss for user cmdcw5pb60000dcyk0t6zw3c2, account: all, adjustments: true, calculating...
+--------------------------------------------------------------------------------
+[2025-07-22T08:48:44.815Z] [INFO] [API] Portfolio calculation completed in 1711ms
+--------------------------------------------------------------------------------
+[2025-07-22T08:48:45.116Z] [INFO] [API] Portfolio API completed in 2011ms
+--------------------------------------------------------------------------------
+[2025-07-22T08:58:20.508Z] [INFO] [API] Portfolio cache miss for user cmdcw5pb60000dcyk0t6zw3c2, account: all, adjustments: true, calculating...
+--------------------------------------------------------------------------------
+[2025-07-22T08:58:22.057Z] [INFO] [API] Portfolio calculation completed in 1566ms
+--------------------------------------------------------------------------------
+[2025-07-22T08:58:22.824Z] [INFO] [API] Portfolio API completed in 2332ms
+--------------------------------------------------------------------------------
+[2025-07-22T08:58:22.838Z] [INFO] [API] Portfolio cache hit for user cmdcw5pb60000dcyk0t6zw3c2, account: all, adjustments: true
+--------------------------------------------------------------------------------
+[2025-07-22T08:58:22.838Z] [INFO] [API] Portfolio API (cached) completed in 2ms
+--------------------------------------------------------------------------------
+[2025-07-22T08:58:32.954Z] [INFO] [API] Portfolio cache miss for user cmdcw5pb60000dcyk0t6zw3c2, account: all, adjustments: false, calculating...
+--------------------------------------------------------------------------------
+[2025-07-22T08:58:33.641Z] [INFO] [API] Portfolio calculation completed in 690ms
+--------------------------------------------------------------------------------
+[2025-07-22T08:58:33.890Z] [INFO] [API] Portfolio API completed in 939ms
+--------------------------------------------------------------------------------
+[2025-07-22T08:58:41.420Z] [INFO] [API] Portfolio cache miss for user cmdcw5pb60000dcyk0t6zw3c2, account: all, adjustments: true, calculating...
+--------------------------------------------------------------------------------
+[2025-07-22T08:58:42.844Z] [INFO] [API] Portfolio calculation completed in 1428ms
+--------------------------------------------------------------------------------
+[2025-07-22T08:58:43.091Z] [INFO] [API] Portfolio API completed in 1675ms
+--------------------------------------------------------------------------------
+[2025-07-22T09:05:07.877Z] [INFO] [API] Portfolio cache miss for user cmdcw5pb60000dcyk0t6zw3c2, account: all, adjustments: true, calculating...
+--------------------------------------------------------------------------------
+[2025-07-22T09:05:09.580Z] [INFO] [API] Portfolio calculation completed in 1707ms
+--------------------------------------------------------------------------------
+[2025-07-22T09:05:10.389Z] [INFO] [API] Portfolio API completed in 2516ms
+--------------------------------------------------------------------------------
+[2025-07-22T09:05:10.408Z] [INFO] [API] Portfolio cache hit for user cmdcw5pb60000dcyk0t6zw3c2, account: all, adjustments: true
+--------------------------------------------------------------------------------
+[2025-07-22T09:05:10.408Z] [INFO] [API] Portfolio API (cached) completed in 4ms
+--------------------------------------------------------------------------------
+[2025-07-22T09:06:00.293Z] [INFO] [API] Portfolio cache miss for user cmdcw5pb60000dcyk0t6zw3c2, account: all, adjustments: false, calculating...
+--------------------------------------------------------------------------------
+[2025-07-22T09:06:00.528Z] [INFO] [API] Portfolio calculation completed in 240ms
+--------------------------------------------------------------------------------
+[2025-07-22T09:06:00.763Z] [INFO] [API] Portfolio API completed in 475ms
+--------------------------------------------------------------------------------
+[2025-07-22T09:06:04.470Z] [INFO] [API] Portfolio cache hit for user cmdcw5pb60000dcyk0t6zw3c2, account: all, adjustments: true
+--------------------------------------------------------------------------------
+[2025-07-22T09:06:04.470Z] [INFO] [API] Portfolio API (cached) completed in 1ms
+--------------------------------------------------------------------------------
+[2025-07-22T09:06:41.027Z] [INFO] [API] Portfolio cache hit for user cmdcw5pb60000dcyk0t6zw3c2, account: all, adjustments: false
+--------------------------------------------------------------------------------
+[2025-07-22T09:06:41.027Z] [INFO] [API] Portfolio API (cached) completed in 3ms
+--------------------------------------------------------------------------------
+[2025-07-22T09:17:55.913Z] [INFO] [API] Portfolio cache miss for user cmdcw5pb60000dcyk0t6zw3c2, account: all, adjustments: true, calculating...
+--------------------------------------------------------------------------------
+[2025-07-22T09:17:57.656Z] [INFO] [API] Portfolio calculation completed in 1758ms
+--------------------------------------------------------------------------------
+[2025-07-22T09:17:58.400Z] [INFO] [API] Portfolio API completed in 2502ms
+--------------------------------------------------------------------------------
+[2025-07-22T09:17:58.417Z] [INFO] [API] Portfolio cache hit for user cmdcw5pb60000dcyk0t6zw3c2, account: all, adjustments: true
+--------------------------------------------------------------------------------
+[2025-07-22T09:17:58.417Z] [INFO] [API] Portfolio API (cached) completed in 3ms
+--------------------------------------------------------------------------------
+[2025-07-22T09:18:03.867Z] [INFO] [API] Portfolio cache miss for user cmdcw5pb60000dcyk0t6zw3c2, account: all, adjustments: false, calculating...
+--------------------------------------------------------------------------------
+[2025-07-22T09:18:04.564Z] [INFO] [API] Portfolio calculation completed in 703ms
+--------------------------------------------------------------------------------
+[2025-07-22T09:18:04.823Z] [INFO] [API] Portfolio API completed in 962ms
+--------------------------------------------------------------------------------
+[2025-07-22T09:18:11.129Z] [INFO] [API] Portfolio cache miss for user cmdcw5pb60000dcyk0t6zw3c2, account: all, adjustments: true, calculating...
+--------------------------------------------------------------------------------
+[2025-07-22T09:18:12.392Z] [INFO] [API] Portfolio calculation completed in 1265ms
+--------------------------------------------------------------------------------
+[2025-07-22T09:18:12.559Z] [INFO] [API] Portfolio API completed in 1432ms
+--------------------------------------------------------------------------------
+[2025-07-22T09:51:13.705Z] [INFO] [API] Portfolio cache miss for user cmdcw5pb60000dcyk0t6zw3c2, account: all, adjustments: true, calculating...
+--------------------------------------------------------------------------------
+[2025-07-22T09:51:15.341Z] [INFO] [API] Portfolio calculation completed in 1642ms
+--------------------------------------------------------------------------------
+[2025-07-22T09:51:15.657Z] [INFO] [API] Portfolio API completed in 1957ms
+--------------------------------------------------------------------------------
+[2025-07-22T09:51:15.669Z] [INFO] [API] Portfolio cache hit for user cmdcw5pb60000dcyk0t6zw3c2, account: all, adjustments: true
+--------------------------------------------------------------------------------
+[2025-07-22T09:51:15.670Z] [INFO] [API] Portfolio API (cached) completed in 3ms
+--------------------------------------------------------------------------------

@@ -10,10 +10,12 @@ import TransferStocksModal from '../components/TransferStocksModal';
 import AddTransactionModal from '../components/AddTransactionModal';
 import SigninModal from '../components/SigninModal';
 import Link from 'next/link';
+import { useNotification } from '../components/Notification';
 
 export default function PortfolioPage() {
   const { data: session, status } = useSession();
   const router = useRouter();
+  const { showSuccess } = useNotification();
   const [portfolio, setPortfolio] = useState([]);
   const [accountAllocations, setAccountAllocations] = useState([]);
   const [stockAccounts, setStockAccounts] = useState([]);
@@ -26,9 +28,12 @@ export default function PortfolioPage() {
   const [error, setError] = useState(null);
   const [lastFetchTimestamp, setLastFetchTimestamp] = useState(null);
   
+  // Cost Basis Adjustments state
+  const [useAdjustedCostBasis, setUseAdjustedCostBasis] = useState(true);
+  
   // Transfer functionality state
   const [selectedStocks, setSelectedStocks] = useState([]);
-    const [transferModalOpen, setTransferModalOpen] = useState(false);
+  const [transferModalOpen, setTransferModalOpen] = useState(false);
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
 
   // Signin modal state
@@ -117,7 +122,7 @@ export default function PortfolioPage() {
         return;
       }
 
-      // Check if transactions have been updated
+      // Check if transactions have been updated or cost basis toggle changed
       let shouldFetchFresh = false;
       
       if (typeof window !== 'undefined') {
@@ -127,6 +132,15 @@ export default function PortfolioPage() {
           localStorage.removeItem('portfolioDataUpdated');
           shouldFetchFresh = true;
           console.log('[Portfolio] Transaction changes detected, refreshing data');
+        }
+        
+        // Check if cost basis mode changed
+        const lastCostBasisMode = localStorage.getItem('lastCostBasisMode');
+        const currentMode = useAdjustedCostBasis.toString();
+        if (lastCostBasisMode !== currentMode) {
+          localStorage.setItem('lastCostBasisMode', currentMode);
+          shouldFetchFresh = true;
+          console.log('[Portfolio] Cost basis mode changed to:', useAdjustedCostBasis ? 'Adjusted' : 'Original');
         }
       }
 
@@ -141,10 +155,18 @@ export default function PortfolioPage() {
         setLoading(true);
         console.log('[Portfolio] Fetching portfolio data');
         
-        // Build URL with account filter if selected
-        const url = selectedAccountId 
-          ? `/api/portfolio?stockAccountId=${selectedAccountId}`
-          : '/api/portfolio';
+        // Build URL with account filter and adjustments if selected
+        const params = new URLSearchParams();
+        if (selectedAccountId) {
+          params.append('stockAccountId', selectedAccountId);
+        }
+        if (useAdjustedCostBasis) {
+          params.append('includeAdjustments', 'true');
+        }
+        
+        const url = `/api/portfolio${params.toString() ? `?${params.toString()}` : ''}`;
+        console.log('[Portfolio] Fetching URL:', url);
+        console.log('[Portfolio] Cost basis mode:', useAdjustedCostBasis ? 'Adjusted' : 'Original');
         
         const response = await fetch(url);
         
@@ -183,7 +205,7 @@ export default function PortfolioPage() {
     };
 
     fetchData();
-  }, [status, selectedAccountId, fetchMarketData, lastFetchTimestamp]);
+  }, [status, selectedAccountId, useAdjustedCostBasis, fetchMarketData, lastFetchTimestamp]);
 
   // Calculate enriched portfolio data
   useEffect(() => {
@@ -277,7 +299,7 @@ export default function PortfolioPage() {
   };
 
   const handleTransferSuccess = (message) => {
-    alert(message);
+    showSuccess(message);
     setSelectedStocks([]);
     setTransferModalOpen(false);
     
@@ -355,30 +377,90 @@ export default function PortfolioPage() {
               <h1 className="text-4xl font-bold mb-4">Danh Mục Đầu Tư</h1>
               <p className="text-xl opacity-90">Theo dõi hiệu suất và quản lý danh mục đầu tư của bạn</p>
             </div>
-            {/* Account Filter */}
-            <div className="flex items-center space-x-4">
+            {/* Compact Controls */}
+            <div className="flex items-center space-x-3 lg:space-x-4">
               {loadingAccounts ? (
                 <Spinner size="small" />
               ) : (
                 stockAccounts.length > 0 && (
-                  <div className="flex items-center space-x-3">
-                    <label htmlFor="accountFilter" className="text-sm font-medium text-white">
-                      Tài khoản:
-                    </label>
-                    <select
-                      id="accountFilter"
-                      value={selectedAccountId}
-                      onChange={handleAccountChange}
-                      className="px-4 py-2 border border-white/20 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-white/50 bg-white/10 text-white min-w-[200px] backdrop-blur-sm"
-                    >
-                      <option value="" className="text-gray-900">Tất cả tài khoản</option>
-                      {stockAccounts.map((account) => (
-                        <option key={account.id} value={account.id} className="text-gray-900">
-                          {account.name} {account.brokerName ? `(${account.brokerName})` : ''}
-                        </option>
-                      ))}
-                    </select>
-                  </div>
+                  <>
+                    {/* Account Selector - Compact */}
+                    <div className="flex items-center space-x-2 relative group">
+                      <label htmlFor="accountFilter" className="text-sm font-medium text-white whitespace-nowrap hidden sm:block">
+                        Tài khoản:
+                      </label>
+                      <div className="relative">
+                        <select
+                          id="accountFilter"
+                          value={selectedAccountId}
+                          onChange={handleAccountChange}
+                          className="px-3 py-2 border border-white/20 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-white/50 bg-white/10 text-white backdrop-blur-sm w-32 sm:w-36 lg:w-40 truncate appearance-none cursor-pointer"
+                          style={{
+                            backgroundImage: `url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3E%3Cpath stroke='%23ffffff' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3E%3C/svg%3E")`,
+                            backgroundPosition: 'right 8px center',
+                            backgroundRepeat: 'no-repeat',
+                            backgroundSize: '16px',
+                            paddingRight: '2rem'
+                          }}
+                        >
+                          <option value="" className="text-gray-900">Tất cả tài khoản</option>
+                          {stockAccounts.map((account) => (
+                            <option key={account.id} value={account.id} className="text-gray-900">
+                              {account.name} {account.brokerName ? `(${account.brokerName})` : ''}
+                            </option>
+                          ))}
+                        </select>
+                        
+                        {/* Account Tooltip */}
+                        {selectedAccountId && (
+                          <div className="absolute top-full left-0 mt-1 opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none z-20 whitespace-nowrap">
+                            <div className="bg-gray-900 text-white text-xs rounded-lg py-2 px-3">
+                              {(() => {
+                                const account = stockAccounts.find(acc => acc.id === selectedAccountId);
+                                return account ? `${account.name}${account.brokerName ? ` (${account.brokerName})` : ''}` : '';
+                              })()}
+                              <div className="absolute bottom-full left-4 border-4 border-transparent border-b-gray-900"></div>
+                            </div>
+                          </div>
+                        )}
+                      </div>
+                    </div>
+                    
+                    {/* Cost Basis Toggle - Compact */}
+                    <div className="flex items-center space-x-2">
+                      <label htmlFor="adjustedCostBasisToggle" className="text-sm font-medium text-white whitespace-nowrap hidden sm:block">
+                        Giá vốn:
+                      </label>
+                      <div className="relative group">
+                        <button
+                          id="adjustedCostBasisToggle"
+                          onClick={() => setUseAdjustedCostBasis(!useAdjustedCostBasis)}
+                          className={`px-3 py-2 rounded-lg text-xs sm:text-sm font-medium transition-all duration-200 border w-20 sm:w-24 lg:w-28 ${
+                            useAdjustedCostBasis
+                              ? 'bg-green-500/20 text-green-100 border-green-400/50 hover:bg-green-500/30'
+                              : 'bg-orange-500/20 text-orange-100 border-orange-400/50 hover:bg-orange-500/30'
+                          }`}
+                        >
+                          <i className={`fas ${useAdjustedCostBasis ? 'fa-adjust' : 'fa-calculator'} mr-1 text-xs`}></i>
+                          <span className="hidden sm:inline">{useAdjustedCostBasis ? 'Điều chỉnh' : 'Gốc'}</span>
+                          <span className="sm:hidden">{useAdjustedCostBasis ? 'DC' : 'G'}</span>
+                        </button>
+                        {useAdjustedCostBasis && (
+                          <div className="absolute -top-1 -right-1 w-2 h-2 bg-green-400 rounded-full animate-pulse"></div>
+                        )}
+                        
+                        {/* Cost Basis Tooltip */}
+                        <div className="absolute top-full left-1/2 transform -translate-x-1/2 mt-1 opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none z-20">
+                          <div className="bg-gray-900 text-white text-xs rounded-lg py-2 px-3 max-w-xs whitespace-nowrap">
+                            {useAdjustedCostBasis 
+                              ? '📊 Giá vốn sau điều chỉnh cổ tức/quyền' 
+                              : '🧮 Giá vốn gốc chưa điều chỉnh'}
+                            <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 border-4 border-transparent border-b-gray-900"></div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </>
                 )
               )}
             </div>
@@ -690,7 +772,7 @@ export default function PortfolioPage() {
           isOpen={isAddModalOpen}
           onClose={() => setIsAddModalOpen(false)}
           onSuccess={(message) => {
-            alert(message);
+            showSuccess(message);
             fetchData();
           }}
         />

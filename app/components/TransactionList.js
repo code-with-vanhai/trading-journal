@@ -6,6 +6,7 @@ import { format } from 'date-fns';
 import { vi } from 'date-fns/locale';
 import TransactionDetailModal from './TransactionDetailModal';
 import EditTransactionModal from './EditTransactionModal';
+import { useNotification } from './Notification';
 
 export default function TransactionList({ 
   transactions, 
@@ -15,6 +16,7 @@ export default function TransactionList({
   onSortChange,
   onEditSuccess 
 }) {
+  const { showSuccess, showError } = useNotification();
   const [deletingId, setDeletingId] = useState(null);
   const [modalOpen, setModalOpen] = useState(false);
   const [selectedTransactionId, setSelectedTransactionId] = useState(null);
@@ -57,7 +59,7 @@ export default function TransactionList({
         const result = await response.json();
         
         // Show success message
-        alert(result.message || 'Xóa giao dịch thành công!');
+        showSuccess(result.message || 'Xóa giao dịch thành công!');
         
         // Notify parent to refresh the list
         if (onDeleteTransaction) {
@@ -76,7 +78,7 @@ export default function TransactionList({
           errorMessage = err.message;
         }
         
-        alert(errorMessage);
+        showError(errorMessage);
       } finally {
         setDeletingId(null);
       }
@@ -104,7 +106,7 @@ export default function TransactionList({
 
   const handleEditSuccess = (message) => {
     // Show success message
-    alert(message);
+    showSuccess(message);
     
     // Notify parent to refresh the data
     if (onEditSuccess) {
@@ -224,45 +226,48 @@ export default function TransactionList({
                   {transaction.journalEntry ? (
                     <button
                       onClick={() => openTransactionModal(transaction.id)}
-                      className="text-indigo-600 hover:text-indigo-900 flex items-center"
+                      className="text-indigo-600 hover:text-indigo-900 p-1 rounded hover:bg-indigo-50"
+                      title="Xem nhật ký giao dịch"
                     >
-                      <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-                      </svg>
-                      Xem
+                      <i className="fas fa-eye"></i>
                     </button>
                   ) : (
                     <Link
                       href={`/transactions/${transaction.id}/journal/new`}
-                      className="text-green-600 hover:text-green-900 flex items-center"
+                      className="text-green-600 hover:text-green-900 p-1 rounded hover:bg-green-50 inline-block"
+                      title="Thêm nhật ký giao dịch"
                     >
-                      <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
-                      </svg>
-                      Thêm
+                      <i className="fas fa-plus"></i>
                     </Link>
                   )}
                 </td>
                 <td className="px-4 py-2 whitespace-nowrap text-right text-sm font-medium">
-                  <div className="flex justify-end space-x-2">
+                  <div className="flex justify-end space-x-1">
                     <button
                       onClick={() => openTransactionModal(transaction.id)}
-                      className="text-indigo-600 hover:text-indigo-900"
+                      className="text-indigo-600 hover:text-indigo-900 p-2 rounded hover:bg-indigo-50 transition-colors"
+                      title="Xem chi tiết giao dịch"
                     >
-                      Xem
+                      <i className="fas fa-eye text-sm"></i>
                     </button>
                     <button
                       onClick={() => openEditModal(transaction)}
-                      className="text-blue-600 hover:text-blue-900"
+                      className="text-blue-600 hover:text-blue-900 p-2 rounded hover:bg-blue-50 transition-colors"
+                      title="Sửa giao dịch"
                     >
-                      Sửa
+                      <i className="fas fa-edit text-sm"></i>
                     </button>
                     <button
                       onClick={() => handleDelete(transaction.id)}
                       disabled={deletingId === transaction.id}
-                      className="text-red-600 hover:text-red-900"
+                      className="text-red-600 hover:text-red-900 p-2 rounded hover:bg-red-50 transition-colors disabled:opacity-50"
+                      title={deletingId === transaction.id ? "Đang xóa..." : "Xóa giao dịch"}
                     >
-                      {deletingId === transaction.id ? 'Đang xóa...' : 'Xóa'}
+                      {deletingId === transaction.id ? (
+                        <i className="fas fa-spinner fa-spin text-sm"></i>
+                      ) : (
+                        <i className="fas fa-trash text-sm"></i>
+                      )}
                     </button>
                   </div>
                 </td>

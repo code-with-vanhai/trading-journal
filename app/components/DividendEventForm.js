@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
+import { useNotification } from './Notification';
 
 // Adjustment type options
 const ADJUSTMENT_TYPES = [
@@ -10,6 +11,7 @@ const ADJUSTMENT_TYPES = [
 ];
 
 export default function DividendEventForm({ stockAccounts = [], onSuccess, initialData = null }) {
+  const { showError } = useNotification();
   const [formData, setFormData] = useState({
     adjustmentType: 'CASH_DIVIDEND',
     ticker: '',
@@ -104,7 +106,7 @@ export default function DividendEventForm({ stockAccounts = [], onSuccess, initi
     e.preventDefault();
     
     if (!validateForm()) {
-      alert('Vui lòng kiểm tra lại thông tin');
+      showError('Vui lòng kiểm tra lại thông tin');
       return;
     }
 
@@ -174,7 +176,7 @@ export default function DividendEventForm({ stockAccounts = [], onSuccess, initi
 
     } catch (error) {
       console.error('Error creating dividend event:', error);
-      alert(error.message || 'Có lỗi xảy ra khi tạo sự kiện cổ tức');
+      showError(error.message || 'Có lỗi xảy ra khi tạo sự kiện cổ tức');
     } finally {
       setIsSubmitting(false);
     }

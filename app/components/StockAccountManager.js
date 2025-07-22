@@ -4,8 +4,10 @@ import { useState, useEffect } from 'react';
 import StockAccountModal from './StockAccountModal';
 import DeleteConfirmModal from './DeleteConfirmModal';
 import { Spinner } from './ui/Spinner';
+import { useNotification } from './Notification';
 
 export default function StockAccountManager() {
+  const { showError, showWarning } = useNotification();
   const [accounts, setAccounts] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState('');
@@ -89,7 +91,7 @@ export default function StockAccountManager() {
   const handleDeleteClick = (account) => {
     // Don't allow deleting the default account
     if (account.name === 'Tài khoản mặc định') {
-      alert('Không thể xóa tài khoản mặc định. Bạn có thể chỉnh sửa tên và thông tin của nó.');
+      showWarning('Không thể xóa tài khoản mặc định. Bạn có thể chỉnh sửa tên và thông tin của nó.');
       return;
     }
     
@@ -118,8 +120,8 @@ export default function StockAccountManager() {
 
     } catch (err) {
       console.error('Error deleting stock account:', err);
-      // You might want to show this error in a toast or modal
-      alert('Lỗi: ' + err.message);
+      // Show error notification
+      showError('Lỗi: ' + err.message);
     }
   };
 
@@ -228,11 +230,9 @@ export default function StockAccountManager() {
                 <button
                   onClick={() => handleEditClick(account)}
                   className="p-2 text-gray-400 hover:text-blue-600 hover:bg-blue-50 rounded-md transition-colors"
-                  title="Chỉnh sửa"
+                  title="Chỉnh sửa tài khoản"
                 >
-                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
-                  </svg>
+                  <i className="fas fa-edit text-sm"></i>
                 </button>
                 <button
                   onClick={() => handleDeleteClick(account)}
@@ -241,12 +241,10 @@ export default function StockAccountManager() {
                       ? 'text-gray-300 cursor-not-allowed' 
                       : 'text-gray-400 hover:text-red-600 hover:bg-red-50'
                   }`}
-                  title={isDefaultAccount(account) ? 'Không thể xóa tài khoản mặc định' : 'Xóa'}
+                  title={isDefaultAccount(account) ? 'Không thể xóa tài khoản mặc định' : 'Xóa tài khoản'}
                   disabled={isDefaultAccount(account)}
                 >
-                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
-                  </svg>
+                  <i className="fas fa-trash text-sm"></i>
                 </button>
               </div>
             </div>

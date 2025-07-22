@@ -1038,3 +1038,877 @@
 --------------------------------------------------------------------------------
 [2025-07-17T10:55:52.942Z] [INFO] [TCBS] Market data API (cached batch) completed in 2ms
 --------------------------------------------------------------------------------
+[2025-07-22T07:02:06.277Z] [INFO] [TCBS] Market data request received
+{
+  "userId": "cmdcw5pb60000dcyk0t6zw3c2",
+  "tickers": [
+    "NKG",
+    "NTL",
+    "VLB"
+  ],
+  "cacheDuration": "60 minutes"
+}
+--------------------------------------------------------------------------------
+[2025-07-22T07:02:06.278Z] [DEBUG] [TCBS] Starting market data fetch with caching
+{
+  "tickers": [
+    "NKG",
+    "NTL",
+    "VLB"
+  ]
+}
+--------------------------------------------------------------------------------
+[2025-07-22T07:02:06.422Z] [INFO] [TCBS] Cache EXPIRED for NKG
+{
+  "cacheAge": "1263 minutes old",
+  "cacheDuration": "60 minutes"
+}
+--------------------------------------------------------------------------------
+[2025-07-22T07:02:06.422Z] [INFO] [TCBS] Fetching market data from TCBS API
+{
+  "ticker": "NKG",
+  "from": 1753056000,
+  "to": 1753142400,
+  "url": "https://apipubaws.tcbs.com.vn/stock-insight/v1/stock/bars-long-term?ticker=NKG&type=stock&resolution=D&from=1753056000&to=1753142400"
+}
+--------------------------------------------------------------------------------
+[2025-07-22T07:02:06.430Z] [INFO] [TCBS] Cache MISS for NTL
+--------------------------------------------------------------------------------
+[2025-07-22T07:02:06.430Z] [INFO] [TCBS] Fetching market data from TCBS API
+{
+  "ticker": "NTL",
+  "from": 1753056000,
+  "to": 1753142400,
+  "url": "https://apipubaws.tcbs.com.vn/stock-insight/v1/stock/bars-long-term?ticker=NTL&type=stock&resolution=D&from=1753056000&to=1753142400"
+}
+--------------------------------------------------------------------------------
+[2025-07-22T07:02:06.431Z] [INFO] [TCBS] Cache MISS for VLB
+--------------------------------------------------------------------------------
+[2025-07-22T07:02:06.431Z] [INFO] [TCBS] Fetching market data from TCBS API
+{
+  "ticker": "VLB",
+  "from": 1753056000,
+  "to": 1753142400,
+  "url": "https://apipubaws.tcbs.com.vn/stock-insight/v1/stock/bars-long-term?ticker=VLB&type=stock&resolution=D&from=1753056000&to=1753142400"
+}
+--------------------------------------------------------------------------------
+[2025-07-22T07:02:06.686Z] [INFO] [TCBS] TCBS API response status
+{
+  "ticker": "VLB",
+  "status": 200
+}
+--------------------------------------------------------------------------------
+[2025-07-22T07:02:06.688Z] [DEBUG] [TCBS] API response structure
+{
+  "ticker": "VLB",
+  "keys": [
+    "ticker",
+    "data",
+    "dataT1"
+  ],
+  "sample": "{\"ticker\":\"VLB\",\"data\":[{\"open\":49000,\"high\":49000,\"low\":47600,\"close\":47600,\"volume\":67000,\"tradingDate\":\"2025-07-22T07:01:00.000Z\"}],\"dataT1\":null}"
+}
+--------------------------------------------------------------------------------
+[2025-07-22T07:02:06.688Z] [INFO] [TCBS] Successfully fetched market data
+{
+  "ticker": "VLB",
+  "latestEntry": {
+    "open": 49000,
+    "high": 49000,
+    "low": 47600,
+    "close": 47600,
+    "volume": 67000,
+    "tradingDate": "2025-07-22T07:01:00.000Z"
+  }
+}
+--------------------------------------------------------------------------------
+[2025-07-22T07:02:06.709Z] [INFO] [TCBS] TCBS API response status
+{
+  "ticker": "NKG",
+  "status": 200
+}
+--------------------------------------------------------------------------------
+[2025-07-22T07:02:06.710Z] [DEBUG] [TCBS] API response structure
+{
+  "ticker": "NKG",
+  "keys": [
+    "ticker",
+    "data",
+    "dataT1"
+  ],
+  "sample": "{\"ticker\":\"NKG\",\"data\":[{\"open\":14400,\"high\":14500,\"low\":14250,\"close\":14350,\"volume\":6852900,\"tradingDate\":\"2025-07-22T07:01:00.000Z\"}],\"dataT1\":null}"
+}
+--------------------------------------------------------------------------------
+[2025-07-22T07:02:06.710Z] [INFO] [TCBS] Successfully fetched market data
+{
+  "ticker": "NKG",
+  "latestEntry": {
+    "open": 14400,
+    "high": 14500,
+    "low": 14250,
+    "close": 14350,
+    "volume": 6852900,
+    "tradingDate": "2025-07-22T07:01:00.000Z"
+  }
+}
+--------------------------------------------------------------------------------
+[2025-07-22T07:02:06.737Z] [INFO] [TCBS] TCBS API response status
+{
+  "ticker": "NTL",
+  "status": 200
+}
+--------------------------------------------------------------------------------
+[2025-07-22T07:02:06.738Z] [DEBUG] [TCBS] API response structure
+{
+  "ticker": "NTL",
+  "keys": [
+    "ticker",
+    "data",
+    "dataT1"
+  ],
+  "sample": "{\"ticker\":\"NTL\",\"data\":[{\"open\":20250,\"high\":20600,\"low\":20050,\"close\":20550,\"volume\":2166700,\"tradingDate\":\"2025-07-22T07:01:00.000Z\"}],\"dataT1\":null}"
+}
+--------------------------------------------------------------------------------
+[2025-07-22T07:02:06.738Z] [INFO] [TCBS] Successfully fetched market data
+{
+  "ticker": "NTL",
+  "latestEntry": {
+    "open": 20250,
+    "high": 20600,
+    "low": 20050,
+    "close": 20550,
+    "volume": 2166700,
+    "tradingDate": "2025-07-22T07:01:00.000Z"
+  }
+}
+--------------------------------------------------------------------------------
+[2025-07-22T07:02:06.838Z] [INFO] [TCBS] Updated cache for VLB
+{
+  "price": 47600,
+  "timestamp": 1753167726279
+}
+--------------------------------------------------------------------------------
+[2025-07-22T07:02:07.226Z] [INFO] [TCBS] Updated cache for NKG
+{
+  "price": 14350,
+  "timestamp": 1753167726278
+}
+--------------------------------------------------------------------------------
+[2025-07-22T07:02:07.319Z] [INFO] [TCBS] Updated cache for NTL
+{
+  "price": 20550,
+  "timestamp": 1753167726279
+}
+--------------------------------------------------------------------------------
+[2025-07-22T07:02:07.319Z] [INFO] [TCBS] Market data fetch completed
+{
+  "totalRequested": 3,
+  "cacheHits": 0,
+  "cacheMisses": 3,
+  "errors": 0,
+  "fetchTime": "1041ms",
+  "totalTime": "1050ms"
+}
+--------------------------------------------------------------------------------
+[2025-07-22T07:02:07.333Z] [INFO] [TCBS] Batch cache HIT for [NKG,NTL,VLB]
+--------------------------------------------------------------------------------
+[2025-07-22T07:02:07.333Z] [INFO] [TCBS] Market data API (cached batch) completed in 5ms
+--------------------------------------------------------------------------------
+[2025-07-22T08:07:20.181Z] [INFO] [TCBS] Market data request received
+{
+  "userId": "cmdcw5pb60000dcyk0t6zw3c2",
+  "tickers": [
+    "HCM",
+    "HDG",
+    "VLB"
+  ],
+  "cacheDuration": "60 minutes"
+}
+--------------------------------------------------------------------------------
+[2025-07-22T08:07:20.183Z] [DEBUG] [TCBS] Starting market data fetch with caching
+{
+  "tickers": [
+    "HCM",
+    "HDG",
+    "VLB"
+  ]
+}
+--------------------------------------------------------------------------------
+[2025-07-22T08:07:20.330Z] [INFO] [TCBS] Cache HIT for HCM
+{
+  "cacheAge": "24 minutes old"
+}
+--------------------------------------------------------------------------------
+[2025-07-22T08:07:20.330Z] [INFO] [TCBS] Cache HIT for HDG
+{
+  "cacheAge": "27 minutes old"
+}
+--------------------------------------------------------------------------------
+[2025-07-22T08:07:20.331Z] [INFO] [TCBS] Cache HIT for VLB
+{
+  "cacheAge": "4 minutes old"
+}
+--------------------------------------------------------------------------------
+[2025-07-22T08:07:20.331Z] [INFO] [TCBS] Market data fetch completed
+{
+  "totalRequested": 3,
+  "cacheHits": 3,
+  "cacheMisses": 0,
+  "errors": 0,
+  "fetchTime": "147ms",
+  "totalTime": "164ms"
+}
+--------------------------------------------------------------------------------
+[2025-07-22T08:07:20.342Z] [INFO] [TCBS] Batch cache HIT for [HCM,HDG,VLB]
+--------------------------------------------------------------------------------
+[2025-07-22T08:07:20.342Z] [INFO] [TCBS] Market data API (cached batch) completed in 2ms
+--------------------------------------------------------------------------------
+[2025-07-22T08:33:24.597Z] [INFO] [TCBS] Market data request received
+{
+  "userId": "cmdcw5pb60000dcyk0t6zw3c2",
+  "tickers": [
+    "HCM",
+    "HDG",
+    "VLB"
+  ],
+  "cacheDuration": "60 minutes"
+}
+--------------------------------------------------------------------------------
+[2025-07-22T08:33:24.598Z] [DEBUG] [TCBS] Starting market data fetch with caching
+{
+  "tickers": [
+    "HCM",
+    "HDG",
+    "VLB"
+  ]
+}
+--------------------------------------------------------------------------------
+[2025-07-22T08:33:24.707Z] [INFO] [TCBS] Cache HIT for HCM
+{
+  "cacheAge": "50 minutes old"
+}
+--------------------------------------------------------------------------------
+[2025-07-22T08:33:24.707Z] [INFO] [TCBS] Cache HIT for HDG
+{
+  "cacheAge": "53 minutes old"
+}
+--------------------------------------------------------------------------------
+[2025-07-22T08:33:24.707Z] [INFO] [TCBS] Cache HIT for VLB
+{
+  "cacheAge": "31 minutes old"
+}
+--------------------------------------------------------------------------------
+[2025-07-22T08:33:24.708Z] [INFO] [TCBS] Market data fetch completed
+{
+  "totalRequested": 3,
+  "cacheHits": 3,
+  "cacheMisses": 0,
+  "errors": 0,
+  "fetchTime": "109ms",
+  "totalTime": "116ms"
+}
+--------------------------------------------------------------------------------
+[2025-07-22T08:33:24.722Z] [INFO] [TCBS] Batch cache HIT for [HCM,HDG,VLB]
+--------------------------------------------------------------------------------
+[2025-07-22T08:33:24.723Z] [INFO] [TCBS] Market data API (cached batch) completed in 2ms
+--------------------------------------------------------------------------------
+[2025-07-22T08:43:02.080Z] [INFO] [TCBS] Market data request received
+{
+  "userId": "cmdcw5pb60000dcyk0t6zw3c2",
+  "tickers": [
+    "HCM",
+    "HDG",
+    "VLB"
+  ],
+  "cacheDuration": "60 minutes"
+}
+--------------------------------------------------------------------------------
+[2025-07-22T08:43:02.081Z] [DEBUG] [TCBS] Starting market data fetch with caching
+{
+  "tickers": [
+    "HCM",
+    "HDG",
+    "VLB"
+  ]
+}
+--------------------------------------------------------------------------------
+[2025-07-22T08:43:02.182Z] [INFO] [TCBS] Cache HIT for HCM
+{
+  "cacheAge": "60 minutes old"
+}
+--------------------------------------------------------------------------------
+[2025-07-22T08:43:02.183Z] [INFO] [TCBS] Cache EXPIRED for HDG
+{
+  "cacheAge": "62 minutes old",
+  "cacheDuration": "60 minutes"
+}
+--------------------------------------------------------------------------------
+[2025-07-22T08:43:02.185Z] [INFO] [TCBS] Fetching market data from TCBS API
+{
+  "ticker": "HDG",
+  "from": 1753056000,
+  "to": 1753142400,
+  "url": "https://apipubaws.tcbs.com.vn/stock-insight/v1/stock/bars-long-term?ticker=HDG&type=stock&resolution=D&from=1753056000&to=1753142400"
+}
+--------------------------------------------------------------------------------
+[2025-07-22T08:43:02.192Z] [INFO] [TCBS] Cache HIT for VLB
+{
+  "cacheAge": "40 minutes old"
+}
+--------------------------------------------------------------------------------
+[2025-07-22T08:43:02.417Z] [INFO] [TCBS] TCBS API response status
+{
+  "ticker": "HDG",
+  "status": 200
+}
+--------------------------------------------------------------------------------
+[2025-07-22T08:43:02.418Z] [DEBUG] [TCBS] API response structure
+{
+  "ticker": "HDG",
+  "keys": [
+    "ticker",
+    "data",
+    "dataT1"
+  ],
+  "sample": "{\"ticker\":\"HDG\",\"data\":[{\"open\":26550,\"high\":27350,\"low\":26150,\"close\":27300,\"volume\":6776700,\"tradingDate\":\"2025-07-22T08:00:00.000Z\"}],\"dataT1\":null}"
+}
+--------------------------------------------------------------------------------
+[2025-07-22T08:43:02.418Z] [INFO] [TCBS] Successfully fetched market data
+{
+  "ticker": "HDG",
+  "latestEntry": {
+    "open": 26550,
+    "high": 27350,
+    "low": 26150,
+    "close": 27300,
+    "volume": 6776700,
+    "tradingDate": "2025-07-22T08:00:00.000Z"
+  }
+}
+--------------------------------------------------------------------------------
+[2025-07-22T08:43:02.521Z] [INFO] [TCBS] Updated cache for HDG
+{
+  "price": 27300,
+  "timestamp": 1753173782082
+}
+--------------------------------------------------------------------------------
+[2025-07-22T08:43:02.521Z] [INFO] [TCBS] Market data fetch completed
+{
+  "totalRequested": 3,
+  "cacheHits": 2,
+  "cacheMisses": 1,
+  "errors": 0,
+  "fetchTime": "440ms",
+  "totalTime": "446ms"
+}
+--------------------------------------------------------------------------------
+[2025-07-22T08:43:02.533Z] [INFO] [TCBS] Batch cache HIT for [HCM,HDG,VLB]
+--------------------------------------------------------------------------------
+[2025-07-22T08:43:02.533Z] [INFO] [TCBS] Market data API (cached batch) completed in 2ms
+--------------------------------------------------------------------------------
+[2025-07-22T08:43:49.707Z] [INFO] [TCBS] Batch cache HIT for [HCM,HDG,VLB]
+--------------------------------------------------------------------------------
+[2025-07-22T08:43:49.707Z] [INFO] [TCBS] Market data API (cached batch) completed in 2ms
+--------------------------------------------------------------------------------
+[2025-07-22T08:44:06.003Z] [INFO] [TCBS] Batch cache HIT for [HCM,HDG,VLB]
+--------------------------------------------------------------------------------
+[2025-07-22T08:44:06.003Z] [INFO] [TCBS] Market data API (cached batch) completed in 3ms
+--------------------------------------------------------------------------------
+[2025-07-22T08:47:16.554Z] [INFO] [TCBS] Market data request received
+{
+  "userId": "cmdcw5pb60000dcyk0t6zw3c2",
+  "tickers": [
+    "HCM",
+    "HDG",
+    "VLB"
+  ],
+  "cacheDuration": "60 minutes"
+}
+--------------------------------------------------------------------------------
+[2025-07-22T08:47:16.554Z] [DEBUG] [TCBS] Starting market data fetch with caching
+{
+  "tickers": [
+    "HCM",
+    "HDG",
+    "VLB"
+  ]
+}
+--------------------------------------------------------------------------------
+[2025-07-22T08:47:16.673Z] [INFO] [TCBS] Cache EXPIRED for HCM
+{
+  "cacheAge": "64 minutes old",
+  "cacheDuration": "60 minutes"
+}
+--------------------------------------------------------------------------------
+[2025-07-22T08:47:16.673Z] [INFO] [TCBS] Fetching market data from TCBS API
+{
+  "ticker": "HCM",
+  "from": 1753056000,
+  "to": 1753142400,
+  "url": "https://apipubaws.tcbs.com.vn/stock-insight/v1/stock/bars-long-term?ticker=HCM&type=stock&resolution=D&from=1753056000&to=1753142400"
+}
+--------------------------------------------------------------------------------
+[2025-07-22T08:47:16.682Z] [INFO] [TCBS] Cache HIT for HDG
+{
+  "cacheAge": "4 minutes old"
+}
+--------------------------------------------------------------------------------
+[2025-07-22T08:47:16.682Z] [INFO] [TCBS] Cache HIT for VLB
+{
+  "cacheAge": "44 minutes old"
+}
+--------------------------------------------------------------------------------
+[2025-07-22T08:47:16.902Z] [INFO] [TCBS] TCBS API response status
+{
+  "ticker": "HCM",
+  "status": 200
+}
+--------------------------------------------------------------------------------
+[2025-07-22T08:47:16.904Z] [DEBUG] [TCBS] API response structure
+{
+  "ticker": "HCM",
+  "keys": [
+    "ticker",
+    "data",
+    "dataT1"
+  ],
+  "sample": "{\"ticker\":\"HCM\",\"data\":[{\"open\":24350,\"high\":25600,\"low\":24300,\"close\":25300,\"volume\":17997100,\"tradingDate\":\"2025-07-22T08:00:00.000Z\"}],\"dataT1\":null}"
+}
+--------------------------------------------------------------------------------
+[2025-07-22T08:47:16.904Z] [INFO] [TCBS] Successfully fetched market data
+{
+  "ticker": "HCM",
+  "latestEntry": {
+    "open": 24350,
+    "high": 25600,
+    "low": 24300,
+    "close": 25300,
+    "volume": 17997100,
+    "tradingDate": "2025-07-22T08:00:00.000Z"
+  }
+}
+--------------------------------------------------------------------------------
+[2025-07-22T08:47:17.003Z] [INFO] [TCBS] Updated cache for HCM
+{
+  "price": 25300,
+  "timestamp": 1753174036554
+}
+--------------------------------------------------------------------------------
+[2025-07-22T08:47:17.004Z] [INFO] [TCBS] Market data fetch completed
+{
+  "totalRequested": 3,
+  "cacheHits": 2,
+  "cacheMisses": 1,
+  "errors": 0,
+  "fetchTime": "449ms",
+  "totalTime": "465ms"
+}
+--------------------------------------------------------------------------------
+[2025-07-22T08:47:17.016Z] [INFO] [TCBS] Batch cache HIT for [HCM,HDG,VLB]
+--------------------------------------------------------------------------------
+[2025-07-22T08:47:17.016Z] [INFO] [TCBS] Market data API (cached batch) completed in 3ms
+--------------------------------------------------------------------------------
+[2025-07-22T08:48:45.283Z] [INFO] [TCBS] Market data request received
+{
+  "userId": "cmdcw5pb60000dcyk0t6zw3c2",
+  "tickers": [
+    "HCM",
+    "HDG",
+    "VLB"
+  ],
+  "cacheDuration": "60 minutes"
+}
+--------------------------------------------------------------------------------
+[2025-07-22T08:48:45.284Z] [DEBUG] [TCBS] Starting market data fetch with caching
+{
+  "tickers": [
+    "HCM",
+    "HDG",
+    "VLB"
+  ]
+}
+--------------------------------------------------------------------------------
+[2025-07-22T08:48:45.335Z] [INFO] [TCBS] Cache HIT for HCM
+{
+  "cacheAge": "1 minutes old"
+}
+--------------------------------------------------------------------------------
+[2025-07-22T08:48:45.335Z] [INFO] [TCBS] Cache HIT for HDG
+{
+  "cacheAge": "6 minutes old"
+}
+--------------------------------------------------------------------------------
+[2025-07-22T08:48:45.335Z] [INFO] [TCBS] Cache HIT for VLB
+{
+  "cacheAge": "46 minutes old"
+}
+--------------------------------------------------------------------------------
+[2025-07-22T08:48:45.335Z] [INFO] [TCBS] Market data fetch completed
+{
+  "totalRequested": 3,
+  "cacheHits": 3,
+  "cacheMisses": 0,
+  "errors": 0,
+  "fetchTime": "52ms",
+  "totalTime": "61ms"
+}
+--------------------------------------------------------------------------------
+[2025-07-22T08:58:23.110Z] [INFO] [TCBS] Market data request received
+{
+  "userId": "cmdcw5pb60000dcyk0t6zw3c2",
+  "tickers": [
+    "HCM",
+    "HDG",
+    "VLB"
+  ],
+  "cacheDuration": "60 minutes"
+}
+--------------------------------------------------------------------------------
+[2025-07-22T08:58:23.112Z] [DEBUG] [TCBS] Starting market data fetch with caching
+{
+  "tickers": [
+    "HCM",
+    "HDG",
+    "VLB"
+  ]
+}
+--------------------------------------------------------------------------------
+[2025-07-22T08:58:23.245Z] [INFO] [TCBS] Cache HIT for HCM
+{
+  "cacheAge": "11 minutes old"
+}
+--------------------------------------------------------------------------------
+[2025-07-22T08:58:23.245Z] [INFO] [TCBS] Cache HIT for HDG
+{
+  "cacheAge": "15 minutes old"
+}
+--------------------------------------------------------------------------------
+[2025-07-22T08:58:23.245Z] [INFO] [TCBS] Cache HIT for VLB
+{
+  "cacheAge": "56 minutes old"
+}
+--------------------------------------------------------------------------------
+[2025-07-22T08:58:23.245Z] [INFO] [TCBS] Market data fetch completed
+{
+  "totalRequested": 3,
+  "cacheHits": 3,
+  "cacheMisses": 0,
+  "errors": 0,
+  "fetchTime": "133ms",
+  "totalTime": "156ms"
+}
+--------------------------------------------------------------------------------
+[2025-07-22T08:58:23.259Z] [INFO] [TCBS] Batch cache HIT for [HCM,HDG,VLB]
+--------------------------------------------------------------------------------
+[2025-07-22T08:58:23.259Z] [INFO] [TCBS] Market data API (cached batch) completed in 2ms
+--------------------------------------------------------------------------------
+[2025-07-22T08:58:33.912Z] [INFO] [TCBS] Batch cache HIT for [HCM,HDG,VLB]
+--------------------------------------------------------------------------------
+[2025-07-22T08:58:33.912Z] [INFO] [TCBS] Market data API (cached batch) completed in 4ms
+--------------------------------------------------------------------------------
+[2025-07-22T08:58:43.119Z] [INFO] [TCBS] Batch cache HIT for [HCM,HDG,VLB]
+--------------------------------------------------------------------------------
+[2025-07-22T08:58:43.119Z] [INFO] [TCBS] Market data API (cached batch) completed in 5ms
+--------------------------------------------------------------------------------
+[2025-07-22T09:05:10.419Z] [INFO] [TCBS] Market data request received
+{
+  "userId": "cmdcw5pb60000dcyk0t6zw3c2",
+  "tickers": [
+    "HCM",
+    "HDG",
+    "VLB"
+  ],
+  "cacheDuration": "60 minutes"
+}
+--------------------------------------------------------------------------------
+[2025-07-22T09:05:10.420Z] [DEBUG] [TCBS] Starting market data fetch with caching
+{
+  "tickers": [
+    "HCM",
+    "HDG",
+    "VLB"
+  ]
+}
+--------------------------------------------------------------------------------
+[2025-07-22T09:05:10.607Z] [INFO] [TCBS] Cache HIT for HCM
+{
+  "cacheAge": "18 minutes old"
+}
+--------------------------------------------------------------------------------
+[2025-07-22T09:05:10.608Z] [INFO] [TCBS] Cache HIT for HDG
+{
+  "cacheAge": "22 minutes old"
+}
+--------------------------------------------------------------------------------
+[2025-07-22T09:05:10.608Z] [INFO] [TCBS] Cache EXPIRED for VLB
+{
+  "cacheAge": "62 minutes old",
+  "cacheDuration": "60 minutes"
+}
+--------------------------------------------------------------------------------
+[2025-07-22T09:05:10.609Z] [INFO] [TCBS] Fetching market data from TCBS API
+{
+  "ticker": "VLB",
+  "from": 1753056000,
+  "to": 1753142400,
+  "url": "https://apipubaws.tcbs.com.vn/stock-insight/v1/stock/bars-long-term?ticker=VLB&type=stock&resolution=D&from=1753056000&to=1753142400"
+}
+--------------------------------------------------------------------------------
+[2025-07-22T09:05:10.916Z] [INFO] [TCBS] TCBS API response status
+{
+  "ticker": "VLB",
+  "status": 200
+}
+--------------------------------------------------------------------------------
+[2025-07-22T09:05:10.917Z] [DEBUG] [TCBS] API response structure
+{
+  "ticker": "VLB",
+  "keys": [
+    "ticker",
+    "data",
+    "dataT1"
+  ],
+  "sample": "{\"ticker\":\"VLB\",\"data\":[{\"open\":49000,\"high\":49000,\"low\":47600,\"close\":48100,\"volume\":81100,\"tradingDate\":\"2025-07-22T08:00:00.000Z\"}],\"dataT1\":null}"
+}
+--------------------------------------------------------------------------------
+[2025-07-22T09:05:10.917Z] [INFO] [TCBS] Successfully fetched market data
+{
+  "ticker": "VLB",
+  "latestEntry": {
+    "open": 49000,
+    "high": 49000,
+    "low": 47600,
+    "close": 48100,
+    "volume": 81100,
+    "tradingDate": "2025-07-22T08:00:00.000Z"
+  }
+}
+--------------------------------------------------------------------------------
+[2025-07-22T09:05:11.051Z] [INFO] [TCBS] Updated cache for VLB
+{
+  "price": 48100,
+  "timestamp": 1753175110421
+}
+--------------------------------------------------------------------------------
+[2025-07-22T09:05:11.051Z] [INFO] [TCBS] Market data fetch completed
+{
+  "totalRequested": 3,
+  "cacheHits": 2,
+  "cacheMisses": 1,
+  "errors": 0,
+  "fetchTime": "630ms",
+  "totalTime": "633ms"
+}
+--------------------------------------------------------------------------------
+[2025-07-22T09:05:11.063Z] [INFO] [TCBS] Batch cache HIT for [HCM,HDG,VLB]
+--------------------------------------------------------------------------------
+[2025-07-22T09:05:11.063Z] [INFO] [TCBS] Market data API (cached batch) completed in 2ms
+--------------------------------------------------------------------------------
+[2025-07-22T09:06:00.782Z] [INFO] [TCBS] Batch cache HIT for [HCM,HDG,VLB]
+--------------------------------------------------------------------------------
+[2025-07-22T09:06:00.782Z] [INFO] [TCBS] Market data API (cached batch) completed in 3ms
+--------------------------------------------------------------------------------
+[2025-07-22T09:06:04.493Z] [INFO] [TCBS] Batch cache HIT for [HCM,HDG,VLB]
+--------------------------------------------------------------------------------
+[2025-07-22T09:06:04.493Z] [INFO] [TCBS] Market data API (cached batch) completed in 3ms
+--------------------------------------------------------------------------------
+[2025-07-22T09:06:41.052Z] [INFO] [TCBS] Batch cache HIT for [HCM,HDG,VLB]
+--------------------------------------------------------------------------------
+[2025-07-22T09:06:41.052Z] [INFO] [TCBS] Market data API (cached batch) completed in 4ms
+--------------------------------------------------------------------------------
+[2025-07-22T09:17:58.776Z] [INFO] [TCBS] Market data request received
+{
+  "userId": "cmdcw5pb60000dcyk0t6zw3c2",
+  "tickers": [
+    "HCM",
+    "HDG",
+    "VLB"
+  ],
+  "cacheDuration": "60 minutes"
+}
+--------------------------------------------------------------------------------
+[2025-07-22T09:17:58.777Z] [DEBUG] [TCBS] Starting market data fetch with caching
+{
+  "tickers": [
+    "HCM",
+    "HDG",
+    "VLB"
+  ]
+}
+--------------------------------------------------------------------------------
+[2025-07-22T09:17:58.899Z] [INFO] [TCBS] Cache HIT for HCM
+{
+  "cacheAge": "31 minutes old"
+}
+--------------------------------------------------------------------------------
+[2025-07-22T09:17:58.900Z] [INFO] [TCBS] Cache HIT for HDG
+{
+  "cacheAge": "35 minutes old"
+}
+--------------------------------------------------------------------------------
+[2025-07-22T09:17:58.900Z] [INFO] [TCBS] Cache HIT for VLB
+{
+  "cacheAge": "13 minutes old"
+}
+--------------------------------------------------------------------------------
+[2025-07-22T09:17:58.900Z] [INFO] [TCBS] Market data fetch completed
+{
+  "totalRequested": 3,
+  "cacheHits": 3,
+  "cacheMisses": 0,
+  "errors": 0,
+  "fetchTime": "123ms",
+  "totalTime": "129ms"
+}
+--------------------------------------------------------------------------------
+[2025-07-22T09:17:58.915Z] [INFO] [TCBS] Batch cache HIT for [HCM,HDG,VLB]
+--------------------------------------------------------------------------------
+[2025-07-22T09:17:58.915Z] [INFO] [TCBS] Market data API (cached batch) completed in 4ms
+--------------------------------------------------------------------------------
+[2025-07-22T09:18:04.838Z] [INFO] [TCBS] Batch cache HIT for [HCM,HDG,VLB]
+--------------------------------------------------------------------------------
+[2025-07-22T09:18:04.838Z] [INFO] [TCBS] Market data API (cached batch) completed in 3ms
+--------------------------------------------------------------------------------
+[2025-07-22T09:18:12.582Z] [INFO] [TCBS] Batch cache HIT for [HCM,HDG,VLB]
+--------------------------------------------------------------------------------
+[2025-07-22T09:18:12.582Z] [INFO] [TCBS] Market data API (cached batch) completed in 2ms
+--------------------------------------------------------------------------------
+[2025-07-22T09:51:15.953Z] [INFO] [TCBS] Market data request received
+{
+  "userId": "cmdcw5pb60000dcyk0t6zw3c2",
+  "tickers": [
+    "HCM",
+    "HDG",
+    "VLB"
+  ],
+  "cacheDuration": "60 minutes"
+}
+--------------------------------------------------------------------------------
+[2025-07-22T09:51:15.955Z] [DEBUG] [TCBS] Starting market data fetch with caching
+{
+  "tickers": [
+    "HCM",
+    "HDG",
+    "VLB"
+  ]
+}
+--------------------------------------------------------------------------------
+[2025-07-22T09:51:16.080Z] [INFO] [TCBS] Cache EXPIRED for HCM
+{
+  "cacheAge": "64 minutes old",
+  "cacheDuration": "60 minutes"
+}
+--------------------------------------------------------------------------------
+[2025-07-22T09:51:16.080Z] [INFO] [TCBS] Fetching market data from TCBS API
+{
+  "ticker": "HCM",
+  "from": 1753056000,
+  "to": 1753142400,
+  "url": "https://apipubaws.tcbs.com.vn/stock-insight/v1/stock/bars-long-term?ticker=HCM&type=stock&resolution=D&from=1753056000&to=1753142400"
+}
+--------------------------------------------------------------------------------
+[2025-07-22T09:51:16.088Z] [INFO] [TCBS] Cache EXPIRED for HDG
+{
+  "cacheAge": "68 minutes old",
+  "cacheDuration": "60 minutes"
+}
+--------------------------------------------------------------------------------
+[2025-07-22T09:51:16.088Z] [INFO] [TCBS] Fetching market data from TCBS API
+{
+  "ticker": "HDG",
+  "from": 1753056000,
+  "to": 1753142400,
+  "url": "https://apipubaws.tcbs.com.vn/stock-insight/v1/stock/bars-long-term?ticker=HDG&type=stock&resolution=D&from=1753056000&to=1753142400"
+}
+--------------------------------------------------------------------------------
+[2025-07-22T09:51:16.090Z] [INFO] [TCBS] Cache HIT for VLB
+{
+  "cacheAge": "46 minutes old"
+}
+--------------------------------------------------------------------------------
+[2025-07-22T09:51:16.312Z] [INFO] [TCBS] TCBS API response status
+{
+  "ticker": "HCM",
+  "status": 200
+}
+--------------------------------------------------------------------------------
+[2025-07-22T09:51:16.314Z] [DEBUG] [TCBS] API response structure
+{
+  "ticker": "HCM",
+  "keys": [
+    "ticker",
+    "data",
+    "dataT1"
+  ],
+  "sample": "{\"ticker\":\"HCM\",\"data\":[{\"open\":24350,\"high\":25600,\"low\":24300,\"close\":25300,\"volume\":17997100,\"tradingDate\":\"2025-07-22T08:00:00.000Z\"}],\"dataT1\":null}"
+}
+--------------------------------------------------------------------------------
+[2025-07-22T09:51:16.314Z] [INFO] [TCBS] Successfully fetched market data
+{
+  "ticker": "HCM",
+  "latestEntry": {
+    "open": 24350,
+    "high": 25600,
+    "low": 24300,
+    "close": 25300,
+    "volume": 17997100,
+    "tradingDate": "2025-07-22T08:00:00.000Z"
+  }
+}
+--------------------------------------------------------------------------------
+[2025-07-22T09:51:16.316Z] [INFO] [TCBS] TCBS API response status
+{
+  "ticker": "HDG",
+  "status": 200
+}
+--------------------------------------------------------------------------------
+[2025-07-22T09:51:16.316Z] [DEBUG] [TCBS] API response structure
+{
+  "ticker": "HDG",
+  "keys": [
+    "ticker",
+    "data",
+    "dataT1"
+  ],
+  "sample": "{\"ticker\":\"HDG\",\"data\":[{\"open\":26550,\"high\":27350,\"low\":26150,\"close\":27300,\"volume\":6776700,\"tradingDate\":\"2025-07-22T08:00:00.000Z\"}],\"dataT1\":null}"
+}
+--------------------------------------------------------------------------------
+[2025-07-22T09:51:16.316Z] [INFO] [TCBS] Successfully fetched market data
+{
+  "ticker": "HDG",
+  "latestEntry": {
+    "open": 26550,
+    "high": 27350,
+    "low": 26150,
+    "close": 27300,
+    "volume": 6776700,
+    "tradingDate": "2025-07-22T08:00:00.000Z"
+  }
+}
+--------------------------------------------------------------------------------
+[2025-07-22T09:51:16.431Z] [INFO] [TCBS] Updated cache for HDG
+{
+  "price": 27300,
+  "timestamp": 1753177875955
+}
+--------------------------------------------------------------------------------
+[2025-07-22T09:51:16.438Z] [INFO] [TCBS] Updated cache for HCM
+{
+  "price": 25300,
+  "timestamp": 1753177875955
+}
+--------------------------------------------------------------------------------
+[2025-07-22T09:51:16.438Z] [INFO] [TCBS] Market data fetch completed
+{
+  "totalRequested": 3,
+  "cacheHits": 1,
+  "cacheMisses": 2,
+  "errors": 0,
+  "fetchTime": "483ms",
+  "totalTime": "490ms"
+}
+--------------------------------------------------------------------------------
+[2025-07-22T09:51:16.451Z] [INFO] [TCBS] Batch cache HIT for [HCM,HDG,VLB]
+--------------------------------------------------------------------------------
+[2025-07-22T09:51:16.451Z] [INFO] [TCBS] Market data API (cached batch) completed in 2ms
+--------------------------------------------------------------------------------

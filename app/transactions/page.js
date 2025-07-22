@@ -11,11 +11,13 @@ import Pagination from '../components/Pagination';
 import SigninModal from '../components/SigninModal';
 import ProfitStatistics from '../components/ProfitStatistics';
 import DividendEventForm from '../components/DividendEventForm';
+import { useNotification } from '../components/Notification';
 
 function TransactionsContent() {
   const { data: session, status } = useSession();
   const router = useRouter();
   const searchParams = useSearchParams();
+  const { showSuccess } = useNotification();
   
   const [transactions, setTransactions] = useState([]);
   const [profitStats, setProfitStats] = useState(null);
@@ -71,7 +73,23 @@ function TransactionsContent() {
     }
   }, [status, filters]);
 
-  // Update when page changes
+  // Separate useEffect for profit stats - only when non-pagination filters change
+  useEffect(() => {
+    if (status === 'authenticated') {
+      fetchProfitStats();
+    }
+  }, [
+    status,
+    filters.ticker,
+    filters.type, 
+    filters.dateFrom,
+    filters.dateTo,
+    filters.minAmount,
+    filters.maxAmount
+    // Note: NOT including page and pageSize here!
+  ]);
+
+  // Update when page changes (transactions only, not profit stats)
   useEffect(() => {
     if (status === 'authenticated') {
       handleFilterChange({ page: currentPage.toString(), pageSize: pageSize.toString() });
@@ -117,7 +135,6 @@ function TransactionsContent() {
       const data = await response.json();
       setTransactions(data.transactions);
       setTotalItems(data.totalCount);
-      setProfitStats(data.profitStats);
       
       // Calculate total pages
       const total = Math.ceil(data.totalCount / pageSize);
@@ -133,9 +150,51 @@ function TransactionsContent() {
     }
   };
 
+  const fetchProfitStats = async () => {
+    try {
+      // Build query string for profit stats (same filters but no pagination)
+      const params = new URLSearchParams();
+      
+      if (filters.ticker) params.append('ticker', filters.ticker);
+      if (filters.type) params.append('type', filters.type);
+      if (filters.dateFrom) params.append('dateFrom', filters.dateFrom);
+      if (filters.dateTo) params.append('dateTo', filters.dateTo);
+      if (filters.minAmount) params.append('minAmount', filters.minAmount);
+      if (filters.maxAmount) params.append('maxAmount', filters.maxAmount);
+      
+      const queryString = params.toString();
+      const url = `/api/profit-stats${queryString ? `?${queryString}` : ''}`;
+      
+      const response = await fetch(url);
+      if (!response.ok) {
+        throw new Error('Không thể tải thống kê lãi lỗ');
+      }
+      const data = await response.json();
+      setProfitStats(data.profitStats);
+    } catch (err) {
+      console.error('Fetch profit stats error:', err);
+      // Set default stats on error
+      setProfitStats({
+        totalProfitLoss: 0,
+        profitableTransactions: 0,
+        unprofitableTransactions: 0,
+        totalTransactions: 0,
+        successRate: 0,
+        averageProfit: 0,
+        totalProfit: 0,
+        totalLoss: 0
+      });
+    }
+  };
+
   const handleFilterChange = (newFilters) => {
+    // Check if non-pagination filters are changing
+    const nonPaginationFiltersChanged = Object.keys(newFilters).some(key => 
+      key !== 'page' && key !== 'pageSize'
+    );
+    
     // If changing filters other than pagination, reset to page 1
-    if (Object.keys(newFilters).some(key => key !== 'page' && key !== 'pageSize')) {
+    if (nonPaginationFiltersChanged) {
       newFilters.page = '1';
       setCurrentPage(1);
     }
@@ -152,6 +211,11 @@ function TransactionsContent() {
     
     const queryString = params.toString();
     router.push(`/transactions${queryString ? `?${queryString}` : ''}`);
+    
+    // Fetch profit stats only if non-pagination filters changed
+    if (nonPaginationFiltersChanged && status === 'authenticated') {
+      fetchProfitStats();
+    }
   };
 
   const handleDeleteTransaction = (id) => {
@@ -188,7 +252,7 @@ function TransactionsContent() {
     console.log('Dividend created successfully:', result);
     setIsDividendModalOpen(false);
     // Show success message
-    alert(`✅ ${result.adjustmentType} cho ${result.ticker} đã được tạo thành công!`);
+    showSuccess(`✅ ${result.adjustmentType} cho ${result.ticker} đã được tạo thành công!`);
     // Refresh transactions to show updated cost basis
     fetchTransactions();
   };
@@ -405,7 +469,7 @@ function TransactionsContent() {
         isOpen={isAddModalOpen}
         onClose={() => setIsAddModalOpen(false)}
         onSuccess={(message) => {
-          alert(message);
+          showSuccess(message);
           fetchTransactions();
         }}
       />

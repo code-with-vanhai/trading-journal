@@ -2,6 +2,7 @@ import { Inter } from 'next/font/google';
 import './globals.css';
 import { AuthProvider } from './context/AuthContext';
 import ConditionalLayout from './components/ConditionalLayout';
+import { NotificationProvider } from './components/Notification';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -18,9 +19,11 @@ export default function RootLayout({ children }) {
       </head>
       <body className={`${inter.className} bg-background min-h-screen`}>
         <AuthProvider>
-          <ConditionalLayout>
-            {children}
-          </ConditionalLayout>
+          <NotificationProvider>
+            <ConditionalLayout>
+              {children}
+            </ConditionalLayout>
+          </NotificationProvider>
         </AuthProvider>
       </body>
     </html>

@@ -16,7 +16,7 @@
 
 Trading Journal là nền tảng toàn diện giúp nhà đầu tư Việt Nam quản lý danh mục, theo dõi giao dịch và phân tích hiệu suất một cách khoa học. Với tích hợp dữ liệu thị trường từ TCBS và công nghệ AI, chúng tôi giúp bạn đưa ra quyết định đầu tư thông minh hơn.
 
-## ✨ Tính năng chính
+### ✨ Tính năng chính
 
 ### 🔐 Quản lý tài khoản nâng cao
 - **Xác thực bảo mật**: Đăng nhập bằng email/username với NextAuth.js
@@ -64,6 +64,19 @@ Trading Journal là nền tảng toàn diện giúp nhà đầu tư Việt Nam q
 - **Tối ưu truy vấn**: Raw SQL cho các thao tác quan trọng
 - **Thời gian phản hồi**: <200ms cho request có cache
 - **Quản lý bộ nhớ**: Singleton Prisma và LRU cache
+
+### 🆕 Các tính năng mới nổi bật
+
+- **🔔 Notification system:** Thay thế toàn bộ alert() bằng hệ thống notification nhỏ, tự động biến mất, hiển thị góc trên bên phải, hỗ trợ nhiều loại (success, error, warning, info).
+- **💡 Toggle giá vốn điều chỉnh/gốc:** Cho phép chuyển đổi giữa giá vốn đã điều chỉnh (sau cổ tức/quyền) và giá vốn gốc, cập nhật tức thì trên danh mục.
+- **📱 Responsive compact controls:** Thanh chọn tài khoản và giá vốn được thiết kế lại nhỏ gọn, responsive, không gây layout shift, hỗ trợ tooltip khi hover.
+- **🎨 Icon consistency & tooltips:** Chuẩn hóa toàn bộ action buttons (Xem, Sửa, Xóa, Thêm, Loading) dùng FontAwesome icons, màu sắc nhất quán, kèm tooltip tiếng Việt mô tả ngắn gọn.
+- **🧮 Tính toán giá vốn tự động sau sự kiện quyền:** Hệ thống tự động cập nhật giá vốn cho từng mã cổ phiếu sau các sự kiện cổ tức tiền mặt, cổ tức cổ phiếu, tách/gộp cổ phiếu, phát hành quyền mua.
+- **🖱️ UX improvements:** Tooltip mô tả, hiệu ứng hover, loading spinner cho thao tác bất đồng bộ, disabled state rõ ràng, color coding theo loại thao tác.
+- **🌐 Vietnamese tooltips:** Tất cả icon action đều có tooltip tiếng Việt, nhất quán trên mọi trang.
+- **⏳ Loading spinner:** Hiển thị icon loading động khi thao tác xóa/chờ xử lý.
+- **🖼️ Standardized FontAwesome icons:** 100% action sử dụng FontAwesome, không còn SVG/custom icon lẻ.
+- **📲 Mobile-first controls:** Các controls chính đều responsive, tối ưu cho mobile, ẩn label khi cần, giữ trải nghiệm mượt mà.
 
 ## 🛠️ Công nghệ sử dụng
 
