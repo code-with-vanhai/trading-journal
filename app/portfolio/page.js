@@ -1,9 +1,10 @@
 'use client';
 
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useMemo } from 'react';
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import { Spinner } from '../components/ui/Spinner';
+import Pagination from '../components/Pagination';
 import PortfolioPieChart from '../components/PortfolioPieChart';
 import AccountAllocationPieChart from '../components/AccountAllocationPieChart';
 import TransferStocksModal from '../components/TransferStocksModal';
@@ -27,6 +28,15 @@ export default function PortfolioPage() {
   const [marketDataLoading, setMarketDataLoading] = useState(false);
   const [error, setError] = useState(null);
   const [lastFetchTimestamp, setLastFetchTimestamp] = useState(null);
+  
+  // Pagination states
+  const [currentPage, setCurrentPage] = useState(1);
+  const [pageSize, setPageSize] = useState(25);
+  const [totalItems, setTotalItems] = useState(0);
+  const [totalPages, setTotalPages] = useState(0);
+  const [totalSummary, setTotalSummary] = useState({ totalCostBasis: 0, totalPositions: 0 });
+  const [allPortfolioForCharts, setAllPortfolioForCharts] = useState([]);
+  const [enrichedAllPortfolio, setEnrichedAllPortfolio] = useState([]);
   
   // Cost Basis Adjustments state
   const [useAdjustedCostBasis, setUseAdjustedCostBasis] = useState(true);
@@ -114,9 +124,9 @@ export default function PortfolioPage() {
     }
   }, []);
 
-  // Combined data fetching effect
+  // Portfolio data fetching effect (includes pagination)
   useEffect(() => {
-    const fetchData = async () => {
+    const fetchPortfolioData = async () => {
       if (status !== 'authenticated') {
         setLoading(false);
         return;
@@ -144,18 +154,30 @@ export default function PortfolioPage() {
         }
       }
 
-      // Check if we need to fetch new data
+      // For pagination changes, don't check cache - always fetch fresh data
+      const isPaginationChange = typeof window !== 'undefined' && 
+        localStorage.getItem('portfolioPaginationChange') === 'true';
+      
+      if (isPaginationChange) {
+        localStorage.removeItem('portfolioPaginationChange');
+        shouldFetchFresh = true;
+      }
+
+      // Check if we need to fetch new data (skip cache check for pagination)
       const now = Date.now();
-      if (!shouldFetchFresh && lastFetchTimestamp && now - lastFetchTimestamp < CACHE_DURATION) {
-        console.log('[Portfolio] Using cached data');
+      if (!shouldFetchFresh && !isPaginationChange && lastFetchTimestamp && now - lastFetchTimestamp < CACHE_DURATION) {
+        console.log('[Portfolio] Using cached data - SKIPPING FETCH');
         return;
       }
 
       try {
-        setLoading(true);
+        // Only show loading spinner for non-pagination changes
+        if (!isPaginationChange) {
+          setLoading(true);
+        }
         console.log('[Portfolio] Fetching portfolio data');
         
-        // Build URL with account filter and adjustments if selected
+        // Build URL with account filter, adjustments and pagination
         const params = new URLSearchParams();
         if (selectedAccountId) {
           params.append('stockAccountId', selectedAccountId);
@@ -163,10 +185,13 @@ export default function PortfolioPage() {
         if (useAdjustedCostBasis) {
           params.append('includeAdjustments', 'true');
         }
+        params.append('page', currentPage.toString());
+        params.append('pageSize', pageSize.toString());
         
         const url = `/api/portfolio${params.toString() ? `?${params.toString()}` : ''}`;
         console.log('[Portfolio] Fetching URL:', url);
         console.log('[Portfolio] Cost basis mode:', useAdjustedCostBasis ? 'Adjusted' : 'Original');
+        console.log(`[Portfolio] Pagination: page=${currentPage}, pageSize=${pageSize}`);
         
         const response = await fetch(url);
         
@@ -181,31 +206,79 @@ export default function PortfolioPage() {
           setPortfolio([]);
         } else {
           console.log(`[Portfolio] Loaded ${data.portfolio.length} holdings`);
+          console.log(`[Portfolio] Total count: ${data.totalCount}, Total pages: ${data.totalPages}`);
+          console.log(`[Portfolio] Current page: ${data.page}, Page size: ${data.pageSize}`);
           setPortfolio(data.portfolio);
+          setTotalItems(data.totalCount || 0);
+          setTotalPages(data.totalPages || 0);
+          
+          // Set total summary for overview (not affected by pagination)
+          if (data.totalSummary) {
+            setTotalSummary(data.totalSummary);
+          }
+          
+          // Set all portfolio data for charts (not affected by pagination)
+          if (data.allPortfolioForCharts) {
+            setAllPortfolioForCharts(data.allPortfolioForCharts);
+          }
           
           // Set account allocations (only available when not filtering by specific account)
           if (data.accountAllocations) {
             setAccountAllocations(data.accountAllocations);
           }
-          
-          // Fetch market data if we have holdings
-          if (data.portfolio.length > 0) {
-            const tickers = data.portfolio.map(item => item.ticker);
-            await fetchMarketData(tickers);
-          }
         }
         
-        setLastFetchTimestamp(now);
+        // Only update timestamp for non-pagination changes
+        if (!isPaginationChange) {
+          setLastFetchTimestamp(now);
+        }
       } catch (err) {
         console.error('[Portfolio] Error:', err);
         setError(err.message);
       } finally {
-        setLoading(false);
+        // Only clear loading state if it was set (for non-pagination changes)
+        if (!isPaginationChange) {
+          setLoading(false);
+        }
       }
     };
 
-    fetchData();
-  }, [status, selectedAccountId, useAdjustedCostBasis, fetchMarketData, lastFetchTimestamp]);
+    fetchPortfolioData();
+  }, [status, selectedAccountId, useAdjustedCostBasis, lastFetchTimestamp, currentPage, pageSize]);
+
+  // Market data fetching effect (separate from portfolio data)
+  useEffect(() => {
+    const fetchMarketDataForPortfolio = async () => {
+      // Use allPortfolioForCharts for complete market data, fallback to portfolio for pagination
+      const dataSource = allPortfolioForCharts.length > 0 ? allPortfolioForCharts : portfolio;
+      if (dataSource.length > 0) {
+        const tickers = dataSource.map(item => item.ticker);
+        await fetchMarketData(tickers);
+      }
+    };
+
+    fetchMarketDataForPortfolio();
+  }, [portfolio, allPortfolioForCharts, fetchMarketData]);
+
+  const handlePageChange = (newPage) => {
+    console.log(`[Portfolio] Changing page from ${currentPage} to ${newPage}`);
+    setCurrentPage(newPage);
+    // Mark as pagination change for optimized fetching
+    if (typeof window !== 'undefined') {
+      localStorage.setItem('portfolioPaginationChange', 'true');
+    }
+  };
+
+  const handlePageSizeChange = (newPageSize) => {
+    const newSize = parseInt(newPageSize, 10);
+    console.log(`[Portfolio] Changing page size from ${pageSize} to ${newSize}`);
+    setPageSize(newSize);
+    setCurrentPage(1); // Reset to first page when changing page size
+    // Mark as pagination change for optimized fetching
+    if (typeof window !== 'undefined') {
+      localStorage.setItem('portfolioPaginationChange', 'true');
+    }
+  };
 
   // Calculate enriched portfolio data
   useEffect(() => {
@@ -244,10 +317,59 @@ export default function PortfolioPage() {
     setEnrichedPortfolio(enriched);
   }, [portfolio, marketData]);
 
+  // Calculate enriched all portfolio data for charts (not affected by pagination)
+  useEffect(() => {
+    if (!allPortfolioForCharts.length || !Object.keys(marketData).length) return;
+
+    console.log('[Portfolio] Calculating all portfolio metrics for charts');
+    
+    const enrichedAll = allPortfolioForCharts.map(holding => {
+      const currentPrice = marketData[holding.ticker];
+      
+      if (typeof currentPrice === 'number' && !isNaN(currentPrice)) {
+        const marketValue = holding.quantity * currentPrice;
+        const unrealizedPL = marketValue - (holding.quantity * holding.avgCost);
+        const plPercentage = holding.avgCost > 0 
+          ? ((currentPrice - holding.avgCost) / holding.avgCost) * 100 
+          : 0;
+        
+        return {
+          ...holding,
+          currentPrice,
+          marketValue,
+          unrealizedPL,
+          plPercentage
+        };
+      }
+      
+      return {
+        ...holding,
+        currentPrice: null,
+        marketValue: null,
+        unrealizedPL: null,
+        plPercentage: null
+      };
+    });
+
+    setEnrichedAllPortfolio(enrichedAll);
+  }, [allPortfolioForCharts, marketData]);
+
+  // Memoized chart data that only changes when account or cost basis changes
+  const chartData = useMemo(() => {
+    if (!enrichedAllPortfolio.length) return [];
+    
+    console.log('[Portfolio] Calculating chart data');
+    return enrichedAllPortfolio.filter(h => h.marketValue && h.marketValue > 0);
+  }, [selectedAccountId, useAdjustedCostBasis, enrichedAllPortfolio.length]);
+
   const handleAccountChange = (e) => {
     setSelectedAccountId(e.target.value);
     // Clear selections when changing accounts
     setSelectedStocks([]);
+    // Reset pagination when changing accounts
+    setCurrentPage(1);
+    // Force refresh for account change (not pagination)
+    setLastFetchTimestamp(null);
   };
 
   // Stock selection handlers
@@ -303,12 +425,13 @@ export default function PortfolioPage() {
     setSelectedStocks([]);
     setTransferModalOpen(false);
     
-    // Trigger data refresh
+    // Trigger data refresh for transfer (not pagination)
     if (typeof window !== 'undefined') {
       localStorage.setItem('portfolioDataUpdated', Date.now().toString());
     }
     
-    // Force refresh
+    // Reset pagination and force refresh for transfer
+    setCurrentPage(1);
     setLastFetchTimestamp(null);
   };
 
@@ -434,7 +557,13 @@ export default function PortfolioPage() {
                       <div className="relative group">
                         <button
                           id="adjustedCostBasisToggle"
-                          onClick={() => setUseAdjustedCostBasis(!useAdjustedCostBasis)}
+                          onClick={() => {
+                            setUseAdjustedCostBasis(!useAdjustedCostBasis);
+                            // Reset pagination when changing cost basis mode
+                            setCurrentPage(1);
+                            // Force refresh for cost basis change (not pagination)
+                            setLastFetchTimestamp(null);
+                          }}
                           className={`px-3 py-2 rounded-lg text-xs sm:text-sm font-medium transition-all duration-200 border w-20 sm:w-24 lg:w-28 ${
                             useAdjustedCostBasis
                               ? 'bg-green-500/20 text-green-100 border-green-400/50 hover:bg-green-500/30'
@@ -513,8 +642,7 @@ export default function PortfolioPage() {
                         <div>
                           <h3 className="text-sm text-blue-700 font-medium mb-2">Tổng Giá Vốn</h3>
                           <p className="text-2xl font-bold text-blue-900">
-                            {portfolio.reduce((sum, item) => sum + (item.quantity * item.avgCost), 0)
-                              .toLocaleString('vi-VN')} VND
+                            {totalSummary.totalCostBasis.toLocaleString('vi-VN')} VND
                           </p>
                         </div>
                         <i className="fas fa-coins text-blue-500 text-2xl"></i>
@@ -525,8 +653,8 @@ export default function PortfolioPage() {
                         <div>
                           <h3 className="text-sm text-green-700 font-medium mb-2">Tổng Giá Trị Thị Trường</h3>
                           <p className="text-2xl font-bold text-green-900">
-                            {marketData && enrichedPortfolio.length > 0 
-                              ? enrichedPortfolio.reduce((sum, item) => sum + (item.marketValue || 0), 0)
+                            {marketData && enrichedAllPortfolio.length > 0 
+                              ? enrichedAllPortfolio.reduce((sum, item) => sum + (item.marketValue || 0), 0)
                                   .toLocaleString('vi-VN')
                               : 'N/A'} VND
                           </p>
@@ -538,14 +666,14 @@ export default function PortfolioPage() {
                       <div className="flex items-center justify-between">
                         <div>
                           <h3 className="text-sm text-purple-700 font-medium mb-2">Tổng Lãi/Lỗ Tạm tính</h3>
-                          {marketData && enrichedPortfolio.length > 0 ? (
+                          {marketData && enrichedAllPortfolio.length > 0 ? (
                             <p className={`text-2xl font-bold ${
-                              enrichedPortfolio.reduce((sum, item) => sum + (item.unrealizedPL || 0), 0) >= 0 
+                              enrichedAllPortfolio.reduce((sum, item) => sum + (item.unrealizedPL || 0), 0) >= 0 
                                 ? 'text-green-600' 
                                 : 'text-red-600'
                             }`}>
-                              {enrichedPortfolio.reduce((sum, item) => sum + (item.unrealizedPL || 0), 0) >= 0 ? '+' : ''}
-                              {enrichedPortfolio.reduce((sum, item) => sum + (item.unrealizedPL || 0), 0)
+                              {enrichedAllPortfolio.reduce((sum, item) => sum + (item.unrealizedPL || 0), 0) >= 0 ? '+' : ''}
+                              {enrichedAllPortfolio.reduce((sum, item) => sum + (item.unrealizedPL || 0), 0)
                                 .toLocaleString('vi-VN')} VND
                             </p>
                           ) : (
@@ -553,7 +681,7 @@ export default function PortfolioPage() {
                           )}
                         </div>
                         <i className={`fas fa-chart-line text-2xl ${
-                          marketData && enrichedPortfolio.length > 0 && enrichedPortfolio.reduce((sum, item) => sum + (item.unrealizedPL || 0), 0) >= 0 
+                          marketData && enrichedAllPortfolio.length > 0 && enrichedAllPortfolio.reduce((sum, item) => sum + (item.unrealizedPL || 0), 0) >= 0 
                             ? 'text-green-500' 
                             : 'text-red-500'
                         }`}></i>
@@ -586,10 +714,23 @@ export default function PortfolioPage() {
               )}
               
               <div className="overflow-x-auto bg-white rounded-lg shadow-lg">
-                <div className="p-4 bg-gradient-to-r from-gray-50 to-gray-100 border-b border-gray-200">
+                <div className="p-6 bg-gradient-to-r from-blue-50 to-indigo-50 border-b border-gray-200 flex justify-between items-center">
                   <div className="flex items-center">
-                    <i className="fas fa-table text-gray-600 mr-2"></i>
-                    <h3 className="font-semibold text-gray-800">Chi tiết danh mục</h3>
+                    <i className="fas fa-chart-bar text-blue-600 text-xl mr-3"></i>
+                    <div className="font-semibold text-gray-800">Chi tiết danh mục: {totalSummary.totalPositions} positions</div>
+                  </div>
+                  <div className="flex items-center space-x-2">
+                    <label className="text-sm text-gray-600 font-medium">Hiển thị:</label>
+                    <select
+                      value={pageSize}
+                      onChange={(e) => handlePageSizeChange(e.target.value)}
+                      className="border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    >
+                      <option value="10">10</option>
+                      <option value="25">25</option>
+                      <option value="50">50</option>
+                      <option value="100">100</option>
+                    </select>
                   </div>
                 </div>
                 <table className="min-w-full divide-y divide-gray-200">
@@ -734,7 +875,18 @@ export default function PortfolioPage() {
                     })}
                   </tbody>
                 </table>
+                
+                {totalPages > 1 && (
+                  <div className="p-6 border-t border-gray-200 bg-gray-50">
+                    <Pagination 
+                      currentPage={currentPage}
+                      totalPages={totalPages}
+                      onPageChange={handlePageChange}
+                    />
+                  </div>
+                )}
               </div>
+
             </div>
             
             <div className="lg:col-span-3 space-y-6">
@@ -745,7 +897,7 @@ export default function PortfolioPage() {
                 </div>
               ) : (
                 <PortfolioPieChart 
-                  holdings={enrichedPortfolio.filter(h => h.marketValue && h.marketValue > 0)} 
+                  holdings={chartData} 
                 />
               )}
               

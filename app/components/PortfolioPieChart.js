@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, memo } from 'react';
 import { Pie } from 'react-chartjs-2';
 import {
   Chart as ChartJS,
@@ -13,7 +13,7 @@ import {
 // Register the required components
 ChartJS.register(ArcElement, Tooltip, Legend, Colors);
 
-export default function PortfolioPieChart({ holdings }) {
+function PortfolioPieChart({ holdings }) {
   const [hoveredTicker, setHoveredTicker] = useState(null);
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
 
@@ -196,4 +196,25 @@ export default function PortfolioPieChart({ holdings }) {
       )}
     </div>
   );
-} 
+}
+
+// Custom comparison function to prevent unnecessary re-renders
+const areEqual = (prevProps, nextProps) => {
+  // If both are empty or null, they're equal
+  if (!prevProps.holdings && !nextProps.holdings) return true;
+  if (!prevProps.holdings || !nextProps.holdings) return false;
+  
+  // If lengths are different, they're not equal
+  if (prevProps.holdings.length !== nextProps.holdings.length) return false;
+  
+  // Compare each holding's key properties that affect the chart
+  return prevProps.holdings.every((prevHolding, index) => {
+    const nextHolding = nextProps.holdings[index];
+    return (
+      prevHolding.ticker === nextHolding.ticker &&
+      prevHolding.marketValue === nextHolding.marketValue
+    );
+  });
+};
+
+export default memo(PortfolioPieChart, areEqual); 

@@ -26,7 +26,10 @@
     "test:db:migrate": "node tests/setup/db-migrate.js",
     "test:db:seed": "node tests/setup/db-seed.js",
     "test:db:clean": "node tests/setup/db-clean.js",
-    "test:db-migration": "node tests/db-migration-suite.js"
+    "test:db-migration": "node tests/db-migration-suite.js",
+    "test:performance": "node tests/performance/run-performance-tests.js",
+    "test:performance:db": "jest tests/performance/database-optimization.test.js",
+    "test:performance:api": "jest tests/performance/api-performance.test.js"
   },
   "keywords": [
     "trading",

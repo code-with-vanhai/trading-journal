@@ -36,6 +36,9 @@ model Transaction {
   @@index([userId, transactionDate])
   @@index([userId, ticker])
   @@index([stockAccountId])
+  @@index([userId, transactionDate, ticker])
+  @@index([userId, stockAccountId, ticker])
+  @@index([type, userId])
 }
 
 model JournalEntry {
@@ -124,6 +127,9 @@ model PurchaseLot {
 
   @@index([userId, ticker, stockAccountId])
   @@index([purchaseDate])
+  @@index([remainingQuantity])
+  @@index([userId, stockAccountId, ticker, remainingQuantity])
+  @@index([userId, ticker, purchaseDate])
 }
 
 model AccountFee {

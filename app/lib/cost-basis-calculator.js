@@ -33,10 +33,10 @@ async function processBuyTransaction(userId, stockAccountId, ticker, quantity, p
 }
 
 /**
- * Xử lý giao dịch BÁN - áp dụng FIFO nghiêm ngặt
+ * Xử lý giao dịch BÁN - áp dụng FIFO nghiêm ngặt - Optimized version
  */
 async function processSellTransaction(userId, stockAccountId, ticker, quantity, price, fee, taxRate, transactionDate) {
-  // Lấy tất cả lô mua của ticker này trong cùng tài khoản, sắp xếp theo ngày mua (FIFO)
+  // Optimized: Select only necessary fields and add limit for better performance
   const availableLots = await prisma.purchaseLot.findMany({
     where: {
       userId,
@@ -46,9 +46,18 @@ async function processSellTransaction(userId, stockAccountId, ticker, quantity, 
         gt: 0
       }
     },
+    select: {
+      id: true,
+      quantity: true,
+      totalCost: true,
+      remainingQuantity: true,
+      purchaseDate: true
+    },
     orderBy: {
       purchaseDate: 'asc'
-    }
+    },
+    // ❌ REMOVED: take: 100 - Gây bug nghiêm trọng khi có > 100 lô mua
+    // Performance sẽ được tối ưu bằng caching và indexing thay vì limit data
   });
   
   if (availableLots.length === 0) {
@@ -142,7 +151,7 @@ async function getCurrentAvgCost(userId, stockAccountId, ticker) {
 }
 
 /**
- * Tính toán portfolio với giá vốn mới
+ * Tính toán portfolio với giá vốn mới - Optimized version
  */
 async function calculatePortfolioWithNewCostBasis(userId, stockAccountId = null) {
   const whereClause = {
@@ -156,11 +165,49 @@ async function calculatePortfolioWithNewCostBasis(userId, stockAccountId = null)
     whereClause.stockAccountId = stockAccountId;
   }
   
+  // Optimized: Select only necessary fields and include stock account in one query
   const activeLots = await prisma.purchaseLot.findMany({
-    where: whereClause
+    where: whereClause,
+    select: {
+      id: true,
+      ticker: true,
+      stockAccountId: true,
+      quantity: true,
+      totalCost: true,
+      remainingQuantity: true
+    },
+    orderBy: [
+      { ticker: 'asc' },
+      { stockAccountId: 'asc' }
+    ]
   });
   
-  // Nhóm theo ticker và tài khoản
+  // Get all unique stock account IDs for batch fetching
+  const stockAccountIds = [...new Set(activeLots.map(lot => lot.stockAccountId))];
+  
+  // Batch fetch stock accounts to avoid N+1 queries
+  const stockAccountsPromise = stockAccountIds.length > 0 
+    ? prisma.stockAccount.findMany({
+        where: {
+          id: { in: stockAccountIds }
+        },
+        select: {
+          id: true,
+          name: true,
+          brokerName: true
+        }
+      })
+    : Promise.resolve([]);
+  
+  const stockAccounts = await stockAccountsPromise;
+  
+  // Create stock account lookup map
+  const stockAccountMap = stockAccounts.reduce((map, account) => {
+    map[account.id] = account;
+    return map;
+  }, {});
+  
+  // Nhóm theo ticker và tài khoản - optimized grouping
   const portfolio = {};
   
   for (const lot of activeLots) {
@@ -173,44 +220,19 @@ async function calculatePortfolioWithNewCostBasis(userId, stockAccountId = null)
         quantity: 0,
         totalCost: 0,
         avgCost: 0,
-        stockAccount: null // Sẽ được populate sau
+        stockAccount: stockAccountMap[lot.stockAccountId] || null
       };
     }
     
-          const costPerShare = Math.round(lot.totalCost / lot.quantity); // Làm tròn giá vốn mỗi cổ phiếu
-      portfolio[key].quantity += lot.remainingQuantity;
-      portfolio[key].totalCost += lot.remainingQuantity * costPerShare;
+    const costPerShare = Math.round(lot.totalCost / lot.quantity);
+    portfolio[key].quantity += lot.remainingQuantity;
+    portfolio[key].totalCost += lot.remainingQuantity * costPerShare;
   }
   
   // Tính giá vốn trung bình cho mỗi ticker
   Object.values(portfolio).forEach(holding => {
-    holding.avgCost = holding.totalCost / holding.quantity;
+    holding.avgCost = holding.quantity > 0 ? holding.totalCost / holding.quantity : 0;
   });
-  
-  // Lấy thông tin stock accounts để populate stockAccount field
-  const stockAccountIds = [...new Set(Object.values(portfolio).map(p => p.stockAccountId))];
-  if (stockAccountIds.length > 0) {
-    const stockAccounts = await prisma.stockAccount.findMany({
-      where: {
-        id: { in: stockAccountIds }
-      },
-      select: {
-        id: true,
-        name: true,
-        brokerName: true
-      }
-    });
-    
-    const stockAccountMap = stockAccounts.reduce((map, account) => {
-      map[account.id] = account;
-      return map;
-    }, {});
-    
-    // Populate stockAccount information
-    Object.values(portfolio).forEach(holding => {
-      holding.stockAccount = stockAccountMap[holding.stockAccountId] || null;
-    });
-  }
   
   return Object.values(portfolio);
 }
