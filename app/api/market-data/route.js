@@ -5,9 +5,21 @@ import { serverLogger as logger, tcbsServerLogger as tcbsLogger } from '../../li
 import { PrismaClient } from '@prisma/client';
 import { sanitizeError, secureLog } from '../../lib/error-handler';
 
-// Create a singleton Prisma instance
+// Create a singleton Prisma instance with connection management
 const globalForPrisma = global;
-globalForPrisma.prisma = globalForPrisma.prisma || new PrismaClient();
+
+const prismaClientSingleton = () => {
+  return new PrismaClient({
+    log: process.env.NODE_ENV === 'development' ? ['query', 'error', 'warn'] : ['error'],
+    datasources: {
+      db: {
+        url: process.env.DATABASE_URL
+      }
+    }
+  });
+};
+
+globalForPrisma.prisma = globalForPrisma.prisma || prismaClientSingleton();
 const prisma = globalForPrisma.prisma;
 
 // Cache duration in milliseconds (1 hour default)
@@ -134,10 +146,15 @@ async function getStockPriceWithCache(ticker) {
       }
     }
     
-    // Check for existing cache entry in database
-    const cacheEntry = await prisma.stockPriceCache.findUnique({
-      where: { symbol: ticker }
-    });
+    // Check for existing cache entry in database with timeout
+    const cacheEntry = await Promise.race([
+      prisma.stockPriceCache.findUnique({
+        where: { symbol: ticker }
+      }),
+      new Promise((_, reject) => 
+        setTimeout(() => reject(new Error('Database query timeout')), 10000)
+      )
+    ]);
     
     // If cache entry exists and is not expired
     if (cacheEntry) {
@@ -239,23 +256,36 @@ async function getStockPriceWithCache(ticker) {
       timestamp: now
     });
     
-    // Store in database cache (upsert pattern)
-    await prisma.stockPriceCache.upsert({
-      where: { symbol: ticker },
-      update: { 
-        price,
-        lastUpdatedAt: new Date(now),
-        metadata: metadata || {},
-        updatedAt: new Date(now)
-      },
-      create: {
-        symbol: ticker,
-        price,
-        lastUpdatedAt: new Date(now),
-        metadata: metadata || {},
-        source: 'tcbs'
-      }
-    });
+    // Store in database cache (upsert pattern) with timeout
+    try {
+      await Promise.race([
+        prisma.stockPriceCache.upsert({
+          where: { symbol: ticker },
+          update: { 
+            price,
+            lastUpdatedAt: new Date(now),
+            metadata: metadata || {},
+            updatedAt: new Date(now)
+          },
+          create: {
+            symbol: ticker,
+            price,
+            lastUpdatedAt: new Date(now),
+            metadata: metadata || {},
+            source: 'tcbs'
+          }
+        }),
+        new Promise((_, reject) => 
+          setTimeout(() => reject(new Error('Database upsert timeout')), 10000)
+        )
+      ]);
+    } catch (dbError) {
+      // Log database error but don't fail the request
+      tcbsLogger.warning(`Database cache update failed for ${ticker}`, {
+        error: dbError.message
+      });
+      // Continue without caching to database
+    }
     
     tcbsLogger.info(`Updated cache for ${ticker}`, {
       price,
