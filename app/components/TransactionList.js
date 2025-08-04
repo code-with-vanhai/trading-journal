@@ -141,7 +141,7 @@ export default function TransactionList({
   return (
     <div>
       <div className="overflow-x-auto">
-        <table className="min-w-full bg-white">
+        <table className="min-w-full bg-white transaction-table">
           <thead className="bg-gray-50">
             <tr>
               <th

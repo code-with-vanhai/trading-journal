@@ -43,12 +43,12 @@ body {
     @apply bg-white shadow-md rounded-lg p-6;
   }
 
-  /* Ensure consistent table styling across all browsers */
-  table {
+  /* Ensure consistent table styling across all browsers - specific to transaction tables */
+  .transaction-table {
     @apply bg-white;
   }
   
-  tbody {
+  .transaction-table tbody {
     @apply bg-white;
   }
 
