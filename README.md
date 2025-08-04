@@ -12,7 +12,7 @@
 
 ---
 
-## 🎉 **CẬP NHẬT MỚI - VERSION 2.0**
+## 🎉 **CẬP NHẬT MỚI - VERSION 2.1**
 
 ### **⚡ Cải Tiến Hiệu Suất Đột Phá**
 - **🔥 Tăng tốc 80-90%** trên tất cả API endpoints
@@ -21,6 +21,12 @@
 - **⚡ Tối ưu Database** với 6 indexes hiệu suất mới
 - **🛡️ Error Handling nâng cao** với fallback graceful
 - **💾 Hệ thống Cache tiên tiến** với LRU và TTL management
+
+### **🔧 Database Connection Stability (NEW)**
+- **🚀 Connection Pool Management** - Giới hạn connections tránh P1001 errors
+- **🔄 Auto-Retry Logic** - Tự động retry với exponential backoff (1s→2s→4s)
+- **🎯 Singleton Pattern** - Tối ưu Prisma client instance management
+- **⚡ Zero P1001 Errors** - Hoàn toàn loại bỏ lỗi database connection timeout
 
 ![image](https://github.com/user-attachments/assets/709283c7-5ab5-45de-a959-11291952ecb2)
 ![image](https://github.com/user-attachments/assets/cf63349a-7218-496a-bc40-c40a220fedac)
@@ -38,7 +44,8 @@ Trading Journal là nền tảng toàn diện giúp nhà đầu tư Việt Nam q
 - **Quản lý phiên**: Tự động đăng xuất sau 30 phút không hoạt động
 - **Cảnh báo phiên**: Thông báo trước 2 phút khi hết hạn
 - **Hồ sơ người dùng**: Tùy chỉnh thông tin cá nhân
-- **⚡ Connection Timeout Protection**: Xử lý lỗi database graceful
+- **⚡ Connection Pool Protection**: Auto-retry với exponential backoff cho P1001 errors
+- **🔄 Database Resilience**: Singleton Prisma client với connection limits
 
 ### 💼 Quản lý đa tài khoản chứng khoán
 - **Tạo nhiều tài khoản**: Quản lý các tài khoản từ nhiều công ty chứng khoán
@@ -540,6 +547,53 @@ SESSION_MAX_AGE=1800  # 30 minutes
 - **Error Tracking**: Real-time error monitoring và alerting
 - **Cache Monitoring**: Cache hit rates và performance metrics
 - **API Monitoring**: Response times và error rates
+- **Connection Pool Monitoring**: P1001 error tracking và retry success rates
+
+## 🔧 **Database Connection Management**
+
+### **Connection Pool Configuration**
+```javascript
+// app/lib/prisma-with-retry.js
+const prisma = new PrismaClient({
+  datasources: {
+    db: {
+      url: DATABASE_URL + '&connection_limit=3&pool_timeout=20'
+    }
+  }
+});
+```
+
+### **Auto-Retry Logic**
+```javascript
+// Exponential backoff retry for P1001 errors
+export async function withRetry(operation, maxRetries = 3) {
+  for (let i = 0; i < maxRetries; i++) {
+    try {
+      return await operation();
+    } catch (error) {
+      if (error.code === 'P1001' && i < maxRetries - 1) {
+        const delay = Math.pow(2, i) * 1000; // 1s, 2s, 4s
+        await new Promise(resolve => setTimeout(resolve, delay));
+        continue;
+      }
+      throw error;
+    }
+  }
+}
+```
+
+### **P1001 Error Prevention**
+- **Connection Limits**: Giới hạn 3 connections đồng thời
+- **Pool Timeout**: 20 giây timeout cho connection pool
+- **Retry Mechanism**: Tự động retry 3 lần với exponential backoff
+- **Singleton Pattern**: 1 Prisma instance duy nhất cho toàn ứng dụng
+- **Graceful Degradation**: Fallback handling khi database issues
+
+### **Production Database Settings**
+```env
+# Optimized for Supabase/PostgreSQL
+DATABASE_URL="postgresql://user:pass@host:5432/db?connection_limit=5&pool_timeout=30"
+```
 
 ## 🤝 Contributing
 

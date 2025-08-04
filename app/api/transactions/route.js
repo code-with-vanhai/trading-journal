@@ -1,9 +1,9 @@
 import { NextResponse } from 'next/server';
 import { getServerSession } from 'next-auth/next';
-import { PrismaClient } from '@prisma/client';
 import { authOptions } from '../auth/[...nextauth]/route';
 import { processBuyTransaction, processSellTransaction } from '../../lib/cost-basis-calculator-wrapper';
 import { sanitizeError, secureLog } from '../../lib/error-handler';
+import { prisma, withRetry } from '../../lib/prisma-with-retry';
 
 // Function to get account fees total based on filters
 async function getAccountFeesTotal(userId, filters) {
@@ -106,19 +106,7 @@ function calculateProfitStats(transactions, accountFeesTotal = 0) {
   };
 }
 
-// Create a single Prisma instance with query logging in development
-const globalForPrisma = global;
-
-// Enable query logging in development to help debug slow queries
-const prismaClientSingleton = () => {
-  const prisma = new PrismaClient({
-    log: process.env.NODE_ENV === 'development' ? ['query', 'error', 'warn'] : ['error'],
-  });
-  return prisma;
-};
-
-globalForPrisma.prisma = globalForPrisma.prisma || prismaClientSingleton();
-const prisma = globalForPrisma.prisma;
+// Prisma client is now imported from prisma-with-retry.js with connection pool management
 
 // Import optimized caching and query utilities
 const { transactionCache, performanceMonitor, queryOptimizer, batchProcessor } = require('../../lib/query-optimizer');
@@ -286,7 +274,7 @@ export async function GET(request) {
         const transactionIds = transactions.map(tx => tx.id);
 
         const [stockAccounts, journalEntries] = await Promise.all([
-          stockAccountIds.length > 0 ? prisma.stockAccount.findMany({
+          stockAccountIds.length > 0 ? withRetry(() => prisma.stockAccount.findMany({
             where: {
               id: { in: stockAccountIds }
             },
@@ -295,8 +283,8 @@ export async function GET(request) {
               name: true,
               brokerName: true
             }
-          }) : Promise.resolve([]),
-          transactionIds.length > 0 ? prisma.journalEntry.findMany({
+          })) : Promise.resolve([]),
+          transactionIds.length > 0 ? withRetry(() => prisma.journalEntry.findMany({
             where: {
               transactionId: { in: transactionIds }
             },
@@ -304,7 +292,7 @@ export async function GET(request) {
               id: true,
               transactionId: true
             }
-          }) : Promise.resolve([])
+          })) : Promise.resolve([])
         ]);
 
         // Create optimized lookup maps
@@ -355,10 +343,10 @@ export async function GET(request) {
 
     // For non-common requests, use the regular approach with Promise.all for parallel execution
     const [totalCount, transactions] = await Promise.all([
-      prisma.transaction.count({
+      withRetry(() => prisma.transaction.count({
         where: whereClause,
-      }),
-      prisma.transaction.findMany({
+      })),
+      withRetry(() => prisma.transaction.findMany({
         where: whereClause,
         orderBy, // Now correctly formatted
         // Only select fields we need
@@ -380,7 +368,7 @@ export async function GET(request) {
         },
         skip,
         take: pageSize,
-      })
+      }))
     ]);
 
     // Get account fees total for the same filters
