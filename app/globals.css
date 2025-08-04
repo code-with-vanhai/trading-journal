@@ -43,6 +43,15 @@ body {
     @apply bg-white shadow-md rounded-lg p-6;
   }
 
+  /* Ensure consistent table styling across all browsers */
+  table {
+    @apply bg-white;
+  }
+  
+  tbody {
+    @apply bg-white;
+  }
+
   /* Landing page specific styles */
   .gradient-bg {
     background: linear-gradient(90deg, #1a237e 0%, #0d47a1 100%);
