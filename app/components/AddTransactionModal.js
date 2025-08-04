@@ -152,21 +152,32 @@ export default function AddTransactionModal({ isOpen, onClose, onSuccess }) {
           ) : stockAccounts.length === 0 ? (
             <div className="text-red-500">Không có tài khoản cổ phiếu nào. Vui lòng tạo tài khoản trước.</div>
           ) : (
-            <select
-              id="stockAccountId"
-              name="stockAccountId"
-              value={formData.stockAccountId}
-              onChange={handleInputChange}
-              required
-              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-            >
-              <option value="">Chọn tài khoản</option>
-              {stockAccounts.map((account) => (
-                <option key={account.id} value={account.id}>
-                  {account.name} {account.brokerName && `(${account.brokerName})`}
-                </option>
-              ))}
-            </select>
+            <div>
+              <select
+                id="stockAccountId"
+                name="stockAccountId"
+                value={formData.stockAccountId}
+                onChange={handleInputChange}
+                required
+                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              >
+                <option value="">Chọn tài khoản</option>
+                {stockAccounts.map((account) => (
+                  <option key={account.id} value={account.id}>
+                    {account.name} {account.brokerName && `(${account.brokerName})`}
+                  </option>
+                ))}
+              </select>
+              <p className="text-sm text-gray-500 mt-1">
+                <a 
+                  href="/accounts" 
+                  target="_blank"
+                  className="text-blue-600 hover:text-blue-800 underline"
+                >
+                  Quản lý tài khoản
+                </a>
+              </p>
+            </div>
           )}
         </div>
 
@@ -276,23 +287,25 @@ export default function AddTransactionModal({ isOpen, onClose, onSuccess }) {
           </div>
         </div>
 
-        {/* Tax Rate */}
-        <div>
-          <label htmlFor="taxRate" className="block text-sm font-medium text-gray-700 mb-1">
-            Thuế (%) - Chỉ áp dụng cho giao dịch bán
-          </label>
-          <input
-            type="number"
-            id="taxRate"
-            name="taxRate"
-            value={formData.taxRate}
-            onChange={handleInputChange}
-            min="0"
-            max="100"
-            step="0.01"
-            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-          />
-        </div>
+        {/* Tax Rate - Only show for SELL transactions */}
+        {formData.type === 'SELL' && (
+          <div>
+            <label htmlFor="taxRate" className="block text-sm font-medium text-gray-700 mb-1">
+              Thuế (%)
+            </label>
+            <input
+              type="number"
+              id="taxRate"
+              name="taxRate"
+              value={formData.taxRate}
+              onChange={handleInputChange}
+              min="0"
+              max="100"
+              step="0.01"
+              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+            />
+          </div>
+        )}
 
         {/* Notes */}
         <div>
