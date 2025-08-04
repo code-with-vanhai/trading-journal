@@ -1,4 +1,4 @@
-# 📈 Trading Journal - Vietnamese Stock Market Trading Platform
+# 📈 Trading Journal - Vietnamese Stock Market Trading Platform.
 
 [![License: ISC](https://img.shields.io/badge/License-ISC-blue.svg)](https://opensource.org/licenses/ISC)
 [![Next.js](https://img.shields.io/badge/Next.js-15.3.0-black)](https://nextjs.org/)
