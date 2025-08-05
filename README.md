@@ -22,11 +22,13 @@
 - **🛡️ Error Handling nâng cao** với fallback graceful
 - **💾 Hệ thống Cache tiên tiến** với LRU và TTL management
 
-### **🔧 Database Connection Stability (NEW)**
-- **🚀 Connection Pool Management** - Giới hạn connections tránh P1001 errors
-- **🔄 Auto-Retry Logic** - Tự động retry với exponential backoff (1s→2s→4s)
+### **🔧 Database Connection Stability (ENHANCED)**
+- **🚀 Connection Pool Management** - Optimized connection limits cho Supabase Free Tier
+- **🔄 Enhanced Auto-Retry Logic** - Exponential backoff với proper error handling
 - **🎯 Singleton Pattern** - Tối ưu Prisma client instance management
-- **⚡ Zero P1001 Errors** - Hoàn toàn loại bỏ lỗi database connection timeout
+- **⚡ Zero Duplicate Parameters** - Clean URL configuration management
+- **📊 Performance Monitoring** - Real-time query metrics và connection tracking
+- **🛡️ Concurrent Operation Control** - Fixed limitConcurrency với proper async handling
 
 ![image](https://github.com/user-attachments/assets/709283c7-5ab5-45de-a959-11291952ecb2)
 ![image](https://github.com/user-attachments/assets/cf63349a-7218-496a-bc40-c40a220fedac)
@@ -549,18 +551,36 @@ SESSION_MAX_AGE=1800  # 30 minutes
 - **API Monitoring**: Response times và error rates
 - **Connection Pool Monitoring**: P1001 error tracking và retry success rates
 
-## 🔧 **Database Connection Management**
+## 🔧 **Database Connection Management (UPDATED)**
 
-### **Connection Pool Configuration**
+### **Optimized Connection Pool Configuration**
 ```javascript
-// app/lib/prisma-with-retry.js
+// app/lib/prisma-with-retry.js - Enhanced for Supabase
 const prisma = new PrismaClient({
   datasources: {
     db: {
-      url: DATABASE_URL + '&connection_limit=3&pool_timeout=20'
+      url: DATABASE_URL + '&connection_limit=3&pool_timeout=30&statement_timeout=30000'
     }
   }
 });
+```
+
+### **Performance Monitoring System (NEW)**
+```javascript
+// Real-time query performance tracking
+export function logQueryMetrics(queryName, duration, success = true) {
+  connectionMetrics.totalQueries++;
+  if (!success) connectionMetrics.failedQueries++;
+  
+  // Auto-log metrics every 50 queries
+  if (connectionMetrics.totalQueries % 50 === 0) {
+    console.log('[DB Metrics]', {
+      queries: connectionMetrics.totalQueries,
+      failureRate: (connectionMetrics.failedQueries / connectionMetrics.totalQueries * 100).toFixed(2) + '%',
+      avgResponseTime: connectionMetrics.avgResponseTime.toFixed(2) + 'ms'
+    });
+  }
+}
 ```
 
 ### **Auto-Retry Logic**
@@ -582,17 +602,22 @@ export async function withRetry(operation, maxRetries = 3) {
 }
 ```
 
-### **P1001 Error Prevention**
-- **Connection Limits**: Giới hạn 3 connections đồng thời
-- **Pool Timeout**: 20 giây timeout cho connection pool
-- **Retry Mechanism**: Tự động retry 3 lần với exponential backoff
-- **Singleton Pattern**: 1 Prisma instance duy nhất cho toàn ứng dụng
-- **Graceful Degradation**: Fallback handling khi database issues
+### **Enhanced Connection Stability**
+- **Connection Limits**: Optimized 3 connections cho Supabase Free Tier
+- **Pool Timeout**: Enhanced 30s timeout cho better stability
+- **Statement Timeout**: Added 30s timeout cho long-running queries
+- **Retry Mechanism**: Improved exponential backoff với proper error handling
+- **Singleton Pattern**: 1 Prisma instance với enhanced monitoring
+- **Concurrent Control**: Fixed limitConcurrency function với proper async handling
+- **Clean Configuration**: Eliminated duplicate parameters trong DATABASE_URL
 
-### **Production Database Settings**
+### **Production Database Settings (UPDATED)**
 ```env
-# Optimized for Supabase/PostgreSQL
-DATABASE_URL="postgresql://user:pass@host:5432/db?connection_limit=5&pool_timeout=30"
+# Clean base URL - performance parameters handled in code
+DATABASE_URL="postgresql://user:pass@host:5432/db?schema=trading_journal"
+
+# Performance parameters added programmatically:
+# &connection_limit=3&pool_timeout=30&statement_timeout=30000
 ```
 
 ## 🤝 Contributing
@@ -741,7 +766,10 @@ npm run test:api               # API endpoint tests
 - ✅ **Query Optimizer**: Custom optimization utilities
 - ✅ **Multi-layer Caching**: Memory + Database + API caching
 - ✅ **Error Handling**: Graceful fallbacks và timeout protection
-- ✅ **Connection Pooling**: Optimized cho Supabase Session Mode
+- ✅ **Connection Pooling**: Enhanced cho Supabase Free Tier với monitoring
+- ✅ **Duplicate Parameter Fix**: Clean DATABASE_URL configuration
+- ✅ **Performance Monitoring**: Real-time query metrics tracking
+- ✅ **Concurrent Operations**: Fixed limitConcurrency với proper async handling
 
 ---
 

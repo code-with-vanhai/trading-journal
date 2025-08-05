@@ -6,7 +6,7 @@ const createPrismaClient = () => {
     log: process.env.NODE_ENV === 'development' ? ['error'] : ['error'],
     datasources: {
       db: {
-        url: process.env.DATABASE_URL + '&connection_limit=3&pool_timeout=20'
+        url: process.env.DATABASE_URL + '&connection_limit=3&pool_timeout=30&statement_timeout=30000'
       }
     }
   });
@@ -39,12 +39,23 @@ export async function limitConcurrency(operations, limit = 2) {
   const results = [];
   for (let i = 0; i < operations.length; i += limit) {
     const batch = operations.slice(i, i + limit);
-    const batchResults = await Promise.all(batch);
+    
+    // FIX: Properly handle async operations in batch
+    const batchResults = await Promise.all(
+      batch.map(async (operation) => {
+        try {
+          return await operation();
+        } catch (error) {
+          console.error('[limitConcurrency] Operation failed:', error.message);
+          return { error: error.message, success: false };
+        }
+      })
+    );
     results.push(...batchResults);
     
-    // Small delay between batches
+    // Increased delay between batches for Supabase Free Tier
     if (i + limit < operations.length) {
-      await new Promise(resolve => setTimeout(resolve, 100));
+      await new Promise(resolve => setTimeout(resolve, 200));
     }
   }
   return results;
@@ -64,3 +75,38 @@ export function handleDatabaseError(error, context = {}) {
 }
 
 export default prisma;
+// Connection monitoring for performance analysis
+let connectionMetrics = {
+  totalQueries: 0,
+  failedQueries: 0,
+  avgResponseTime: 0,
+  lastReset: Date.now()
+};
+
+export function logQueryMetrics(queryName, duration, success = true) {
+  connectionMetrics.totalQueries++;
+  if (!success) connectionMetrics.failedQueries++;
+  
+  // Update average response time
+  connectionMetrics.avgResponseTime = 
+    (connectionMetrics.avgResponseTime + duration) / 2;
+  
+  // Log metrics every 50 queries
+  if (connectionMetrics.totalQueries % 50 === 0) {
+    console.log('[DB Metrics]', {
+      queries: connectionMetrics.totalQueries,
+      failureRate: (connectionMetrics.failedQueries / connectionMetrics.totalQueries * 100).toFixed(2) + '%',
+      avgResponseTime: connectionMetrics.avgResponseTime.toFixed(2) + 'ms',
+      uptime: ((Date.now() - connectionMetrics.lastReset) / 1000 / 60).toFixed(1) + 'min'
+    });
+  }
+}
+
+export function resetMetrics() {
+  connectionMetrics = {
+    totalQueries: 0,
+    failedQueries: 0,
+    avgResponseTime: 0,
+    lastReset: Date.now()
+  };
+}
