@@ -1,0 +1,194 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id           String   @id @default(cuid())
+  email        String   @unique
+  name         String?
+  passwordHash String?
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+  username     String   @unique
+}
+
+model Transaction {
+  id              String   @id @default(cuid())
+  userId          String
+  ticker          String
+  type            String
+  quantity        Float
+  price           Float
+  transactionDate DateTime
+  fee             Float    @default(0)
+  taxRate         Float    @default(0)
+  calculatedPl    Float?
+  notes           String?
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+  stockAccountId  String
+
+  @@index([userId, transactionDate])
+  @@index([userId, ticker])
+  @@index([stockAccountId])
+  @@index([userId, transactionDate, ticker])
+  @@index([userId, stockAccountId, ticker])
+  @@index([type, userId])
+}
+
+model JournalEntry {
+  id              String   @id @default(cuid())
+  transactionId   String   @unique
+  userId          String
+  emotionOnEntry  String?
+  emotionOnExit   String?
+  strategyUsed    String?
+  postTradeReview String?
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  @@index([userId])
+}
+
+model Tag {
+  id        String   @id @default(cuid())
+  userId    String
+  name      String
+  createdAt DateTime @default(now())
+
+  @@unique([userId, name])
+}
+
+model JournalEntryTag {
+  journalEntryId String
+  tagId          String
+
+  @@id([journalEntryId, tagId])
+}
+
+model Strategy {
+  id        String   @id @default(cuid())
+  userId    String
+  title     String?
+  content   String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([createdAt(sort: Desc)])
+  @@index([userId])
+}
+
+model StockPriceCache {
+  id            String   @id @default(cuid())
+  symbol        String   @unique
+  price         Float
+  lastUpdatedAt DateTime
+  source        String   @default("tcbs")
+  metadata      Json?
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  @@index([symbol])
+  @@index([lastUpdatedAt])
+}
+
+model StockAccount {
+  id            String   @id
+  name          String
+  brokerName    String?
+  accountNumber String?
+  description   String?
+  userId        String
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  @@unique([userId, name])
+  @@index([userId])
+}
+
+model PurchaseLot {
+  id                String   @id @default(cuid())
+  userId            String
+  stockAccountId    String
+  ticker            String
+  purchaseDate      DateTime
+  quantity          Float
+  pricePerShare     Float
+  totalCost         Float
+  buyFee            Float    @default(0)
+  remainingQuantity Float
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+
+  @@index([userId, ticker, stockAccountId])
+  @@index([purchaseDate])
+  @@index([remainingQuantity])
+  @@index([userId, stockAccountId, ticker, remainingQuantity])
+  @@index([userId, ticker, purchaseDate])
+}
+
+model AccountFee {
+  id              String   @id @default(cuid())
+  userId          String
+  stockAccountId  String
+  feeType         FeeType
+  amount          Float
+  description     String?
+  feeDate         DateTime
+  referenceNumber String?
+  attachmentUrl   String?
+  isActive        Boolean  @default(true)
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  @@index([userId, stockAccountId])
+  @@index([feeType])
+  @@index([feeDate])
+}
+
+model CostBasisAdjustment {
+  id               String         @id @default(cuid())
+  userId           String
+  stockAccountId   String
+  ticker           String
+  adjustmentType   AdjustmentType
+  eventDate        DateTime
+  dividendPerShare Float?
+  taxRate          Float          @default(0.05)
+  splitRatio       Float?
+  description      String?
+  externalRef      String?
+  isActive         Boolean        @default(true)
+  processedAt      DateTime?
+  createdAt        DateTime       @default(now())
+  updatedAt        DateTime       @updatedAt
+  createdBy        String?
+}
+
+enum FeeType {
+  CUSTODY_FEE
+  ADVANCE_SELLING_FEE
+  ACCOUNT_MAINTENANCE
+  TRANSFER_FEE
+  DIVIDEND_TAX
+  INTEREST_FEE
+  DATA_FEED_FEE
+  SMS_NOTIFICATION_FEE
+  STATEMENT_FEE
+  WITHDRAWAL_FEE
+  OTHER_FEE
+}
+
+enum AdjustmentType {
+  CASH_DIVIDEND
+  STOCK_DIVIDEND
+  STOCK_SPLIT
+  REVERSE_SPLIT
+  MERGER
+  SPINOFF
+}
