@@ -1,9 +1,10 @@
 import { NextResponse } from 'next/server';
 import { getServerSession } from 'next-auth/next';
 import { authOptions } from '../auth/[...nextauth]/route';
-import { processBuyTransaction, processSellTransaction } from '../../lib/cost-basis-calculator-wrapper';
 import { sanitizeError, secureLog } from '../../lib/error-handler';
-import { prisma, withRetry } from '../../lib/prisma-with-retry';
+import transactionService from '../../services/TransactionService.js';
+import { withSecurity } from '../../lib/api-middleware.js';
+import logger from '../../lib/production-logger.js';
 
 // Function to get account fees total based on filters
 async function getAccountFeesTotal(userId, filters) {
@@ -30,7 +31,7 @@ async function getAccountFeesTotal(userId, filters) {
   }
 
   try {
-    const result = await prisma.accountFee.aggregate({
+    const result = await db.accountFee.aggregate({
       where: whereClause,
       _sum: {
         amount: true
@@ -106,10 +107,10 @@ function calculateProfitStats(transactions, accountFeesTotal = 0) {
   };
 }
 
-// Prisma client is now imported from prisma-with-retry.js with connection pool management
+// Prisma client is now imported from db-with-retry.js with connection pool management
 
-// Import optimized caching and query utilities
-const { transactionCache, performanceMonitor, queryOptimizer, batchProcessor } = require('../../lib/query-optimizer');
+// Import enhanced query optimizer
+import enhancedOptimizer from '../../lib/enhanced-query-optimizer.js';
 
 // Legacy calculateProfitLoss function - replaced by new FIFO system
 // const calculateProfitLoss = async (userId, stockAccountId, ticker, quantity, sellPrice, fee, taxRate) => {
@@ -118,285 +119,51 @@ const { transactionCache, performanceMonitor, queryOptimizer, batchProcessor } =
 // };
 
 // GET - Fetch all transactions for current user with filtering and pagination
-export async function GET(request) {
-  const startTime = Date.now();
-  let session; // Declare session in outer scope for error handler
+const getTransactionsHandler = async (request) => {
+  const session = await getServerSession(authOptions);
+  
+  if (!session) {
+    return NextResponse.json({ message: 'Unauthorized' }, { status: 401 });
+  }
 
   try {
-    session = await getServerSession(authOptions);
-    
-    if (!session) {
-      return NextResponse.json({ message: 'Unauthorized' }, { status: 401 });
-    }
-
     const { searchParams } = new URL(request.url);
     
     // Extract filter parameters
-    const ticker = searchParams.get('ticker');
-    const type = searchParams.get('type');
-    const stockAccountId = searchParams.get('stockAccountId'); // New filter for stock account
-    const dateFrom = searchParams.get('dateFrom');
-    const dateTo = searchParams.get('dateTo');
-    const minAmount = searchParams.get('minAmount');
-    const maxAmount = searchParams.get('maxAmount');
-    const sortBy = searchParams.get('sortBy') || 'transactionDate';
-    const sortOrder = searchParams.get('sortOrder') || 'desc';
-    
-    // Extract pagination parameters
-    const page = parseInt(searchParams.get('page') || '1', 10);
-    const pageSize = parseInt(searchParams.get('pageSize') || '10', 10);
-    
-    // Create a cache key based on the request params
-    const cacheKey = JSON.stringify({
-      userId: session.user.id,
-      ticker, type, stockAccountId, dateFrom, dateTo, minAmount, maxAmount,
-      sortBy, sortOrder, page, pageSize
-    });
-    
-    // Check optimized cache first
-    const cachedResult = transactionCache.get(cacheKey);
-    if (cachedResult) {
-      const endTimer = performanceMonitor.startTimer('Transactions API (cached)');
-      endTimer();
-      return NextResponse.json(cachedResult);
-    }
-    
-    // Calculate skip value for pagination
-    const skip = (page - 1) * pageSize;
-    
-    // Build optimized where clause using query optimizer
-    const filters = { type, stockAccountId, ticker, dateFrom, dateTo, minAmount, maxAmount };
-    let whereClause = queryOptimizer.optimizeWhereClause(
-      { userId: session.user.id },
-      filters
-    );
-
-    // Apply specific filter logic
-    if (ticker) {
-      // Use exact matching if possible for better index usage
-      if (ticker.length >= 2) {
-        whereClause.ticker = {
-          contains: ticker.toUpperCase()
-        };
-      } else {
-        whereClause.ticker = {
-          startsWith: ticker.toUpperCase()
-        };
-      }
-    }
-    
-    // Date range filter - optimize for index usage
-    if (dateFrom || dateTo) {
-      whereClause.transactionDate = {};
-      
-      if (dateFrom) {
-        whereClause.transactionDate.gte = new Date(dateFrom);
-      }
-      
-      if (dateTo) {
-        const endDate = new Date(dateTo);
-        endDate.setHours(23, 59, 59, 999);
-        whereClause.transactionDate.lte = endDate;
-      }
-    }
-    
-    // Price range filter
-    if (minAmount || maxAmount) {
-      whereClause.price = {};
-      
-      if (minAmount) {
-        whereClause.price.gte = parseFloat(minAmount);
-      }
-      
-      if (maxAmount) {
-        whereClause.price.lte = parseFloat(maxAmount);
-      }
-    }
-
-    // Optimize orderBy using query optimizer
-    const validSortFields = [
-      'transactionDate', 'ticker', 'type', 'quantity', 
-      'price', 'calculatedPl', 'fee', 'taxRate'
-    ];
-    
-    const orderBy = queryOptimizer.optimizeOrderBy(sortBy, sortOrder, validSortFields);
-
-    // For common requests (first page with default sort), optimize further
-    const isCommonRequest = page === 1 && 
-                           pageSize === 10 && 
-                           sortBy === 'transactionDate' && 
-                           sortOrder === 'desc' &&
-                           !ticker && !type && !stockAccountId && !dateFrom && !dateTo && !minAmount && !maxAmount;
-
-    if (isCommonRequest) {
-      // Use a separate cache key for this common request pattern
-      const recentCacheKey = `recent_${session.user.id}_${pageSize}`;
-      const cachedRecent = transactionCache.get(recentCacheKey);
-      
-      if (cachedRecent) {
-        console.log(`[Transactions API] Recent cache hit - ${Date.now() - startTime}ms`);
-        return NextResponse.json(cachedRecent);
-      }
-      
-      // Optimized query for recent transactions
-      try {
-        // Instead of using raw SQL which is prone to case sensitivity issues,
-        // let's use Prisma's findMany for better compatibility
-        const transactions = await prisma.transaction.findMany({
-          where: {
-            userId: session.user.id
-          },
-          select: {
-            id: true,
-            ticker: true,
-            type: true,
-            quantity: true,
-            price: true,
-            transactionDate: true,
-            fee: true,
-            taxRate: true,
-            calculatedPl: true,
-            notes: true,
-            stockAccountId: true, // Include stock account ID
-            userId: true,
-            createdAt: true,
-            updatedAt: true
-          },
-          orderBy: [
-            { transactionDate: 'desc' },
-            { id: 'desc' }
-          ],
-          take: pageSize
-        });
-
-        // Optimized: Batch fetch related data to avoid N+1 queries
-        const stockAccountIds = [...new Set(transactions.map(tx => tx.stockAccountId))];
-        const transactionIds = transactions.map(tx => tx.id);
-
-        const [stockAccounts, journalEntries] = await Promise.all([
-          stockAccountIds.length > 0 ? withRetry(() => prisma.stockAccount.findMany({
-            where: {
-              id: { in: stockAccountIds }
-            },
-            select: {
-              id: true,
-              name: true,
-              brokerName: true
-            }
-          })) : Promise.resolve([]),
-          transactionIds.length > 0 ? withRetry(() => prisma.journalEntry.findMany({
-            where: {
-              transactionId: { in: transactionIds }
-            },
-            select: {
-              id: true,
-              transactionId: true
-            }
-          })) : Promise.resolve([])
-        ]);
-
-        // Create optimized lookup maps
-        const stockAccountMap = new Map(stockAccounts.map(account => [account.id, account]));
-        const journalEntryMap = new Map(journalEntries.map(entry => [entry.transactionId, entry]));
-        
-        // Format the results with optimized lookups
-        const formattedTransactions = transactions.map(tx => ({
-          ...tx,
-          StockAccount: stockAccountMap.get(tx.stockAccountId) || null,
-          journalEntry: journalEntryMap.has(tx.id) ? { id: journalEntryMap.get(tx.id).id } : null
-        }));
-      
-        // Get count with a simple query
-        const totalCount = await prisma.transaction.count({
-          where: { userId: session.user.id }
-        });
-        
-        // Get account fees total for the same period
-        const accountFeesData = await getAccountFeesTotal(session.user.id, {
-          stockAccountId: stockAccountId,
-          dateFrom: dateFrom,
-          dateTo: dateTo
-        });
-
-        // Calculate profit/loss statistics for recent transactions including account fees
-        const profitStats = calculateProfitStats(formattedTransactions, accountFeesData.totalAmount);
-
-        const result = {
-          transactions: formattedTransactions,
-          totalCount,
-          page,
-          pageSize,
-          totalPages: Math.ceil(totalCount / pageSize),
-          profitStats
-        };
-        
-        // Cache the result with the recent key using optimized cache
-        transactionCache.set(recentCacheKey, result);
-        
-        console.log(`[Transactions API] Optimized fetch completed in ${Date.now() - startTime}ms`);
-        return NextResponse.json(result);
-      } catch (optimizedQueryError) {
-        console.error('Error in optimized query path:', optimizedQueryError);
-        // Fall through to standard query path if optimized path fails
-      }
-    }
-
-    // For non-common requests, use the regular approach with Promise.all for parallel execution
-    const [totalCount, transactions] = await Promise.all([
-      withRetry(() => prisma.transaction.count({
-        where: whereClause,
-      })),
-      withRetry(() => prisma.transaction.findMany({
-        where: whereClause,
-        orderBy, // Now correctly formatted
-        // Only select fields we need
-        select: {
-          id: true,
-          ticker: true,
-          type: true,
-          quantity: true,
-          price: true,
-          transactionDate: true,
-          fee: true,
-          taxRate: true,
-          calculatedPl: true,
-          notes: true,
-          stockAccountId: true, // Include stock account ID
-          userId: true,
-          createdAt: true,
-          updatedAt: true
-        },
-        skip,
-        take: pageSize,
-      }))
-    ]);
-
-    // Get account fees total for the same filters
-    const accountFeesData = await getAccountFeesTotal(session.user.id, {
-      stockAccountId: stockAccountId,
-      dateFrom: dateFrom,
-      dateTo: dateTo
-    });
-
-    // Calculate profit/loss statistics for filtered transactions including account fees
-    const profitStats = calculateProfitStats(transactions, accountFeesData.totalAmount);
-
-    const result = {
-      transactions,
-      totalCount,
-      page,
-      pageSize,
-      totalPages: Math.ceil(totalCount / pageSize),
-      profitStats // Add profit statistics
+    const filters = {
+      ticker: searchParams.get('ticker'),
+      type: searchParams.get('type'),
+      stockAccountId: searchParams.get('stockAccountId'),
+      dateFrom: searchParams.get('dateFrom'),
+      dateTo: searchParams.get('dateTo'),
+      minAmount: searchParams.get('minAmount'),
+      maxAmount: searchParams.get('maxAmount'),
     };
     
-    // Cache the result using optimized cache
-    transactionCache.set(cacheKey, result);
+    // Extract pagination parameters
+    const pagination = {
+      page: parseInt(searchParams.get('page') || '1', 10),
+      pageSize: parseInt(searchParams.get('pageSize') || '10', 10),
+      sortBy: searchParams.get('sortBy') || 'transactionDate',
+      sortOrder: searchParams.get('sortOrder') || 'desc'
+    };
     
-    console.log(`[Transactions API] Fetch completed in ${Date.now() - startTime}ms`);
+    // Use transaction service
+    const result = await transactionService.getTransactions(
+      session.user.id,
+      filters,
+      pagination
+    );
+    
     return NextResponse.json(result);
   } catch (error) {
-    // SECURITY FIX: Use secure logging and sanitized error responses
+    if (error.isServiceError) {
+      return NextResponse.json({ 
+        error: error.code,
+        message: error.message 
+      }, { status: 400 });
+    }
+    
     secureLog(error, {
       userId: session?.user?.id,
       endpoint: 'GET /api/transactions',
@@ -412,10 +179,10 @@ export async function GET(request) {
       { status: sanitizedError.status }
     );
   }
-}
+};
 
 // POST - Create a new transaction
-export async function POST(request) {
+async function POST(request) {
   try {
     const session = await getServerSession(authOptions);
     
@@ -424,7 +191,7 @@ export async function POST(request) {
     }
 
     // Verify user exists in database to prevent foreign key constraint violations
-    const userExists = await prisma.user.findUnique({
+    const userExists = await db.user.findUnique({
       where: { id: session.user.id },
       select: { id: true }
     });
@@ -452,7 +219,7 @@ export async function POST(request) {
     // If no stockAccountId provided, get or create default account
     if (!finalStockAccountId) {
       // Try to find existing accounts for the user
-      let stockAccounts = await prisma.stockAccount.findMany({
+      let stockAccounts = await db.stockAccount.findMany({
         where: {
           userId: session.user.id
         },
@@ -465,7 +232,7 @@ export async function POST(request) {
       if (stockAccounts.length === 0) {
         console.log(`Creating default account for user ${session.user.id} during transaction creation`);
         
-        const defaultAccount = await prisma.stockAccount.create({
+        const defaultAccount = await db.stockAccount.create({
           data: {
             id: `default-${session.user.id}`,
             name: 'Tài khoản mặc định',
@@ -484,7 +251,7 @@ export async function POST(request) {
       }
     } else {
       // Verify that the provided stock account belongs to the user
-      const stockAccount = await prisma.stockAccount.findFirst({
+      const stockAccount = await db.stockAccount.findFirst({
         where: {
           id: stockAccountId,
           userId: session.user.id
@@ -541,7 +308,7 @@ export async function POST(request) {
     }
 
     // Create the transaction
-    const transaction = await prisma.transaction.create({
+    const transaction = await db.transaction.create({
       data: {
         userId: session.user.id,
         stockAccountId: finalStockAccountId,
@@ -558,7 +325,7 @@ export async function POST(request) {
     });
 
     // Manually add stockAccount information to the created transaction
-    const stockAccount = await prisma.stockAccount.findFirst({
+    const stockAccount = await db.stockAccount.findFirst({
       where: { id: stockAccountId },
       select: {
         id: true,
@@ -572,8 +339,8 @@ export async function POST(request) {
       StockAccount: stockAccount || null
     };
 
-    // Clear relevant cache entries when adding new transactions
-    transactionCache.clear(); // Clear all cache since new transaction affects multiple queries
+    // Invalidate relevant cache entries when adding new transactions
+    transactionService.invalidateRelatedCaches(session.user.id, { ticker });
 
     return NextResponse.json(transactionWithStockAccount, { status: 201 });
   } catch (error) {
@@ -594,3 +361,8 @@ export async function POST(request) {
     );
   }
 }
+
+// Apply security middleware to exports
+export const GET = withSecurity(getTransactionsHandler);
+// Keep POST as is for now since we have complex logic - can refactor later
+export { POST };

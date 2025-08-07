@@ -557,7 +557,7 @@ class DatabaseMigrationTestSuite {
     log.header('Security Feature Tests');
 
     await this.runTest('Password Hashing Verification', async () => {
-      const plainPassword = 'securitytest123';
+      const plainPassword = process.env.TEST_PASSWORD || `test_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
       const hashedPassword = await bcrypt.hash(plainPassword, 10);
       const isValid = await bcrypt.compare(plainPassword, hashedPassword);
       const isInvalid = await bcrypt.compare('wrongpassword', hashedPassword);

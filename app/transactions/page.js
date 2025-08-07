@@ -4,14 +4,41 @@ import { useState, useEffect, Suspense } from 'react';
 import { useSession } from 'next-auth/react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import Link from 'next/link';
-import TransactionList from '../components/TransactionList';
-import AddTransactionModal from '../components/AddTransactionModal';
-import TransactionFilters from '../components/TransactionFilters';
+import dynamic from 'next/dynamic';
 import Pagination from '../components/Pagination';
-import SigninModal from '../components/SigninModal';
-import ProfitStatistics from '../components/ProfitStatistics';
-import DividendEventForm from '../components/DividendEventForm';
 import { useNotification } from '../components/Notification';
+import { Spinner } from '../components/ui/Spinner';
+
+// Dynamic imports for heavy components
+const TransactionList = dynamic(() => import('../components/TransactionList'), {
+  loading: () => <div className="p-6"><Spinner /></div>,
+  ssr: false
+});
+
+const AddTransactionModal = dynamic(() => import('../components/AddTransactionModal'), {
+  loading: () => <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center"><Spinner /></div>,
+  ssr: false
+});
+
+const TransactionFilters = dynamic(() => import('../components/TransactionFilters'), {
+  loading: () => <div className="bg-white p-4 rounded-lg shadow animate-pulse"><div className="h-20 bg-gray-200 rounded"></div></div>,
+  ssr: false
+});
+
+const SigninModal = dynamic(() => import('../components/SigninModal'), {
+  loading: () => <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center"><Spinner /></div>,
+  ssr: false
+});
+
+const ProfitStatistics = dynamic(() => import('../components/ProfitStatistics'), {
+  loading: () => <div className="bg-white p-6 rounded-lg shadow animate-pulse"><div className="h-32 bg-gray-200 rounded"></div></div>,
+  ssr: false
+});
+
+const DividendEventForm = dynamic(() => import('../components/DividendEventForm'), {
+  loading: () => <div className="bg-white p-6 rounded-lg shadow animate-pulse"><div className="h-40 bg-gray-200 rounded"></div></div>,
+  ssr: false
+});
 
 function TransactionsContent() {
   const { data: session, status } = useSession();

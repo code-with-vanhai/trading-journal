@@ -3,15 +3,38 @@
 import { useState, useEffect, useCallback, useMemo } from 'react';
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
+import dynamic from 'next/dynamic';
 import { Spinner } from '../components/ui/Spinner';
 import Pagination from '../components/Pagination';
-import PortfolioPieChart from '../components/PortfolioPieChart';
-import AccountAllocationPieChart from '../components/AccountAllocationPieChart';
-import TransferStocksModal from '../components/TransferStocksModal';
-import AddTransactionModal from '../components/AddTransactionModal';
-import SigninModal from '../components/SigninModal';
 import Link from 'next/link';
 import { useNotification } from '../components/Notification';
+import logger, { componentLogger, apiLogger, userLogger } from '../lib/client-logger.js';
+
+// Dynamic imports for heavy components to reduce initial bundle size
+const PortfolioPieChart = dynamic(() => import('../components/PortfolioPieChart'), {
+  loading: () => <div className="flex justify-center items-center h-64"><Spinner /></div>,
+  ssr: false
+});
+
+const AccountAllocationPieChart = dynamic(() => import('../components/AccountAllocationPieChart'), {
+  loading: () => <div className="flex justify-center items-center h-64"><Spinner /></div>,
+  ssr: false
+});
+
+const TransferStocksModal = dynamic(() => import('../components/TransferStocksModal'), {
+  loading: () => <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center"><Spinner /></div>,
+  ssr: false
+});
+
+const AddTransactionModal = dynamic(() => import('../components/AddTransactionModal'), {
+  loading: () => <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center"><Spinner /></div>,
+  ssr: false
+});
+
+const SigninModal = dynamic(() => import('../components/SigninModal'), {
+  loading: () => <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center"><Spinner /></div>,
+  ssr: false
+});
 
 export default function PortfolioPage() {
   const { data: session, status } = useSession();
@@ -72,7 +95,7 @@ export default function PortfolioPage() {
           setStockAccounts(accounts);
         }
       } catch (err) {
-        console.error('Error fetching stock accounts:', err);
+        logger.error('Error fetching stock accounts', err);
       } finally {
         setLoadingAccounts(false);
       }
@@ -84,7 +107,7 @@ export default function PortfolioPage() {
   // Memoized market data fetch function
   const fetchMarketData = useCallback(async (tickers) => {
     if (!tickers || tickers.length === 0) {
-      console.log('[Portfolio] No tickers to fetch market data for');
+      logger.debug('Portfolio: No tickers to fetch market data for');
       return;
     }
 
@@ -92,12 +115,12 @@ export default function PortfolioPage() {
       setMarketDataLoading(true);
       const tickersParam = tickers.join(',');
       
-      console.log(`[Portfolio] Fetching market data for: ${tickersParam}`);
+      logger.debug('Portfolio: Fetching market data for tickers', { tickers: tickersParam });
       const startTime = Date.now();
       const response = await fetch(`/api/market-data?tickers=${tickersParam}`);
       const responseTime = Date.now() - startTime;
       
-      console.log(`[Portfolio] Market data response received in ${responseTime}ms`);
+      apiLogger.response('/api/market-data', 'GET', responseTime, response.status);
       
       if (!response.ok) {
         throw new Error('Failed to fetch market data');
@@ -110,14 +133,14 @@ export default function PortfolioPage() {
         if (typeof price === 'number' && !isNaN(price)) {
           acc[ticker] = price;
         } else {
-          console.warn(`[Portfolio] Invalid price for ${ticker}:`, price);
+          logger.warn('Portfolio: Invalid price for ticker', { ticker, price });
         }
         return acc;
       }, {});
       
       setMarketData(validData);
     } catch (err) {
-      console.error('[Portfolio] Market data fetch error:', err);
+      logger.error('Portfolio: Market data fetch error', err);
       // Don't set error state to still show portfolio
     } finally {
       setMarketDataLoading(false);
@@ -141,7 +164,7 @@ export default function PortfolioPage() {
           // Clear the flag immediately
           localStorage.removeItem('portfolioDataUpdated');
           shouldFetchFresh = true;
-          console.log('[Portfolio] Transaction changes detected, refreshing data');
+          logger.debug('Portfolio: Transaction changes detected, refreshing data');
         }
         
         // Check if cost basis mode changed
@@ -150,7 +173,7 @@ export default function PortfolioPage() {
         if (lastCostBasisMode !== currentMode) {
           localStorage.setItem('lastCostBasisMode', currentMode);
           shouldFetchFresh = true;
-          console.log('[Portfolio] Cost basis mode changed to:', useAdjustedCostBasis ? 'Adjusted' : 'Original');
+          logger.debug('Portfolio: Cost basis mode changed', { mode: useAdjustedCostBasis ? 'Adjusted' : 'Original' });
         }
       }
 
@@ -166,7 +189,7 @@ export default function PortfolioPage() {
       // Check if we need to fetch new data (skip cache check for pagination)
       const now = Date.now();
       if (!shouldFetchFresh && !isPaginationChange && lastFetchTimestamp && now - lastFetchTimestamp < CACHE_DURATION) {
-        console.log('[Portfolio] Using cached data - SKIPPING FETCH');
+        logger.debug('Portfolio: Using cached data - SKIPPING FETCH');
         return;
       }
 
@@ -175,7 +198,7 @@ export default function PortfolioPage() {
         if (!isPaginationChange) {
           setLoading(true);
         }
-        console.log('[Portfolio] Fetching portfolio data');
+        logger.debug('Portfolio: Fetching portfolio data');
         
         // Build URL with account filter, adjustments and pagination
         const params = new URLSearchParams();
@@ -189,9 +212,9 @@ export default function PortfolioPage() {
         params.append('pageSize', pageSize.toString());
         
         const url = `/api/portfolio${params.toString() ? `?${params.toString()}` : ''}`;
-        console.log('[Portfolio] Fetching URL:', url);
-        console.log('[Portfolio] Cost basis mode:', useAdjustedCostBasis ? 'Adjusted' : 'Original');
-        console.log(`[Portfolio] Pagination: page=${currentPage}, pageSize=${pageSize}`);
+        logger.debug('Portfolio: Fetching URL', { url });
+        logger.debug('Portfolio: Cost basis mode', { mode: useAdjustedCostBasis ? 'Adjusted' : 'Original' });
+        logger.debug('Portfolio: Pagination parameters', { page: currentPage, pageSize });
         
         const response = await fetch(url);
         
@@ -202,12 +225,12 @@ export default function PortfolioPage() {
         const data = await response.json();
         
         if (!data.portfolio || !Array.isArray(data.portfolio)) {
-          console.error('[Portfolio] Invalid portfolio data format:', data);
+          logger.error('Portfolio: Invalid portfolio data format', data);
           setPortfolio([]);
         } else {
-          console.log(`[Portfolio] Loaded ${data.portfolio.length} holdings`);
-          console.log(`[Portfolio] Total count: ${data.totalCount}, Total pages: ${data.totalPages}`);
-          console.log(`[Portfolio] Current page: ${data.page}, Page size: ${data.pageSize}`);
+          logger.debug('Portfolio: Loaded holdings', { count: data.portfolio.length });
+          logger.debug('Portfolio: Pagination info', { totalCount: data.totalCount, totalPages: data.totalPages });
+          logger.debug('Portfolio: Current page info', { currentPage: data.page, pageSize: data.pageSize });
           setPortfolio(data.portfolio);
           setTotalItems(data.totalCount || 0);
           setTotalPages(data.totalPages || 0);
@@ -233,7 +256,7 @@ export default function PortfolioPage() {
           setLastFetchTimestamp(now);
         }
       } catch (err) {
-        console.error('[Portfolio] Error:', err);
+        logger.error('Portfolio: Fetch error', err);
         setError(err.message);
       } finally {
         // Only clear loading state if it was set (for non-pagination changes)
@@ -261,7 +284,7 @@ export default function PortfolioPage() {
   }, [portfolio, allPortfolioForCharts, fetchMarketData]);
 
   const handlePageChange = (newPage) => {
-    console.log(`[Portfolio] Changing page from ${currentPage} to ${newPage}`);
+    logger.debug('Portfolio: Changing page', { from: currentPage, to: newPage });
     setCurrentPage(newPage);
     // Mark as pagination change for optimized fetching
     if (typeof window !== 'undefined') {
@@ -271,7 +294,7 @@ export default function PortfolioPage() {
 
   const handlePageSizeChange = (newPageSize) => {
     const newSize = parseInt(newPageSize, 10);
-    console.log(`[Portfolio] Changing page size from ${pageSize} to ${newSize}`);
+    logger.debug('Portfolio: Changing page size', { from: pageSize, to: newSize });
     setPageSize(newSize);
     setCurrentPage(1); // Reset to first page when changing page size
     // Mark as pagination change for optimized fetching
@@ -284,7 +307,7 @@ export default function PortfolioPage() {
   useEffect(() => {
     if (!portfolio.length || !Object.keys(marketData).length) return;
 
-    console.log('[Portfolio] Calculating portfolio metrics');
+    logger.debug('Portfolio: Calculating portfolio metrics');
     
     const enriched = portfolio.map(holding => {
       const currentPrice = marketData[holding.ticker];
@@ -321,7 +344,7 @@ export default function PortfolioPage() {
   useEffect(() => {
     if (!allPortfolioForCharts.length || !Object.keys(marketData).length) return;
 
-    console.log('[Portfolio] Calculating all portfolio metrics for charts');
+    logger.debug('Portfolio: Calculating all portfolio metrics for charts');
     
     const enrichedAll = allPortfolioForCharts.map(holding => {
       const currentPrice = marketData[holding.ticker];
@@ -358,7 +381,7 @@ export default function PortfolioPage() {
   const chartData = useMemo(() => {
     if (!enrichedAllPortfolio.length) return [];
     
-    console.log('[Portfolio] Calculating chart data');
+    logger.debug('Portfolio: Calculating chart data');
     return enrichedAllPortfolio.filter(h => h.marketValue && h.marketValue > 0);
   }, [selectedAccountId, useAdjustedCostBasis, enrichedAllPortfolio.length]);
 
