@@ -613,3 +613,4 @@ export const {
   getPerformanceStats,
   executeBatch
 } = queryOptimizer;
+

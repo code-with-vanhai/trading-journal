@@ -605,3 +605,4 @@ class PortfolioService {
 // Export singleton instance
 const portfolioService = new PortfolioService();
 export default portfolioService;
+

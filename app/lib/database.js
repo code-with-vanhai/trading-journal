@@ -485,3 +485,4 @@ export const onShutdown = databaseManager.onShutdown.bind(databaseManager);
 // Named exports for specific use cases
 export const db = databaseManager.getClient();
 export const dbManager = databaseManager;
+

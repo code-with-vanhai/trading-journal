@@ -342,3 +342,4 @@ export const adminApiMiddleware = combineMiddlewares(
   withContentTypeValidation(['application/json']),
   withSizeLimit(512 * 1024) // 512KB
 );
+
