@@ -162,6 +162,20 @@ Trading Journal là nền tảng toàn diện **production-ready** giúp nhà đ
 
 ### 🆕 Các tính năng mới nổi bật
 
+- **🧠 SWR cho Market Data**: `useSWR` thay cho fetch thủ công ở `app/portfolio/page.js` với các tối ưu:
+  - `dedupingInterval=60000ms`, `errorRetryInterval=5000ms`, `errorRetryCount=3`
+  - `keepPreviousData=true`, `revalidateIfStale=true`, `revalidateOnFocus=false`
+  - UI phản hồi nhanh hơn, giảm số lần gọi API, tự động làm mới dữ liệu an toàn
+
+- **🪟 Ảo hóa bảng danh mục (react-window)**: Tự động bật khi số dòng > 100 để tăng FPS và giảm DOM nodes.
+  - Component: `app/components/VirtualizedPortfolioTable.js`
+  - Áp dụng tại `app/portfolio/page.js` với điều kiện `displayedRows.length > 100`
+
+- **🌐 Market Data API cứng hóa độ bền**:
+  - Giới hạn song song khi batch tickers: tối đa 5/lượt (chunking)
+  - Timeout mỗi request ra TCBS: 8s bằng `AbortController`
+  - Cache đa lớp: in-memory + database (`StockPriceCache`) với index hiệu năng
+
 - **🔔 Notification system:** Thay thế toàn bộ alert() bằng hệ thống notification nhỏ, tự động biến mất, hiển thị góc trên bên phải, hỗ trợ nhiều loại (success, error, warning, info).
 - **💡 Toggle giá vốn điều chỉnh/gốc:** Cho phép chuyển đổi giữa giá vốn đã điều chỉnh (sau cổ tức/quyền) và giá vốn gốc, cập nhật tức thì trên danh mục.
 - **📱 Responsive compact controls:** Thanh chọn tài khoản và giá vốn được thiết kế lại nhỏ gọn, responsive, không gây layout shift, hỗ trợ tooltip khi hover.
@@ -587,6 +601,11 @@ general: 100 req/15min    // General endpoints
 api: 50 req/15min         // API endpoints  
 auth: 5 req/15min         // Authentication
 sensitive: 3 req/15min    // Sensitive operations
+// Lưu ý thêm:
+// - Tính theo IP, cửa sổ 15 phút kể từ lần gọi đầu tiên.
+// - Khi vượt, trả 429 cùng các header: X-RateLimit-Remaining, X-RateLimit-Reset.
+// - Mapping theo route được cấu hình tại `app/lib/api-middleware.js`.
+// - Nên dùng Redis để chia sẻ limiter giữa nhiều instance khi scale.
 ```
 
 #### **Security Headers**
