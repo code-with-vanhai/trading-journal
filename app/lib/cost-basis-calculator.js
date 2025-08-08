@@ -1,6 +1,6 @@
-const { PrismaClient } = require('@prisma/client');
-
-const prisma = new PrismaClient();
+// Use centralized Prisma client
+const dbModule = require('./database.js');
+const prisma = dbModule.default || dbModule;
 
 /**
  * Tính giá vốn theo phương pháp FIFO nghiêm ngặt

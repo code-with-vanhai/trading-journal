@@ -20,6 +20,7 @@ class SafeIndexMigration {
     this.prisma = new PrismaClient();
     this.logFile = path.join(process.cwd(), 'logs', 'index-migration.log');
     this.results = [];
+    this.targetSchema = 'public';
   }
 
   /**
@@ -53,6 +54,44 @@ class SafeIndexMigration {
     } catch (error) {
       this.log(`Error checking index ${indexName}`, { error: error.message });
       return false;
+    }
+  }
+
+  /**
+   * Detect target schema where our Prisma models' tables live
+   */
+  async detectTargetSchema() {
+    try {
+      // Try to find any of the known tables and take its schema
+      const candidates = ['Transaction', 'StockPriceCache', 'JournalEntry', 'AccountFee'];
+      const result = await this.prisma.$queryRaw`\
+        SELECT schemaname, tablename\
+        FROM pg_tables\
+        WHERE tablename = ANY(${candidates})\
+        ORDER BY schemaname\
+      `;
+      if (Array.isArray(result) && result.length > 0) {
+        // Prefer non-public schema if present
+        const nonPublic = result.find(r => r.schemaname && r.schemaname !== 'public');
+        const selected = nonPublic || result[0];
+        this.targetSchema = selected.schemaname;
+        this.log(`Detected target schema: ${this.targetSchema}`);
+      } else {
+        // Fallback: read search_path
+        const sp = await this.prisma.$queryRawUnsafe('SHOW search_path');
+        if (Array.isArray(sp) && sp[0] && sp[0].search_path) {
+          // Take the first path element
+          const first = String(sp[0].search_path).split(',')[0].trim();
+          this.targetSchema = first || 'public';
+          this.log(`Using schema from search_path: ${this.targetSchema}`);
+        } else {
+          this.log('Could not detect schema, defaulting to public');
+          this.targetSchema = 'public';
+        }
+      }
+    } catch (error) {
+      this.log('Failed to detect target schema, defaulting to public', { error: error.message });
+      this.targetSchema = 'public';
     }
   }
 
@@ -108,13 +147,18 @@ class SafeIndexMigration {
    */
   async executeMigration() {
     this.log('Starting safe index migration...');
+
+    // Detect schema first
+    await this.detectTargetSchema();
     
     // List of safe indexes to create
+    const Q = (table) => `"${this.targetSchema}"."${table}"`;
+
     const indexMigrations = [
       {
         name: 'idx_stock_price_cache_symbol_updated',
         sql: `CREATE INDEX CONCURRENTLY IF NOT EXISTS idx_stock_price_cache_symbol_updated 
-              ON "StockPriceCache" (symbol, "lastUpdatedAt" DESC)`,
+              ON ${Q('StockPriceCache')} (symbol, "lastUpdatedAt" DESC)`,
         priority: 'HIGH',
         table: 'StockPriceCache',
         purpose: 'Optimize market data queries with symbol + freshness'
@@ -122,7 +166,7 @@ class SafeIndexMigration {
       {
         name: 'idx_journal_entry_user_created',
         sql: `CREATE INDEX CONCURRENTLY IF NOT EXISTS idx_journal_entry_user_created 
-              ON "JournalEntry" ("userId", "createdAt" DESC)`,
+              ON ${Q('JournalEntry')} ("userId", "createdAt" DESC)`,
         priority: 'MEDIUM',
         table: 'JournalEntry', 
         purpose: 'Optimize user journal queries with date sorting'
@@ -130,7 +174,7 @@ class SafeIndexMigration {
       {
         name: 'idx_account_fee_user_account_date',
         sql: `CREATE INDEX CONCURRENTLY IF NOT EXISTS idx_account_fee_user_account_date 
-              ON "AccountFee" ("userId", "stockAccountId", "feeDate" DESC)`,
+              ON ${Q('AccountFee')} ("userId", "stockAccountId", "feeDate" DESC)`,
         priority: 'MEDIUM',
         table: 'AccountFee',
         purpose: 'Optimize account fee queries with date range filtering'
@@ -138,7 +182,7 @@ class SafeIndexMigration {
       {
         name: 'idx_transaction_user_pl_not_null',
         sql: `CREATE INDEX CONCURRENTLY IF NOT EXISTS idx_transaction_user_pl_not_null 
-              ON "Transaction" ("userId", "calculatedPl") 
+              ON ${Q('Transaction')} ("userId", "calculatedPl") 
               WHERE "calculatedPl" IS NOT NULL`,
         priority: 'LOW',
         table: 'Transaction',
@@ -147,7 +191,7 @@ class SafeIndexMigration {
       {
         name: 'idx_transaction_user_type_date',
         sql: `CREATE INDEX CONCURRENTLY IF NOT EXISTS idx_transaction_user_type_date 
-              ON "Transaction" ("userId", type, "transactionDate" DESC)`,
+              ON ${Q('Transaction')} ("userId", type, "transactionDate" DESC)`,
         priority: 'LOW',
         table: 'Transaction',
         purpose: 'Optimize transaction queries by type with date sorting'
@@ -235,7 +279,7 @@ class SafeIndexMigration {
     this.log('Analyzing index usage...');
     
     try {
-      const indexUsage = await this.prisma.$queryRaw`
+      const indexUsageRaw = await this.prisma.$queryRaw`
         SELECT 
           indexrelname as index_name,
           relname as table_name,
@@ -246,11 +290,16 @@ class SafeIndexMigration {
         WHERE indexrelname LIKE 'idx_%'
         ORDER BY idx_scan DESC
       `;
+      // Normalize BigInt values for logging
+      const indexUsage = (indexUsageRaw || []).map(row => ({
+        index_name: row.index_name,
+        table_name: row.table_name,
+        times_used: Number(row.times_used || 0),
+        tuples_read: Number(row.tuples_read || 0),
+        tuples_fetched: Number(row.tuples_fetched || 0)
+      }));
 
-      this.log('Index usage analysis completed', { 
-        indexCount: indexUsage.length,
-        usage: indexUsage 
-      });
+      this.log('Index usage analysis completed', { indexCount: indexUsage.length });
       
       return indexUsage;
     } catch (error) {

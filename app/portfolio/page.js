@@ -4,6 +4,7 @@ import { useState, useEffect, useCallback, useMemo } from 'react';
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import dynamic from 'next/dynamic';
+import { useMarketData } from '../lib/useMarketData';
 import { Spinner } from '../components/ui/Spinner';
 import Pagination from '../components/Pagination';
 import Link from 'next/link';
@@ -35,6 +36,9 @@ const SigninModal = dynamic(() => import('../components/SigninModal'), {
   loading: () => <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center"><Spinner /></div>,
   ssr: false
 });
+
+// Virtualized table for large datasets
+const VirtualizedPortfolioTable = dynamic(() => import('../components/VirtualizedPortfolioTable'), { ssr: false });
 
 export default function PortfolioPage() {
   const { data: session, status } = useSession();
@@ -104,48 +108,10 @@ export default function PortfolioPage() {
     fetchStockAccounts();
   }, [status]);
 
-  // Memoized market data fetch function
-  const fetchMarketData = useCallback(async (tickers) => {
-    if (!tickers || tickers.length === 0) {
-      logger.debug('Portfolio: No tickers to fetch market data for');
-      return;
-    }
-
-    try {
-      setMarketDataLoading(true);
-      const tickersParam = tickers.join(',');
-      
-      logger.debug('Portfolio: Fetching market data for tickers', { tickers: tickersParam });
-      const startTime = Date.now();
-      const response = await fetch(`/api/market-data?tickers=${tickersParam}`);
-      const responseTime = Date.now() - startTime;
-      
-      apiLogger.response('/api/market-data', 'GET', responseTime, response.status);
-      
-      if (!response.ok) {
-        throw new Error('Failed to fetch market data');
-      }
-      
-      const data = await response.json();
-      
-      // Validate market data
-      const validData = Object.entries(data).reduce((acc, [ticker, price]) => {
-        if (typeof price === 'number' && !isNaN(price)) {
-          acc[ticker] = price;
-        } else {
-          logger.warn('Portfolio: Invalid price for ticker', { ticker, price });
-        }
-        return acc;
-      }, {});
-      
-      setMarketData(validData);
-    } catch (err) {
-      logger.error('Portfolio: Market data fetch error', err);
-      // Don't set error state to still show portfolio
-    } finally {
-      setMarketDataLoading(false);
-    }
-  }, []);
+  // SWR-based market data
+  const dataSource = allPortfolioForCharts.length > 0 ? allPortfolioForCharts : portfolio;
+  const allTickers = dataSource.map(item => item.ticker).filter(Boolean);
+  const { data: swrMarketData, isLoading: swrLoading } = useMarketData(allTickers);
 
   // Portfolio data fetching effect (includes pagination)
   useEffect(() => {
@@ -269,19 +235,17 @@ export default function PortfolioPage() {
     fetchPortfolioData();
   }, [status, selectedAccountId, useAdjustedCostBasis, lastFetchTimestamp, currentPage, pageSize]);
 
-  // Market data fetching effect (separate from portfolio data)
+  // Reflect SWR data into local state
   useEffect(() => {
-    const fetchMarketDataForPortfolio = async () => {
-      // Use allPortfolioForCharts for complete market data, fallback to portfolio for pagination
-      const dataSource = allPortfolioForCharts.length > 0 ? allPortfolioForCharts : portfolio;
-      if (dataSource.length > 0) {
-        const tickers = dataSource.map(item => item.ticker);
-        await fetchMarketData(tickers);
-      }
-    };
-
-    fetchMarketDataForPortfolio();
-  }, [portfolio, allPortfolioForCharts, fetchMarketData]);
+    if (swrMarketData && typeof swrMarketData === 'object') {
+      const validData = Object.entries(swrMarketData).reduce((acc, [ticker, price]) => {
+        if (typeof price === 'number' && !isNaN(price)) acc[ticker] = price;
+        return acc;
+      }, {});
+      setMarketData(validData);
+    }
+    setMarketDataLoading(swrLoading);
+  }, [swrMarketData, swrLoading]);
 
   const handlePageChange = (newPage) => {
     logger.debug('Portfolio: Changing page', { from: currentPage, to: newPage });
@@ -457,6 +421,10 @@ export default function PortfolioPage() {
     setCurrentPage(1);
     setLastFetchTimestamp(null);
   };
+
+  // Determine rows and virtualization condition
+  const displayedRows = (enrichedPortfolio.length > 0 ? enrichedPortfolio : portfolio);
+  const useVirtual = displayedRows.length > 100;
 
   if (status === 'loading' || loading) {
     return (
@@ -756,148 +724,121 @@ export default function PortfolioPage() {
                     </select>
                   </div>
                 </div>
-                <table className="min-w-full divide-y divide-gray-200">
-                  <thead className="bg-gray-100">
-                    <tr>
-                      {!selectedAccountId && (
-                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                          <input
-                            type="checkbox"
-                            checked={isAllSelected()}
-                            ref={input => {
-                              if (input) input.indeterminate = isSomeSelected();
-                            }}
-                            onChange={(e) => handleSelectAll(e.target.checked)}
-                            className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
-                          />
-                        </th>
-                      )}
-                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                        Mã CP
-                      </th>
-                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                        Số lượng
-                      </th>
-                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                        Giá vốn TB
-                      </th>
-                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                        Giá đóng cửa hôm nay
-                      </th>
-                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                        Giá trị thị trường
-                      </th>
-                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                        Lãi/Lỗ
-                      </th>
-                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                        Lãi/Lỗ (%)
-                      </th>
-                      {!selectedAccountId && (
-                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                          Tài khoản
-                        </th>
-                      )}
-                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                        Hành động
-                      </th>
-                    </tr>
-                  </thead>
-                  <tbody className="bg-white divide-y divide-gray-200">
-                    {(enrichedPortfolio.length > 0 ? enrichedPortfolio : portfolio).map((holding) => {
-                      if (!holding || typeof holding !== 'object') return null;
-                      
-                      return (
-                        <tr key={holding.ticker || 'unknown'} className="hover:bg-gray-50">
-                          {!selectedAccountId && (
-                            <td className="px-6 py-4 whitespace-nowrap">
-                              <input
-                                type="checkbox"
-                                checked={isStockSelected(holding.ticker)}
-                                onChange={(e) => handleStockSelect(holding, e.target.checked)}
-                                className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
-                              />
-                            </td>
-                          )}
-                          <td className="px-6 py-4 whitespace-nowrap">
-                            <div className="text-sm font-medium text-gray-900">{holding.ticker || 'N/A'}</div>
-                          </td>
-                          <td className="px-6 py-4 whitespace-nowrap">
-                            <div className="text-sm text-gray-900">
-                              {holding.quantity ? holding.quantity.toLocaleString() : '0'}
-                            </div>
-                          </td>
-                          <td className="px-6 py-4 whitespace-nowrap">
-                            <div className="text-sm text-gray-900">
-                              {holding.avgCost ? holding.avgCost.toLocaleString('vi-VN', { 
-                                minimumFractionDigits: 0,
-                                maximumFractionDigits: 0 
-                              }) : '0'} VND
-                            </div>
-                          </td>
-                          <td className="px-6 py-4 whitespace-nowrap">
-                            <div className="text-sm text-gray-900">
-                              {marketDataLoading ? (
-                                <Spinner size="small" />
-                              ) : holding.currentPrice ? (
-                                holding.currentPrice.toLocaleString('vi-VN')
-                              ) : (
-                                'N/A'
-                              )} VND
-                            </div>
-                          </td>
-                          <td className="px-6 py-4 whitespace-nowrap">
-                            <div className="text-sm text-gray-900">
-                              {holding.marketValue ? (
-                                holding.marketValue.toLocaleString('vi-VN')
-                              ) : (
-                                'N/A'
-                              )} VND
-                            </div>
-                          </td>
-                          <td className="px-6 py-4 whitespace-nowrap">
-                            {holding.unrealizedPL != null ? (
-                              <div className={`text-sm ${holding.unrealizedPL >= 0 ? 'text-green-600' : 'text-red-600'}`}>
-                                {holding.unrealizedPL.toLocaleString('vi-VN')} VND
-                              </div>
-                            ) : (
-                              <div className="text-sm text-gray-500">N/A</div>
+                {useVirtual ? (
+                  <>
+                    <div className="hidden lg:block">
+                      <table className="min-w-full divide-y divide-gray-200">
+                        <thead className="bg-gray-100">
+                          <tr>
+                            {!selectedAccountId && (
+                              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Chọn</th>
                             )}
-                          </td>
-                          <td className="px-6 py-4 whitespace-nowrap">
-                            {holding.plPercentage != null ? (
-                              <div className={`text-sm ${holding.plPercentage >= 0 ? 'text-green-600' : 'text-red-600'}`}>
-                                {holding.plPercentage.toFixed(2)}%
-                              </div>
-                            ) : (
-                              <div className="text-sm text-gray-500">N/A</div>
+                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Mã CP</th>
+                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Số lượng</th>
+                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Giá vốn TB</th>
+                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Giá đóng cửa hôm nay</th>
+                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Giá trị thị trường</th>
+                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Lãi/Lỗ</th>
+                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Lãi/Lỗ (%)</th>
+                            {!selectedAccountId && (
+                              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Tài khoản</th>
                             )}
-                          </td>
-                          {!selectedAccountId && (
-                            <td className="px-6 py-4 whitespace-nowrap">
-                              <div className="text-sm text-gray-900">
-                                {holding.stockAccount?.name || 'N/A'}
-                                {holding.stockAccount?.brokerName && (
-                                  <div className="text-xs text-gray-500">
-                                    {holding.stockAccount.brokerName}
-                                  </div>
-                                )}
+                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Hành động</th>
+                          </tr>
+                        </thead>
+                      </table>
+                    </div>
+                    <div style={{ height: 560 }}>
+                      <VirtualizedPortfolioTable
+                        rows={displayedRows}
+                        rowHeight={56}
+                        height={560}
+                        renderRow={(holding, idx, style) => (
+                          <div style={style} key={holding.ticker || idx} className="grid grid-cols-10 items-center border-b border-gray-200 px-6 bg-white">
+                            {!selectedAccountId && (
+                              <div className="py-3">
+                                <input
+                                  type="checkbox"
+                                  checked={isStockSelected(holding.ticker)}
+                                  onChange={(e) => handleStockSelect(holding, e.target.checked)}
+                                  className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
+                                />
                               </div>
-                            </td>
-                          )}
-                          <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                            <Link
-                              href={`/transactions?ticker=${holding.ticker || ''}`}
-                              className="text-indigo-600 hover:text-indigo-900 mr-4"
-                            >
-                              Lịch sử giao dịch
-                            </Link>
-                          </td>
-                        </tr>
-                      );
-                    })}
-                  </tbody>
-                </table>
+                            )}
+                            <div className="py-3 font-medium">{holding.ticker || 'N/A'}</div>
+                            <div className="py-3">{holding.quantity?.toLocaleString() || '0'}</div>
+                            <div className="py-3">{holding.avgCost ? holding.avgCost.toLocaleString('vi-VN', { minimumFractionDigits: 0, maximumFractionDigits: 0 }) : '0'} VND</div>
+                            <div className="py-3">{marketDataLoading ? '...' : (holding.currentPrice ? holding.currentPrice.toLocaleString('vi-VN') : 'N/A')} VND</div>
+                            <div className="py-3">{holding.marketValue ? holding.marketValue.toLocaleString('vi-VN') : 'N/A'} VND</div>
+                            <div className="py-3">{holding.unrealizedPL != null ? (<span className={holding.unrealizedPL >= 0 ? 'text-green-600' : 'text-red-600'}>{holding.unrealizedPL.toLocaleString('vi-VN')} VND</span>) : 'N/A'}</div>
+                            <div className="py-3">{holding.plPercentage != null ? (<span className={holding.plPercentage >= 0 ? 'text-green-600' : 'text-red-600'}>{holding.plPercentage.toFixed(2)}%</span>) : 'N/A'}</div>
+                            {!selectedAccountId && (
+                              <div className="py-3">
+                                <div>{holding.stockAccount?.name || 'N/A'}</div>
+                                {holding.stockAccount?.brokerName && (<div className="text-xs text-gray-500">{holding.stockAccount.brokerName}</div>)}
+                              </div>
+                            )}
+                            <div className="py-3 text-sm font-medium">
+                              <Link href={`/transactions?ticker=${holding.ticker || ''}`} className="text-indigo-600 hover:text-indigo-900">Lịch sử giao dịch</Link>
+                            </div>
+                          </div>
+                        )}
+                      />
+                    </div>
+                  </>
+                ) : (
+                  <table className="min-w-full divide-y divide-gray-200">
+                    <thead className="bg-gray-100">
+                      <tr>
+                        {!selectedAccountId && (
+                          <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                            <input
+                              type="checkbox"
+                              checked={isAllSelected()}
+                              ref={input => {
+                                if (input) input.indeterminate = isSomeSelected();
+                              }}
+                              onChange={(e) => handleSelectAll(e.target.checked)}
+                              className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
+                            />
+                          </th>
+                        )}
+                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Mã CP</th>
+                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Số lượng</th>
+                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Giá vốn TB</th>
+                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Giá đóng cửa hôm nay</th>
+                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Giá trị thị trường</th>
+                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Lãi/Lỗ</th>
+                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Lãi/Lỗ (%)</th>
+                        {!selectedAccountId && (<th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Tài khoản</th>)}
+                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Hành động</th>
+                      </tr>
+                    </thead>
+                    <tbody className="bg-white divide-y divide-gray-200">
+                      {displayedRows.map((holding) => {
+                        if (!holding || typeof holding !== 'object') return null;
+                        return (
+                          <tr key={holding.ticker || 'unknown'} className="hover:bg-gray-50">
+                            {!selectedAccountId && (
+                              <td className="px-6 py-4 whitespace-nowrap">
+                                <input type="checkbox" checked={isStockSelected(holding.ticker)} onChange={(e) => handleStockSelect(holding, e.target.checked)} className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded" />
+                              </td>
+                            )}
+                            <td className="px-6 py-4 whitespace-nowrap"><div className="text-sm font-medium text-gray-900">{holding.ticker || 'N/A'}</div></td>
+                            <td className="px-6 py-4 whitespace-nowrap"><div className="text-sm text-gray-900">{holding.quantity ? holding.quantity.toLocaleString() : '0'}</div></td>
+                            <td className="px-6 py-4 whitespace-nowrap"><div className="text-sm text-gray-900">{holding.avgCost ? holding.avgCost.toLocaleString('vi-VN', { minimumFractionDigits: 0, maximumFractionDigits: 0 }) : '0'} VND</div></td>
+                            <td className="px-6 py-4 whitespace-nowrap"><div className="text-sm text-gray-900">{marketDataLoading ? (<Spinner size="small" />) : holding.currentPrice ? (holding.currentPrice.toLocaleString('vi-VN')) : ('N/A')} VND</div></td>
+                            <td className="px-6 py-4 whitespace-nowrap"><div className="text-sm text-gray-900">{holding.marketValue ? (holding.marketValue.toLocaleString('vi-VN')) : ('N/A')} VND</div></td>
+                            <td className="px-6 py-4 whitespace-nowrap">{holding.unrealizedPL != null ? (<div className={`text-sm ${holding.unrealizedPL >= 0 ? 'text-green-600' : 'text-red-600'}`}>{holding.unrealizedPL.toLocaleString('vi-VN')} VND</div>) : (<div className="text-sm text-gray-500">N/A</div>)}</td>
+                            <td className="px-6 py-4 whitespace-nowrap">{holding.plPercentage != null ? (<div className={`text-sm ${holding.plPercentage >= 0 ? 'text-green-600' : 'text-red-600'}`}>{holding.plPercentage.toFixed(2)}%</div>) : (<div className="text-sm text-gray-500">N/A</div>)}</td>
+                            {!selectedAccountId && (<td className="px-6 py-4 whitespace-nowrap"><div className="text-sm text-gray-900">{holding.stockAccount?.name || 'N/A'}{holding.stockAccount?.brokerName && (<div className="text-xs text-gray-500">{holding.stockAccount.brokerName}</div>)}</div></td>)}
+                            <td className="px-6 py-4 whitespace-nowrap text-sm font-medium"><Link href={`/transactions?ticker=${holding.ticker || ''}`} className="text-indigo-600 hover:text-indigo-900 mr-4">Lịch sử giao dịch</Link></td>
+                          </tr>
+                        );
+                      })}
+                    </tbody>
+                  </table>
+                )}
                 
                 {totalPages > 1 && (
                   <div className="p-6 border-t border-gray-200 bg-gray-50">

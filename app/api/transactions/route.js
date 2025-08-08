@@ -2,6 +2,7 @@ import { NextResponse } from 'next/server';
 import { getServerSession } from 'next-auth/next';
 import { authOptions } from '../auth/[...nextauth]/route';
 import { sanitizeError, secureLog } from '../../lib/error-handler';
+import db from '../../lib/database.js';
 import transactionService from '../../services/TransactionService.js';
 import { withSecurity } from '../../lib/api-middleware.js';
 import logger from '../../lib/production-logger.js';

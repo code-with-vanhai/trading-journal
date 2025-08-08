@@ -1,9 +1,7 @@
 import { NextResponse } from 'next/server';
 import { getServerSession } from 'next-auth';
 import { authOptions } from '../auth/[...nextauth]/route';
-import { PrismaClient } from '@prisma/client';
-
-const prisma = new PrismaClient();
+import db from '../../lib/database.js';
 
 // GET /api/stock-accounts - Get all stock accounts for the authenticated user
 export async function GET(request) {
@@ -33,7 +31,7 @@ export async function GET(request) {
     }
     */
 
-    let stockAccounts = await prisma.stockAccount.findMany({
+    let stockAccounts = await db.stockAccount.findMany({
       where: {
         userId: session.user.id
       },
@@ -44,7 +42,7 @@ export async function GET(request) {
 
     // Manually count transactions for each account
     for (let account of stockAccounts) {
-      const transactionCount = await prisma.transaction.count({
+      const transactionCount = await db.transaction.count({
         where: {
           stockAccountId: account.id
         }
@@ -56,7 +54,7 @@ export async function GET(request) {
     if (stockAccounts.length === 0) {
       console.log(`Creating default account for user ${session.user.id}`);
       
-      const defaultAccount = await prisma.stockAccount.create({
+      const defaultAccount = await db.stockAccount.create({
         data: {
           id: `default-${session.user.id}`,
           name: 'Tài khoản mặc định',
@@ -128,7 +126,7 @@ export async function POST(request) {
     }
 
     // Check if account name already exists for this user
-    const existingAccount = await prisma.stockAccount.findFirst({
+    const existingAccount = await db.stockAccount.findFirst({
       where: {
         userId: session.user.id,
         name: name.trim()
@@ -143,7 +141,7 @@ export async function POST(request) {
     }
 
     // Create the new stock account
-    const newAccount = await prisma.stockAccount.create({
+    const newAccount = await db.stockAccount.create({
       data: {
         id: `${session.user.id}-${Date.now()}`,
         name: name.trim(),

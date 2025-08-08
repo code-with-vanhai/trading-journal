@@ -1,9 +1,9 @@
 import { NextResponse } from 'next/server';
 import { getServerSession } from 'next-auth';
 import { authOptions } from '../../auth/[...nextauth]/route';
-import { PrismaClient } from '@prisma/client';
+import db from '../../../lib/database.js';
 
-const prisma = new PrismaClient();
+const prisma = db;
 
 // GET /api/stock-accounts/[id] - Get a specific stock account
 export async function GET(request, { params }) {

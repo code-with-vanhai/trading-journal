@@ -1,12 +1,10 @@
 import { NextResponse } from 'next/server';
 import { getServerSession } from 'next-auth/next';
-import { PrismaClient } from '@prisma/client';
+import db from '../../../lib/database.js';
 import { authOptions } from '../../auth/[...nextauth]/route';
 
 // Use singleton pattern for Prisma to avoid connection overhead
-const globalForPrisma = global;
-globalForPrisma.prisma = globalForPrisma.prisma || new PrismaClient();
-const prisma = globalForPrisma.prisma;
+const prisma = db;
 
 // Cache for summary data with TTL
 const summaryCache = new Map();
@@ -145,8 +143,8 @@ export async function GET(request) {
         WHERE "userId" = ${session.user.id}
           AND "isActive" = true
           AND "feeDate" >= NOW() - INTERVAL '12 months'
-          ${stockAccountId ? `AND "stockAccountId" = ${stockAccountId}` : ''}
-          ${feeType ? `AND "feeType" = ${feeType}` : ''}
+          ${stockAccountId ? prisma.$unsafe`AND "stockAccountId" = ${stockAccountId}` : prisma.$unsafe``}
+          ${feeType ? prisma.$unsafe`AND "feeType" = ${feeType}` : prisma.$unsafe``}
         GROUP BY DATE_TRUNC('month', "feeDate")
         ORDER BY month DESC
       `,

@@ -46,14 +46,16 @@
     "chart.js": "^4.4.8",
     "date-fns": "^4.1.0",
     "dotenv": "^16.5.0",
-    "next": "latest",
+    "next": "15.3.0",
     "next-auth": "^4.24.5",
     "node-fetch": "^2.7.0",
     "prisma": "^5.10.0",
-    "react": "latest",
+    "react": "18.3.1",
     "react-chartjs-2": "^5.3.0",
-    "react-dom": "latest",
-    "recharts": "^2.15.2"
+    "react-dom": "18.3.1",
+    "recharts": "^2.15.2",
+    "swr": "^2.2.5",
+    "react-window": "^1.8.10"
   },
   "devDependencies": {
     "@babel/preset-env": "^7.27.2",
@@ -89,5 +91,8 @@
         "statements": 70
       }
     }
-  }
+  },
+  "next": "15.3.0",
+  "react": "18.3.1",
+  "react-dom": "18.3.1"
 }

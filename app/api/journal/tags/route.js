@@ -1,9 +1,9 @@
 import { NextResponse } from 'next/server';
 import { getServerSession } from 'next-auth/next';
-import { PrismaClient } from '@prisma/client';
+import db from '../../../lib/database.js';
 import { authOptions } from '../../auth/[...nextauth]/route';
 
-const prisma = new PrismaClient();
+const prisma = db;
 
 // GET - Fetch all tags for the current user
 export async function GET(request) {

@@ -2,25 +2,10 @@ import { NextResponse } from 'next/server';
 import { getServerSession } from 'next-auth';
 import { authOptions } from '../auth/[...nextauth]/route';
 import { serverLogger as logger, tcbsServerLogger as tcbsLogger } from '../../lib/server-logger';
-import { PrismaClient } from '@prisma/client';
+import db from '../../lib/database.js';
 import { sanitizeError, secureLog } from '../../lib/error-handler';
 
-// Create a singleton Prisma instance with connection management
-const globalForPrisma = global;
-
-const prismaClientSingleton = () => {
-  return new PrismaClient({
-    log: process.env.NODE_ENV === 'development' ? ['query', 'error', 'warn'] : ['error'],
-    datasources: {
-      db: {
-        url: process.env.DATABASE_URL
-      }
-    }
-  });
-};
-
-globalForPrisma.prisma = globalForPrisma.prisma || prismaClientSingleton();
-const prisma = globalForPrisma.prisma;
+// Use centralized Prisma client
 
 // Cache duration in milliseconds (1 hour default)
 const CACHE_DURATION_MS = parseInt(process.env.STOCK_PRICE_CACHE_DURATION || '3600000', 10);
@@ -48,7 +33,11 @@ export async function fetchMarketData(ticker, from, to) {
     // Validate URL before fetch
     new URL(requestUrl); // This will throw if URL is invalid
     
-    const response = await fetch(requestUrl);
+    // Add timeout for robustness
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), 8000);
+    const response = await fetch(requestUrl, { signal: controller.signal });
+    clearTimeout(timeoutId);
     const status = response.status;
     
     tcbsLogger.info(`TCBS API response status`, { 
@@ -148,7 +137,7 @@ async function getStockPriceWithCache(ticker) {
     
     // Check for existing cache entry in database with timeout
     const cacheEntry = await Promise.race([
-      prisma.stockPriceCache.findUnique({
+      db.stockPriceCache.findUnique({
         where: { symbol: ticker }
       }),
       new Promise((_, reject) => 
@@ -259,7 +248,7 @@ async function getStockPriceWithCache(ticker) {
     // Store in database cache (upsert pattern) with timeout
     try {
       await Promise.race([
-        prisma.stockPriceCache.upsert({
+        db.stockPriceCache.upsert({
           where: { symbol: ticker },
           update: { 
             price,
@@ -379,12 +368,19 @@ export async function GET(request) {
     
     // Use Promise.all for parallel processing
     const fetchStart = performance.now();
-    const results = await Promise.all(
-      tickerArray.map(async (ticker) => {
-        const data = await getStockPriceWithCache(ticker);
-        return { ticker, data };
-      })
-    );
+    // Limit concurrency to avoid upstream throttling
+    const CONCURRENCY = 5;
+    const results = [];
+    for (let i = 0; i < tickerArray.length; i += CONCURRENCY) {
+      const chunk = tickerArray.slice(i, i + CONCURRENCY);
+      const chunkResults = await Promise.all(
+        chunk.map(async (ticker) => {
+          const data = await getStockPriceWithCache(ticker);
+          return { ticker, data };
+        })
+      );
+      results.push(...chunkResults);
+    }
     const fetchEnd = performance.now();
     
     // Count cache hits and misses

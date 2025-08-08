@@ -1,9 +1,9 @@
 import { NextResponse } from 'next/server';
 import { getServerSession } from 'next-auth/next';
-import { PrismaClient } from '@prisma/client';
+import db from '../../lib/database.js';
 import { authOptions } from '../auth/[...nextauth]/route';
 
-const prisma = new PrismaClient();
+const prisma = db;
 
 // Function to get account fees total based on filters
 async function getAccountFeesTotal(userId, filters) {

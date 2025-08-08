@@ -1,12 +1,10 @@
 import { NextResponse } from 'next/server';
 import { getServerSession } from 'next-auth/next';
-import { PrismaClient } from '@prisma/client';
+import db from '../../lib/database.js';
 import { authOptions } from '../auth/[...nextauth]/route';
 
 // Use singleton pattern for Prisma to avoid connection overhead
-const globalForPrisma = global;
-globalForPrisma.prisma = globalForPrisma.prisma || new PrismaClient();
-const prisma = globalForPrisma.prisma;
+const prisma = db;
 
 // Cache for account fees with TTL
 const accountFeesCache = new Map();

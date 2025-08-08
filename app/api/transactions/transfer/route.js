@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server';
 import { getServerSession } from 'next-auth/next';
 import { authOptions } from '../../auth/[...nextauth]/route';
-import { prisma } from '../../../../lib/prisma';
+import db from '../../../lib/database.js';
 
 export async function POST(request) {
   try {
@@ -22,7 +22,7 @@ export async function POST(request) {
     }
 
     // Verify target account exists and belongs to user
-    const targetAccount = await prisma.stockAccount.findFirst({
+    const targetAccount = await db.stockAccount.findFirst({
       where: {
         id: targetAccountId,
         userId: session.user.id
@@ -34,7 +34,7 @@ export async function POST(request) {
     }
 
     // Verify all transactions exist and belong to user
-    const transactions = await prisma.transaction.findMany({
+    const transactions = await db.transaction.findMany({
       where: {
         id: { in: transactionIds },
         userId: session.user.id
@@ -54,7 +54,7 @@ export async function POST(request) {
     }
 
     // Perform the transfer in a transaction
-    const result = await prisma.$transaction(async (tx) => {
+    const result = await db.$transaction(async (tx) => {
       // Update all transactions to new account
       const updatedTransactions = await tx.transaction.updateMany({
         where: {
@@ -104,7 +104,7 @@ export async function PUT(request) {
     }
 
     // Verify target account exists and belongs to user
-    const targetAccount = await prisma.stockAccount.findFirst({
+    const targetAccount = await db.stockAccount.findFirst({
       where: {
         id: targetAccountId,
         userId: session.user.id
@@ -129,7 +129,7 @@ export async function PUT(request) {
     }
 
     // Find all transactions for the specified tickers
-    const transactions = await prisma.transaction.findMany({
+    const transactions = await db.transaction.findMany({
       where: whereClause
     });
 
@@ -143,7 +143,7 @@ export async function PUT(request) {
     const sourceAccounts = [...new Set(transactions.map(t => t.StockAccount?.name || 'Tài khoản không xác định'))];
 
     // Perform the transfer in a transaction
-    const result = await prisma.$transaction(async (tx) => {
+    const result = await db.$transaction(async (tx) => {
       const transactionIds = transactions.map(t => t.id);
       
       // Update all transactions to new account

@@ -1,21 +1,13 @@
 import { NextResponse } from 'next/server';
 import { getServerSession } from 'next-auth/next';
-import { PrismaClient } from '@prisma/client';
+import db from '../../../lib/database.js';
 import { authOptions } from '../../auth/[...nextauth]/route';
 
 // Create a single Prisma instance with query logging in development
 const globalForPrisma = global;
 
 // Enable query logging in development to help debug slow queries
-const prismaClientSingleton = () => {
-  const prisma = new PrismaClient({
-    log: process.env.NODE_ENV === 'development' ? ['query', 'error', 'warn'] : ['error'],
-  });
-  return prisma;
-};
-
-globalForPrisma.prisma = globalForPrisma.prisma || prismaClientSingleton();
-const prisma = globalForPrisma.prisma;
+const prisma = db;
 
 // Improved caching with longer TTL for single transaction fetches
 const singleTransactionCache = new Map();

@@ -1,6 +1,6 @@
-const { PrismaClient } = require('@prisma/client');
-
-const prisma = new PrismaClient();
+// Use centralized Prisma client
+const dbModule = require('./database.js');
+const prisma = dbModule.default || dbModule;
 
 /**
  * Cost Basis Adjuster - Tính toán giá vốn có điều chỉnh

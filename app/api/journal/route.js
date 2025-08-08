@@ -1,9 +1,9 @@
 import { NextResponse } from 'next/server';
 import { getServerSession } from 'next-auth/next';
-import { PrismaClient } from '@prisma/client';
+import db from '../../lib/database.js';
 import { authOptions } from '../auth/[...nextauth]/route';
 
-const prisma = new PrismaClient();
+const prisma = db;
 
 // POST - Create or update a journal entry
 export async function POST(request) {

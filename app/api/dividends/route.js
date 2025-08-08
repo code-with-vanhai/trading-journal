@@ -29,9 +29,8 @@ export async function GET(request) {
 
     console.log(`📋 Getting dividend adjustments for user ${session.user.id}`);
 
-    // Import Prisma client
-    const { PrismaClient } = require('@prisma/client');
-    const prisma = new PrismaClient();
+    // Use centralized Prisma client
+    const prisma = require('../../lib/database.js').default || require('../../lib/database.js');
 
     try {
       // Build where clause
@@ -91,7 +90,7 @@ export async function GET(request) {
         });
 
     } finally {
-      await prisma.$disconnect();
+      // Do not disconnect centralized client in a serverless environment
     }
 
   } catch (error) {
