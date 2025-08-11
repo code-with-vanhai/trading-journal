@@ -6,6 +6,7 @@ import db from '../../lib/database.js';
 import transactionService from '../../services/TransactionService.js';
 import { withSecurity } from '../../lib/api-middleware.js';
 import logger from '../../lib/production-logger.js';
+import { processBuyTransaction, processSellTransaction } from '../../lib/cost-basis-calculator-wrapper.js';
 
 // Function to get account fees total based on filters
 async function getAccountFeesTotal(userId, filters) {
@@ -327,7 +328,7 @@ async function POST(request) {
 
     // Manually add stockAccount information to the created transaction
     const stockAccount = await db.stockAccount.findFirst({
-      where: { id: stockAccountId },
+      where: { id: finalStockAccountId },
       select: {
         id: true,
         name: true,
