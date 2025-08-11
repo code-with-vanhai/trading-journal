@@ -273,13 +273,24 @@ export async function DELETE(request, { params }) {
       return NextResponse.json({ message: 'Transaction not found' }, { status: 404 });
     }
 
-    // If it's a SELL transaction, we need to restore the PurchaseLots
+    // Handle purchase lots based on transaction type
     if (transaction.type === 'SELL') {
+      // For SELL transactions, restore the PurchaseLots
       await restorePurchaseLotsForDeletedSell(
         transaction.userId,
         transaction.stockAccountId,
         transaction.ticker,
         transaction.quantity,
+        transaction.transactionDate
+      );
+    } else if (transaction.type === 'BUY') {
+      // For BUY transactions, delete the corresponding PurchaseLot
+      await deletePurchaseLotsForDeletedBuy(
+        transaction.userId,
+        transaction.stockAccountId,
+        transaction.ticker,
+        transaction.quantity,
+        transaction.price,
         transaction.transactionDate
       );
     }
@@ -357,5 +368,63 @@ async function restorePurchaseLotsForDeletedSell(userId, stockAccountId, ticker,
   // Log this for debugging but don't fail the delete operation
   if (quantityToRestore > 0) {
     console.warn(`Could not restore all quantity for deleted SELL. Remaining: ${quantityToRestore}, Ticker: ${ticker}`);
+  }
+}
+
+// Function to delete purchase lots when a BUY transaction is deleted
+async function deletePurchaseLotsForDeletedBuy(userId, stockAccountId, ticker, quantity, price, transactionDate) {
+  console.log(`Deleting purchase lots for deleted BUY transaction: ${ticker}, quantity: ${quantity}, price: ${price}`);
+  
+  try {
+    // Find purchase lots that match the deleted BUY transaction
+    // We need to be precise to avoid deleting wrong lots
+    const matchingLots = await prisma.purchaseLot.findMany({
+      where: {
+        userId,
+        stockAccountId,
+        ticker,
+        quantity,
+        pricePerShare: price,
+        purchaseDate: {
+          // Allow some tolerance for date matching (within 1 day due to timezone)
+          gte: new Date(new Date(transactionDate).getTime() - 24 * 60 * 60 * 1000),
+          lte: new Date(new Date(transactionDate).getTime() + 24 * 60 * 60 * 1000)
+        }
+      },
+      orderBy: {
+        createdAt: 'desc' // Get the most recently created lot first
+      }
+    });
+
+    if (matchingLots.length === 0) {
+      console.warn(`No matching purchase lots found for deleted BUY transaction: ${ticker}, quantity: ${quantity}, price: ${price}`);
+      return;
+    }
+
+    // If multiple lots match, we need to be careful
+    // Ideally there should be only one, but let's handle edge cases
+    if (matchingLots.length > 1) {
+      console.warn(`Multiple matching purchase lots found for deleted BUY transaction. Will delete the most recent one.`);
+    }
+
+    // Delete the most recent matching lot (first in our ordered result)
+    const lotToDelete = matchingLots[0];
+    
+    // Check if this lot has been partially sold (remaining quantity < original quantity)
+    if (lotToDelete.remainingQuantity < lotToDelete.quantity) {
+      console.error(`Cannot delete purchase lot ${lotToDelete.id} - it has been partially sold (remaining: ${lotToDelete.remainingQuantity}, original: ${lotToDelete.quantity})`);
+      throw new Error(`Cannot delete BUY transaction - the purchase lot has been partially sold. Please undo the SELL transactions first.`);
+    }
+
+    // Delete the purchase lot
+    await prisma.purchaseLot.delete({
+      where: { id: lotToDelete.id }
+    });
+
+    console.log(`Successfully deleted purchase lot ${lotToDelete.id} for deleted BUY transaction`);
+
+  } catch (error) {
+    console.error(`Error deleting purchase lots for deleted BUY transaction:`, error);
+    throw error;
   }
 } 
