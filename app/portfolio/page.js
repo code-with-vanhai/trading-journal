@@ -110,7 +110,9 @@ export default function PortfolioPage() {
 
   // SWR-based market data
   const dataSource = allPortfolioForCharts.length > 0 ? allPortfolioForCharts : portfolio;
-  const allTickers = dataSource.map(item => item.ticker).filter(Boolean);
+  const allTickers = useMemo(() => {
+    return dataSource.map(item => item.ticker).filter(Boolean);
+  }, [dataSource]);
   const { data: swrMarketData, isLoading: swrLoading } = useMarketData(allTickers);
 
   // Portfolio data fetching effect (includes pagination)
@@ -242,9 +244,15 @@ export default function PortfolioPage() {
         if (typeof price === 'number' && !isNaN(price)) acc[ticker] = price;
         return acc;
       }, {});
-      setMarketData(validData);
+      const isSame = Object.keys(validData).length === Object.keys(marketData).length &&
+        Object.keys(validData).every(k => marketData[k] === validData[k]);
+      if (!isSame) {
+        setMarketData(validData);
+      }
     }
-    setMarketDataLoading(swrLoading);
+    if (marketDataLoading !== swrLoading) {
+      setMarketDataLoading(swrLoading);
+    }
   }, [swrMarketData, swrLoading]);
 
   const handlePageChange = (newPage) => {
@@ -628,54 +636,63 @@ export default function PortfolioPage() {
                   </div>
                 ) : (
                   <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                    <div className="bg-gradient-to-r from-blue-50 to-blue-100 p-6 rounded-lg border-l-4 border-blue-500">
-                      <div className="flex items-center justify-between">
-                        <div>
-                          <h3 className="text-sm text-blue-700 font-medium mb-2">Tổng Giá Vốn</h3>
-                          <p className="text-2xl font-bold text-blue-900">
-                            {totalSummary.totalCostBasis.toLocaleString('vi-VN')} VND
-                          </p>
+                    <div className="bg-gradient-to-r from-blue-50 to-blue-100 p-6 rounded-lg border-l-4 border-blue-500 overflow-hidden">
+                      <div>
+                        <div className="min-w-0">
+                          <h3 className="text-xs md:text-sm text-blue-700 font-medium mb-2 whitespace-nowrap">Tổng Giá Vốn</h3>
+                          <div className="text-xl md:text-2xl font-bold text-blue-900 leading-tight whitespace-nowrap">
+                            {totalSummary.totalCostBasis.toLocaleString('vi-VN')}
+                          </div>
+                          <div className="text-xl md:text-2xl font-bold text-blue-900 leading-tight">VND</div>
                         </div>
-                        <i className="fas fa-coins text-blue-500 text-2xl"></i>
                       </div>
                     </div>
-                    <div className="bg-gradient-to-r from-green-50 to-green-100 p-6 rounded-lg border-l-4 border-green-500">
-                      <div className="flex items-center justify-between">
-                        <div>
-                          <h3 className="text-sm text-green-700 font-medium mb-2">Tổng Giá Trị Thị Trường</h3>
-                          <p className="text-2xl font-bold text-green-900">
-                            {marketData && enrichedAllPortfolio.length > 0 
-                              ? enrichedAllPortfolio.reduce((sum, item) => sum + (item.marketValue || 0), 0)
-                                  .toLocaleString('vi-VN')
-                              : 'N/A'} VND
-                          </p>
-                        </div>
-                        <i className="fas fa-chart-area text-green-500 text-2xl"></i>
-                      </div>
-                    </div>
-                    <div className="bg-gradient-to-r from-purple-50 to-purple-100 p-6 rounded-lg border-l-4 border-purple-500">
-                      <div className="flex items-center justify-between">
-                        <div>
-                          <h3 className="text-sm text-purple-700 font-medium mb-2">Tổng Lãi/Lỗ Tạm tính</h3>
+                    <div className="bg-gradient-to-r from-green-50 to-green-100 p-6 rounded-lg border-l-4 border-green-500 overflow-hidden">
+                      <div>
+                        <div className="min-w-0">
+                          <h3 className="text-sm text-green-700 font-medium mb-2">Giá Trị Thị Trường</h3>
                           {marketData && enrichedAllPortfolio.length > 0 ? (
-                            <p className={`text-2xl font-bold ${
-                              enrichedAllPortfolio.reduce((sum, item) => sum + (item.unrealizedPL || 0), 0) >= 0 
-                                ? 'text-green-600' 
-                                : 'text-red-600'
-                            }`}>
-                              {enrichedAllPortfolio.reduce((sum, item) => sum + (item.unrealizedPL || 0), 0) >= 0 ? '+' : ''}
-                              {enrichedAllPortfolio.reduce((sum, item) => sum + (item.unrealizedPL || 0), 0)
-                                .toLocaleString('vi-VN')} VND
-                            </p>
+                            <>
+                              <div className="text-xl md:text-2xl font-bold text-green-900 leading-tight whitespace-nowrap">
+                                {enrichedAllPortfolio
+                                  .reduce((sum, item) => sum + (item.marketValue || 0), 0)
+                                  .toLocaleString('vi-VN')}
+                              </div>
+                              <div className="text-xl md:text-2xl font-bold text-green-900 leading-tight">VND</div>
+                            </>
                           ) : (
-                            <p className="text-2xl font-bold text-gray-600">N/A</p>
+                            <>
+                              <div className="text-xl md:text-2xl font-bold text-gray-600 leading-tight">N/A</div>
+                              <div className="text-xl md:text-2xl font-bold text-green-900 leading-tight">VND</div>
+                            </>
                           )}
                         </div>
-                        <i className={`fas fa-chart-line text-2xl ${
-                          marketData && enrichedAllPortfolio.length > 0 && enrichedAllPortfolio.reduce((sum, item) => sum + (item.unrealizedPL || 0), 0) >= 0 
-                            ? 'text-green-500' 
-                            : 'text-red-500'
-                        }`}></i>
+                      </div>
+                    </div>
+                    <div className="bg-gradient-to-r from-purple-50 to-purple-100 p-6 rounded-lg border-l-4 border-purple-500 overflow-hidden">
+                      <div>
+                        <div className="min-w-0">
+                          <h3 className="text-xs md:text-sm text-purple-700 font-medium mb-2 whitespace-nowrap">Lãi/Lỗ Tạm tính</h3>
+                          {marketData && enrichedAllPortfolio.length > 0 ? (
+                            (() => {
+                              const totalPL = enrichedAllPortfolio.reduce((sum, item) => sum + (item.unrealizedPL || 0), 0);
+                              const isPositive = totalPL >= 0;
+                              return (
+                                <>
+                                  <div className={`text-xl md:text-2xl font-bold leading-tight whitespace-nowrap ${isPositive ? 'text-green-600' : 'text-red-600'}`}>
+                                    {isPositive ? '+' : ''}{totalPL.toLocaleString('vi-VN')}
+                                  </div>
+                                  <div className={`text-xl md:text-2xl font-bold leading-tight ${isPositive ? 'text-green-600' : 'text-red-600'}`}>VND</div>
+                                </>
+                              );
+                            })()
+                          ) : (
+                            <>
+                              <div className="text-xl md:text-2xl font-bold text-gray-600 leading-tight">N/A</div>
+                              <div className="text-xl md:text-2xl font-bold text-purple-700 leading-tight">VND</div>
+                            </>
+                          )}
+                        </div>
                       </div>
                     </div>
                   </div>
