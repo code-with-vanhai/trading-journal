@@ -17,10 +17,10 @@ import logger from './production-logger.js';
 const SECURITY_CONFIG = {
   development: {
     rateLimits: {
-      general: { windowMs: 15 * 60 * 1000, max: 200 },      // 200 requests per 15min
-      api: { windowMs: 15 * 60 * 1000, max: 100 },          // 100 API calls per 15min
-      auth: { windowMs: 15 * 60 * 1000, max: 20 },          // 20 auth attempts per 15min
-      sensitive: { windowMs: 15 * 60 * 1000, max: 50 },      // 50 sensitive operations per 15min
+      general: { windowMs: 15 * 60 * 1000, max: 600 },      // 600 requests per 15min
+      api: { windowMs: 15 * 60 * 1000, max: 500 },          // 500 API calls per 15min
+      auth: { windowMs: 15 * 60 * 1000, max: 200 },          // 200 auth attempts per 15min
+      sensitive: { windowMs: 15 * 60 * 1000, max: 400 },      // 400 sensitive operations per 15min
     },
     cors: {
       origin: ['http://localhost:3000', 'http://127.0.0.1:3000'],
