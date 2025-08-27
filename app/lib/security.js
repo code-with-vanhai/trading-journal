@@ -29,10 +29,10 @@ const SECURITY_CONFIG = {
   },
   production: {
     rateLimits: {
-      general: { windowMs: 15 * 60 * 1000, max: 100 },      // 100 requests per 15min
-      api: { windowMs: 15 * 60 * 1000, max: 50 },           // 50 API calls per 15min  
-      auth: { windowMs: 15 * 60 * 1000, max: 5 },           // 5 auth attempts per 15min
-      sensitive: { windowMs: 15 * 60 * 1000, max: 3 },      // 3 sensitive operations per 15min
+      general: { windowMs: 15 * 60 * 1000, max: 600 },      // 600 requests per 15min
+      api: { windowMs: 15 * 60 * 1000, max: 500 },          // 500 API calls per 15min
+      auth: { windowMs: 15 * 60 * 1000, max: 200 },          // 200 auth attempts per 15min
+      sensitive: { windowMs: 15 * 60 * 1000, max: 400 },      // 400 sensitive operations per 15min
     },
     cors: {
       origin: process.env.ALLOWED_ORIGINS?.split(',') || [],
