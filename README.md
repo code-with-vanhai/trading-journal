@@ -989,6 +989,35 @@ npm run test:api               # API endpoint tests
 - ✅ **Duplicate Parameter Fix**: Clean DATABASE_URL configuration
 - ✅ **Performance Monitoring**: Real-time query metrics tracking
 - ✅ **Concurrent Operations**: Fixed limitConcurrency với proper async handling
+- ✅ **🆕 Dynamic Price Steps**: HSX & HNX compliant price validation system
+
+### **📊 Dynamic Price Step System (NEW)**
+
+Intelligent price step validation following Vietnamese stock market regulations:
+
+#### **Price Step Rules (HSX & HNX Compliant)**
+| **Price Range** | **Step Size** | **Example** |
+|---|---|---|
+| < 10,000 VNĐ | 10 VNĐ | 9,990 → 10,000 → 10,010 |
+| 10,000 - 49,999 VNĐ | 50 VNĐ | 25,000 → 25,050 → 25,100 |
+| 50,000 - 99,999 VNĐ | 100 VNĐ | 75,000 → 75,100 → 75,200 |
+| 100,000 - 499,999 VNĐ | 500 VNĐ | 250,000 → 250,500 → 251,000 |
+| ≥ 500,000 VNĐ | 1,000 VNĐ | 1,000,000 → 1,001,000 → 1,002,000 |
+
+#### **Features**
+- ✅ **Real-time validation** with instant feedback
+- ✅ **Dynamic step calculation** based on current price
+- ✅ **Visual indicators** for invalid prices  
+- ✅ **Auto-correction suggestions** for user input
+- ✅ **100% HSX & HNX compliance** with official regulations
+
+#### **Technical Implementation**
+```javascript
+// Core utility: app/utils/priceStepCalculator.js
+calculatePriceStep(price) // Returns appropriate step size
+isValidPrice(price)       // Validates price compliance
+roundToValidPrice(price)  // Auto-corrects to nearest valid price
+```
 
 ---
 

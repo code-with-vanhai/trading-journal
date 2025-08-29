@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import Modal from './ui/Modal';
+import { calculatePriceStep, roundToValidPrice, isValidPrice } from '../utils/priceStepCalculator';
 
 export default function EditTransactionModal({ 
   isOpen, 
@@ -63,10 +64,22 @@ export default function EditTransactionModal({
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData(prev => ({
-      ...prev,
-      [name]: value
-    }));
+    
+    // Xử lý đặc biệt cho trường price
+    if (name === 'price') {
+      const numericValue = parseFloat(value) || 0;
+      setFormData(prev => ({
+        ...prev,
+        [name]: value,
+        // Tính step động dựa trên giá hiện tại
+        priceStep: calculatePriceStep(numericValue)
+      }));
+    } else {
+      setFormData(prev => ({
+        ...prev,
+        [name]: value
+      }));
+    }
   };
 
   const handleSubmit = async (e) => {
@@ -225,7 +238,7 @@ export default function EditTransactionModal({
           {/* Price */}
           <div>
             <label htmlFor="price" className="block text-sm font-medium text-gray-700 mb-1">
-              Giá (VND) *
+              Giá (VND) <span className="text-red-500">*</span>
             </label>
             <input
               type="number"
@@ -235,10 +248,20 @@ export default function EditTransactionModal({
               onChange={handleChange}
               required
               min="0"
-              step="50"
+              step={formData.price ? calculatePriceStep(parseFloat(formData.price) || 0) : 10}
               className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-              placeholder="50000"
+              placeholder="Nhập giá giao dịch"
             />
+            {formData.price && (
+              <p className="text-xs text-gray-500 mt-1">
+                Bước giá: {calculatePriceStep(parseFloat(formData.price) || 0).toLocaleString('vi-VN')} VNĐ
+                {!isValidPrice(parseFloat(formData.price) || 0) && (
+                  <span className="text-orange-600 ml-2">
+                    ⚠️ Giá không hợp lệ theo quy định
+                  </span>
+                )}
+              </p>
+            )}
           </div>
 
           {/* Transaction Date */}
