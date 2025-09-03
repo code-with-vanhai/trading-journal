@@ -19,7 +19,7 @@ const Dashboard = ({ period = 'all' }) => {
   
   useEffect(() => {
     const fetchAnalyticsData = async () => {
-      if (!session) return;
+      if (!session?.user?.id) return;
       
       setIsLoading(true);
       setError(null);
@@ -35,13 +35,13 @@ const Dashboard = ({ period = 'all' }) => {
         const performanceRes = await fetch(`/api/analysis?type=performance&period=${period}`);
         if (!performanceRes.ok) throw new Error('Failed to fetch performance data');
         const performanceData = await performanceRes.json();
-        setPerformance(performanceData.performance);
+        setPerformance(performanceData.performance || []);
         
         // Fetch ticker breakdown
         const breakdownRes = await fetch(`/api/analysis?type=ticker-breakdown&period=${period}`);
         if (!breakdownRes.ok) throw new Error('Failed to fetch ticker breakdown');
         const breakdownData = await breakdownRes.json();
-        setTickerBreakdown(breakdownData.breakdown);
+        setTickerBreakdown(breakdownData.breakdown || []);
       } catch (err) {
         console.error('Error fetching analytics:', err);
         setError('Không thể tải dữ liệu phân tích. Vui lòng thử lại sau.');
@@ -51,7 +51,7 @@ const Dashboard = ({ period = 'all' }) => {
     };
     
     fetchAnalyticsData();
-  }, [session, period]);
+  }, [session?.user?.id, period]);
   
   if (isLoading) {
     return (

@@ -36,9 +36,7 @@ model Transaction {
   @@index([userId, transactionDate])
   @@index([userId, ticker])
   @@index([stockAccountId])
-  @@index([userId, transactionDate, ticker])
-  @@index([userId, stockAccountId, ticker])
-  @@index([type, userId])
+  @@index([userId, type, transactionDate(sort: Desc)], map: "idx_transaction_user_type_date")
 }
 
 model JournalEntry {
@@ -53,6 +51,7 @@ model JournalEntry {
   updatedAt       DateTime @updatedAt
 
   @@index([userId])
+  @@index([userId, createdAt(sort: Desc)], map: "idx_journal_entry_user_created")
 }
 
 model Tag {
@@ -95,6 +94,7 @@ model StockPriceCache {
 
   @@index([symbol])
   @@index([lastUpdatedAt])
+  @@index([symbol, lastUpdatedAt(sort: Desc)], map: "idx_stock_price_cache_symbol_updated")
 }
 
 model StockAccount {
@@ -127,9 +127,6 @@ model PurchaseLot {
 
   @@index([userId, ticker, stockAccountId])
   @@index([purchaseDate])
-  @@index([remainingQuantity])
-  @@index([userId, stockAccountId, ticker, remainingQuantity])
-  @@index([userId, ticker, purchaseDate])
 }
 
 model AccountFee {
@@ -149,6 +146,7 @@ model AccountFee {
   @@index([userId, stockAccountId])
   @@index([feeType])
   @@index([feeDate])
+  @@index([userId, stockAccountId, feeDate(sort: Desc)], map: "idx_account_fee_user_account_date")
 }
 
 model CostBasisAdjustment {

@@ -25,15 +25,15 @@ export async function GET(request) {
     if (period === 'week') {
       const weekAgo = new Date(now);
       weekAgo.setDate(now.getDate() - 7);
-      dateFilter = { date: { gte: weekAgo } };
+      dateFilter = { transactionDate: { gte: weekAgo } };
     } else if (period === 'month') {
       const monthAgo = new Date(now);
       monthAgo.setMonth(now.getMonth() - 1);
-      dateFilter = { date: { gte: monthAgo } };
+      dateFilter = { transactionDate: { gte: monthAgo } };
     } else if (period === 'year') {
       const yearAgo = new Date(now);
       yearAgo.setFullYear(now.getFullYear() - 1);
-      dateFilter = { date: { gte: yearAgo } };
+      dateFilter = { transactionDate: { gte: yearAgo } };
     }
 
     // Process the request based on the analysis type
@@ -55,56 +55,101 @@ export async function GET(request) {
 
 async function getSummaryData(userId, dateFilter) {
   // Get all trades for the user with date filter
-  const trades = await prisma.trade.findMany({
+  const trades = await prisma.transaction.findMany({
     where: {
       userId,
       ...dateFilter,
     },
     select: {
-      entryPrice: true,
-      exitPrice: true,
+      price: true,
       quantity: true,
       type: true,
-      status: true,
+      fee: true,
+      calculatedPl: true,
+      transactionDate: true,
+      ticker: true,
+      stockAccountId: true,
     },
   });
 
-  // Calculate summary statistics
-  let totalPnL = 0;
+  // Get account fees for the same period to match Transactions page calculation
+  let accountFeesTotal = 0;
+  try {
+    const accountFeesFilter = {
+      userId,
+      isActive: true,
+      ...dateFilter
+    };
+    
+    const accountFeesResult = await prisma.accountFee.aggregate({
+      where: accountFeesFilter,
+      _sum: {
+        amount: true
+      }
+    });
+    
+    accountFeesTotal = accountFeesResult._sum.amount || 0;
+  } catch (error) {
+    console.error('Error fetching account fees:', error);
+    accountFeesTotal = 0;
+  }
+
+  // Calculate summary statistics to match Transactions page logic
+  let grossProfitLoss = 0; // Sum of calculatedPl from SELL transactions
   let investedAmount = 0;
   let winCount = 0;
   let lossCount = 0;
+  let totalBuys = 0;
+  let totalSells = 0;
+  let totalReturned = 0;
   
   trades.forEach(trade => {
-    if (trade.status === 'CLOSED') {
-      const tradeValue = trade.entryPrice * trade.quantity;
-      investedAmount += tradeValue;
+    const tradeValue = trade.price * trade.quantity;
+    
+    // Count all trades and include fees in calculations
+    if (trade.type === 'BUY') {
+      totalBuys++;
+      // For BUY: add fees to invested amount (total cost including fees)
+      investedAmount += tradeValue + (trade.fee || 0);
+    } else if (trade.type === 'SELL') {
+      totalSells++;
+      // For SELL: subtract fees from returned amount (net proceeds after fees)
+      totalReturned += tradeValue - (trade.fee || 0);
       
-      const pnl = trade.type === 'BUY' 
-        ? (trade.exitPrice - trade.entryPrice) * trade.quantity
-        : (trade.entryPrice - trade.exitPrice) * trade.quantity;
+      // For P&L calculation, only count SELL transactions like Transactions page
+      if (trade.calculatedPl !== null) {
+        const pnl = trade.calculatedPl;
+        grossProfitLoss += pnl;
         
-      totalPnL += pnl;
-      
-      if (pnl > 0) {
-        winCount++;
-      } else if (pnl < 0) {
-        lossCount++;
+        if (pnl > 0) {
+          winCount++;
+        } else if (pnl < 0) {
+          lossCount++;
+        }
       }
     }
   });
   
+  // Calculate net P&L same as Transactions page: gross P&L minus account fees
+  const totalProfitLoss = grossProfitLoss - accountFeesTotal;
+  
   const totalTrades = winCount + lossCount;
   const winRate = totalTrades > 0 ? (winCount / totalTrades) * 100 : 0;
-  const roi = investedAmount > 0 ? (totalPnL / investedAmount) * 100 : 0;
+  const roi = investedAmount > 0 ? (totalProfitLoss / investedAmount) * 100 : 0;
   
   return NextResponse.json({
-    totalPnL,
+    totalProfitLoss: Math.round(totalProfitLoss), // Net P&L (same as Transactions page)
+    grossProfitLoss: Math.round(grossProfitLoss), // Gross P&L before account fees
+    accountFeesTotal: Math.round(accountFeesTotal), // Account fees
     roi,
     winRate,
     totalTrades,
-    winCount,
-    lossCount
+    totalBuys,
+    totalSells,
+    totalInvested: investedAmount,
+    totalReturned,
+    profitableTrades: winCount,
+    unprofitableTrades: lossCount
   });
 }
 
@@ -128,21 +173,23 @@ async function getPerformanceData(userId, dateFilter, period) {
   }
   
   // Get all closed trades within the period
-  const trades = await prisma.trade.findMany({
+  const trades = await prisma.transaction.findMany({
     where: {
       userId,
-      status: 'CLOSED',
+      calculatedPl: { not: null },
       ...dateFilter,
     },
     orderBy: {
-      date: 'asc',
+      transactionDate: 'asc',
     },
     select: {
-      date: true,
-      entryPrice: true,
-      exitPrice: true,
+      transactionDate: true,
+      price: true,
       quantity: true,
       type: true,
+      fee: true,
+      calculatedPl: true,
+      ticker: true,
     },
   });
   
@@ -152,7 +199,7 @@ async function getPerformanceData(userId, dateFilter, period) {
   
   trades.forEach(trade => {
     // Format date according to period grouping
-    const date = new Date(trade.date);
+    const date = new Date(trade.transactionDate);
     let periodKey;
     
     if (groupFormat === 'yyyy-MM-dd') {
@@ -168,10 +215,8 @@ async function getPerformanceData(userId, dateFilter, period) {
       };
     }
     
-    // Calculate P&L for this trade
-    const pnl = trade.type === 'BUY' 
-      ? (trade.exitPrice - trade.entryPrice) * trade.quantity
-      : (trade.entryPrice - trade.exitPrice) * trade.quantity;
+    // Use the calculated P&L from the transaction
+    const pnl = trade.calculatedPl;
       
     performanceByPeriod[periodKey].pnl += pnl;
     performanceByPeriod[periodKey].trades += 1;
@@ -182,6 +227,7 @@ async function getPerformanceData(userId, dateFilter, period) {
     cumulativePnL += data.pnl;
     return {
       date,
+      value: cumulativePnL, // Dashboard expects 'value' field
       pnl: data.pnl,
       cumulativePnL,
       trades: data.trades,
@@ -191,16 +237,16 @@ async function getPerformanceData(userId, dateFilter, period) {
   // Limit to recent periods
   const limitedPerformance = performance.slice(-limit);
   
-  return NextResponse.json(limitedPerformance);
+  return NextResponse.json({ performance: limitedPerformance });
 }
 
 async function getTickerBreakdown(userId, dateFilter) {
   // Get all closed trades grouped by ticker
-  const tickerBreakdown = await prisma.trade.groupBy({
+  const tickerBreakdown = await prisma.transaction.groupBy({
     by: ['ticker'],
     where: {
       userId,
-      status: 'CLOSED',
+      calculatedPl: { not: null },
       ...dateFilter,
     },
     _count: {
@@ -213,39 +259,49 @@ async function getTickerBreakdown(userId, dateFilter) {
   const tickerData = [];
   
   for (const ticker of tickers) {
-    const trades = await prisma.trade.findMany({
+    const trades = await prisma.transaction.findMany({
       where: {
         userId,
         ticker,
-        status: 'CLOSED',
         ...dateFilter,
       },
       select: {
-        entryPrice: true,
-        exitPrice: true,
+        calculatedPl: true,
+        price: true,
         quantity: true,
         type: true,
+        fee: true,
       },
     });
     
     let pnl = 0;
     let winCount = 0;
     let tradeCount = 0;
+    let totalInvested = 0;
     
     trades.forEach(trade => {
-      const tradePnL = trade.type === 'BUY' 
-        ? (trade.exitPrice - trade.entryPrice) * trade.quantity
-        : (trade.entryPrice - trade.exitPrice) * trade.quantity;
-        
-      pnl += tradePnL;
-      if (tradePnL > 0) winCount++;
-      tradeCount++;
+      const tradeValue = trade.price * trade.quantity;
+      
+      // Calculate total invested for this ticker (include fees for BUY transactions)
+      if (trade.type === 'BUY') {
+        totalInvested += tradeValue + (trade.fee || 0);
+      }
+      
+      // Only count P&L for completed trades (calculatedPl already includes fees)
+      if (trade.calculatedPl !== null) {
+        const tradePnL = trade.calculatedPl;
+        pnl += tradePnL;
+        if (tradePnL > 0) winCount++;
+        tradeCount++;
+      }
     });
     
     tickerData.push({
       ticker,
+      profitLoss: pnl, // Dashboard expects 'profitLoss'
       pnl,
       tradeCount,
+      totalInvested,
       winRate: tradeCount > 0 ? (winCount / tradeCount) * 100 : 0,
     });
   }
@@ -253,5 +309,5 @@ async function getTickerBreakdown(userId, dateFilter) {
   // Sort by P&L (highest to lowest)
   tickerData.sort((a, b) => b.pnl - a.pnl);
   
-  return NextResponse.json(tickerData);
+  return NextResponse.json({ breakdown: tickerData });
 } 

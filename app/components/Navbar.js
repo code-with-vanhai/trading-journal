@@ -94,13 +94,13 @@ export default function Navbar() {
             <nav className="hidden md:block">
               <ul className="flex space-x-8 font-medium">
                 <li><Link href="/" className="hover:text-blue-200 transition">Trang chủ</Link></li>
-                <li><a href="/#features" className="hover:text-blue-200 transition">Tính năng</a></li>
                 <li><a href="/#pricing" className="hover:text-blue-200 transition">Bảng giá</a></li>
                 {status === 'authenticated' && (
                   <>
                     <li><Link href="/account-fees" className="hover:text-blue-200 transition">Phí giao dịch</Link></li>
                     <li><Link href="/transactions" className="hover:text-blue-200 transition">Giao dịch</Link></li>
                     <li><Link href="/portfolio" className="hover:text-blue-200 transition">Danh mục</Link></li>
+                    <li><Link href="/analysis" className="hover:text-blue-200 transition">Phân tích</Link></li>
                     <li><Link href="/cost-basis-adjustments" className="hover:text-blue-200 transition">Sự kiện quyền</Link></li>
                     <li><Link href="/strategies" className="hover:text-blue-200 transition">Chiến lược</Link></li>
                   </>
@@ -149,13 +149,13 @@ export default function Navbar() {
           <nav>
             <ul className="flex flex-col space-y-4 text-lg font-medium">
               <li><Link href="/" className="block hover:text-blue-200 transition">Trang chủ</Link></li>
-              <li><a href="/#features" className="block hover:text-blue-200 transition">Tính năng</a></li>
               <li><a href="/#pricing" className="block hover:text-blue-200 transition">Bảng giá</a></li>
               {status === 'authenticated' && (
                 <>
                   <li className="pt-4 border-t border-blue-800"><Link href="/account-fees" className="block hover:text-blue-200 transition">Phí giao dịch</Link></li>
                   <li><Link href="/transactions" className="block hover:text-blue-200 transition">Giao dịch</Link></li>
                   <li><Link href="/portfolio" className="block hover:text-blue-200 transition">Danh mục</Link></li>
+                  <li><Link href="/analysis" className="block hover:text-blue-200 transition">Phân tích</Link></li>
                   <li><Link href="/cost-basis-adjustments" className="block hover:text-blue-200 transition">Sự kiện quyền</Link></li>
                   <li><Link href="/strategies" className="block hover:text-blue-200 transition">Chiến lược</Link></li>
                 </>
