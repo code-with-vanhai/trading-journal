@@ -5,8 +5,8 @@ import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import dynamic from 'next/dynamic';
 
-// Dynamic import for Dashboard (contains heavy chart libraries)
-const Dashboard = dynamic(() => import('../components/Dashboard'), {
+// Dynamic import for Enhanced Dashboard (contains heavy chart libraries)
+const EnhancedDashboard = dynamic(() => import('../components/EnhancedDashboard'), {
   loading: () => (
     <div className="min-h-screen bg-gray-50 py-8">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -51,25 +51,57 @@ export default function AnalysisPage() {
   };
   
   return (
-    <div className="container mx-auto px-4 py-8">
-      <h1 className="text-3xl font-bold mb-6">Portfolio Analysis</h1>
-      
-      <div className="mb-6">
-        <label htmlFor="period" className="block text-sm font-medium text-gray-700">Time Period</label>
-        <select
-          id="period"
-          className="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm rounded-md"
-          value={selectedPeriod}
-          onChange={handlePeriodChange}
-        >
-          <option value="all">All Time</option>
-          <option value="year">Past Year</option>
-          <option value="month">Past Month</option>
-          <option value="week">Past Week</option>
-        </select>
+    <div className="min-h-screen bg-gray-50">
+      {/* Enhanced Header */}
+      <div className="bg-white shadow-sm border-b sticky top-0 z-10">
+        <div className="container mx-auto px-4 py-4">
+          <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between space-y-4 lg:space-y-0">
+            {/* Title and breadcrumb */}
+            <div>
+              <nav className="text-sm text-gray-500 mb-2">
+                <span>Trang chủ</span> / <span className="text-blue-600 font-medium">Phân tích danh mục</span>
+              </nav>
+              <h1 className="text-3xl font-bold text-gray-900 flex items-center">
+                <i className="fas fa-chart-line text-blue-600 mr-3"></i>
+                Phân Tích Danh Mục Nâng Cao
+              </h1>
+              <p className="text-gray-600 mt-1">
+                Phân tích chi tiết hiệu suất, rủi ro và cơ hội đầu tư của danh mục
+              </p>
+            </div>
+            
+            {/* Period Selector */}
+            <div className="flex items-center space-x-2">
+              <label className="text-sm font-medium text-gray-700">Thời gian:</label>
+              <div className="flex bg-gray-100 rounded-lg p-1">
+                {[
+                  { value: 'week', label: '1T' },
+                  { value: 'month', label: '1Th' },
+                  { value: 'year', label: '1N' },
+                  { value: 'all', label: 'Tất cả' }
+                ].map(period => (
+                  <button
+                    key={period.value}
+                    onClick={() => setSelectedPeriod(period.value)}
+                    className={`px-3 py-1 text-sm font-medium rounded transition-colors ${
+                      selectedPeriod === period.value
+                        ? 'bg-blue-600 text-white shadow-sm'
+                        : 'text-gray-600 hover:text-gray-900'
+                    }`}
+                  >
+                    {period.label}
+                  </button>
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
-      
-      <Dashboard period={selectedPeriod} />
+
+      {/* Main Content */}
+      <div className="container mx-auto px-4 py-8">
+        <EnhancedDashboard period={selectedPeriod} />
+      </div>
     </div>
   );
 } 
