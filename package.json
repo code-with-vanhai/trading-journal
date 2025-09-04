@@ -29,7 +29,9 @@
     "test:db-migration": "node tests/db-migration-suite.js",
     "test:performance": "node tests/performance/run-performance-tests.js",
     "test:performance:db": "jest tests/performance/database-optimization.test.js",
-    "test:performance:api": "jest tests/performance/api-performance.test.js"
+    "test:performance:api": "jest tests/performance/api-performance.test.js",
+    "backup": "node scripts/manual-backup.js",
+    "backup:restore": "node scripts/backup-restore.js"
   },
   "keywords": [
     "trading",
