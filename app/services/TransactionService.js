@@ -112,8 +112,13 @@ class TransactionService {
         result.transactions
       );
       
+      // Flatten pagination data for frontend compatibility
       return {
-        ...result,
+        transactions: result.transactions,
+        totalCount: result.pagination.totalCount,
+        page: result.pagination.page,
+        pageSize: result.pagination.pageSize,
+        totalPages: result.pagination.totalPages,
         profitStats
       };
       
