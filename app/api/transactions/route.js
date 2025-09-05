@@ -6,7 +6,7 @@ import db from '../../lib/database.js';
 import transactionService from '../../services/TransactionService.js';
 import { withSecurity } from '../../lib/api-middleware.js';
 import logger from '../../lib/production-logger.js';
-import { processBuyTransaction, processSellTransaction } from '../../lib/cost-basis-calculator-wrapper.js';
+import { processBuyTransaction, processSellTransaction, processSellTransactionWithAdjustments } from '../../lib/cost-basis-calculator-wrapper.js';
 
 // Function to get account fees total based on filters
 async function getAccountFeesTotal(userId, filters) {
@@ -288,8 +288,8 @@ async function POST(request) {
         // Với giao dịch mua, P/L = 0
         calculatedPl = 0;
       } else if (type === 'SELL') {
-        // Xử lý giao dịch bán với FIFO nghiêm ngặt
-        const sellResult = await processSellTransaction(
+        // Xử lý giao dịch bán với FIFO nghiêm ngặt + cost basis adjustments
+        const sellResult = await processSellTransactionWithAdjustments(
           session.user.id,
           finalStockAccountId,
           ticker,
@@ -297,7 +297,8 @@ async function POST(request) {
           price,
           fee,
           taxRate,
-          transactionDate
+          transactionDate,
+          true // includeAdjustments = true
         );
         
         calculatedPl = sellResult.profitOrLoss;

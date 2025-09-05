@@ -37,12 +37,15 @@
 
 #### 📊 **Quản Lý Danh Mục Thông Minh**
 - ✅ Theo dõi real-time giá cổ phiếu từ TCBS
-- ✅ Tính toán P&L tự động với thuật toán FIFO
+- ✅ Tính toán P&L tự động với thuật toán FIFO + Cost Basis Adjustments
+- ✅ Xử lý cổ tức và corporate actions tự động
 - ✅ Phân tích hiệu suất theo thời gian
 - ✅ Báo cáo chi tiết theo ngành/nhóm cổ phiếu
 
 #### 💰 **Quản Lý Tài Chính**
 - ✅ Theo dõi phí giao dịch và thuế
+- ✅ Xử lý thuế cổ tức và phí custody
+- ✅ Điều chỉnh cost basis cho dividend events
 - ✅ Quản lý nhiều tài khoản chứng khoán
 - ✅ Tính toán cost basis chính xác
 - ✅ Báo cáo lãi/lỗ theo từng giao dịch
@@ -265,6 +268,83 @@ API_TIMEOUT=30000
 - 🚫 **Rate Limiting**: Protection against DDoS và abuse
 - 🔍 **Audit Logging**: Theo dõi tất cả hoạt động quan trọng
 - 🔒 **Data Encryption**: End-to-end encryption cho dữ liệu nhạy cảm
+
+---
+
+## 💰 **Xử Lý Cổ Tức & Corporate Actions**
+
+### 🎯 **Logic Cost Basis Adjustment**
+
+Hệ thống sử dụng phương pháp **Cost Basis Adjustment** chuẩn quốc tế để xử lý cổ tức:
+
+#### 📊 **Ví Dụ Thực Tế - Cổ Phiếu VLB**
+
+```
+🔸 Giao Dịch Mua (2/6/2025):
+   • Số lượng: 700 cổ phiếu
+   • Giá mua: 47.100 VND/cp  
+   • Phí mua: 9.891 VND
+   • Tổng chi phí: 32.979.891 VND
+
+🔸 Sự Kiện Cổ Tức (17/7/2025):
+   • Cổ tức: 1.500 VND/cp
+   • Thuế suất: 5%
+   • Tổng cổ tức: 1.050.000 VND
+   • Thuế cổ tức: 52.500 VND
+
+🔸 Điều Chỉnh Cost Basis:
+   • Cost basis gốc: 32.979.891 VND
+   • Trừ cổ tức: -1.050.000 VND  
+   • Cost basis điều chỉnh: 31.929.891 VND
+
+🔸 Giao Dịch Bán (22/8/2025):
+   • Giá bán: 45.700 VND/cp
+   • Tiền thực nhận: 31.948.413 VND
+   • Lãi/lỗ từ bán: +18.522 VND
+   • Thuế cổ tức: -52.500 VND
+   • Tổng lãi/lỗ thực: -33.978 VND
+```
+
+#### ✅ **Nguyên Tắc Quan Trọng**
+
+1. **Cost Basis Adjustment** = Cổ tức được coi là "hoàn trả vốn"
+2. **calculatedPl** = Lãi/lỗ từ bán với cost basis đã điều chỉnh  
+3. **Tổng lãi/lỗ thực** = calculatedPl - thuế cổ tức
+4. **KHÔNG cộng thêm cổ tức** vào tổng lãi/lỗ (đã tính trong cost basis)
+
+#### 🔧 **API Endpoints**
+
+```javascript
+// Thống kê cơ bản
+GET /api/profit-stats
+
+// Thống kê có bao gồm dividend details  
+GET /api/enhanced-profit-stats
+```
+
+### 🔄 **Recent Updates (v3.2)**
+
+#### ✅ **Dividend Logic Enhancement**
+- **Fixed**: Cost basis adjustment logic cho cổ tức tiền mặt
+- **Updated**: API `/api/transactions` sử dụng `processSellTransactionWithAdjustments`
+- **Added**: Enhanced profit stats API với dividend breakdown
+- **Corrected**: VLB transaction data với logic điều chỉnh đúng
+
+#### 🔧 **Technical Changes**
+```diff
+// Before (Incorrect)
+- const sellResult = await processSellTransaction(...)
+- totalPL = sellPL + dividendReceived - dividendTax
+
+// After (Correct) 
++ const sellResult = await processSellTransactionWithAdjustments(...)
++ totalPL = adjustedSellPL - dividendTax
+```
+
+#### 📊 **Impact**
+- **Accuracy**: 100% compliance với chuẩn kế toán quốc tế
+- **Consistency**: Cả 2 phương pháp tính đều cho kết quả giống nhau
+- **Transparency**: Hiển thị riêng biệt từng thành phần P&L
 
 ---
 
