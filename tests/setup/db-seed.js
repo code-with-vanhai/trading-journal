@@ -5,10 +5,16 @@ const dotenv = require('dotenv');
 // Load environment variables
 dotenv.config({ path: '.env.test' });
 
+// SAFETY CHECK: NEVER use production database for tests
+if (!process.env.TEST_DATABASE_URL) {
+  console.error('❌ DANGER: TEST_DATABASE_URL not set! This script will NOT run without explicit test database URL.');
+  process.exit(1);
+}
+
 const prisma = new PrismaClient({
   datasources: {
     db: {
-      url: process.env.TEST_DATABASE_URL || process.env.DATABASE_URL
+      url: process.env.TEST_DATABASE_URL
     }
   }
 });
