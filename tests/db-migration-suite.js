@@ -28,7 +28,21 @@ const log = {
 
 class DatabaseMigrationTestSuite {
   constructor() {
-    this.prisma = new PrismaClient();
+    // SAFETY GUARD: Prevent running against production database
+    const isProdLike = (process.env.DATABASE_URL || '').includes('supabase.com') || (process.env.DATABASE_URL || '').includes('supabase.co');
+    if (!process.env.TEST_DATABASE_URL || isProdLike) {
+      console.error('\n❌ CRITICAL: This migration test suite must run ONLY on a dedicated TEST database.');
+      console.error('   - Set TEST_DATABASE_URL in .env.test');
+      console.error('   - Do NOT rely on DATABASE_URL for tests');
+      console.error('   - Aborting to prevent data loss.');
+      process.exit(1);
+    }
+
+    this.prisma = new PrismaClient({
+      datasources: {
+        db: { url: process.env.TEST_DATABASE_URL }
+      }
+    });
     this.testResults = {
       passed: 0,
       failed: 0,
