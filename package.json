@@ -30,7 +30,7 @@
     "test:performance": "node tests/performance/run-performance-tests.js",
     "test:performance:db": "jest tests/performance/database-optimization.test.js",
     "test:performance:api": "jest tests/performance/api-performance.test.js",
-    "backup": "node scripts/manual-backup.js",
+    "backup": "node scripts/db-backup-without-client.js", 
     "backup:restore": "node scripts/backup-restore.js"
   },
   "keywords": [
