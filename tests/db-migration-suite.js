@@ -4,11 +4,78 @@ const fetch = require('node-fetch');
 const dotenv = require('dotenv');
 const fs = require('fs');
 const path = require('path');
+const readline = require('readline');
 
-// Load environment variables
+// Load environment variables from both .env and .env.test
 dotenv.config();
+dotenv.config({ path: '.env.test' });
 
-// Colors for console output
+function maskDbUrl(url) {
+  if (!url) return '(not set)';
+  try {
+    const u = new URL(url);
+    if (u.password) u.password = '****';
+    return u.toString();
+  } catch {
+    return url.replace(/:(?:[^@]+)@/, ':****@');
+  }
+}
+
+async function promptSelectDatabaseUrlForMigration() {
+  const testUrl = process.env.TEST_DATABASE_URL || '';
+  const prodUrl = process.env.DATABASE_URL || '';
+
+  console.log('\nSafety confirmation required before running DB MIGRATION TEST SUITE.');
+  console.log('Please choose the target database:');
+  console.log(`  1) TEST  - TEST_DATABASE_URL = ${maskDbUrl(testUrl)}`);
+  console.log(`  2) PROD  - DATABASE_URL     = ${maskDbUrl(prodUrl)}`);
+  console.log('  0) Cancel');
+
+  const rl = readline.createInterface({ input: process.stdin, output: process.stdout });
+  function ask(q) { return new Promise(res => rl.question(q, res)); }
+
+  const choice = (await ask('\nEnter your choice [1/2/0]: ')).trim();
+
+  if (choice === '0') {
+    console.log('User cancelled. Exiting.');
+    rl.close();
+    process.exit(0);
+  }
+
+  let selected = null;
+  let label = '';
+  if (choice === '1') {
+    if (!testUrl) {
+      console.error('❌ TEST_DATABASE_URL is not set. Aborting.');
+      rl.close();
+      process.exit(1);
+    }
+    selected = testUrl; label = 'TEST';
+  } else if (choice === '2') {
+    if (!prodUrl) {
+      console.error('❌ DATABASE_URL is not set. Aborting.');
+      rl.close();
+      process.exit(1);
+    }
+    console.log('\n⚠️  You selected PROD database. This will run tests that CREATE/DELETE DATA.');
+    console.log(`Target: ${maskDbUrl(prodUrl)}`);
+    const confirm = await ask("Type EXACTLY 'YES RUN ON PROD' to proceed: ");
+    if (confirm.trim() !== 'YES RUN ON PROD') {
+      console.log('Confirmation failed. Aborting.');
+      rl.close();
+      process.exit(1);
+    }
+    selected = prodUrl; label = 'PROD';
+  } else {
+    console.error('Invalid choice. Aborting.');
+    rl.close();
+    process.exit(1);
+  }
+
+  rl.close();
+  return { url: selected, label };
+}
+
 const colors = {
   green: '\x1b[32m',
   red: '\x1b[31m',
@@ -27,20 +94,20 @@ const log = {
 };
 
 class DatabaseMigrationTestSuite {
-  constructor() {
-    // SAFETY GUARD: Prevent running against production database
-    const isProdLike = (process.env.DATABASE_URL || '').includes('supabase.com') || (process.env.DATABASE_URL || '').includes('supabase.co');
-    if (!process.env.TEST_DATABASE_URL || isProdLike) {
-      console.error('\n❌ CRITICAL: This migration test suite must run ONLY on a dedicated TEST database.');
-      console.error('   - Set TEST_DATABASE_URL in .env.test');
-      console.error('   - Do NOT rely on DATABASE_URL for tests');
-      console.error('   - Aborting to prevent data loss.');
+  constructor(databaseUrl) {
+    if (!databaseUrl) {
+      console.error('\n❌ No database URL provided for migration tests. Aborting.');
       process.exit(1);
+    }
+
+    const isProdLike = /(supabase\.com|supabase\.co)/.test(databaseUrl);
+    if (isProdLike) {
+      log.warning('You appear to be targeting a production-like database host. Proceed with extreme caution.');
     }
 
     this.prisma = new PrismaClient({
       datasources: {
-        db: { url: process.env.TEST_DATABASE_URL }
+        db: { url: databaseUrl }
       }
     });
     this.testResults = {
@@ -759,7 +826,9 @@ class DatabaseMigrationTestSuite {
 
 // Run the test suite
 async function main() {
-  const testSuite = new DatabaseMigrationTestSuite();
+  const { url, label } = await promptSelectDatabaseUrlForMigration();
+  console.log(`\nRunning migration test suite against ${label} DB at: ${maskDbUrl(url)}`);
+  const testSuite = new DatabaseMigrationTestSuite(url);
   
   try {
     await testSuite.runAllTests();
