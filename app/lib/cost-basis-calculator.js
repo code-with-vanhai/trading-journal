@@ -77,9 +77,9 @@ async function processSellTransaction(userId, stockAccountId, ticker, quantity, 
   // Áp dụng FIFO - bán từ lô cũ nhất
   for (const lot of availableLots) {
     if (remainingToSell <= 0) break;
-    
+
     const quantityFromThisLot = Math.min(remainingToSell, lot.remainingQuantity);
-    const costPerShare = Math.round(lot.totalCost / lot.quantity); // Làm tròn giá vốn mỗi cổ phiếu
+    const costPerShare = lot.totalCost / lot.quantity; // Giữ độ chính xác đầy đủ
     const cogsFromThisLot = quantityFromThisLot * costPerShare;
     
     totalCOGS += cogsFromThisLot;
@@ -141,7 +141,7 @@ async function getCurrentAvgCost(userId, stockAccountId, ticker) {
   
   const totalQuantity = activeLots.reduce((sum, lot) => sum + lot.remainingQuantity, 0);
   const totalCost = activeLots.reduce((sum, lot) => {
-    const costPerShare = Math.round(lot.totalCost / lot.quantity); // Làm tròn giá vốn mỗi cổ phiếu
+    const costPerShare = lot.totalCost / lot.quantity; // Giữ độ chính xác đầy đủ
     return sum + (lot.remainingQuantity * costPerShare);
   }, 0);
   
@@ -223,8 +223,8 @@ async function calculatePortfolioWithNewCostBasis(userId, stockAccountId = null)
         stockAccount: stockAccountMap[lot.stockAccountId] || null
       };
     }
-    
-    const costPerShare = Math.round(lot.totalCost / lot.quantity);
+
+    const costPerShare = lot.totalCost / lot.quantity; // Giữ độ chính xác đầy đủ
     portfolio[key].quantity += lot.remainingQuantity;
     portfolio[key].totalCost += lot.remainingQuantity * costPerShare;
   }

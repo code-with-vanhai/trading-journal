@@ -437,9 +437,9 @@ Dự án này được phân phối dưới **MIT License**. Xem [LICENSE](LICEN
 
 ## 🎯 **Production Deployment Information**
 
-### 📊 **Current Status** 
-- **Version**: 3.1 (Production Ready)
-- **Last Updated**: December 2024
+### 📊 **Current Status**
+- **Version**: 3.1.1 (Production Ready)
+- **Last Updated**: November 2025
 - **Database**: Supabase PostgreSQL
 - **Build**: ✅ Passing (Next.js 15.3.0)
 - **Schema**: 11 models with optimized indexes
@@ -449,8 +449,15 @@ Dự án này được phân phối dưới **MIT License**. Xem [LICENSE](LICEN
 - Enhanced database connectivity with connection pooling
 - Improved API middleware with better security
 - Production-grade error handling and logging
-- Optimized portfolio and transaction services  
+- Optimized portfolio and transaction services
 - Clean codebase ready for deployment
+
+### 🎯 **Cost Basis Accuracy Fix (v3.1.1)**
+- **Fixed**: Removed intermediate rounding in cost basis calculations
+- **Impact**: Average cost now matches TCBS exactly (e.g., CTG: 48,435 VND vs previous 48,436 VND)
+- **Benefit**: P/L calculations more accurate, eliminated accumulated rounding errors
+- **Scope**: Improved precision without breaking existing data
+- **Testing**: Comprehensive validation with production data (READ-ONLY)
 
 ### 🚨 **Pre-Deployment Checklist**
 - [x] ✅ Database connectivity verified
