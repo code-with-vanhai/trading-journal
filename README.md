@@ -1,19 +1,17 @@
-# 📈 Trading Journal - Nền Tảng Giao Dịch Chứng Khoán Việt Nam
+# 📈 Trading Journal - Nền Tảng Quản Lý Đầu Tư Chứng Khoán Việt Nam
 
 <div align="center">
 
 ![Trading Journal Hero](public/images/trading-dashboard-hero.jpg)
 
-**🚀 Ứng dụng quản lý danh mục đầu tư thông minh cho thị trường chứng khoán Việt Nam**
+**🚀 Giải pháp quản lý danh mục đầu tư chuyên sâu, tối ưu hóa cho thị trường chứng khoán Việt Nam (TCBS, SSI, VPS...)**
 
-[![Version](https://img.shields.io/badge/version-3.1-blue.svg)](https://github.com/yourusername/trading-journal)
+[![Version](https://img.shields.io/badge/version-3.1.1-blue.svg)](https://github.com/yourusername/trading-journal)
 [![License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
-[![Build Status](https://img.shields.io/badge/build-passing-brightgreen.svg)](https://github.com/yourusername/trading-journal/actions)
-[![Production Ready](https://img.shields.io/badge/production-ready-success.svg)](https://tradingjournal.vn)
-[![Database](https://img.shields.io/badge/database-PostgreSQL-blue.svg)](https://postgresql.org)
-[![Deployed](https://img.shields.io/badge/deployed-Supabase-green.svg)](https://supabase.com)
+[![Tech Stack](https://img.shields.io/badge/stack-Next.js%2015%20|%20Prisma%20|%20PostgreSQL-blueviolet.svg)](https://nextjs.org)
+[![Status](https://img.shields.io/badge/status-Production%20Ready-success.svg)](https://tradingjournal.vn)
 
-[🌐 Website](https://tradingjournal.vn) • [📖 Tài Liệu](https://docs.tradingjournal.vn) • [💬 Cộng Đồng](https://discord.gg/tradingjournal) • [🆘 Hỗ Trợ](mailto:support@tradingjournal.vn)
+[🌐 Website](https://tradingjournal.vn) • [📖 Tài Liệu](https://docs.tradingjournal.vn) • [💬 Cộng Đồng](https://discord.gg/tradingjournal)
 
 </div>
 
@@ -21,471 +19,105 @@
 
 ## 🎯 Tại Sao Chọn Trading Journal?
 
-> **"Đầu tư thông minh bắt đầu từ việc quản lý danh mục chuyên nghiệp"**
+Khác với các file Excel thủ công hay các app ghi chép đơn giản, **Trading Journal** tập trung vào **tính chính xác của dữ liệu tài chính** và **phân tích hiệu suất chuyên sâu**.
 
-### ✨ **Dành Cho Ai?**
-- 🏢 **Nhà đầu tư cá nhân** muốn theo dõi danh mục chuyên nghiệp
-- 📊 **Trader** cần phân tích hiệu suất giao dịch chi tiết
-- 👥 **Nhóm đầu tư** muốn chia sẻ chiến lược và kinh nghiệm
-- 🎓 **Người mới bắt đầu** học cách quản lý rủi ro hiệu quả
+### ✨ Tính Năng Cốt Lõi
 
-### 🚀 **Tính Năng Nổi Bật**
+#### 1. 💰 Smart Cost Basis Engine (Độc Quyền)
+Hệ thống tính toán giá vốn (Cost Basis) phức tạp nhất hiện nay, giải quyết triệt để các bài toán khó của thị trường Việt Nam:
+-   ✅ **FIFO Chính Xác**: Tự động khớp lệnh bán với các lô mua cũ nhất theo đúng chuẩn kế toán.
+-   ✅ **Xử Lý Cổ Tức (Dividends)**: Tự động điều chỉnh giá vốn khi nhận cổ tức tiền mặt hoặc cổ phiếu thưởng.
+-   ✅ **Corporate Actions**: Hỗ trợ chia tách cổ phiếu (Stock Splits), phát hành thêm.
+-   ✅ **Thuế & Phí**: Tính toán chính xác thuế bán (0.1%) và phí giao dịch từng công ty chứng khoán.
 
-<table>
-<tr>
-<td width="50%">
+#### 2. 📊 Advanced Analytics (Thay vì "Cảm tính")
+Không chỉ là biểu đồ giá, chúng tôi cung cấp các chỉ số rủi ro chuẩn quỹ đầu tư:
+-   📈 **Risk Metrics**: Sharpe Ratio, Alpha, Beta, Volatility, Max Drawdown.
+-   📉 **Benchmark Comparison**: So sánh hiệu suất thực tế với VN-Index/HNX-Index.
+-   🍰 **Sector Analysis**: Phân tích phân bổ danh mục theo nhóm ngành (Ngân hàng, Bất động sản, Thép...).
+-   📅 **Performance Attribution**: Phân tích hiệu quả theo từng khung thời gian (Tuần, Tháng, Năm).
 
-#### 📊 **Quản Lý Danh Mục Thông Minh**
-- ✅ Theo dõi real-time giá cổ phiếu từ TCBS
-- ✅ Tính toán P&L tự động với thuật toán FIFO + Cost Basis Adjustments
-- ✅ Xử lý cổ tức và corporate actions tự động
-- ✅ Phân tích hiệu suất theo thời gian
-- ✅ Báo cáo chi tiết theo ngành/nhóm cổ phiếu
-
-#### 💰 **Quản Lý Tài Chính**
-- ✅ Theo dõi phí giao dịch và thuế
-- ✅ Xử lý thuế cổ tức và phí custody
-- ✅ Điều chỉnh cost basis cho dividend events
-- ✅ Quản lý nhiều tài khoản chứng khoán
-- ✅ Tính toán cost basis chính xác
-- ✅ Báo cáo lãi/lỗ theo từng giao dịch
-
-</td>
-<td width="50%">
-
-#### 🎯 **Phân Tích Chiến Lược**
-- ✅ Ghi chép journal cho mỗi giao dịch
-- ✅ Phân tích pattern thành công/thất bại
-- ✅ Chia sẻ chiến lược với cộng đồng
-- ✅ Học hỏi từ kinh nghiệm trader khác
-
-#### 🛡️ **Bảo Mật & Hiệu Suất**
-- ✅ Mã hóa dữ liệu end-to-end
-- ✅ Backup tự động và khôi phục
-- ✅ Tối ưu hóa tốc độ loading
-- ✅ Hỗ trợ mobile responsive
-
-</td>
-</tr>
-</table>
+#### 3. 🇻🇳 Tối Ưu Cho Chứng Khoán Việt Nam
+-   ✅ **Bước Giá Động (Dynamic Price Steps)**: Validation giá đặt lệnh theo đúng quy định HSX/HNX (10, 50, 100 đồng).
+-   ✅ **Dữ Liệu Thị Trường**: Tích hợp giá tham chiếu real-time (nguồn TCBS).
+-   ✅ **T+2.5**: Hỗ trợ theo dõi chu kỳ thanh toán.
 
 ---
 
-## 🚀 **Cập Nhật Phiên Bản 3.1 - Production Ready**
+## 🛠️ Tech Stack & Architecture
 
-<div align="center">
-<img src="https://img.shields.io/badge/STATUS-PRODUCTION%20READY-success?style=for-the-badge&logo=checkmark" alt="Production Ready">
-</div>
+Dự án được xây dựng với công nghệ hiện đại nhất, đảm bảo hiệu năng và khả năng mở rộng:
 
-### ✨ **Những Cải Tiến Mới**
-
-| 🔧 **Tính Năng** | 📊 **Trạng Thái** | 🎯 **Mô Tả** |
-|---|---|---|
-| 🗄️ **Database Optimization** | ✅ Hoàn Thành | PostgreSQL với Supabase, connection pooling |
-| 🔐 **Enhanced Security** | ✅ Hoàn Thành | Improved API middleware, rate limiting |
-| 📊 **Performance Monitoring** | ✅ Hoàn Thành | Production logger, query optimization |
-| 🛡️ **Error Handling** | ✅ Hoàn Thành | Comprehensive error management system |
-| 🧹 **Code Quality** | ✅ Hoàn Thành | Clean codebase, optimized for production |
-
-### 🎯 **Production Deployment Status**
-- ✅ **Build Status**: All builds passing successfully
-- ✅ **Database**: Connected to Supabase PostgreSQL
-- ✅ **Schema**: 11 models with proper indexing
-- ✅ **Security**: Rate limiting and authentication active
-- ✅ **Performance**: Optimized queries and caching
-- ✅ **Monitoring**: Production logging implemented
+| Component | Technology | Description |
+|-----------|------------|-------------|
+| **Frontend** | **Next.js 15.3** (App Router) | Server Components, Streaming, Suspense |
+| **Styling** | **Tailwind CSS** | Responsive design, Dark mode support |
+| **Database** | **PostgreSQL** | Quan hệ dữ liệu chặt chẽ, ACID compliance |
+| **ORM** | **Prisma** | Type-safe database access, Migrations |
+| **Auth** | **NextAuth.js** | Secure authentication (Google, Credentials) |
+| **Charts** | **Chart.js / Recharts** | Interactive visualizations |
+| **Infra** | **Vercel / Supabase** | Serverless deployment, Connection pooling |
 
 ---
 
-## 🆕 **Tính Năng Mới: Hệ Thống Bước Giá Động**
+## 🚀 Bắt Đầu Nhanh
 
-<div align="center">
-<img src="https://img.shields.io/badge/NEW-Dynamic%20Price%20Steps-ff6b6b?style=for-the-badge&logo=trending-up" alt="New Feature">
-</div>
+### Yêu Cầu
+-   Node.js 18+
+-   PostgreSQL (Local hoặc Cloud)
 
-### 📊 **Tuân Thủ 100% Quy Định HSX & HNX**
-
-Hệ thống validation giá cổ phiếu thông minh theo đúng quy định của Sở Giao Dịch Chứng Khoán Việt Nam:
-
-| 💰 **Khoảng Giá** | 📏 **Bước Giá** | 📈 **Ví Dụ** |
-|---|---|---|
-| < 10,000 VNĐ | 10 VNĐ | 9,990 → 10,000 → 10,010 |
-| 10,000 - 49,999 VNĐ | 50 VNĐ | 25,000 → 25,050 → 25,100 |
-| 50,000 - 99,999 VNĐ | 100 VNĐ | 75,000 → 75,100 → 75,200 |
-| 100,000 - 499,999 VNĐ | 500 VNĐ | 250,000 → 250,500 → 251,000 |
-| ≥ 500,000 VNĐ | 1,000 VNĐ | 1,000,000 → 1,001,000 → 1,002,000 |
-
-### ✨ **Trải Nghiệm Người Dùng**
-- 🔄 **Validation real-time** với phản hồi tức thì
-- 🎯 **Tính toán bước giá động** dựa trên giá hiện tại
-- ⚠️ **Cảnh báo trực quan** cho giá không hợp lệ
-- 🔧 **Gợi ý auto-correction** cho input của người dùng
-- ✅ **100% tuân thủ** quy định chính thức HSX & HNX
-
----
-
-## 🚀 **Bắt Đầu Nhanh**
-
-### 📋 **Yêu Cầu Hệ Thống**
-- Node.js 18+ ✅
-- PostgreSQL 14+ ✅ (Deployed on Supabase)
-- 2GB RAM (khuyến nghị 4GB) ✅
-- Internet connection (for TCBS API) ✅
-
-### ⚡ **Cài Đặt Trong 3 Phút**
-
+### Cài Đặt
 ```bash
-# 1️⃣ Clone repository
+# 1. Clone repository
 git clone https://github.com/yourusername/trading-journal.git
 cd trading-journal
 
-# 2️⃣ Cài đặt dependencies
+# 2. Cài đặt dependencies
 npm install
 
-# 3️⃣ Cấu hình environment
+# 3. Cấu hình môi trường
 cp .env.example .env
-# Chỉnh sửa .env với thông tin database của bạn
+# Cập nhật DATABASE_URL trong file .env
 
-# 4️⃣ Khởi tạo database
+# 4. Khởi tạo Database
 npx prisma migrate dev
-npx prisma db seed
+npx prisma db seed # (Tùy chọn) Tạo dữ liệu mẫu
 
-# 5️⃣ Chạy ứng dụng
+# 5. Chạy ứng dụng
 npm run dev
 ```
 
-🎉 **Mở trình duyệt tại** `http://localhost:3000`
-
-### 🔧 **Cấu Hình Nâng Cao**
-
-<details>
-<summary>📊 <strong>Kết Nối TCBS API (Tùy Chọn)</strong></summary>
-
-```env
-# Để lấy giá real-time từ TCBS
-TCBS_API_ENABLED=true
-TCBS_RATE_LIMIT=100  # requests/minute
-TCBS_CACHE_TTL=300   # seconds
-```
-</details>
-
-<details>
-<summary>🔐 <strong>Cấu Hình Bảo Mật</strong></summary>
-
-```env
-# NextAuth.js
-NEXTAUTH_SECRET=your-super-secret-key
-NEXTAUTH_URL=http://localhost:3000
-
-# Database Security
-DATABASE_SSL=true
-DATABASE_CONNECTION_LIMIT=10
-```
-</details>
-
-<details>
-<summary>⚡ <strong>Tối Ưu Hiệu Suất</strong></summary>
-
-```env
-# Caching
-REDIS_URL=redis://localhost:6379
-CACHE_TTL=3600
-
-# Performance
-MAX_CONCURRENT_REQUESTS=50
-API_TIMEOUT=30000
-```
-</details>
+Truy cập `http://localhost:3000` để bắt đầu.
 
 ---
 
-## 📱 **Giao Diện Người Dùng**
+## 🧪 Testing & Quality
 
-### 🎨 **Dashboard Tổng Quan**
-<div align="center">
-<img src="https://via.placeholder.com/800x400/4f46e5/ffffff?text=Dashboard+Overview" alt="Dashboard Overview" width="80%">
-</div>
+Chúng tôi cam kết chất lượng code cao nhất với bộ test suite toàn diện:
 
-- 📊 **Biểu đồ P&L** theo thời gian real-time
-- 💰 **Tổng quan tài sản** và phân bổ danh mục
-- 📈 **Top gainers/losers** trong danh mục
-- 🔔 **Thông báo** về các sự kiện quan trọng
-
-### 💼 **Quản Lý Giao Dịch**
-<div align="center">
-<img src="https://via.placeholder.com/800x400/059669/ffffff?text=Transaction+Management" alt="Transaction Management" width="80%">
-</div>
-
-- ➕ **Thêm giao dịch** với validation bước giá thông minh
-- 📝 **Ghi chú journal** cho từng giao dịch
-- 🔍 **Tìm kiếm và lọc** giao dịch nâng cao
-- 📊 **Phân tích hiệu suất** theo strategy
-
-### 📈 **Báo Cáo & Phân Tích**
-<div align="center">
-<img src="https://via.placeholder.com/800x400/dc2626/ffffff?text=Analytics+%26+Reports" alt="Analytics & Reports" width="80%">
-</div>
-
-- 📊 **Báo cáo P&L** chi tiết theo thời gian
-- 🎯 **Phân tích sector allocation** và diversification
-- 📈 **Performance metrics** so với VN-Index
-- 💡 **Insights** và recommendations
+-   **Unit Tests**: `npm test` (Test logic tính toán giá vốn, xử lý cổ tức)
+-   **E2E Tests**: `npm run test:e2e` (Test luồng người dùng với Playwright)
+-   **Performance**: `npm run test:performance` (Load testing)
 
 ---
 
-## 🏗️ **Kiến Trúc Kỹ Thuật**
+## 🤝 Đóng Góp
 
-### 🔧 **Tech Stack**
-
-<div align="center">
-
-| **Frontend** | **Backend** | **Database** | **DevOps** |
-|---|---|---|---|
-| ⚛️ Next.js 15 | 🟢 Node.js 18+ | 🐘 PostgreSQL | 🐳 Docker |
-| 🎨 Tailwind CSS | 🔐 NextAuth.js | 🔄 Prisma ORM | ☁️ Vercel |
-| 📊 Chart.js | 🚀 API Routes | 📊 Redis Cache | 🔍 Monitoring |
-| 📱 Responsive | 🛡️ Rate Limiting | 💾 Backup | 🚨 Alerting |
-
-</div>
-
-### 🚀 **Hiệu Suất Đã Tối Ưu**
-
-<div align="center">
-
-| **Metric** | **Before** | **After** | **Improvement** |
-|---|---|---|---|
-| ⚡ Build Time | 13s | 5s | **62% faster** |
-| 📦 Bundle Size | 2.1MB | 1.3MB | **38% smaller** |
-| 🚀 API Response | 800ms | 480ms | **40% faster** |
-| 💾 Memory Usage | 512MB | 256MB | **50% optimized** |
-
-</div>
-
-### 🛡️ **Bảo Mật Enterprise**
-
-- 🔐 **Authentication**: JWT với refresh token rotation
-- 🛡️ **Authorization**: Role-based access control (RBAC)
-- 🚫 **Rate Limiting**: Protection against DDoS và abuse
-- 🔍 **Audit Logging**: Theo dõi tất cả hoạt động quan trọng
-- 🔒 **Data Encryption**: End-to-end encryption cho dữ liệu nhạy cảm
+Chúng tôi hoan nghênh mọi đóng góp từ cộng đồng!
+1.  Fork dự án
+2.  Tạo feature branch (`git checkout -b feature/AmazingFeature`)
+3.  Commit thay đổi (`git commit -m 'Add some AmazingFeature'`)
+4.  Push lên branch (`git push origin feature/AmazingFeature`)
+5.  Tạo Pull Request
 
 ---
 
-## 💰 **Xử Lý Cổ Tức & Corporate Actions**
+## 📄 License
 
-### 🎯 **Logic Cost Basis Adjustment**
-
-Hệ thống sử dụng phương pháp **Cost Basis Adjustment** chuẩn quốc tế để xử lý cổ tức:
-
-#### 📊 **Ví Dụ Thực Tế - Cổ Phiếu VLB**
-
-```
-🔸 Giao Dịch Mua (2/6/2025):
-   • Số lượng: 700 cổ phiếu
-   • Giá mua: 47.100 VND/cp  
-   • Phí mua: 9.891 VND
-   • Tổng chi phí: 32.979.891 VND
-
-🔸 Sự Kiện Cổ Tức (17/7/2025):
-   • Cổ tức: 1.500 VND/cp
-   • Thuế suất: 5%
-   • Tổng cổ tức: 1.050.000 VND
-   • Thuế cổ tức: 52.500 VND
-
-🔸 Điều Chỉnh Cost Basis:
-   • Cost basis gốc: 32.979.891 VND
-   • Trừ cổ tức: -1.050.000 VND  
-   • Cost basis điều chỉnh: 31.929.891 VND
-
-🔸 Giao Dịch Bán (22/8/2025):
-   • Giá bán: 45.700 VND/cp
-   • Tiền thực nhận: 31.948.413 VND
-   • Lãi/lỗ từ bán: +18.522 VND
-   • Thuế cổ tức: -52.500 VND
-   • Tổng lãi/lỗ thực: -33.978 VND
-```
-
-#### ✅ **Nguyên Tắc Quan Trọng**
-
-1. **Cost Basis Adjustment** = Cổ tức được coi là "hoàn trả vốn"
-2. **calculatedPl** = Lãi/lỗ từ bán với cost basis đã điều chỉnh  
-3. **Tổng lãi/lỗ thực** = calculatedPl - thuế cổ tức
-4. **KHÔNG cộng thêm cổ tức** vào tổng lãi/lỗ (đã tính trong cost basis)
-
-#### 🔧 **API Endpoints**
-
-```javascript
-// Thống kê cơ bản
-GET /api/profit-stats
-
-// Thống kê có bao gồm dividend details  
-GET /api/enhanced-profit-stats
-```
-
-### 🔄 **Recent Updates (v3.2)**
-
-#### ✅ **Dividend Logic Enhancement**
-- **Fixed**: Cost basis adjustment logic cho cổ tức tiền mặt
-- **Updated**: API `/api/transactions` sử dụng `processSellTransactionWithAdjustments`
-- **Added**: Enhanced profit stats API với dividend breakdown
-- **Corrected**: VLB transaction data với logic điều chỉnh đúng
-
-#### 🔧 **Technical Changes**
-```diff
-// Before (Incorrect)
-- const sellResult = await processSellTransaction(...)
-- totalPL = sellPL + dividendReceived - dividendTax
-
-// After (Correct) 
-+ const sellResult = await processSellTransactionWithAdjustments(...)
-+ totalPL = adjustedSellPL - dividendTax
-```
-
-#### 📊 **Impact**
-- **Accuracy**: 100% compliance với chuẩn kế toán quốc tế
-- **Consistency**: Cả 2 phương pháp tính đều cho kết quả giống nhau
-- **Transparency**: Hiển thị riêng biệt từng thành phần P&L
-
----
-
-## 🧪 **Testing & Quality**
-
-### ✅ **Test Coverage**
-
-```bash
-# Chạy tất cả tests
-npm test
-
-# Test coverage report
-npm run test:coverage
-
-# E2E testing
-npm run test:e2e
-```
-
-<div align="center">
-
-| **Test Type** | **Coverage** | **Status** |
-|---|---|---|
-| 🧪 Unit Tests | 92% | ✅ Passing |
-| 🔗 Integration Tests | 88% | ✅ Passing |
-| 🎭 E2E Tests | 85% | ✅ Passing |
-| 🚀 Performance Tests | 90% | ✅ Passing |
-
-</div>
-
-### 🔍 **Code Quality**
-
-- 📏 **ESLint**: Strict linting rules
-- 🎨 **Prettier**: Consistent code formatting  
-- 🔧 **Husky**: Pre-commit hooks
-- 📊 **SonarQube**: Code quality analysis
-- 🏷️ **TypeScript**: Type safety (planned)
-
----
-
-## 🤝 **Đóng Góp**
-
-### 💡 **Cách Đóng Góp**
-
-1. 🍴 **Fork** repository này
-2. 🌿 **Tạo branch** cho feature mới: `git checkout -b feature/amazing-feature`
-3. 💾 **Commit** thay đổi: `git commit -m 'Add amazing feature'`
-4. 📤 **Push** lên branch: `git push origin feature/amazing-feature`
-5. 🔄 **Tạo Pull Request**
-
-### 🐛 **Báo Lỗi**
-
-Gặp bug? [Tạo issue mới](https://github.com/yourusername/trading-journal/issues/new) với:
-- 📝 Mô tả chi tiết lỗi
-- 🔄 Các bước tái hiện
-- 💻 Thông tin môi trường
-- 📸 Screenshots (nếu có)
-
-### 💬 **Thảo Luận**
-
-- 💬 [Discord Community](https://discord.gg/tradingjournal)
-- 📧 [Email Support](mailto:support@tradingjournal.vn)
-- 🐦 [Twitter Updates](https://twitter.com/tradingjournal)
-
----
-
-## 📄 **License**
-
-Dự án này được phân phối dưới **MIT License**. Xem [LICENSE](LICENSE) để biết thêm chi tiết.
-
----
-
-## 🙏 **Lời Cảm Ơn**
-
-### 🎯 **Được Xây Dựng Với**
-
-- [Next.js](https://nextjs.org/) - React framework
-- [Prisma](https://prisma.io/) - Database ORM
-- [Tailwind CSS](https://tailwindcss.com/) - CSS framework
-- [Chart.js](https://chartjs.org/) - Data visualization
-- [NextAuth.js](https://next-auth.js.org/) - Authentication
-
-### 🏆 **Đặc Biệt Cảm Ơn**
-
-- 📊 **TCBS** - Cung cấp API dữ liệu thị trường
-- 🏢 **HSX & HNX** - Quy định bước giá chính thức
-- 👥 **Cộng đồng trader Việt Nam** - Feedback và đóng góp
-- 🔧 **Open Source Community** - Tools và libraries tuyệt vời
-
----
-
-## 🎯 **Production Deployment Information**
-
-### 📊 **Current Status**
-- **Version**: 3.1.1 (Production Ready)
-- **Last Updated**: November 2025
-- **Database**: Supabase PostgreSQL
-- **Build**: ✅ Passing (Next.js 15.3.0)
-- **Schema**: 11 models with optimized indexes
-- **Test Coverage**: Comprehensive test suite
-
-### 🔧 **Recent Enhancements**
-- Enhanced database connectivity with connection pooling
-- Improved API middleware with better security
-- Production-grade error handling and logging
-- Optimized portfolio and transaction services
-- Clean codebase ready for deployment
-
-### 🎯 **Cost Basis Accuracy Fix (v3.1.1)**
-- **Fixed**: Removed intermediate rounding in cost basis calculations
-- **Impact**: Average cost now matches TCBS exactly (e.g., CTG: 48,435 VND vs previous 48,436 VND)
-- **Benefit**: P/L calculations more accurate, eliminated accumulated rounding errors
-- **Scope**: Improved precision without breaking existing data
-- **Testing**: Comprehensive validation with production data (READ-ONLY)
-
-### 🚨 **Pre-Deployment Checklist**
-- [x] ✅ Database connectivity verified
-- [x] ✅ Build process successful
-- [x] ✅ Production environment variables configured
-- [x] ✅ Security middleware active
-- [x] ✅ Error handling implemented
-- [x] ✅ Logging system operational
-- [x] ✅ Development files cleaned up
+Dự án được phát hành dưới giấy phép [MIT](LICENSE).
 
 ---
 
 <div align="center">
-
-## 🚀 **Sẵn Sàng Bắt Đầu?**
-
-**Trading Journal** đã sẵn sàng giúp bạn quản lý danh mục đầu tư chuyên nghiệp!
-
-[![Get Started](https://img.shields.io/badge/🚀%20Bắt%20Đầu%20Ngay-success?style=for-the-badge&logo=rocket)](https://tradingjournal.vn)
-[![Documentation](https://img.shields.io/badge/📖%20Tài%20Liệu-blue?style=for-the-badge&logo=book)](https://docs.tradingjournal.vn)
-[![Community](https://img.shields.io/badge/💬%20Cộng%20Đồng-purple?style=for-the-badge&logo=discord)](https://discord.gg/tradingjournal)
-
-### 🌟 **Nếu dự án này hữu ích, hãy cho chúng tôi một ⭐ star!**
-
-**🏆 Production-Ready | 🛡️ Enterprise-Grade | ⚡ Performance-Optimized**
-
----
-
-*Made with ❤️ by Vietnamese traders, for Vietnamese traders*
-
+<i>Made with ❤️ by Vietnamese traders, for Vietnamese traders</i>
 </div>
