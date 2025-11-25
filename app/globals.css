@@ -2,45 +2,58 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Font Awesome CDN - Add this for icons */
-@import url('https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.0.0/css/all.min.css');
-
 :root {
   --foreground-rgb: 0, 0, 0;
   --background-rgb: 249, 250, 251;
+  --font-heading: 'Space Grotesk', sans-serif;
+  --font-body: 'Be Vietnam Pro', sans-serif;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --foreground-rgb: 255, 255, 255;
-    --background-rgb: 31, 41, 55;
-  }
+.dark {
+  --foreground-rgb: 255, 255, 255;
+  --background-rgb: 31, 41, 55;
 }
 
 body {
   color: rgb(var(--foreground-rgb));
   background-color: rgb(var(--background-rgb));
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* Respect reduced motion preference */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
 }
 
 @layer components {
   .btn-primary {
-    @apply bg-primary text-white py-2 px-4 rounded hover:bg-primary-dark transition-colors;
+    @apply bg-primary text-white py-2 px-4 rounded hover:bg-primary-dark 
+           transition-colors dark:bg-blue-600 dark:hover:bg-blue-700;
   }
-  
+
   .btn-secondary {
-    @apply bg-secondary text-white py-2 px-4 rounded hover:bg-secondary-dark transition-colors;
+    @apply bg-secondary text-white py-2 px-4 rounded hover:bg-secondary-dark 
+           transition-colors dark:bg-green-600 dark:hover:bg-green-700;
   }
-  
+
   .input-field {
-    @apply w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-primary-dark;
+    @apply w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring-2 
+           focus:ring-primary-dark dark:border-gray-600 dark:bg-gray-800 
+           dark:text-white dark:focus:ring-blue-500;
   }
-  
+
   .form-label {
-    @apply block text-sm font-medium text-gray-700 mb-1;
+    @apply block text-sm font-medium text-gray-700 mb-1 dark:text-gray-300;
   }
-  
+
   .card {
-    @apply bg-white shadow-md rounded-lg p-6;
+    @apply bg-white shadow-md rounded-lg p-6 dark:bg-gray-800 dark:shadow-gray-900/50;
   }
 
   /* Landing page specific styles */
@@ -54,7 +67,7 @@ body {
 
   .feature-card:hover {
     transform: translateY(-8px);
-    box-shadow: 0 10px 15px rgba(0,0,0,0.1);
+    box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
   }
 
   .leaderboard-tab {
@@ -120,7 +133,81 @@ body {
     transition: opacity 0.5s ease-in-out;
     opacity: 0;
   }
+
   .hero-image-preview.is-loaded {
     opacity: 1;
   }
-} 
+
+  /* Animation utilities */
+  .fade-in-up {
+    animation: fadeInUp 0.5s ease-out forwards;
+    opacity: 0;
+  }
+
+  .slide-in-right {
+    animation: slideInRight 0.3s ease-out forwards;
+  }
+
+  .scale-in {
+    transition: transform 0.2s ease-out;
+  }
+
+  .scale-in:hover {
+    transform: scale(1.05);
+  }
+
+  .success-pulse {
+    animation: successPulse 0.6s ease-out;
+  }
+
+  .shake {
+    animation: shake 0.5s ease-in-out;
+  }
+
+  .number-change {
+    transition: all 0.3s ease-out;
+  }
+
+  @keyframes fadeInUp {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes slideInRight {
+    from {
+      opacity: 0;
+      transform: translateX(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
+
+  @keyframes successPulse {
+    0% { 
+      transform: scale(1); 
+      background-color: transparent;
+    }
+    50% { 
+      transform: scale(1.05); 
+      background-color: rgba(34, 197, 94, 0.1); 
+    }
+    100% { 
+      transform: scale(1); 
+      background-color: transparent;
+    }
+  }
+
+  @keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); }
+    20%, 40%, 60%, 80% { transform: translateX(5px); }
+  }
+}

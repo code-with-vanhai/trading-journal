@@ -86,11 +86,10 @@ export default function Pagination({
           onClick={() => onPageChange(currentPage - 1)}
           disabled={currentPage === 1}
           className={`
-            px-3 py-2 rounded-md text-sm font-medium border
+            px-3 py-2 rounded-md text-sm font-medium border transition-colors duration-200
             ${currentPage === 1
-              ? 'text-gray-400 cursor-not-allowed border-gray-200 bg-gray-50'
-              : 'text-gray-700 hover:bg-gray-100 border-gray-300 bg-white'}
-            transition-colors duration-200
+              ? 'text-gray-400 dark:text-gray-600 cursor-not-allowed border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800'
+              : 'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800'}
           `}
         >
           ←
@@ -105,10 +104,10 @@ export default function Pagination({
             className={`
               px-3 py-2 rounded-md text-sm font-medium border transition-colors duration-200
               ${page === currentPage
-                ? 'bg-blue-600 text-white border-blue-600'
+                ? 'bg-blue-600 dark:bg-blue-700 text-white border-blue-600 dark:border-blue-700'
                 : page === '...'
-                  ? 'text-gray-500 cursor-default border-transparent bg-transparent'
-                  : 'text-gray-700 hover:bg-gray-100 border-gray-300 bg-white'}
+                  ? 'text-gray-500 dark:text-gray-500 cursor-default border-transparent bg-transparent'
+                  : 'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800'}
             `}
           >
             {page}
@@ -120,11 +119,10 @@ export default function Pagination({
           onClick={() => onPageChange(currentPage + 1)}
           disabled={currentPage === totalPages}
           className={`
-            px-3 py-2 rounded-md text-sm font-medium border
+            px-3 py-2 rounded-md text-sm font-medium border transition-colors duration-200
             ${currentPage === totalPages
-              ? 'text-gray-400 cursor-not-allowed border-gray-200 bg-gray-50'
-              : 'text-gray-700 hover:bg-gray-100 border-gray-300 bg-white'}
-            transition-colors duration-200
+              ? 'text-gray-400 dark:text-gray-600 cursor-not-allowed border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800'
+              : 'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800'}
           `}
         >
           →

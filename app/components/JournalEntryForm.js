@@ -132,33 +132,33 @@ export default function JournalEntryForm({ transactionId, existingEntry = null }
   };
 
   return (
-    <div className="max-w-2xl mx-auto bg-white p-6 rounded-lg shadow-md">
-      <h2 className="text-xl font-semibold mb-6">
+    <div className="max-w-2xl mx-auto bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md border border-gray-200 dark:border-gray-700">
+      <h2 className="text-xl font-semibold mb-6 text-gray-900 dark:text-white">
         {existingEntry ? 'Chỉnh Sửa Nhật Ký Giao Dịch' : 'Tạo Nhật Ký Giao Dịch'}
       </h2>
 
       {error && (
-        <div className="bg-red-50 text-red-500 p-3 rounded mb-4">
+        <div className="bg-red-50 dark:bg-red-900/20 text-red-500 dark:text-red-400 p-3 rounded mb-4 border border-red-200 dark:border-red-800">
           {error}
         </div>
       )}
 
       {success && (
-        <div className="bg-green-50 text-green-600 p-3 rounded mb-4">
+        <div className="bg-green-50 dark:bg-green-900/20 text-green-600 dark:text-green-400 p-3 rounded mb-4 border border-green-200 dark:border-green-800">
           {success}
         </div>
       )}
 
       <form onSubmit={handleSubmit}>
         <div className="mb-4">
-          <label className="block text-sm font-medium text-gray-700 mb-1">
+          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
             Cảm Xúc Khi Mua Vào
           </label>
           <select
             name="emotionOnEntry"
             value={formData.emotionOnEntry}
             onChange={handleInputChange}
-            className="input-field w-full"
+            className="input-field w-full dark:bg-gray-700 dark:text-white dark:border-gray-600"
             required
           >
             <option value="">Chọn cảm xúc...</option>
@@ -176,14 +176,14 @@ export default function JournalEntryForm({ transactionId, existingEntry = null }
         </div>
 
         <div className="mb-4">
-          <label className="block text-sm font-medium text-gray-700 mb-1">
+          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
             Cảm Xúc Khi Bán Ra
           </label>
           <select
             name="emotionOnExit"
             value={formData.emotionOnExit}
             onChange={handleInputChange}
-            className="input-field w-full"
+            className="input-field w-full dark:bg-gray-700 dark:text-white dark:border-gray-600"
             required
           >
             <option value="">Chọn cảm xúc...</option>
@@ -201,7 +201,7 @@ export default function JournalEntryForm({ transactionId, existingEntry = null }
         </div>
 
         <div className="mb-4">
-          <label className="block text-sm font-medium text-gray-700 mb-1">
+          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
             Chiến Lược Sử Dụng
           </label>
           <input
@@ -209,13 +209,13 @@ export default function JournalEntryForm({ transactionId, existingEntry = null }
             name="strategyUsed"
             value={formData.strategyUsed}
             onChange={handleInputChange}
-            className="input-field w-full"
+            className="input-field w-full dark:bg-gray-700 dark:text-white dark:border-gray-600"
             placeholder="VD: Breakout, Hỗ Trợ/Kháng Cự, Theo Xu Hướng"
           />
         </div>
 
         <div className="mb-6">
-          <label className="block text-sm font-medium text-gray-700 mb-1">
+          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
             Đánh Giá Sau Giao Dịch
           </label>
           <textarea
@@ -223,14 +223,14 @@ export default function JournalEntryForm({ transactionId, existingEntry = null }
             value={formData.postTradeReview}
             onChange={handleInputChange}
             rows={5}
-            className="input-field w-full"
+            className="input-field w-full dark:bg-gray-700 dark:text-white dark:border-gray-600"
             placeholder="Điều gì đã tốt? Điều gì cần cải thiện? Bạn đã học được gì?"
             required
           />
         </div>
 
         <div className="mb-6">
-          <label className="block text-sm font-medium text-gray-700 mb-1">
+          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
             Thẻ Gán
           </label>
           
@@ -239,13 +239,13 @@ export default function JournalEntryForm({ transactionId, existingEntry = null }
               type="text"
               value={newTag}
               onChange={(e) => setNewTag(e.target.value)}
-              className="input-field flex-1 mr-2"
+              className="input-field flex-1 mr-2 dark:bg-gray-700 dark:text-white dark:border-gray-600"
               placeholder="Thêm thẻ mới..."
             />
             <button
               type="button"
               onClick={createNewTag}
-              className="px-3 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
+              className="px-3 py-2 bg-blue-500 dark:bg-blue-700 text-white rounded hover:bg-blue-600 dark:hover:bg-blue-600"
             >
               Thêm
             </button>
@@ -255,7 +255,7 @@ export default function JournalEntryForm({ transactionId, existingEntry = null }
             <select
               value=""
               onChange={handleTagChange}
-              className="input-field flex-1"
+              className="input-field flex-1 dark:bg-gray-700 dark:text-white dark:border-gray-600"
             >
               <option value="">Chọn thẻ có sẵn...</option>
               {tags
@@ -275,13 +275,13 @@ export default function JournalEntryForm({ transactionId, existingEntry = null }
                 return tag ? (
                   <span 
                     key={tagId} 
-                    className="px-3 py-1 bg-blue-100 text-blue-800 rounded-full text-sm flex items-center"
+                    className="px-3 py-1 bg-blue-100 dark:bg-blue-900/30 text-blue-800 dark:text-blue-400 rounded-full text-sm flex items-center"
                   >
                     {tag.name}
                     <button
                       type="button"
                       onClick={() => removeTag(tagId)}
-                      className="ml-1 text-blue-600 hover:text-blue-800"
+                      className="ml-1 text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300"
                     >
                       &times;
                     </button>
@@ -295,14 +295,14 @@ export default function JournalEntryForm({ transactionId, existingEntry = null }
         <div className="flex justify-between">
           <Link
             href={`/transactions/${transactionId}`}
-            className="btn-secondary"
+            className="btn-secondary dark:bg-gray-700 dark:text-gray-300 dark:hover:bg-gray-600"
           >
             Hủy
           </Link>
           <button
             type="submit"
             disabled={isSubmitting}
-            className="btn-primary"
+            className="btn-primary dark:bg-blue-700 dark:hover:bg-blue-600"
           >
             {isSubmitting ? 'Đang Lưu...' : 'Lưu Nhật Ký'}
           </button>

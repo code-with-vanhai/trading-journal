@@ -34,9 +34,14 @@ model Transaction {
   stockAccountId  String
 
   @@index([userId, transactionDate])
+  @@index([userId, transactionDate(sort: Desc)], map: "idx_transaction_user_date_desc")
   @@index([userId, ticker])
+  @@index([userId, ticker, transactionDate(sort: Desc)], map: "idx_transaction_user_ticker_date")
   @@index([stockAccountId])
+  @@index([stockAccountId, transactionDate(sort: Desc)], map: "idx_transaction_account_date")
   @@index([userId, type, transactionDate(sort: Desc)], map: "idx_transaction_user_type_date")
+  @@index([userId, type, calculatedPl], map: "idx_transaction_user_type_pl")
+  @@index([transactionDate(sort: Desc)], map: "idx_transaction_date_desc")
 }
 
 model JournalEntry {
@@ -166,6 +171,11 @@ model CostBasisAdjustment {
   createdAt        DateTime       @default(now())
   updatedAt        DateTime       @updatedAt
   createdBy        String?
+
+  @@index([userId, stockAccountId, ticker])
+  @@index([userId, ticker, eventDate(sort: Desc)], map: "idx_adjustment_user_ticker_date")
+  @@index([stockAccountId, ticker, isActive], map: "idx_adjustment_account_ticker_active")
+  @@index([eventDate(sort: Desc)], map: "idx_adjustment_event_date")
 }
 
 enum FeeType {

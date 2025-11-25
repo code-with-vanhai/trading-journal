@@ -6,6 +6,7 @@ import { useRouter, useSearchParams } from 'next/navigation';
 import StrategyForm from '../components/StrategyForm';
 import StrategyList from '../components/StrategyList';
 import SigninModal from '../components/SigninModal';
+import { IconAlertCircle, IconChessKing, IconEdit, IconLineChart, IconPlus, IconX } from '../components/ui/Icon';
 
 // Wrapper component that uses searchParams
 function StrategiesContent() {
@@ -93,21 +94,21 @@ function StrategiesContent() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
       {/* Hero Header Section */}
-      <div className="gradient-bg text-white py-12">
+      <div className="gradient-bg dark:from-gray-800 dark:to-gray-700 text-white py-12">
         <div className="max-w-4xl mx-auto px-4">
           <div className="flex justify-between items-center">
             <div>
               <h1 className="text-4xl font-bold mb-4">Chiến Lược Giao Dịch</h1>
-              <p className="text-xl opacity-90">Chia sẻ và học hỏi các chiến lược giao dịch từ cộng đồng</p>
+              <p className="text-xl opacity-90 dark:opacity-80">Chia sẻ và học hỏi các chiến lược giao dịch từ cộng đồng</p>
             </div>
             {status === 'authenticated' && (
               <button
-                className="bg-white text-blue-900 px-6 py-3 rounded-lg font-bold hover:bg-blue-100 transition shadow-lg"
+                className="bg-white dark:bg-gray-800 text-blue-900 dark:text-blue-100 px-6 py-3 rounded-lg font-bold hover:bg-blue-100 dark:hover:bg-gray-700 transition shadow-lg flex items-center"
                 onClick={() => setShowForm(!showForm)}
               >
-                <i className={`fas ${showForm ? 'fa-times' : 'fa-plus'} mr-2`}></i>
+                {showForm ? <IconX className="w-5 h-5 mr-2" /> : <IconPlus className="w-5 h-5 mr-2" />}
                 {showForm ? 'Hủy' : 'Chia Sẻ Chiến Lược'}
               </button>
             )}
@@ -118,47 +119,47 @@ function StrategiesContent() {
       {/* Main Content */}
       <div className="max-w-4xl mx-auto p-4 mt-6">
         {error && (
-          <div className="bg-red-50 border-l-4 border-red-500 text-red-700 p-4 rounded mb-6">
+          <div className="bg-red-50 dark:bg-red-900/20 border-l-4 border-red-500 dark:border-red-600 text-red-700 dark:text-red-400 p-4 rounded mb-6">
             <div className="flex items-center">
-              <i className="fas fa-exclamation-triangle mr-2"></i>
+              <IconAlertCircle className="w-5 h-5 mr-2" />
               {error}
             </div>
           </div>
         )}
 
         {status === 'unauthenticated' ? (
-          <div className="bg-white rounded-lg shadow-lg p-12 text-center">
+          <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg border border-gray-200 dark:border-gray-700 p-12 text-center">
             <div className="flex flex-col items-center">
-              <i className="fas fa-chess text-gray-400 text-6xl mb-6"></i>
-              <h3 className="text-2xl font-semibold text-gray-700 mb-4">Đăng nhập để xem chiến lược</h3>
-              <p className="text-gray-500 mb-6">Vui lòng đăng nhập để truy cập và chia sẻ chiến lược giao dịch</p>
+              <IconChessKing className="text-gray-400 dark:text-gray-500 w-16 h-16 mb-6" />
+              <h3 className="text-2xl font-semibold text-gray-700 dark:text-gray-300 mb-4">Đăng nhập để xem chiến lược</h3>
+              <p className="text-gray-500 dark:text-gray-400 mb-6">Vui lòng đăng nhập để truy cập và chia sẻ chiến lược giao dịch</p>
             </div>
           </div>
         ) : (
           <>
             {showForm && (
-              <div className="bg-white rounded-lg shadow-lg p-6 mb-6">
+              <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg border border-gray-200 dark:border-gray-700 p-6 mb-6">
                 <div className="flex items-center mb-6">
-                  <i className="fas fa-edit text-blue-600 text-xl mr-3"></i>
-                  <h2 className="text-xl font-bold text-gray-800">Tạo Chiến Lược Mới</h2>
+                  <IconEdit className="text-blue-600 dark:text-blue-400 w-6 h-6 mr-3" />
+                  <h2 className="text-xl font-bold text-gray-800 dark:text-gray-200">Tạo Chiến Lược Mới</h2>
                 </div>
                 <StrategyForm onSubmit={handleStrategySubmit} />
               </div>
             )}
 
             {isLoading ? (
-              <div className="bg-white rounded-lg shadow-lg p-12 text-center">
+              <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg border border-gray-200 dark:border-gray-700 p-12 text-center">
                 <div className="flex flex-col items-center">
-                  <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mb-4"></div>
-                  <p className="text-gray-600">Đang tải chiến lược...</p>
+                  <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 dark:border-blue-400 mb-4"></div>
+                  <p className="text-gray-600 dark:text-gray-400">Đang tải chiến lược...</p>
                 </div>
               </div>
             ) : (
-              <div className="bg-white rounded-lg shadow-lg overflow-hidden">
-                <div className="p-6 bg-gradient-to-r from-blue-50 to-indigo-50 border-b border-gray-200">
+              <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg border border-gray-200 dark:border-gray-700 overflow-hidden">
+                <div className="p-6 bg-gradient-to-r from-blue-50 to-indigo-50 dark:from-blue-900/20 dark:to-indigo-900/20 border-b border-gray-200 dark:border-gray-700">
                   <div className="flex items-center">
-                    <i className="fas fa-chart-line text-blue-600 text-xl mr-3"></i>
-                    <h3 className="font-semibold text-gray-800">Danh sách chiến lược ({strategies.length})</h3>
+                    <IconLineChart className="text-blue-600 dark:text-blue-400 w-6 h-6 mr-3" />
+                    <h3 className="font-semibold text-gray-800 dark:text-gray-200">Danh sách chiến lược ({strategies.length})</h3>
                   </div>
                 </div>
                 <div className="p-6">

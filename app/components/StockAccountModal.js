@@ -127,14 +127,14 @@ export default function StockAccountModal({
     >
       <form onSubmit={handleSubmit} className="space-y-4">
         {error && (
-          <div className="bg-red-50 text-red-600 p-3 rounded-md text-sm">
+          <div className="bg-red-50 dark:bg-red-900/20 text-red-600 dark:text-red-400 p-3 rounded-md text-sm border border-red-200 dark:border-red-800">
             {error}
           </div>
         )}
 
         <div>
-          <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-1">
-            Tên Tài Khoản <span className="text-red-500">*</span>
+          <label htmlFor="name" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+            Tên Tài Khoản <span className="text-red-500 dark:text-red-400">*</span>
           </label>
           <input
             type="text"
@@ -142,7 +142,7 @@ export default function StockAccountModal({
             name="name"
             value={formData.name}
             onChange={handleChange}
-            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+            className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-transparent"
             placeholder="VD: Tài khoản TCBS chính"
             maxLength={100}
             required
@@ -151,7 +151,7 @@ export default function StockAccountModal({
         </div>
 
         <div>
-          <label htmlFor="brokerName" className="block text-sm font-medium text-gray-700 mb-1">
+          <label htmlFor="brokerName" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
             Tên Công Ty Chứng Khoán
           </label>
           <input
@@ -160,14 +160,14 @@ export default function StockAccountModal({
             name="brokerName"
             value={formData.brokerName}
             onChange={handleChange}
-            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+            className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-transparent"
             placeholder="VD: TCBS, VNDIRECT, SSI"
             disabled={isLoading}
           />
         </div>
 
         <div>
-          <label htmlFor="accountNumber" className="block text-sm font-medium text-gray-700 mb-1">
+          <label htmlFor="accountNumber" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
             Số Tài Khoản
           </label>
           <input
@@ -176,14 +176,14 @@ export default function StockAccountModal({
             name="accountNumber"
             value={formData.accountNumber}
             onChange={handleChange}
-            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+            className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-transparent"
             placeholder="VD: 123456789"
             disabled={isLoading}
           />
         </div>
 
         <div>
-          <label htmlFor="description" className="block text-sm font-medium text-gray-700 mb-1">
+          <label htmlFor="description" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
             Mô Tả
           </label>
           <textarea
@@ -192,7 +192,7 @@ export default function StockAccountModal({
             value={formData.description}
             onChange={handleChange}
             rows={3}
-            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+            className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-transparent"
             placeholder="VD: Tài khoản dành cho đầu tư dài hạn"
             disabled={isLoading}
           />
@@ -202,14 +202,14 @@ export default function StockAccountModal({
           <button
             type="button"
             onClick={handleClose}
-            className="flex-1 px-4 py-2 text-gray-700 bg-gray-100 hover:bg-gray-200 rounded-md transition-colors disabled:opacity-50"
+            className="flex-1 px-4 py-2 text-gray-700 dark:text-gray-300 bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 rounded-md transition-colors disabled:opacity-50"
             disabled={isLoading}
           >
             Hủy
           </button>
           <button
             type="submit"
-            className="flex-1 px-4 py-2 bg-blue-600 text-white hover:bg-blue-700 rounded-md transition-colors disabled:opacity-50 flex items-center justify-center"
+            className="flex-1 px-4 py-2 bg-blue-600 dark:bg-blue-700 text-white hover:bg-blue-700 dark:hover:bg-blue-600 rounded-md transition-colors disabled:opacity-50 flex items-center justify-center"
             disabled={isLoading}
           >
             {isLoading ? (

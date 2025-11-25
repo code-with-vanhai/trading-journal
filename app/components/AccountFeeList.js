@@ -17,17 +17,17 @@ const FEE_TYPE_LABELS = {
 };
 
 const FEE_TYPE_COLORS = {
-  CUSTODY_FEE: 'bg-blue-100 text-blue-800',
-  ADVANCE_SELLING_FEE: 'bg-orange-100 text-orange-800',
-  ACCOUNT_MAINTENANCE: 'bg-green-100 text-green-800',
-  TRANSFER_FEE: 'bg-purple-100 text-purple-800',
-  DIVIDEND_TAX: 'bg-red-100 text-red-800',
-  INTEREST_FEE: 'bg-yellow-100 text-yellow-800',
-  DATA_FEED_FEE: 'bg-indigo-100 text-indigo-800',
-  SMS_NOTIFICATION_FEE: 'bg-pink-100 text-pink-800',
-  STATEMENT_FEE: 'bg-gray-100 text-gray-800',
-  WITHDRAWAL_FEE: 'bg-red-100 text-red-800',
-  OTHER_FEE: 'bg-gray-100 text-gray-800'
+  CUSTODY_FEE: 'bg-blue-100 dark:bg-blue-900/30 text-blue-800 dark:text-blue-400',
+  ADVANCE_SELLING_FEE: 'bg-orange-100 dark:bg-orange-900/30 text-orange-800 dark:text-orange-400',
+  ACCOUNT_MAINTENANCE: 'bg-green-100 dark:bg-green-900/30 text-green-800 dark:text-green-400',
+  TRANSFER_FEE: 'bg-purple-100 dark:bg-purple-900/30 text-purple-800 dark:text-purple-400',
+  DIVIDEND_TAX: 'bg-red-100 dark:bg-red-900/30 text-red-800 dark:text-red-400',
+  INTEREST_FEE: 'bg-yellow-100 dark:bg-yellow-900/30 text-yellow-800 dark:text-yellow-400',
+  DATA_FEED_FEE: 'bg-indigo-100 dark:bg-indigo-900/30 text-indigo-800 dark:text-indigo-400',
+  SMS_NOTIFICATION_FEE: 'bg-pink-100 dark:bg-pink-900/30 text-pink-800 dark:text-pink-400',
+  STATEMENT_FEE: 'bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-gray-300',
+  WITHDRAWAL_FEE: 'bg-red-100 dark:bg-red-900/30 text-red-800 dark:text-red-400',
+  OTHER_FEE: 'bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-gray-300'
 };
 
 export default function AccountFeeList({ accountFees, isLoading, onEdit, onDelete }) {
@@ -62,18 +62,18 @@ export default function AccountFeeList({ accountFees, isLoading, onEdit, onDelet
   const getSortIcon = (field) => {
     if (sortBy !== field) {
       return (
-        <svg className="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <svg className="w-4 h-4 text-gray-400 dark:text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 16V4m0 0L3 8m4-4l4 4m6 0v12m0 0l4-4m-4 4l-4-4" />
         </svg>
       );
     }
     
     return sortOrder === 'asc' ? (
-      <svg className="w-4 h-4 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <svg className="w-4 h-4 text-blue-600 dark:text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 15l7-7 7 7" />
       </svg>
     ) : (
-      <svg className="w-4 h-4 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <svg className="w-4 h-4 text-blue-600 dark:text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
       </svg>
     );
@@ -81,13 +81,13 @@ export default function AccountFeeList({ accountFees, isLoading, onEdit, onDelet
 
   if (isLoading) {
     return (
-      <div className="bg-white rounded-lg shadow-sm border">
+      <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700">
         <div className="p-6">
           <div className="animate-pulse">
-            <div className="h-4 bg-gray-200 rounded w-1/4 mb-4"></div>
+            <div className="h-4 bg-gray-200 dark:bg-gray-700 rounded w-1/4 mb-4"></div>
             <div className="space-y-3">
               {[...Array(5)].map((_, i) => (
-                <div key={i} className="h-4 bg-gray-200 rounded"></div>
+                <div key={i} className="h-4 bg-gray-200 dark:bg-gray-700 rounded"></div>
               ))}
             </div>
           </div>
@@ -98,28 +98,28 @@ export default function AccountFeeList({ accountFees, isLoading, onEdit, onDelet
 
   if (!accountFees || accountFees.length === 0) {
     return (
-      <div className="bg-white rounded-lg shadow-sm border">
+      <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700">
         <div className="p-6 text-center">
-          <div className="w-16 h-16 mx-auto mb-4 bg-gray-100 rounded-full flex items-center justify-center">
-            <svg className="w-8 h-8 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <div className="w-16 h-16 mx-auto mb-4 bg-gray-100 dark:bg-gray-700 rounded-full flex items-center justify-center">
+            <svg className="w-8 h-8 text-gray-400 dark:text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1" />
             </svg>
           </div>
-          <h3 className="text-lg font-medium text-gray-900 mb-2">Chưa có phí tài khoản</h3>
-          <p className="text-gray-500">Bạn chưa có phí tài khoản nào được ghi nhận.</p>
+          <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-2">Chưa có phí tài khoản</h3>
+          <p className="text-gray-500 dark:text-gray-400">Bạn chưa có phí tài khoản nào được ghi nhận.</p>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="bg-white rounded-lg shadow-sm border overflow-hidden">
+    <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 overflow-hidden">
       <div className="overflow-x-auto">
-        <table className="min-w-full divide-y divide-gray-200">
-          <thead className="bg-gray-50">
+        <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
+          <thead className="bg-gray-50 dark:bg-gray-700">
             <tr>
               <th 
-                className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer hover:bg-gray-100"
+                className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-600"
                 onClick={() => handleSort('feeDate')}
               >
                 <div className="flex items-center gap-1">
@@ -128,7 +128,7 @@ export default function AccountFeeList({ accountFees, isLoading, onEdit, onDelet
                 </div>
               </th>
               <th 
-                className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer hover:bg-gray-100"
+                className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-600"
                 onClick={() => handleSort('feeType')}
               >
                 <div className="flex items-center gap-1">
@@ -137,7 +137,7 @@ export default function AccountFeeList({ accountFees, isLoading, onEdit, onDelet
                 </div>
               </th>
               <th 
-                className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer hover:bg-gray-100"
+                className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-600"
                 onClick={() => handleSort('amount')}
               >
                 <div className="flex items-center gap-1">
@@ -145,53 +145,53 @@ export default function AccountFeeList({ accountFees, isLoading, onEdit, onDelet
                   {getSortIcon('amount')}
                 </div>
               </th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
                 Tài khoản
               </th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
                 Mô tả
               </th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
                 Số tham chiếu
               </th>
-              <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
+              <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
                 Thao tác
               </th>
             </tr>
           </thead>
-          <tbody className="bg-white divide-y divide-gray-200">
+          <tbody className="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700">
             {accountFees.map((fee) => (
-              <tr key={fee.id} className="hover:bg-gray-50">
-                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+              <tr key={fee.id} className="hover:bg-gray-50 dark:hover:bg-gray-700/50">
+                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-gray-200">
                   {formatDate(fee.feeDate)}
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap">
-                  <span className={`inline-flex px-2 py-1 text-xs font-medium rounded-full ${FEE_TYPE_COLORS[fee.feeType] || 'bg-gray-100 text-gray-800'}`}>
+                  <span className={`inline-flex px-2 py-1 text-xs font-medium rounded-full ${FEE_TYPE_COLORS[fee.feeType] || 'bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-gray-300'}`}>
                     {FEE_TYPE_LABELS[fee.feeType] || fee.feeType}
                   </span>
                 </td>
-                <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 dark:text-gray-200">
                   {formatCurrency(fee.amount)}
                 </td>
-                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-gray-200">
                   <div>
                     <div className="font-medium">{fee.stockAccount?.name}</div>
                     {fee.stockAccount?.brokerName && (
-                      <div className="text-gray-500 text-xs">{fee.stockAccount.brokerName}</div>
+                      <div className="text-gray-500 dark:text-gray-400 text-xs">{fee.stockAccount.brokerName}</div>
                     )}
                   </div>
                 </td>
-                <td className="px-6 py-4 text-sm text-gray-900 max-w-xs truncate">
+                <td className="px-6 py-4 text-sm text-gray-900 dark:text-gray-200 max-w-xs truncate">
                   {fee.description || '-'}
                 </td>
-                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-gray-200">
                   {fee.referenceNumber || '-'}
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                   <div className="flex justify-end gap-2">
                     <button
                       onClick={() => onEdit(fee)}
-                      className="text-blue-600 hover:text-blue-900 p-1 rounded"
+                      className="text-blue-600 dark:text-blue-400 hover:text-blue-900 dark:hover:text-blue-300 p-1 rounded"
                       title="Chỉnh sửa"
                     >
                       <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -200,7 +200,7 @@ export default function AccountFeeList({ accountFees, isLoading, onEdit, onDelet
                     </button>
                     <button
                       onClick={() => onDelete(fee.id)}
-                      className="text-red-600 hover:text-red-900 p-1 rounded"
+                      className="text-red-600 dark:text-red-400 hover:text-red-900 dark:hover:text-red-300 p-1 rounded"
                       title="Xóa"
                     >
                       <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">

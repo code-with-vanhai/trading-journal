@@ -7,6 +7,7 @@ import { vi } from 'date-fns/locale';
 import TransactionDetailModal from './TransactionDetailModal';
 import EditTransactionModal from './EditTransactionModal';
 import { useNotification } from './Notification';
+import { IconEye, IconPlus, IconEdit, IconTrash, IconRefresh } from './ui/Icon';
 
 export default function TransactionList({ 
   transactions, 
@@ -127,7 +128,7 @@ export default function TransactionList({
   if (transactions.length === 0) {
     return (
       <div className="text-center py-10">
-        <p className="text-gray-500 mb-4">Chưa có giao dịch nào được ghi lại.</p>
+        <p className="text-gray-500 dark:text-gray-400 mb-4">Chưa có giao dịch nào được ghi lại.</p>
         <button 
           onClick={() => window.dispatchEvent(new CustomEvent('openAddModal'))}
           className="btn-primary"
@@ -140,104 +141,108 @@ export default function TransactionList({
 
   return (
     <div>
-      <div className="overflow-x-auto">
-        <table className="min-w-full bg-white">
-          <thead className="bg-gray-50">
+      <div className="overflow-x-auto rounded-lg border border-gray-200 dark:border-gray-700">
+        <table className="min-w-full bg-white dark:bg-gray-800">
+          <thead className="bg-gray-50 dark:bg-gray-900">
             <tr>
               <th
-                className="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer"
+                className="px-4 py-2 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
                 onClick={() => handleSort('transactionDate')}
               >
                 Ngày {getSortIcon('transactionDate')}
               </th>
               <th
-                className="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer"
+                className="px-4 py-2 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
                 onClick={() => handleSort('ticker')}
               >
                 Mã CP {getSortIcon('ticker')}
               </th>
               <th
-                className="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer"
+                className="px-4 py-2 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
                 onClick={() => handleSort('type')}
               >
                 Loại {getSortIcon('type')}
               </th>
               <th
-                className="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer"
+                className="px-4 py-2 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
                 onClick={() => handleSort('quantity')}
               >
                 Số Lượng {getSortIcon('quantity')}
               </th>
               <th
-                className="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer"
+                className="px-4 py-2 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
                 onClick={() => handleSort('price')}
               >
                 Giá {getSortIcon('price')}
               </th>
               <th
-                className="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer"
+                className="px-4 py-2 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
                 onClick={() => handleSort('calculatedPl')}
               >
                 Lãi/Lỗ {getSortIcon('calculatedPl')}
               </th>
-              <th className="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+              <th className="px-4 py-2 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
                 Nhật Ký
               </th>
-              <th className="px-4 py-2 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
+              <th className="px-4 py-2 text-right text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
                 Thao Tác
               </th>
             </tr>
           </thead>
-          <tbody className="divide-y divide-gray-200">
-            {filteredAndSortedTransactions.map((transaction) => (
-              <tr key={transaction.id} className="hover:bg-gray-50">
-                <td className="px-4 py-2 whitespace-nowrap">
+          <tbody className="divide-y divide-gray-200 dark:divide-gray-700">
+            {filteredAndSortedTransactions.map((transaction, index) => (
+              <tr 
+                key={transaction.id} 
+                className="hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors fade-in-up"
+                style={{ animationDelay: `${index * 50}ms` }}
+              >
+                <td className="px-4 py-2 whitespace-nowrap text-gray-900 dark:text-gray-100">
                   {format(new Date(transaction.transactionDate), 'dd MMM, yyyy', { locale: vi })}
                 </td>
-                <td className="px-4 py-2 whitespace-nowrap font-medium">
+                <td className="px-4 py-2 whitespace-nowrap font-medium text-gray-900 dark:text-gray-100">
                   {transaction.ticker}
                 </td>
                 <td className="px-4 py-2 whitespace-nowrap">
                   <span className={`px-2 py-1 rounded-full text-xs font-semibold ${
                     transaction.type === 'BUY' 
-                      ? 'bg-green-100 text-green-800' 
-                      : 'bg-red-100 text-red-800'
+                      ? 'bg-green-100 dark:bg-green-900/30 text-green-800 dark:text-green-300' 
+                      : 'bg-red-100 dark:bg-red-900/30 text-red-800 dark:text-red-300'
                   }`}>
                     {transaction.type === 'BUY' ? 'Mua' : 'Bán'}
                   </span>
                 </td>
-                <td className="px-4 py-2 whitespace-nowrap">
+                <td className="px-4 py-2 whitespace-nowrap text-gray-900 dark:text-gray-100">
                   {transaction.quantity}
                 </td>
-                <td className="px-4 py-2 whitespace-nowrap">
+                <td className="px-4 py-2 whitespace-nowrap text-gray-900 dark:text-gray-100">
                   {formatCurrency(transaction.price)}
                 </td>
                 <td className="px-4 py-2 whitespace-nowrap">
                   {transaction.calculatedPl != null ? (
-                    <span className={transaction.calculatedPl >= 0 ? 'text-green-600' : 'text-red-600'}>
+                    <span className={transaction.calculatedPl >= 0 ? 'text-green-600 dark:text-green-400' : 'text-red-600 dark:text-red-400'}>
                       {transaction.calculatedPl >= 0 ? '+' : ''}
                       {formatCurrency(Math.abs(transaction.calculatedPl))}
                     </span>
                   ) : (
-                    '-'
+                    <span className="text-gray-400 dark:text-gray-500">-</span>
                   )}
                 </td>
                 <td className="px-4 py-2 whitespace-nowrap text-sm">
                   {transaction.journalEntry ? (
                     <button
                       onClick={() => openTransactionModal(transaction.id)}
-                      className="text-indigo-600 hover:text-indigo-900 p-1 rounded hover:bg-indigo-50"
+                      className="text-indigo-600 dark:text-indigo-400 hover:text-indigo-900 dark:hover:text-indigo-300 p-1 rounded hover:bg-indigo-50 dark:hover:bg-indigo-900/30 transition-colors"
                       title="Xem nhật ký giao dịch"
                     >
-                      <i className="fas fa-eye"></i>
+                      <IconEye className="w-4 h-4" />
                     </button>
                   ) : (
                     <Link
                       href={`/transactions/${transaction.id}/journal/new`}
-                      className="text-green-600 hover:text-green-900 p-1 rounded hover:bg-green-50 inline-block"
+                      className="text-green-600 dark:text-green-400 hover:text-green-900 dark:hover:text-green-300 p-1 rounded hover:bg-green-50 dark:hover:bg-green-900/30 transition-colors inline-block"
                       title="Thêm nhật ký giao dịch"
                     >
-                      <i className="fas fa-plus"></i>
+                      <IconPlus className="w-4 h-4" />
                     </Link>
                   )}
                 </td>
@@ -245,28 +250,28 @@ export default function TransactionList({
                   <div className="flex justify-end space-x-1">
                     <button
                       onClick={() => openTransactionModal(transaction.id)}
-                      className="text-indigo-600 hover:text-indigo-900 p-2 rounded hover:bg-indigo-50 transition-colors"
+                      className="text-indigo-600 dark:text-indigo-400 hover:text-indigo-900 dark:hover:text-indigo-300 p-2 rounded hover:bg-indigo-50 dark:hover:bg-indigo-900/30 transition-colors"
                       title="Xem chi tiết giao dịch"
                     >
-                      <i className="fas fa-eye text-sm"></i>
+                      <IconEye className="w-4 h-4" />
                     </button>
                     <button
                       onClick={() => openEditModal(transaction)}
-                      className="text-blue-600 hover:text-blue-900 p-2 rounded hover:bg-blue-50 transition-colors"
+                      className="text-blue-600 dark:text-blue-400 hover:text-blue-900 dark:hover:text-blue-300 p-2 rounded hover:bg-blue-50 dark:hover:bg-blue-900/30 transition-colors"
                       title="Sửa giao dịch"
                     >
-                      <i className="fas fa-edit text-sm"></i>
+                      <IconEdit className="w-4 h-4" />
                     </button>
                     <button
                       onClick={() => handleDelete(transaction.id)}
                       disabled={deletingId === transaction.id}
-                      className="text-red-600 hover:text-red-900 p-2 rounded hover:bg-red-50 transition-colors disabled:opacity-50"
+                      className="text-red-600 dark:text-red-400 hover:text-red-900 dark:hover:text-red-300 p-2 rounded hover:bg-red-50 dark:hover:bg-red-900/30 transition-colors disabled:opacity-50"
                       title={deletingId === transaction.id ? "Đang xóa..." : "Xóa giao dịch"}
                     >
                       {deletingId === transaction.id ? (
-                        <i className="fas fa-spinner fa-spin text-sm"></i>
+                        <IconRefresh className="w-4 h-4 animate-spin" />
                       ) : (
-                        <i className="fas fa-trash text-sm"></i>
+                        <IconTrash className="w-4 h-4" />
                       )}
                     </button>
                   </div>

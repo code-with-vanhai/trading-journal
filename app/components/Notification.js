@@ -1,7 +1,8 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, createContext, useContext } from 'react';
 import { createPortal } from 'react-dom';
+import { IconCheckCircle, IconAlertCircle, IconInfo, IconBell, IconX } from './ui/Icon';
 
 const Notification = ({ message, type = 'success', isVisible, onClose, duration = 3000 }) => {
   const [isAnimatingOut, setIsAnimatingOut] = useState(false);
@@ -32,38 +33,39 @@ const Notification = ({ message, type = 'success', isVisible, onClose, duration 
     switch (type) {
       case 'success':
         return {
-          bg: 'bg-green-500',
-          icon: 'fas fa-check-circle',
+          bg: 'bg-green-500 dark:bg-green-600',
+          IconComponent: IconCheckCircle,
           iconColor: 'text-white'
         };
       case 'error':
         return {
-          bg: 'bg-red-500',
-          icon: 'fas fa-exclamation-circle',
+          bg: 'bg-red-500 dark:bg-red-600',
+          IconComponent: IconAlertCircle,
           iconColor: 'text-white'
         };
       case 'warning':
         return {
-          bg: 'bg-yellow-500',
-          icon: 'fas fa-exclamation-triangle',
+          bg: 'bg-yellow-500 dark:bg-yellow-600',
+          IconComponent: IconAlertCircle,
           iconColor: 'text-white'
         };
       case 'info':
         return {
-          bg: 'bg-blue-500',
-          icon: 'fas fa-info-circle',
+          bg: 'bg-blue-500 dark:bg-blue-600',
+          IconComponent: IconInfo,
           iconColor: 'text-white'
         };
       default:
         return {
-          bg: 'bg-gray-500',
-          icon: 'fas fa-bell',
+          bg: 'bg-gray-500 dark:bg-gray-600',
+          IconComponent: IconBell,
           iconColor: 'text-white'
         };
     }
   };
 
   const styles = getTypeStyles();
+  const IconComponent = styles.IconComponent;
   
   const notificationElement = (
     <div className="fixed top-4 right-4 z-[9999] pointer-events-none">
@@ -79,16 +81,16 @@ const Notification = ({ message, type = 'success', isVisible, onClose, duration 
       >
         <div className="flex items-center justify-between">
           <div className="flex items-center space-x-3">
-            <i className={`${styles.icon} ${styles.iconColor} text-lg`}></i>
+            <IconComponent className={`${styles.iconColor} w-5 h-5 flex-shrink-0`} />
             <div className="font-medium text-sm leading-relaxed">
               {message}
             </div>
           </div>
           <button
             onClick={handleClose}
-            className="text-white hover:text-gray-200 transition-colors ml-4 flex-shrink-0"
+            className="text-white hover:text-gray-200 dark:hover:text-gray-300 transition-colors ml-4 flex-shrink-0"
           >
-            <i className="fas fa-times"></i>
+            <IconX className="w-4 h-4" />
           </button>
         </div>
       </div>
@@ -157,8 +159,6 @@ export const NotificationProvider = ({ children }) => {
 };
 
 // Context for notifications
-import { createContext, useContext } from 'react';
-
 const NotificationContext = createContext();
 
 export const useNotification = () => {

@@ -5,6 +5,7 @@ import StockAccountModal from './StockAccountModal';
 import DeleteConfirmModal from './DeleteConfirmModal';
 import { Spinner } from './ui/Spinner';
 import { useNotification } from './Notification';
+import { IconEdit, IconTrash } from './ui/Icon';
 
 export default function StockAccountManager() {
   const { showError, showWarning } = useNotification();
@@ -232,7 +233,7 @@ export default function StockAccountManager() {
                   className="p-2 text-gray-400 hover:text-blue-600 hover:bg-blue-50 rounded-md transition-colors"
                   title="Chỉnh sửa tài khoản"
                 >
-                  <i className="fas fa-edit text-sm"></i>
+                  <IconEdit className="w-4 h-4" />
                 </button>
                 <button
                   onClick={() => handleDeleteClick(account)}
@@ -244,7 +245,7 @@ export default function StockAccountManager() {
                   title={isDefaultAccount(account) ? 'Không thể xóa tài khoản mặc định' : 'Xóa tài khoản'}
                   disabled={isDefaultAccount(account)}
                 >
-                  <i className="fas fa-trash text-sm"></i>
+                  <IconTrash className="w-4 h-4" />
                 </button>
               </div>
             </div>

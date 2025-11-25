@@ -153,7 +153,7 @@ export default function EditTransactionModal({
       <form onSubmit={handleSubmit} className="space-y-4">
         {/* Error Message */}
         {error && (
-          <div className="bg-red-50 text-red-600 p-3 rounded-md text-sm">
+          <div className="bg-red-50 dark:bg-red-900/20 text-red-600 dark:text-red-400 p-3 rounded-md text-sm border border-red-200 dark:border-red-800">
             {error}
           </div>
         )}
@@ -161,7 +161,7 @@ export default function EditTransactionModal({
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           {/* Stock Account Selector */}
           <div className="md:col-span-2">
-            <label htmlFor="stockAccountId" className="block text-sm font-medium text-gray-700 mb-1">
+            <label htmlFor="stockAccountId" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
               Tài Khoản Chứng Khoán *
             </label>
             <select
@@ -170,7 +170,7 @@ export default function EditTransactionModal({
               value={formData.stockAccountId}
               onChange={handleChange}
               required
-              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-transparent"
             >
               <option value="">-- Chọn tài khoản --</option>
               {stockAccounts.map((account) => (
@@ -183,7 +183,7 @@ export default function EditTransactionModal({
 
           {/* Ticker */}
           <div>
-            <label htmlFor="ticker" className="block text-sm font-medium text-gray-700 mb-1">
+            <label htmlFor="ticker" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
               Mã Cổ Phiếu *
             </label>
             <input
@@ -193,14 +193,14 @@ export default function EditTransactionModal({
               value={formData.ticker}
               onChange={handleChange}
               required
-              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent uppercase"
+              className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-transparent uppercase"
               placeholder="VNM"
             />
           </div>
 
           {/* Transaction Type */}
           <div>
-            <label htmlFor="type" className="block text-sm font-medium text-gray-700 mb-1">
+            <label htmlFor="type" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
               Loại Giao Dịch *
             </label>
             <select
@@ -209,7 +209,7 @@ export default function EditTransactionModal({
               value={formData.type}
               onChange={handleChange}
               required
-              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-transparent"
             >
               <option value="BUY">Mua</option>
               <option value="SELL">Bán</option>
@@ -218,7 +218,7 @@ export default function EditTransactionModal({
 
           {/* Quantity */}
           <div>
-            <label htmlFor="quantity" className="block text-sm font-medium text-gray-700 mb-1">
+            <label htmlFor="quantity" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
               Số Lượng *
             </label>
             <input
@@ -230,15 +230,15 @@ export default function EditTransactionModal({
               required
               min="1"
               step="1"
-              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-transparent"
               placeholder="100"
             />
           </div>
 
           {/* Price */}
           <div>
-            <label htmlFor="price" className="block text-sm font-medium text-gray-700 mb-1">
-              Giá (VND) <span className="text-red-500">*</span>
+            <label htmlFor="price" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+              Giá (VND) <span className="text-red-500 dark:text-red-400">*</span>
             </label>
             <input
               type="number"
@@ -249,14 +249,14 @@ export default function EditTransactionModal({
               required
               min="0"
               step={formData.price ? calculatePriceStep(parseFloat(formData.price) || 0) : 10}
-              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-transparent"
               placeholder="Nhập giá giao dịch"
             />
             {formData.price && (
-              <p className="text-xs text-gray-500 mt-1">
+              <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
                 Bước giá: {calculatePriceStep(parseFloat(formData.price) || 0).toLocaleString('vi-VN')} VNĐ
                 {!isValidPrice(parseFloat(formData.price) || 0) && (
-                  <span className="text-orange-600 ml-2">
+                  <span className="text-orange-600 dark:text-orange-400 ml-2">
                     ⚠️ Giá không hợp lệ theo quy định
                   </span>
                 )}
@@ -266,7 +266,7 @@ export default function EditTransactionModal({
 
           {/* Transaction Date */}
           <div>
-            <label htmlFor="transactionDate" className="block text-sm font-medium text-gray-700 mb-1">
+            <label htmlFor="transactionDate" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
               Ngày Giao Dịch *
             </label>
             <input
@@ -276,13 +276,13 @@ export default function EditTransactionModal({
               value={formData.transactionDate}
               onChange={handleChange}
               required
-              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-transparent"
             />
           </div>
 
           {/* Fee */}
           <div>
-            <label htmlFor="fee" className="block text-sm font-medium text-gray-700 mb-1">
+            <label htmlFor="fee" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
               Phí Giao Dịch (VND)
             </label>
             <input
@@ -293,14 +293,14 @@ export default function EditTransactionModal({
               onChange={handleChange}
               min="0"
               step="1"
-              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-transparent"
               placeholder="0"
             />
           </div>
 
           {/* Tax Rate */}
           <div>
-            <label htmlFor="taxRate" className="block text-sm font-medium text-gray-700 mb-1">
+            <label htmlFor="taxRate" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
               Thuế (%)
             </label>
             <input
@@ -312,14 +312,14 @@ export default function EditTransactionModal({
               min="0"
               max="100"
               step="0.1"
-              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-transparent"
               placeholder="0.1"
             />
           </div>
 
           {/* Notes */}
           <div className="md:col-span-2">
-            <label htmlFor="notes" className="block text-sm font-medium text-gray-700 mb-1">
+            <label htmlFor="notes" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
               Ghi Chú
             </label>
             <textarea
@@ -328,25 +328,25 @@ export default function EditTransactionModal({
               value={formData.notes}
               onChange={handleChange}
               rows="3"
-              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-vertical"
+              className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-transparent resize-vertical"
               placeholder="Ghi chú về giao dịch..."
             />
           </div>
         </div>
 
         {/* Actions */}
-        <div className="flex justify-end space-x-3 pt-4 border-t">
+        <div className="flex justify-end space-x-3 pt-4 border-t border-gray-200 dark:border-gray-700">
           <button
             type="button"
             onClick={onClose}
-            className="px-4 py-2 text-gray-700 bg-gray-100 rounded-md hover:bg-gray-200 transition-colors"
+            className="px-4 py-2 text-gray-700 dark:text-gray-300 bg-gray-100 dark:bg-gray-700 rounded-md hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors"
           >
             Hủy
           </button>
           <button
             type="submit"
             disabled={isSubmitting}
-            className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 disabled:bg-gray-400 disabled:cursor-not-allowed transition-colors"
+            className="px-4 py-2 bg-blue-600 dark:bg-blue-700 text-white rounded-md hover:bg-blue-700 dark:hover:bg-blue-600 disabled:bg-gray-400 dark:disabled:bg-gray-600 disabled:cursor-not-allowed transition-colors"
           >
             {isSubmitting ? 'Đang lưu...' : 'Cập nhật giao dịch'}
           </button>

@@ -40,11 +40,53 @@ const nextConfig = {
   poweredByHeader: false,
 
   // Basic webpack optimizations
+  // Note: SWC minification is enabled by default in Next.js 15
   webpack: (config, { dev, isServer }) => {
     // Only add essential optimizations
     if (!dev && !isServer) {
       // Disable source maps in production for smaller builds
       config.devtool = false;
+      
+      // Optimize chunk splitting
+      config.optimization = {
+        ...config.optimization,
+        splitChunks: {
+          chunks: 'all',
+          cacheGroups: {
+            default: false,
+            vendors: false,
+            // Vendor chunk for node_modules
+            vendor: {
+              name: 'vendor',
+              chunks: 'all',
+              test: /node_modules/,
+              priority: 20,
+            },
+            // Common chunk for shared code
+            common: {
+              name: 'common',
+              minChunks: 2,
+              chunks: 'all',
+              priority: 10,
+              reuseExistingChunk: true,
+              enforce: true,
+            },
+            // Separate chunk for large libraries
+            recharts: {
+              name: 'recharts',
+              test: /[\\/]node_modules[\\/]recharts[\\/]/,
+              chunks: 'all',
+              priority: 30,
+            },
+            dateFns: {
+              name: 'date-fns',
+              test: /[\\/]node_modules[\\/]date-fns[\\/]/,
+              chunks: 'all',
+              priority: 30,
+            },
+          },
+        },
+      };
     }
 
     return config;

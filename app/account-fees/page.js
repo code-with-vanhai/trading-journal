@@ -185,7 +185,7 @@ function AccountFeesContent() {
   if (status === 'loading') {
     return (
       <div className="flex justify-center items-center h-64">
-        <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-blue-600"></div>
+        <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-blue-600 dark:border-blue-400"></div>
       </div>
     );
   }
@@ -195,93 +195,95 @@ function AccountFeesContent() {
   }
 
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-      <div className="mb-8">
-        <div className="flex justify-between items-center mb-6">
-          <div>
-            <h1 className="text-3xl font-bold text-gray-900">Quản Lý Phí Tài Khoản</h1>
-            <p className="mt-2 text-sm text-gray-600">
-              Theo dõi và quản lý các loại phí liên quan đến tài khoản chứng khoán
-            </p>
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <div className="mb-8">
+          <div className="flex justify-between items-center mb-6">
+            <div>
+              <h1 className="text-3xl font-bold text-gray-900 dark:text-white">Quản Lý Phí Tài Khoản</h1>
+              <p className="mt-2 text-sm text-gray-600 dark:text-gray-400">
+                Theo dõi và quản lý các loại phí liên quan đến tài khoản chứng khoán
+              </p>
+            </div>
+            <button
+              onClick={handleAddFee}
+              className="bg-blue-600 dark:bg-blue-700 hover:bg-blue-700 dark:hover:bg-blue-600 text-white font-medium py-2 px-4 rounded-lg flex items-center gap-2"
+            >
+              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
+              </svg>
+              Thêm Phí
+            </button>
           </div>
-          <button
-            onClick={handleAddFee}
-            className="bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded-lg flex items-center gap-2"
-          >
-            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
-            </svg>
-            Thêm Phí
-          </button>
+
+
+
+          {/* Summary Statistics */}
+          <AccountFeeSummary 
+            summaryStats={summaryStats} 
+            isLoading={isLoading}
+          />
+
+          {/* Filters */}
+          <AccountFeeFilters
+            filters={filters}
+            onFilterChange={handleFilterChange}
+          />
+
+          {/* Error Message */}
+          {error && (
+            <div className="mb-4 p-4 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg">
+              <p className="text-red-800 dark:text-red-400">{error}</p>
+            </div>
+          )}
+
+          {/* Account Fees List */}
+          <AccountFeeList
+            accountFees={accountFees}
+            isLoading={isLoading}
+            onEdit={handleEditFee}
+            onDelete={handleDeleteFee}
+          />
+          
+
+
+          {/* Page Size Selector and Pagination */}
+          {totalItems > 0 && (
+            <div className="flex items-center justify-between mt-6">
+              <div className="flex items-center space-x-2">
+                <label className="text-sm text-gray-600 dark:text-gray-400 font-medium">Hiển thị:</label>
+                <select
+                  value={pageSize}
+                  onChange={(e) => handlePageSizeChange(parseInt(e.target.value, 10))}
+                  className="border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-transparent"
+                >
+                  <option value="10">10</option>
+                  <option value="25">25</option>
+                  <option value="50">50</option>
+                  <option value="100">100</option>
+                </select>
+                <span className="text-sm text-gray-600 dark:text-gray-400">
+                  Hiển thị {((currentPage - 1) * pageSize) + 1} - {Math.min(currentPage * pageSize, totalItems)} của {totalItems} kết quả
+                </span>
+              </div>
+              
+              <Pagination
+                currentPage={currentPage}
+                totalPages={Math.ceil(totalItems / pageSize)}
+                onPageChange={handlePageChange}
+              />
+            </div>
+          )}
         </div>
 
-
-
-        {/* Summary Statistics */}
-        <AccountFeeSummary 
-          summaryStats={summaryStats} 
-          isLoading={isLoading}
+        {/* Account Fee Modal */}
+        <AccountFeeModal
+          isOpen={showModal}
+          onClose={handleModalClose}
+          fee={editingFee}
+          onSuccess={handleModalSuccess}
         />
-
-        {/* Filters */}
-        <AccountFeeFilters
-          filters={filters}
-          onFilterChange={handleFilterChange}
-        />
-
-        {/* Error Message */}
-        {error && (
-          <div className="mb-4 p-4 bg-red-50 border border-red-200 rounded-lg">
-            <p className="text-red-800">{error}</p>
-          </div>
-        )}
-
-        {/* Account Fees List */}
-        <AccountFeeList
-          accountFees={accountFees}
-          isLoading={isLoading}
-          onEdit={handleEditFee}
-          onDelete={handleDeleteFee}
-        />
-        
-
-
-        {/* Page Size Selector and Pagination */}
-        {totalItems > 0 && (
-          <div className="flex items-center justify-between mt-6">
-            <div className="flex items-center space-x-2">
-              <label className="text-sm text-gray-600 font-medium">Hiển thị:</label>
-              <select
-                value={pageSize}
-                onChange={(e) => handlePageSizeChange(parseInt(e.target.value, 10))}
-                className="border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-              >
-                <option value="10">10</option>
-                <option value="25">25</option>
-                <option value="50">50</option>
-                <option value="100">100</option>
-              </select>
-              <span className="text-sm text-gray-600">
-                Hiển thị {((currentPage - 1) * pageSize) + 1} - {Math.min(currentPage * pageSize, totalItems)} của {totalItems} kết quả
-              </span>
-            </div>
-            
-            <Pagination
-              currentPage={currentPage}
-              totalPages={Math.ceil(totalItems / pageSize)}
-              onPageChange={handlePageChange}
-            />
-          </div>
-        )}
       </div>
-
-      {/* Account Fee Modal */}
-      <AccountFeeModal
-        isOpen={showModal}
-        onClose={handleModalClose}
-        fee={editingFee}
-        onSuccess={handleModalSuccess}
-      />
     </div>
   );
 }
@@ -290,7 +292,7 @@ export default function AccountFeesPage() {
   return (
     <Suspense fallback={
       <div className="flex justify-center items-center h-64">
-        <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-blue-600"></div>
+        <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-blue-600 dark:border-blue-400"></div>
       </div>
     }>
       <AccountFeesContent />

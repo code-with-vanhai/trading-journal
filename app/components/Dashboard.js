@@ -6,6 +6,7 @@ import {
   Tooltip, Legend, ResponsiveContainer, PieChart, Pie, Cell
 } from 'recharts';
 import { useSession } from 'next-auth/react';
+import { CardSkeleton, ChartSkeleton } from './ui/Skeleton';
 
 const Dashboard = ({ period = 'all' }) => {
   const { data: session } = useSession();
@@ -25,23 +26,16 @@ const Dashboard = ({ period = 'all' }) => {
       setError(null);
       
       try {
-        // Fetch summary data
-        const summaryRes = await fetch(`/api/analysis?type=summary&period=${period}`);
-        if (!summaryRes.ok) throw new Error('Failed to fetch summary data');
-        const summaryData = await summaryRes.json();
-        setSummary(summaryData);
+        // Use consolidated Dashboard API - single request instead of multiple
+        const response = await fetch(`/api/dashboard?period=${period}`);
+        if (!response.ok) throw new Error('Failed to fetch dashboard data');
         
-        // Fetch performance data for chart
-        const performanceRes = await fetch(`/api/analysis?type=performance&period=${period}`);
-        if (!performanceRes.ok) throw new Error('Failed to fetch performance data');
-        const performanceData = await performanceRes.json();
-        setPerformance(performanceData.performance || []);
+        const data = await response.json();
         
-        // Fetch ticker breakdown
-        const breakdownRes = await fetch(`/api/analysis?type=ticker-breakdown&period=${period}`);
-        if (!breakdownRes.ok) throw new Error('Failed to fetch ticker breakdown');
-        const breakdownData = await breakdownRes.json();
-        setTickerBreakdown(breakdownData.breakdown || []);
+        // Extract data from consolidated response
+        setSummary(data.summary);
+        setPerformance(data.performance || []);
+        setTickerBreakdown(data.tickerBreakdown || []);
       } catch (err) {
         console.error('Error fetching analytics:', err);
         setError('Không thể tải dữ liệu phân tích. Vui lòng thử lại sau.');
@@ -55,15 +49,20 @@ const Dashboard = ({ period = 'all' }) => {
   
   if (isLoading) {
     return (
-      <div className="flex justify-center items-center h-64">
-        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500"></div>
+      <div className="space-y-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+          {[...Array(4)].map((_, i) => (
+            <CardSkeleton key={i} />
+          ))}
+        </div>
+        <ChartSkeleton height={256} />
       </div>
     );
   }
   
   if (error) {
     return (
-      <div className="text-center text-red-500 p-4 bg-red-50 rounded-lg">
+      <div className="text-center text-red-500 dark:text-red-400 p-4 bg-red-50 dark:bg-red-900/20 rounded-lg border border-red-200 dark:border-red-800">
         <p>{error}</p>
       </div>
     );
@@ -71,7 +70,7 @@ const Dashboard = ({ period = 'all' }) => {
   
   if (!summary) {
     return (
-      <div className="text-center text-gray-500 p-4">
+      <div className="text-center text-gray-500 dark:text-gray-400 p-4 bg-white dark:bg-gray-800 rounded-lg">
         <p>Không có dữ liệu. Hãy bắt đầu thêm giao dịch để xem phân tích danh mục của bạn.</p>
       </div>
     );
@@ -92,38 +91,38 @@ const Dashboard = ({ period = 'all' }) => {
     <div className="space-y-8">
       {/* Summary Stats */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-        <div className="bg-white p-4 rounded-lg shadow-md">
-          <h3 className="text-lg font-semibold text-gray-700">Tổng Lãi/Lỗ</h3>
-          <p className={`text-2xl font-bold ${summary.totalProfitLoss >= 0 ? 'text-green-600' : 'text-red-600'}`}>
+        <div className="bg-white dark:bg-gray-800 p-4 rounded-lg shadow-md dark:shadow-gray-900/50 fade-in-up">
+          <h3 className="text-lg font-semibold text-gray-700 dark:text-gray-300">Tổng Lãi/Lỗ</h3>
+          <p className={`text-2xl font-bold ${summary.totalProfitLoss >= 0 ? 'text-green-600 dark:text-green-400' : 'text-red-600 dark:text-red-400'}`}>
             {formatCurrency(summary.totalProfitLoss)}
           </p>
         </div>
         
-        <div className="bg-white p-4 rounded-lg shadow-md">
-          <h3 className="text-lg font-semibold text-gray-700">ROI</h3>
-          <p className={`text-2xl font-bold ${summary.roi >= 0 ? 'text-green-600' : 'text-red-600'}`}>
+        <div className="bg-white dark:bg-gray-800 p-4 rounded-lg shadow-md dark:shadow-gray-900/50 fade-in-up" style={{ animationDelay: '0.1s' }}>
+          <h3 className="text-lg font-semibold text-gray-700 dark:text-gray-300">ROI</h3>
+          <p className={`text-2xl font-bold ${summary.roi >= 0 ? 'text-green-600 dark:text-green-400' : 'text-red-600 dark:text-red-400'}`}>
             {formatPercent(summary.roi)}
           </p>
         </div>
         
-        <div className="bg-white p-4 rounded-lg shadow-md">
-          <h3 className="text-lg font-semibold text-gray-700">Tỉ Lệ Thắng</h3>
-          <p className="text-2xl font-bold text-blue-600">
+        <div className="bg-white dark:bg-gray-800 p-4 rounded-lg shadow-md dark:shadow-gray-900/50 fade-in-up" style={{ animationDelay: '0.2s' }}>
+          <h3 className="text-lg font-semibold text-gray-700 dark:text-gray-300">Tỉ Lệ Thắng</h3>
+          <p className="text-2xl font-bold text-blue-600 dark:text-blue-400">
             {formatPercent(summary.winRate)}
           </p>
         </div>
         
-        <div className="bg-white p-4 rounded-lg shadow-md">
-          <h3 className="text-lg font-semibold text-gray-700">Tổng Giao Dịch</h3>
-          <p className="text-2xl font-bold text-gray-800">
+        <div className="bg-white dark:bg-gray-800 p-4 rounded-lg shadow-md dark:shadow-gray-900/50 fade-in-up" style={{ animationDelay: '0.3s' }}>
+          <h3 className="text-lg font-semibold text-gray-700 dark:text-gray-300">Tổng Giao Dịch</h3>
+          <p className="text-2xl font-bold text-gray-800 dark:text-gray-200">
             {summary.totalTrades}
           </p>
         </div>
       </div>
       
       {/* Performance Chart */}
-      <div className="bg-white p-4 rounded-lg shadow-md">
-        <h3 className="text-lg font-semibold text-gray-700 mb-4">Hiệu Suất Theo Thời Gian</h3>
+      <div className="bg-white dark:bg-gray-800 p-4 rounded-lg shadow-md dark:shadow-gray-900/50">
+        <h3 className="text-lg font-semibold text-gray-700 dark:text-gray-300 mb-4">Hiệu Suất Theo Thời Gian</h3>
         {performance.length > 0 ? (
           <div className="h-64">
             <ResponsiveContainer width="100%" height="100%">
@@ -153,8 +152,8 @@ const Dashboard = ({ period = 'all' }) => {
       
       {/* Ticker Breakdown */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-        <div className="bg-white p-4 rounded-lg shadow-md">
-          <h3 className="text-lg font-semibold text-gray-700 mb-4">Hiệu Suất Cao Nhất</h3>
+        <div className="bg-white dark:bg-gray-800 p-4 rounded-lg shadow-md dark:shadow-gray-900/50">
+          <h3 className="text-lg font-semibold text-gray-700 dark:text-gray-300 mb-4">Hiệu Suất Cao Nhất</h3>
           {tickerBreakdown.length > 0 ? (
             <div className="h-64">
               <ResponsiveContainer width="100%" height="100%">
@@ -179,8 +178,8 @@ const Dashboard = ({ period = 'all' }) => {
           )}
         </div>
         
-        <div className="bg-white p-4 rounded-lg shadow-md">
-          <h3 className="text-lg font-semibold text-gray-700 mb-4">Phân Bổ Danh Mục</h3>
+        <div className="bg-white dark:bg-gray-800 p-4 rounded-lg shadow-md dark:shadow-gray-900/50">
+          <h3 className="text-lg font-semibold text-gray-700 dark:text-gray-300 mb-4">Phân Bổ Danh Mục</h3>
           {tickerBreakdown.length > 0 ? (
             <div className="h-64">
               <ResponsiveContainer width="100%" height="100%">
@@ -212,32 +211,32 @@ const Dashboard = ({ period = 'all' }) => {
       </div>
       
       {/* Detailed Stats */}
-      <div className="bg-white p-4 rounded-lg shadow-md">
-        <h3 className="text-lg font-semibold text-gray-700 mb-4">Thống Kê Chi Tiết</h3>
+      <div className="bg-white dark:bg-gray-800 p-4 rounded-lg shadow-md dark:shadow-gray-900/50">
+        <h3 className="text-lg font-semibold text-gray-700 dark:text-gray-300 mb-4">Thống Kê Chi Tiết</h3>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
           <div>
-            <p className="text-sm text-gray-500">Tổng Đầu Tư</p>
-            <p className="text-lg font-medium">{formatCurrency(summary.totalInvested)}</p>
+            <p className="text-sm text-gray-500 dark:text-gray-400">Tổng Đầu Tư</p>
+            <p className="text-lg font-medium dark:text-gray-200">{formatCurrency(summary.totalInvested)}</p>
           </div>
           <div>
-            <p className="text-sm text-gray-500">Tổng Thu Về</p>
-            <p className="text-lg font-medium">{formatCurrency(summary.totalReturned)}</p>
+            <p className="text-sm text-gray-500 dark:text-gray-400">Tổng Thu Về</p>
+            <p className="text-lg font-medium dark:text-gray-200">{formatCurrency(summary.totalReturned)}</p>
           </div>
           <div>
-            <p className="text-sm text-gray-500">Giao Dịch Mua</p>
-            <p className="text-lg font-medium">{summary.totalBuys}</p>
+            <p className="text-sm text-gray-500 dark:text-gray-400">Giao Dịch Mua</p>
+            <p className="text-lg font-medium dark:text-gray-200">{summary.totalBuys}</p>
           </div>
           <div>
-            <p className="text-sm text-gray-500">Giao Dịch Bán</p>
-            <p className="text-lg font-medium">{summary.totalSells}</p>
+            <p className="text-sm text-gray-500 dark:text-gray-400">Giao Dịch Bán</p>
+            <p className="text-lg font-medium dark:text-gray-200">{summary.totalSells}</p>
           </div>
           <div>
-            <p className="text-sm text-gray-500">Giao Dịch Có Lãi</p>
-            <p className="text-lg font-medium text-green-600">{summary.profitableTrades}</p>
+            <p className="text-sm text-gray-500 dark:text-gray-400">Giao Dịch Có Lãi</p>
+            <p className="text-lg font-medium text-green-600 dark:text-green-400">{summary.profitableTrades}</p>
           </div>
           <div>
-            <p className="text-sm text-gray-500">Giao Dịch Lỗ</p>
-            <p className="text-lg font-medium text-red-600">{summary.unprofitableTrades}</p>
+            <p className="text-sm text-gray-500 dark:text-gray-400">Giao Dịch Lỗ</p>
+            <p className="text-lg font-medium text-red-600 dark:text-red-400">{summary.unprofitableTrades}</p>
           </div>
         </div>
       </div>

@@ -6,10 +6,12 @@ import { useRouter } from 'next/navigation';
 import dynamic from 'next/dynamic';
 import { useMarketData } from '../lib/useMarketData';
 import { Spinner } from '../components/ui/Spinner';
+import { TableSkeleton, CardSkeleton, ChartSkeleton } from '../components/ui/Skeleton';
 import Pagination from '../components/Pagination';
 import Link from 'next/link';
 import { useNotification } from '../components/Notification';
 import logger, { componentLogger, apiLogger, userLogger } from '../lib/client-logger.js';
+import { IconPieChart, IconPlus, IconLineChart, IconRefreshCw, IconBarChart, IconArrowRight, IconSettings, IconCalculator } from '../components/ui/Icon';
 
 // Dynamic imports for heavy components to reduce initial bundle size
 const PortfolioPieChart = dynamic(() => import('../components/PortfolioPieChart'), {
@@ -436,9 +438,20 @@ export default function PortfolioPage() {
 
   if (status === 'loading' || loading) {
     return (
-      <div className="max-w-6xl mx-auto p-4">
-        <div className="flex justify-center items-center h-64">
-          <Spinner size="large" />
+      <div className="max-w-6xl mx-auto p-4 space-y-6">
+        {/* Header skeleton */}
+        <div className="space-y-4">
+          <CardSkeleton lines={2} />
+          <CardSkeleton lines={2} />
+        </div>
+        {/* Table skeleton */}
+        <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg border border-gray-200 dark:border-gray-700 overflow-hidden">
+          <TableSkeleton rows={10} cols={9} />
+        </div>
+        {/* Charts skeleton */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          <ChartSkeleton height={300} />
+          <ChartSkeleton height={300} />
         </div>
       </div>
     );
@@ -463,9 +476,9 @@ export default function PortfolioPage() {
         <div className="max-w-6xl mx-auto p-4 mt-6">
           <div className="bg-white rounded-lg shadow-lg p-12 text-center">
             <div className="flex flex-col items-center">
-              <i className="fas fa-chart-pie text-gray-400 text-6xl mb-6"></i>
-              <h3 className="text-2xl font-semibold text-gray-700 mb-4">Đăng nhập để xem danh mục</h3>
-              <p className="text-gray-500 mb-6">Vui lòng đăng nhập để truy cập thông tin danh mục đầu tư của bạn</p>
+              <IconPieChart className="text-gray-400 dark:text-gray-500 w-16 h-16 mb-6" />
+              <h3 className="text-2xl font-semibold text-gray-700 dark:text-gray-300 mb-4">Đăng nhập để xem danh mục</h3>
+              <p className="text-gray-500 dark:text-gray-400 mb-6">Vui lòng đăng nhập để truy cập thông tin danh mục đầu tư của bạn</p>
             </div>
           </div>
         </div>
@@ -482,7 +495,7 @@ export default function PortfolioPage() {
   if (error) {
     return (
       <div className="max-w-6xl mx-auto p-4">
-        <div className="bg-red-50 text-red-600 p-4 rounded-md">
+        <div className="bg-red-50 dark:bg-red-900/20 text-red-600 dark:text-red-400 p-4 rounded-md border border-red-200 dark:border-red-800">
           <p>Lỗi khi tải dữ liệu: {error}</p>
         </div>
       </div>
@@ -490,14 +503,14 @@ export default function PortfolioPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
       {/* Hero Header Section */}
-      <div className="gradient-bg text-white py-12">
+      <div className="gradient-bg dark:from-gray-800 dark:to-gray-700 text-white py-12">
         <div className="max-w-6xl mx-auto px-4">
           <div className="flex justify-between items-center">
             <div>
               <h1 className="text-4xl font-bold mb-4">Danh Mục Đầu Tư</h1>
-              <p className="text-xl opacity-90">Theo dõi hiệu suất và quản lý danh mục đầu tư của bạn</p>
+              <p className="text-xl opacity-90 dark:opacity-80">Theo dõi hiệu suất và quản lý danh mục đầu tư của bạn</p>
             </div>
             {/* Compact Controls */}
             <div className="flex items-center space-x-3 lg:space-x-4">
@@ -569,7 +582,11 @@ export default function PortfolioPage() {
                               : 'bg-orange-500/20 text-orange-100 border-orange-400/50 hover:bg-orange-500/30'
                           }`}
                         >
-                          <i className={`fas ${useAdjustedCostBasis ? 'fa-adjust' : 'fa-calculator'} mr-1 text-xs`}></i>
+                          {useAdjustedCostBasis ? (
+                            <IconSettings className="w-3 h-3 mr-1 inline" />
+                          ) : (
+                            <IconCalculator className="w-3 h-3 mr-1 inline" />
+                          )}
                           <span className="hidden sm:inline">{useAdjustedCostBasis ? 'Điều chỉnh' : 'Gốc'}</span>
                           <span className="sm:hidden">{useAdjustedCostBasis ? 'DC' : 'G'}</span>
                         </button>
@@ -599,20 +616,20 @@ export default function PortfolioPage() {
       {/* Main Content */}
       <div className="max-w-6xl mx-auto p-4 mt-6">
         {portfolio.length === 0 ? (
-          <div className="bg-white rounded-lg shadow-lg p-12 text-center">
+          <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg border border-gray-200 dark:border-gray-700 p-12 text-center">
             <div className="flex flex-col items-center">
-              <i className="fas fa-chart-pie text-gray-400 text-6xl mb-6"></i>
-              <h3 className="text-2xl font-semibold text-gray-700 mb-4">
+              <IconPieChart className="text-gray-400 dark:text-gray-500 w-16 h-16 mb-6" />
+              <h3 className="text-2xl font-semibold text-gray-700 dark:text-gray-300 mb-4">
                 {selectedAccountId 
                   ? 'Tài khoản này chưa có cổ phiếu nào trong danh mục' 
                   : 'Bạn chưa có cổ phiếu nào trong danh mục'}
               </h3>
-              <p className="text-gray-500 mb-6">Bắt đầu bằng cách thêm giao dịch đầu tiên của bạn</p>
+              <p className="text-gray-500 dark:text-gray-400 mb-6">Bắt đầu bằng cách thêm giao dịch đầu tiên của bạn</p>
               <button
                 onClick={() => setIsAddModalOpen(true)}
-                className="bg-blue-600 text-white px-8 py-3 rounded-lg font-bold hover:bg-blue-700 transition shadow-lg"
+                className="bg-blue-600 dark:bg-blue-700 text-white px-8 py-3 rounded-lg font-bold hover:bg-blue-700 dark:hover:bg-blue-600 transition shadow-lg flex items-center mx-auto"
               >
-                <i className="fas fa-plus mr-2"></i>
+                <IconPlus className="w-5 h-5 mr-2" />
                 Thêm giao dịch mới
               </button>
             </div>
@@ -621,22 +638,22 @@ export default function PortfolioPage() {
           <div className="grid grid-cols-1 lg:grid-cols-10 gap-6">
             <div className="lg:col-span-7">
               {/* Overview Stats */}
-              <div className="bg-white rounded-lg shadow-lg p-6 mb-6">
+              <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg border border-gray-200 dark:border-gray-700 p-6 mb-6">
                 <div className="flex items-center mb-6">
-                  <i className="fas fa-chart-line text-blue-600 text-2xl mr-3"></i>
-                  <h2 className="text-xl font-bold text-gray-800">
+                  <IconLineChart className="text-blue-600 dark:text-blue-400 w-7 h-7 mr-3" />
+                  <h2 className="text-xl font-bold text-gray-800 dark:text-gray-200">
                     Tổng quan {selectedAccountId && stockAccounts.find(acc => acc.id === selectedAccountId)?.name && 
                       `- ${stockAccounts.find(acc => acc.id === selectedAccountId).name}`}
                   </h2>
                 </div>
                 {marketDataLoading ? (
                   <div className="flex justify-center items-center py-8">
-                    <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mr-4"></div>
-                    <span className="text-gray-600">Đang cập nhật dữ liệu thị trường...</span>
+                    <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 dark:border-blue-400 mr-4"></div>
+                    <span className="text-gray-600 dark:text-gray-400">Đang cập nhật dữ liệu thị trường...</span>
                   </div>
                 ) : (
                   <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                    <div className="bg-gradient-to-r from-blue-50 to-blue-100 p-6 rounded-lg border-l-4 border-blue-500 overflow-hidden">
+                    <div className="bg-gradient-to-r from-blue-50 to-blue-100 dark:from-blue-900/20 dark:to-blue-800/20 p-6 rounded-lg border-l-4 border-blue-500 dark:border-blue-400 overflow-hidden">
                       <div>
                         <div className="min-w-0">
                           <h3 className="text-xs md:text-sm text-blue-700 font-medium mb-2 whitespace-nowrap">Tổng Giá Vốn</h3>
@@ -701,38 +718,38 @@ export default function PortfolioPage() {
               
               {/* Transfer Controls */}
               {!selectedAccountId && (
-                <div className="bg-white rounded-lg shadow-lg p-4 mb-6">
+                <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg border border-gray-200 dark:border-gray-700 p-4 mb-6">
                   <div className="flex justify-between items-center">
                     <div className="flex items-center space-x-3">
-                      <i className="fas fa-exchange-alt text-orange-600"></i>
-                      <span className="text-sm text-gray-700 font-medium">
+                      <IconRefreshCw className="text-orange-600 dark:text-orange-400 w-5 h-5" />
+                      <span className="text-sm text-gray-700 dark:text-gray-300 font-medium">
                         {selectedStocks.length > 0 ? `Đã chọn ${selectedStocks.length} cổ phiếu` : 'Chọn cổ phiếu để chuyển tài khoản'}
                       </span>
                     </div>
                     <button
                       onClick={handleOpenTransferModal}
                       disabled={selectedStocks.length === 0}
-                      className="px-6 py-2 bg-orange-600 text-white rounded-lg font-medium hover:bg-orange-700 disabled:bg-gray-400 disabled:cursor-not-allowed transition-colors shadow-md"
+                      className="px-6 py-2 bg-orange-600 dark:bg-orange-700 text-white rounded-lg font-medium hover:bg-orange-700 dark:hover:bg-orange-600 disabled:bg-gray-400 dark:disabled:bg-gray-600 disabled:cursor-not-allowed transition-colors shadow-md flex items-center"
                     >
-                      <i className="fas fa-arrow-right mr-2"></i>
+                      <IconArrowRight className="w-5 h-5 mr-2" />
                       Chuyển Tài Khoản
                     </button>
                   </div>
                 </div>
               )}
               
-              <div className="overflow-x-auto bg-white rounded-lg shadow-lg">
-                <div className="p-6 bg-gradient-to-r from-blue-50 to-indigo-50 border-b border-gray-200 flex justify-between items-center">
+              <div className="overflow-x-auto bg-white dark:bg-gray-800 rounded-lg shadow-lg border border-gray-200 dark:border-gray-700">
+                <div className="p-6 bg-gradient-to-r from-blue-50 to-indigo-50 dark:from-blue-900/20 dark:to-indigo-900/20 border-b border-gray-200 dark:border-gray-700 flex justify-between items-center">
                   <div className="flex items-center">
-                    <i className="fas fa-chart-bar text-blue-600 text-xl mr-3"></i>
-                    <div className="font-semibold text-gray-800">Chi tiết danh mục: {totalSummary.totalPositions} positions</div>
+                    <IconBarChart className="text-blue-600 dark:text-blue-400 w-6 h-6 mr-3" />
+                    <div className="font-semibold text-gray-800 dark:text-gray-200">Chi tiết danh mục: {totalSummary.totalPositions} positions</div>
                   </div>
                   <div className="flex items-center space-x-2">
-                    <label className="text-sm text-gray-600 font-medium">Hiển thị:</label>
+                    <label className="text-sm text-gray-600 dark:text-gray-400 font-medium">Hiển thị:</label>
                     <select
                       value={pageSize}
                       onChange={(e) => handlePageSizeChange(e.target.value)}
-                      className="border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                      className="border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-transparent"
                     >
                       <option value="10">10</option>
                       <option value="25">25</option>

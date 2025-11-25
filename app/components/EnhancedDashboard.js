@@ -6,6 +6,21 @@ import {
   Tooltip, Legend, ResponsiveContainer, PieChart, Pie, Cell, ComposedChart
 } from 'recharts';
 import { useSession } from 'next-auth/react';
+import {
+  IconLineChart,
+  IconShield,
+  IconScale,
+  IconFactory,
+  IconAreaChart,
+  IconAlertCircle,
+  IconGauge,
+  IconPieChart,
+  IconWaves,
+  IconArrowDown,
+  IconInfo,
+  IconChevronUp,
+  IconChevronDown,
+} from './ui/Icon';
 
 const EnhancedDashboard = ({ period = 'all' }) => {
   const { data: session } = useSession();
@@ -22,11 +37,11 @@ const EnhancedDashboard = ({ period = 'all' }) => {
 
   // Tabs configuration
   const tabs = [
-    { id: 'overview', name: 'Tổng Quan', icon: 'fas fa-chart-line' },
-    { id: 'risk', name: 'Phân Tích Rủi Ro', icon: 'fas fa-shield-alt' },
-    { id: 'benchmark', name: 'So Sánh Thị Trường', icon: 'fas fa-balance-scale' },
-    { id: 'sectors', name: 'Phân Tích Ngành', icon: 'fas fa-industry' },
-    { id: 'performance', name: 'Hiệu Suất', icon: 'fas fa-chart-area' }
+    { id: 'overview', name: 'Tổng Quan', icon: IconLineChart },
+    { id: 'risk', name: 'Phân Tích Rủi Ro', icon: IconShield },
+    { id: 'benchmark', name: 'So Sánh Thị Trường', icon: IconScale },
+    { id: 'sectors', name: 'Phân Tích Ngành', icon: IconFactory },
+    { id: 'performance', name: 'Hiệu Suất', icon: IconAreaChart }
   ];
 
   useEffect(() => {
@@ -40,33 +55,22 @@ const EnhancedDashboard = ({ period = 'all' }) => {
     setError(null);
     
     try {
-      const [summaryRes, riskRes, benchmarkRes, sectorsRes, performanceRes] = await Promise.all([
-        fetch(`/api/analysis?type=summary&period=${period}`),
-        fetch(`/api/analysis?type=risk-metrics&period=${period}`),
-        fetch(`/api/analysis?type=benchmark-comparison&period=${period}`),
-        fetch(`/api/analysis?type=sector-analysis&period=${period}`),
-        fetch(`/api/analysis?type=performance&period=${period}`)
-      ]);
-
-      // Check if all requests were successful
-      if (!summaryRes.ok || !riskRes.ok || !benchmarkRes.ok || !sectorsRes.ok || !performanceRes.ok) {
-        throw new Error('Failed to fetch analysis data');
+      // Use consolidated Dashboard API - single request instead of 5 separate requests
+      const response = await fetch(`/api/dashboard?period=${period}`);
+      
+      if (!response.ok) {
+        throw new Error('Failed to fetch dashboard data');
       }
 
-      const [summary, riskMetrics, benchmark, sectors, performance] = await Promise.all([
-        summaryRes.json(),
-        riskRes.json(),
-        benchmarkRes.json(),
-        sectorsRes.json(),
-        performanceRes.json()
-      ]);
+      const dashboardData = await response.json();
 
+      // Extract all data from consolidated response
       setData({ 
-        summary, 
-        riskMetrics, 
-        benchmark, 
-        sectors, 
-        performance: performance.performance || [] 
+        summary: dashboardData.summary, 
+        riskMetrics: dashboardData.riskMetrics, 
+        benchmark: dashboardData.benchmark, 
+        sectors: dashboardData.sectorAnalysis, 
+        performance: dashboardData.performance || [] 
       });
     } catch (error) {
       console.error('Error fetching enhanced analysis data:', error);
@@ -92,12 +96,12 @@ const EnhancedDashboard = ({ period = 'all' }) => {
 
   if (error) {
     return (
-      <div className="text-center text-red-500 p-8 bg-red-50 rounded-lg">
-        <i className="fas fa-exclamation-triangle text-4xl mb-4"></i>
+      <div className="text-center text-red-500 dark:text-red-400 p-8 bg-red-50 dark:bg-red-900/20 rounded-lg border border-red-200 dark:border-red-800">
+        <IconAlertCircle className="w-12 h-12 mx-auto mb-4 text-red-500 dark:text-red-400" />
         <p className="text-lg font-semibold">{error}</p>
         <button 
           onClick={fetchAllData}
-          className="mt-4 px-6 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors"
+          className="mt-4 px-6 py-2 bg-red-600 dark:bg-red-700 text-white rounded-lg hover:bg-red-700 dark:hover:bg-red-600 transition-colors"
         >
           Thử lại
         </button>
@@ -105,47 +109,52 @@ const EnhancedDashboard = ({ period = 'all' }) => {
     );
   }
 
+  const TabIcon = tabs.find(t => t.id === activeTab)?.icon || IconLineChart;
+
   return (
     <div className="space-y-6">
       {/* Enhanced Header với Quick Stats */}
-      <div className="bg-gradient-to-r from-blue-600 to-purple-600 rounded-xl p-6 text-white">
+      <div className="bg-gradient-to-r from-blue-600 to-purple-600 dark:from-blue-700 dark:to-purple-700 rounded-xl p-6 text-white">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
           <div className="text-center">
             <div className="text-3xl font-bold">{formatCurrency(data.summary?.totalProfitLoss)}</div>
-            <div className="text-blue-100">Tổng P&L</div>
+            <div className="text-blue-100 dark:text-blue-200">Tổng P&L</div>
           </div>
           <div className="text-center">
             <div className="text-3xl font-bold">{data.riskMetrics?.sharpeRatio?.toFixed(2) || '0.00'}</div>
-            <div className="text-blue-100">Sharpe Ratio</div>
+            <div className="text-blue-100 dark:text-blue-200">Sharpe Ratio</div>
           </div>
           <div className="text-center">
             <div className="text-3xl font-bold">{formatPercent(data.riskMetrics?.maxDrawdown)}</div>
-            <div className="text-blue-100">Max Drawdown</div>
+            <div className="text-blue-100 dark:text-blue-200">Max Drawdown</div>
           </div>
           <div className="text-center">
             <div className="text-3xl font-bold">{data.benchmark?.beta?.toFixed(2) || '1.00'}</div>
-            <div className="text-blue-100">Beta vs VN-Index</div>
+            <div className="text-blue-100 dark:text-blue-200">Beta vs VN-Index</div>
           </div>
         </div>
       </div>
 
       {/* Navigation Tabs */}
-      <div className="bg-white rounded-lg shadow-sm border">
+      <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700">
         <div className="flex overflow-x-auto">
-          {tabs.map(tab => (
-            <button
-              key={tab.id}
-              onClick={() => setActiveTab(tab.id)}
-              className={`flex items-center px-6 py-4 text-sm font-medium whitespace-nowrap border-b-2 transition-colors ${
-                activeTab === tab.id
-                  ? 'border-blue-500 text-blue-600 bg-blue-50'
-                  : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
-              }`}
-            >
-              <i className={`${tab.icon} mr-2`}></i>
-              {tab.name}
-            </button>
-          ))}
+          {tabs.map(tab => {
+            const IconComponent = tab.icon;
+            return (
+              <button
+                key={tab.id}
+                onClick={() => setActiveTab(tab.id)}
+                className={`flex items-center px-6 py-4 text-sm font-medium whitespace-nowrap border-b-2 transition-colors ${
+                  activeTab === tab.id
+                    ? 'border-blue-500 dark:border-blue-400 text-blue-600 dark:text-blue-400 bg-blue-50 dark:bg-blue-900/20'
+                    : 'border-transparent text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300 hover:border-gray-300 dark:hover:border-gray-600'
+                }`}
+              >
+                <IconComponent className="w-4 h-4 mr-2" />
+                {tab.name}
+              </button>
+            );
+          })}
         </div>
       </div>
 
@@ -165,13 +174,13 @@ const EnhancedDashboard = ({ period = 'all' }) => {
 const LoadingSkeleton = () => (
   <div className="space-y-6">
     {/* Header skeleton */}
-    <div className="bg-gradient-to-r from-gray-200 to-gray-300 rounded-xl h-32 animate-pulse"></div>
+    <div className="bg-gradient-to-r from-gray-200 dark:from-gray-700 to-gray-300 dark:to-gray-600 rounded-xl h-32 animate-pulse"></div>
     
     {/* Tabs skeleton */}
-    <div className="bg-white rounded-lg shadow-sm border">
+    <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700">
       <div className="flex space-x-4 p-4">
         {[1,2,3,4,5].map(i => (
-          <div key={i} className="h-10 w-32 bg-gray-200 rounded animate-pulse"></div>
+          <div key={i} className="h-10 w-32 bg-gray-200 dark:bg-gray-700 rounded animate-pulse"></div>
         ))}
       </div>
     </div>
@@ -179,9 +188,9 @@ const LoadingSkeleton = () => (
     {/* Content skeleton */}
     <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
       {[1,2,3,4].map(i => (
-        <div key={i} className="bg-white p-6 rounded-lg shadow-sm border">
-          <div className="h-6 w-48 bg-gray-200 rounded mb-4 animate-pulse"></div>
-          <div className="h-64 bg-gray-100 rounded animate-pulse"></div>
+        <div key={i} className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700">
+          <div className="h-6 w-48 bg-gray-200 dark:bg-gray-700 rounded mb-4 animate-pulse"></div>
+          <div className="h-64 bg-gray-100 dark:bg-gray-700/50 rounded animate-pulse"></div>
         </div>
       ))}
     </div>
@@ -192,9 +201,9 @@ const LoadingSkeleton = () => (
 const OverviewTab = ({ data, formatCurrency, formatPercent }) => (
   <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
     {/* Portfolio Performance Chart */}
-    <div className="bg-white p-6 rounded-lg shadow-sm border col-span-2">
-      <h3 className="text-lg font-semibold mb-4 flex items-center">
-        <i className="fas fa-chart-area text-blue-500 mr-2"></i>
+    <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 col-span-2">
+      <h3 className="text-lg font-semibold mb-4 flex items-center text-gray-800 dark:text-gray-200">
+        <IconAreaChart className="w-5 h-5 text-blue-500 dark:text-blue-400 mr-2" />
         Hiệu Suất Danh Mục Theo Thời Gian
       </h3>
       <div className="h-80">
@@ -233,42 +242,42 @@ const OverviewTab = ({ data, formatCurrency, formatPercent }) => (
     </div>
 
     {/* Risk Gauge */}
-    <div className="bg-white p-6 rounded-lg shadow-sm border">
-      <h3 className="text-lg font-semibold mb-4 flex items-center">
-        <i className="fas fa-tachometer-alt text-red-500 mr-2"></i>
+    <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700">
+      <h3 className="text-lg font-semibold mb-4 flex items-center text-gray-800 dark:text-gray-200">
+        <IconGauge className="w-5 h-5 text-red-500 dark:text-red-400 mr-2" />
         Đánh Giá Rủi Ro
       </h3>
       <RiskGauge riskScore={data.riskMetrics?.riskScore || 50} />
     </div>
 
     {/* Key Metrics Summary */}
-    <div className="bg-white p-6 rounded-lg shadow-sm border">
-      <h3 className="text-lg font-semibold mb-4 flex items-center">
-        <i className="fas fa-chart-pie text-green-500 mr-2"></i>
+    <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700">
+      <h3 className="text-lg font-semibold mb-4 flex items-center text-gray-800 dark:text-gray-200">
+        <IconPieChart className="w-5 h-5 text-green-500 dark:text-green-400 mr-2" />
         Chỉ Số Quan Trọng
       </h3>
       <div className="space-y-4">
         <div className="flex justify-between items-center">
-          <span className="text-gray-600">ROI:</span>
-          <span className={`font-bold ${data.summary?.roi >= 0 ? 'text-green-600' : 'text-red-600'}`}>
+          <span className="text-gray-600 dark:text-gray-400">ROI:</span>
+          <span className={`font-bold ${data.summary?.roi >= 0 ? 'text-green-600 dark:text-green-400' : 'text-red-600 dark:text-red-400'}`}>
             {formatPercent(data.summary?.roi)}
           </span>
         </div>
         <div className="flex justify-between items-center">
-          <span className="text-gray-600">Tỷ lệ thắng:</span>
-          <span className="font-bold text-blue-600">
+          <span className="text-gray-600 dark:text-gray-400">Tỷ lệ thắng:</span>
+          <span className="font-bold text-blue-600 dark:text-blue-400">
             {formatPercent(data.summary?.winRate)}
           </span>
         </div>
         <div className="flex justify-between items-center">
-          <span className="text-gray-600">Tổng giao dịch:</span>
-          <span className="font-bold text-gray-800">
+          <span className="text-gray-600 dark:text-gray-400">Tổng giao dịch:</span>
+          <span className="font-bold text-gray-800 dark:text-gray-200">
             {data.summary?.totalTrades || 0}
           </span>
         </div>
         <div className="flex justify-between items-center">
-          <span className="text-gray-600">Volatility:</span>
-          <span className="font-bold text-orange-600">
+          <span className="text-gray-600 dark:text-gray-400">Volatility:</span>
+          <span className="font-bold text-orange-600 dark:text-orange-400">
             {formatPercent(data.riskMetrics?.volatility)}
           </span>
         </div>
@@ -287,7 +296,7 @@ const RiskAnalysisTab = ({ data, formatCurrency, formatPercent }) => (
           title="Volatility (Độ Biến Động)"
           value={formatPercent(data.riskMetrics?.volatility)}
           description="Đo lường mức độ biến động của danh mục theo thời gian"
-          icon="fas fa-wave-square"
+          icon={IconWaves}
           color="blue"
           explanation={{
             meaning: "Volatility cho biết danh mục của bạn biến động bao nhiều so với giá trị trung bình. Volatility cao = rủi ro cao nhưng cũng có thể có lợi nhuận cao.",
@@ -305,7 +314,7 @@ const RiskAnalysisTab = ({ data, formatCurrency, formatPercent }) => (
           title="Sharpe Ratio"
           value={data.riskMetrics?.sharpeRatio?.toFixed(2) || '0.00'}
           description="Hiệu quả đầu tư: lợi nhuận trên mỗi đơn vị rủi ro"
-          icon="fas fa-balance-scale-right"
+          icon={IconScale}
           color="green"
           explanation={{
             meaning: "Sharpe Ratio đo lường hiệu quả đầu tư - bạn nhận được bao nhiều lợi nhuận cho mỗi đơn vị rủi ro chấp nhận.",
@@ -323,7 +332,7 @@ const RiskAnalysisTab = ({ data, formatCurrency, formatPercent }) => (
           title="Max Drawdown"
           value={formatPercent(data.riskMetrics?.maxDrawdown)}
           description="Tổn thất lớn nhất từ đỉnh cao nhất"
-          icon="fas fa-arrow-down"
+          icon={IconArrowDown}
           color="red"
           explanation={{
             meaning: "Max Drawdown là tổn thất lớn nhất mà danh mục của bạn từng trải qua, tính từ đỉnh cao nhất đến điểm thấp nhất.",
@@ -340,43 +349,43 @@ const RiskAnalysisTab = ({ data, formatCurrency, formatPercent }) => (
 
       {/* Enhanced Risk Score Visualization */}
       <div className="space-y-4">
-        <div className="bg-white p-6 rounded-lg shadow-sm border">
-          <h3 className="text-lg font-semibold mb-4 flex items-center">
-            <i className="fas fa-tachometer-alt text-red-500 mr-2"></i>
+        <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700">
+          <h3 className="text-lg font-semibold mb-4 flex items-center text-gray-800 dark:text-gray-200">
+            <IconGauge className="w-5 h-5 text-red-500 dark:text-red-400 mr-2" />
             Điểm Rủi Ro Tổng Hợp
           </h3>
           <RiskGauge riskScore={data.riskMetrics?.riskScore || 50} />
-          <div className="mt-4 text-sm text-gray-600">
+          <div className="mt-4 text-sm text-gray-600 dark:text-gray-400">
             <p className="font-medium mb-2">Cách tính điểm rủi ro (0-100):</p>
             <div className="space-y-1">
               <p>• <strong>Volatility:</strong> 0-40 điểm (cao = nhiều điểm)</p>
               <p>• <strong>Sharpe Ratio:</strong> 0-30 điểm (thấp = nhiều điểm)</p>
               <p>• <strong>Max Drawdown:</strong> 0-30 điểm (cao = nhiều điểm)</p>
             </div>
-            <div className="mt-3 p-3 bg-gray-50 rounded">
+            <div className="mt-3 p-3 bg-gray-50 dark:bg-gray-700/50 rounded">
               <p className="font-medium mb-1">Phân loại rủi ro:</p>
-              <p><span className="text-green-600 font-medium">0-30:</span> Rủi ro thấp - Phù hợp nhà đầu tư thận trọng</p>
-              <p><span className="text-yellow-600 font-medium">31-60:</span> Rủi ro trung bình - Cân bằng lợi nhuận/rủi ro</p>
-              <p><span className="text-red-600 font-medium">61-100:</span> Rủi ro cao - Chỉ dành cho nhà đầu tư mạo hiểm</p>
+              <p><span className="text-green-600 dark:text-green-400 font-medium">0-30:</span> Rủi ro thấp - Phù hợp nhà đầu tư thận trọng</p>
+              <p><span className="text-yellow-600 dark:text-yellow-400 font-medium">31-60:</span> Rủi ro trung bình - Cân bằng lợi nhuận/rủi ro</p>
+              <p><span className="text-red-600 dark:text-red-400 font-medium">61-100:</span> Rủi ro cao - Chỉ dành cho nhà đầu tư mạo hiểm</p>
             </div>
           </div>
         </div>
 
         {/* Risk Breakdown Chart */}
-        <div className="bg-white p-6 rounded-lg shadow-sm border">
-          <h3 className="text-lg font-semibold mb-4">Phân Tích Chi Tiết Rủi Ro</h3>
+        <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700">
+          <h3 className="text-lg font-semibold mb-4 text-gray-800 dark:text-gray-200">Phân Tích Chi Tiết Rủi Ro</h3>
           <RiskBreakdownChart data={data.riskMetrics} />
         </div>
       </div>
     </div>
 
     {/* Data Source Information */}
-    <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
-      <h4 className="font-semibold text-blue-800 mb-2 flex items-center">
-        <i className="fas fa-info-circle mr-2"></i>
+    <div className="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg p-4">
+      <h4 className="font-semibold text-blue-800 dark:text-blue-300 mb-2 flex items-center">
+        <IconInfo className="w-5 h-5 mr-2" />
         Nguồn Dữ Liệu Tính Toán
       </h4>
-      <div className="text-sm text-blue-700 space-y-2">
+      <div className="text-sm text-blue-700 dark:text-blue-300 space-y-2">
         <p><strong>Bảng Transaction:</strong> Tất cả các chỉ số rủi ro được tính từ dữ liệu giao dịch hiện có</p>
         <p><strong>Trường calculatedPl:</strong> Lãi/lỗ đã tính sẵn của các giao dịch SELL (đã bao gồm phí)</p>
         <p><strong>Trường transactionDate:</strong> Ngày giao dịch để nhóm theo thời gian</p>
@@ -427,21 +436,21 @@ const RiskGauge = ({ riskScore }) => {
         <div className="font-semibold" style={{ color: getColor(riskScore) }}>
           Rủi Ro {getRiskLevel(riskScore)}
         </div>
-        <div className="text-sm text-gray-500">Điểm rủi ro tổng hợp</div>
+        <div className="text-sm text-gray-500 dark:text-gray-400">Điểm rủi ro tổng hợp</div>
       </div>
     </div>
   );
 };
 
 // Enhanced Risk Metric Card Component with Detailed Explanations
-const EnhancedRiskMetricCard = ({ title, value, description, icon, color, explanation }) => {
+const EnhancedRiskMetricCard = ({ title, value, description, icon: IconComponent, color, explanation }) => {
   const [showDetails, setShowDetails] = useState(false);
   
   const colorClasses = {
-    blue: 'bg-blue-50 border-blue-200 text-blue-600',
-    green: 'bg-green-50 border-green-200 text-green-600',
-    red: 'bg-red-50 border-red-200 text-red-600',
-    yellow: 'bg-yellow-50 border-yellow-200 text-yellow-600'
+    blue: 'bg-blue-50 dark:bg-blue-900/20 border-blue-200 dark:border-blue-800 text-blue-600 dark:text-blue-400',
+    green: 'bg-green-50 dark:bg-green-900/20 border-green-200 dark:border-green-800 text-green-600 dark:text-green-400',
+    red: 'bg-red-50 dark:bg-red-900/20 border-red-200 dark:border-red-800 text-red-600 dark:text-red-400',
+    yellow: 'bg-yellow-50 dark:bg-yellow-900/20 border-yellow-200 dark:border-yellow-800 text-yellow-600 dark:text-yellow-400'
   };
 
   const getInterpretationColor = (value, interpretation) => {
@@ -471,15 +480,15 @@ const EnhancedRiskMetricCard = ({ title, value, description, icon, color, explan
         <div className="flex-1">
           <div className="flex items-center justify-between mb-2">
             <div className="flex items-center">
-              <i className={`${icon} mr-2`}></i>
+              {IconComponent && <IconComponent className="w-5 h-5 mr-2" />}
               <h4 className="font-semibold">{title}</h4>
             </div>
             <button
               onClick={() => setShowDetails(!showDetails)}
-              className="text-xs bg-white bg-opacity-50 hover:bg-opacity-75 px-2 py-1 rounded transition-colors"
+              className="text-xs bg-white dark:bg-gray-800 bg-opacity-50 dark:bg-opacity-50 hover:bg-opacity-75 dark:hover:bg-opacity-75 px-2 py-1 rounded transition-colors"
               title="Xem chi tiết"
             >
-              <i className={`fas ${showDetails ? 'fa-chevron-up' : 'fa-info-circle'}`}></i>
+              {showDetails ? <IconChevronUp className="w-4 h-4" /> : <IconInfo className="w-4 h-4" />}
             </button>
           </div>
           
@@ -489,7 +498,7 @@ const EnhancedRiskMetricCard = ({ title, value, description, icon, color, explan
           <p className="text-sm opacity-75">{description}</p>
           
           {showDetails && explanation && (
-            <div className="mt-4 p-3 bg-white bg-opacity-70 rounded-lg text-xs space-y-3">
+            <div className="mt-4 p-3 bg-white dark:bg-gray-800 bg-opacity-70 dark:bg-opacity-70 rounded-lg text-xs space-y-3">
               <div>
                 <h5 className="font-semibold mb-1">💡 Ý nghĩa:</h5>
                 <p>{explanation.meaning}</p>
@@ -525,7 +534,7 @@ const EnhancedRiskMetricCard = ({ title, value, description, icon, color, explan
 
 // Risk Breakdown Chart Component
 const RiskBreakdownChart = ({ data }) => {
-  if (!data) return <div className="text-gray-500 text-center py-8">Không có dữ liệu</div>;
+  if (!data) return <div className="text-gray-500 dark:text-gray-400 text-center py-8">Không có dữ liệu</div>;
 
   const riskComponents = [
     {
@@ -556,10 +565,10 @@ const RiskBreakdownChart = ({ data }) => {
       {riskComponents.map((component, index) => (
         <div key={index} className="space-y-2">
           <div className="flex justify-between items-center text-sm">
-            <span className="font-medium">{component.description}</span>
-            <span className="text-gray-600">{component.value.toFixed(1)}/{component.maxValue}</span>
+            <span className="font-medium text-gray-800 dark:text-gray-200">{component.description}</span>
+            <span className="text-gray-600 dark:text-gray-400">{component.value.toFixed(1)}/{component.maxValue}</span>
           </div>
-          <div className="w-full bg-gray-200 rounded-full h-3">
+          <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-3">
             <div
               className="h-3 rounded-full transition-all duration-500"
               style={{
@@ -571,9 +580,9 @@ const RiskBreakdownChart = ({ data }) => {
         </div>
       ))}
       
-      <div className="mt-4 p-3 bg-gray-50 rounded text-xs">
-        <p className="font-medium mb-1">Tổng điểm rủi ro: {data.riskScore || 0}/100</p>
-        <p className="text-gray-600">
+      <div className="mt-4 p-3 bg-gray-50 dark:bg-gray-700/50 rounded text-xs">
+        <p className="font-medium mb-1 text-gray-800 dark:text-gray-200">Tổng điểm rủi ro: {data.riskScore || 0}/100</p>
+        <p className="text-gray-600 dark:text-gray-400">
           Điểm càng cao = rủi ro càng lớn. Điểm được tính bằng tổng của 3 thành phần trên.
         </p>
       </div>
@@ -582,12 +591,12 @@ const RiskBreakdownChart = ({ data }) => {
 };
 
 // Original Risk Metric Card Component (kept for backward compatibility)
-const RiskMetricCard = ({ title, value, description, icon, color }) => {
+const RiskMetricCard = ({ title, value, description, icon: IconComponent, color }) => {
   const colorClasses = {
-    blue: 'bg-blue-50 border-blue-200 text-blue-600',
-    green: 'bg-green-50 border-green-200 text-green-600',
-    red: 'bg-red-50 border-red-200 text-red-600',
-    yellow: 'bg-yellow-50 border-yellow-200 text-yellow-600'
+    blue: 'bg-blue-50 dark:bg-blue-900/20 border-blue-200 dark:border-blue-800 text-blue-600 dark:text-blue-400',
+    green: 'bg-green-50 dark:bg-green-900/20 border-green-200 dark:border-green-800 text-green-600 dark:text-green-400',
+    red: 'bg-red-50 dark:bg-red-900/20 border-red-200 dark:border-red-800 text-red-600 dark:text-red-400',
+    yellow: 'bg-yellow-50 dark:bg-yellow-900/20 border-yellow-200 dark:border-yellow-800 text-yellow-600 dark:text-yellow-400'
   };
 
   return (
@@ -595,7 +604,7 @@ const RiskMetricCard = ({ title, value, description, icon, color }) => {
       <div className="flex items-start justify-between">
         <div className="flex-1">
           <div className="flex items-center mb-2">
-            <i className={`${icon} mr-2`}></i>
+            {IconComponent && <IconComponent className="w-5 h-5 mr-2" />}
             <h4 className="font-semibold">{title}</h4>
           </div>
           <div className="text-2xl font-bold mb-1">{value}</div>
@@ -609,26 +618,26 @@ const RiskMetricCard = ({ title, value, description, icon, color }) => {
 // Benchmark Tab Component
 const BenchmarkTab = ({ data, formatCurrency, formatPercent }) => (
   <div className="space-y-6">
-    <div className="bg-white p-6 rounded-lg shadow-sm border">
-      <h3 className="text-lg font-semibold mb-4 flex items-center">
-        <i className="fas fa-chart-line text-blue-500 mr-2"></i>
+    <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700">
+      <h3 className="text-lg font-semibold mb-4 flex items-center text-gray-800 dark:text-gray-200">
+        <IconLineChart className="w-5 h-5 text-blue-500 dark:text-blue-400 mr-2" />
         So Sánh với VN-Index
       </h3>
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-        <div className="text-center p-4 bg-gray-50 rounded-lg">
-          <div className="text-2xl font-bold text-blue-600">{data.benchmark?.beta?.toFixed(2) || '1.00'}</div>
-          <div className="text-sm text-gray-600">Beta</div>
-          <div className="text-xs text-gray-500">Độ nhạy cảm với thị trường</div>
+        <div className="text-center p-4 bg-gray-50 dark:bg-gray-700/50 rounded-lg">
+          <div className="text-2xl font-bold text-blue-600 dark:text-blue-400">{data.benchmark?.beta?.toFixed(2) || '1.00'}</div>
+          <div className="text-sm text-gray-600 dark:text-gray-400">Beta</div>
+          <div className="text-xs text-gray-500 dark:text-gray-500">Độ nhạy cảm với thị trường</div>
         </div>
-        <div className="text-center p-4 bg-gray-50 rounded-lg">
-          <div className="text-2xl font-bold text-green-600">{formatPercent(data.benchmark?.alpha)}</div>
-          <div className="text-sm text-gray-600">Alpha</div>
-          <div className="text-xs text-gray-500">Lợi nhuận vượt thị trường</div>
+        <div className="text-center p-4 bg-gray-50 dark:bg-gray-700/50 rounded-lg">
+          <div className="text-2xl font-bold text-green-600 dark:text-green-400">{formatPercent(data.benchmark?.alpha)}</div>
+          <div className="text-sm text-gray-600 dark:text-gray-400">Alpha</div>
+          <div className="text-xs text-gray-500 dark:text-gray-500">Lợi nhuận vượt thị trường</div>
         </div>
-        <div className="text-center p-4 bg-gray-50 rounded-lg">
-          <div className="text-2xl font-bold text-purple-600">{data.benchmark?.correlation?.toFixed(2) || '0.00'}</div>
-          <div className="text-sm text-gray-600">Correlation</div>
-          <div className="text-xs text-gray-500">Mức độ tương quan</div>
+        <div className="text-center p-4 bg-gray-50 dark:bg-gray-700/50 rounded-lg">
+          <div className="text-2xl font-bold text-purple-600 dark:text-purple-400">{data.benchmark?.correlation?.toFixed(2) || '0.00'}</div>
+          <div className="text-sm text-gray-600 dark:text-gray-400">Correlation</div>
+          <div className="text-xs text-gray-500 dark:text-gray-500">Mức độ tương quan</div>
         </div>
       </div>
     </div>
@@ -643,26 +652,26 @@ const SectorsTab = ({ data, formatCurrency, formatPercent }) => {
     <div className="space-y-6">
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {/* Sector Performance List */}
-        <div className="bg-white p-6 rounded-lg shadow-sm border">
-          <h3 className="text-lg font-semibold mb-4">Hiệu Suất Theo Ngành</h3>
+        <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700">
+          <h3 className="text-lg font-semibold mb-4 text-gray-800 dark:text-gray-200">Hiệu Suất Theo Ngành</h3>
           <div className="space-y-3">
             {data.sectors?.sectorPerformance?.slice(0, 8).map((sector, index) => (
-              <div key={sector.sector} className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+              <div key={sector.sector} className="flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-700/50 rounded-lg">
                 <div className="flex items-center">
                   <div 
                     className="w-4 h-4 rounded mr-3"
                     style={{ backgroundColor: SECTOR_COLORS[index % SECTOR_COLORS.length] }}
                   ></div>
                   <div>
-                    <div className="font-semibold">{sector.sector}</div>
-                    <div className="text-sm text-gray-500">{sector.tickerCount} cổ phiếu</div>
+                    <div className="font-semibold text-gray-800 dark:text-gray-200">{sector.sector}</div>
+                    <div className="text-sm text-gray-500 dark:text-gray-400">{sector.tickerCount} cổ phiếu</div>
                   </div>
                 </div>
                 <div className="text-right">
-                  <div className={`font-bold ${sector.pnl >= 0 ? 'text-green-600' : 'text-red-600'}`}>
+                  <div className={`font-bold ${sector.pnl >= 0 ? 'text-green-600 dark:text-green-400' : 'text-red-600 dark:text-red-400'}`}>
                     {formatCurrency(sector.pnl)}
                   </div>
-                  <div className="text-sm text-gray-500">{formatPercent(sector.roi)}</div>
+                  <div className="text-sm text-gray-500 dark:text-gray-400">{formatPercent(sector.roi)}</div>
                 </div>
               </div>
             ))}
@@ -670,8 +679,8 @@ const SectorsTab = ({ data, formatCurrency, formatPercent }) => {
         </div>
 
         {/* Sector Allocation Pie Chart */}
-        <div className="bg-white p-6 rounded-lg shadow-sm border">
-          <h3 className="text-lg font-semibold mb-4">Phân Bổ Theo Ngành</h3>
+        <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700">
+          <h3 className="text-lg font-semibold mb-4 text-gray-800 dark:text-gray-200">Phân Bổ Theo Ngành</h3>
           <div className="h-64">
             <ResponsiveContainer width="100%" height="100%">
               <PieChart>
@@ -700,9 +709,9 @@ const SectorsTab = ({ data, formatCurrency, formatPercent }) => {
 
 // Performance Tab Component
 const PerformanceTab = ({ data, formatCurrency, formatPercent }) => (
-  <div className="bg-white p-6 rounded-lg shadow-sm border">
-    <h3 className="text-lg font-semibold mb-4 flex items-center">
-      <i className="fas fa-chart-area text-purple-500 mr-2"></i>
+  <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700">
+    <h3 className="text-lg font-semibold mb-4 flex items-center text-gray-800 dark:text-gray-200">
+      <IconAreaChart className="w-5 h-5 text-purple-500 dark:text-purple-400 mr-2" />
       Hiệu Suất Chi Tiết
     </h3>
     <div className="h-80">

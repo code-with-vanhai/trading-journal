@@ -4,6 +4,18 @@ import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
 import { useSession, signOut } from 'next-auth/react';
 import { useState, useEffect } from 'react';
+import dynamic from 'next/dynamic';
+import { IconLineChart, IconUserCircle, IconLogOut, IconMenu, IconX } from './ui/Icon';
+
+// Dynamic import ThemeToggle to avoid SSR issues
+const ThemeToggle = dynamic(() => import('./ThemeToggle'), {
+  ssr: false,
+  loading: () => (
+    <div className="relative w-14 h-7 rounded-full bg-gray-200 dark:bg-gray-700">
+      <span className="absolute top-0.5 left-0.5 w-6 h-6 rounded-full bg-white dark:bg-blue-500 shadow-md"></span>
+    </div>
+  )
+});
 
 export default function Navbar() {
   const { data: session, status } = useSession();
@@ -83,7 +95,7 @@ export default function Navbar() {
         <div className="container mx-auto px-4 py-3">
           <div className="flex justify-between items-center">
             <div className="flex items-center">
-              <i className="fas fa-chart-line text-3xl mr-2 text-blue-300"></i>
+              <IconLineChart className="w-8 h-8 mr-2 text-blue-300" />
               <h1 className="text-2xl font-bold">
                 <Link href="/" className="hover:text-blue-200 transition">
                   Trading Journal
@@ -109,17 +121,18 @@ export default function Navbar() {
             </nav>
             {/* Auth Links - Exactly matching landing page */}
             <div className="hidden md:flex items-center space-x-4 font-medium">
+              <ThemeToggle />
               {status === 'authenticated' ? (
                 <div className="flex items-center gap-4">
                   <span className="text-sm text-blue-100 flex items-center">
-                    <i className="fas fa-user-circle mr-2"></i>
+                    <IconUserCircle className="w-4 h-4 mr-2" />
                     {getDisplayName()}
                   </span>
                   <button
                     onClick={handleSignOut}
-                    className="text-sm text-blue-200 hover:text-white transition-colors"
+                    className="text-sm text-blue-200 hover:text-white transition-colors flex items-center"
                   >
-                    <i className="fas fa-sign-out-alt mr-1"></i>
+                    <IconLogOut className="w-4 h-4 mr-1" />
                     Đăng xuất
                   </button>
                 </div>
@@ -133,17 +146,20 @@ export default function Navbar() {
             {/* Mobile Menu Button - Exactly matching landing page */}
             <div className="md:hidden">
               <button id="mobile-menu-button" className="text-white focus:outline-none">
-                <i className="fas fa-bars text-xl"></i>
+                <IconMenu className="w-6 h-6" />
               </button>
             </div>
           </div>
         </div>
 
         {/* Mobile Menu (Slide out) - Exactly matching landing page */}
-        <div id="mobile-menu" className="mobile-menu fixed top-0 right-0 w-64 h-screen bg-blue-900 text-white shadow-lg py-6 px-4 md:hidden">
-          <div className="flex justify-end mb-6">
+        <div id="mobile-menu" className="mobile-menu fixed top-0 right-0 w-64 h-screen bg-blue-900 dark:bg-gray-900 text-white shadow-lg py-6 px-4 md:hidden">
+          <div className="flex justify-between items-center mb-6">
+            <div className="flex items-center">
+              <ThemeToggle />
+            </div>
             <button id="close-mobile-menu-button" className="text-white focus:outline-none">
-              <i className="fas fa-times text-xl"></i>
+              <IconX className="w-6 h-6" />
             </button>
           </div>
           <nav>
@@ -152,7 +168,7 @@ export default function Navbar() {
               <li><a href="/#pricing" className="block hover:text-blue-200 transition">Bảng giá</a></li>
               {status === 'authenticated' && (
                 <>
-                  <li className="pt-4 border-t border-blue-800"><Link href="/account-fees" className="block hover:text-blue-200 transition">Phí giao dịch</Link></li>
+                  <li className="pt-4 border-t border-blue-800 dark:border-gray-700"><Link href="/account-fees" className="block hover:text-blue-200 transition">Phí giao dịch</Link></li>
                   <li><Link href="/transactions" className="block hover:text-blue-200 transition">Giao dịch</Link></li>
                   <li><Link href="/portfolio" className="block hover:text-blue-200 transition">Danh mục</Link></li>
                   <li><Link href="/analysis" className="block hover:text-blue-200 transition">Phân tích</Link></li>
@@ -162,26 +178,26 @@ export default function Navbar() {
               )}
               {status === 'authenticated' ? (
                 <>
-                  <li className="pt-4 border-t border-blue-800">
-                    <span className="block text-blue-100 mb-2">
-                      <i className="fas fa-user-circle mr-2"></i>
+                  <li className="pt-4 border-t border-blue-800 dark:border-gray-700">
+                    <span className="block text-blue-100 mb-2 flex items-center">
+                      <IconUserCircle className="w-4 h-4 mr-2" />
                       {getDisplayName()}
                     </span>
                   </li>
                   <li>
                     <button
                       onClick={handleSignOut}
-                      className="block hover:text-blue-200 transition w-full text-left"
+                      className="block hover:text-blue-200 transition w-full text-left flex items-center"
                     >
-                      <i className="fas fa-sign-out-alt mr-2"></i>
+                      <IconLogOut className="w-4 h-4 mr-2" />
                       Đăng xuất
                     </button>
                   </li>
                 </>
               ) : (
                 <>
-                  <li className="pt-4 border-t border-blue-800"><Link href="/auth/signin" className="block hover:text-blue-200 transition">Đăng nhập</Link></li>
-                  <li><Link href="/auth/signup" className="block bg-white text-blue-900 px-4 py-2 rounded-lg text-center font-medium hover:bg-blue-100 transition shadow-md">Đăng ký</Link></li>
+                  <li className="pt-4 border-t border-blue-800 dark:border-gray-700"><Link href="/auth/signin" className="block hover:text-blue-200 transition">Đăng nhập</Link></li>
+                  <li><Link href="/auth/signup" className="block bg-white text-blue-900 px-4 py-2 rounded-lg text-center font-medium hover:bg-blue-100 transition shadow-md dark:bg-gray-800 dark:text-white dark:hover:bg-gray-700">Đăng ký</Link></li>
                 </>
               )}
             </ul>

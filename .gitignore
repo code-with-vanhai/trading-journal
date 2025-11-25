@@ -1,9 +1,19 @@
 node_modules
 # Keep environment variables out of version control
 .env
-.next
 .env.local
 .env.development.local
 .env.test.local
 .env.production.local
+
+# Build output
+.next
+
+# Logs
+logs/
+*.log
+
+# Database
+*.db
+*.db-journal
 

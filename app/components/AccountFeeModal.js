@@ -38,22 +38,22 @@ export default function AccountFeeModal({ isOpen, onClose, fee = null, onSuccess
 
   return (
     <div 
-      className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4"
+      className="fixed inset-0 bg-black bg-opacity-50 dark:bg-opacity-70 z-50 flex items-center justify-center p-4"
       onClick={(e) => {
         if (e.target === e.currentTarget) {
           onClose();
         }
       }}
     >
-      <div className="bg-white rounded-lg shadow-xl max-w-4xl w-full max-h-[90vh] overflow-y-auto">
+      <div className="bg-white dark:bg-gray-800 rounded-lg shadow-xl border border-gray-200 dark:border-gray-700 max-w-4xl w-full max-h-[90vh] overflow-y-auto">
         {/* Header */}
-        <div className="gradient-bg text-white p-6 rounded-t-lg">
+        <div className="gradient-bg dark:from-gray-800 dark:to-gray-700 text-white p-6 rounded-t-lg">
           <div className="flex justify-between items-center">
             <div>
               <h2 className="text-2xl font-bold">
                 {isEditing ? 'Chỉnh Sửa Phí Tài Khoản' : 'Thêm Phí Tài Khoản Mới'}
               </h2>
-              <p className="opacity-90 mt-1">
+              <p className="opacity-90 dark:opacity-80 mt-1">
                 {isEditing 
                   ? 'Cập nhật thông tin phí tài khoản chứng khoán'
                   : 'Thêm mới phí liên quan đến tài khoản chứng khoán của bạn'
@@ -62,7 +62,7 @@ export default function AccountFeeModal({ isOpen, onClose, fee = null, onSuccess
             </div>
             <button
               onClick={onClose}
-              className="text-white hover:text-gray-200 transition-colors p-2 rounded-lg hover:bg-white hover:bg-opacity-10"
+              className="text-white hover:text-gray-200 dark:hover:text-gray-300 transition-colors p-2 rounded-lg hover:bg-white hover:bg-opacity-10 dark:hover:bg-opacity-20"
               title="Đóng"
             >
               <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">

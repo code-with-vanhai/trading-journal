@@ -154,15 +154,15 @@ export default function AccountFeeForm({ fee = null, onSuccess, onCancel }) {
   return (
     <form onSubmit={handleSubmit} className="space-y-6">
       {error && (
-        <div className="p-4 bg-red-50 border border-red-200 rounded-lg">
-          <p className="text-red-800">{error}</p>
+        <div className="p-4 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg">
+          <p className="text-red-800 dark:text-red-400">{error}</p>
         </div>
       )}
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         {/* Stock Account */}
         <div>
-          <label htmlFor="stockAccountId" className="block text-sm font-medium text-gray-700 mb-2">
+          <label htmlFor="stockAccountId" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
             Tài khoản chứng khoán *
           </label>
           <select
@@ -170,7 +170,7 @@ export default function AccountFeeForm({ fee = null, onSuccess, onCancel }) {
             name="stockAccountId"
             value={formData.stockAccountId}
             onChange={handleChange}
-            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400"
             required
             disabled={isLoadingAccounts}
           >
@@ -185,7 +185,7 @@ export default function AccountFeeForm({ fee = null, onSuccess, onCancel }) {
 
         {/* Fee Type */}
         <div>
-          <label htmlFor="feeType" className="block text-sm font-medium text-gray-700 mb-2">
+          <label htmlFor="feeType" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
             Loại phí *
           </label>
           <select
@@ -193,7 +193,7 @@ export default function AccountFeeForm({ fee = null, onSuccess, onCancel }) {
             name="feeType"
             value={formData.feeType}
             onChange={handleChange}
-            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400"
             required
           >
             <option value="">Chọn loại phí...</option>
@@ -207,7 +207,7 @@ export default function AccountFeeForm({ fee = null, onSuccess, onCancel }) {
 
         {/* Amount */}
         <div>
-          <label htmlFor="amount" className="block text-sm font-medium text-gray-700 mb-2">
+          <label htmlFor="amount" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
             Số tiền phí (VND) *
           </label>
           <input
@@ -218,7 +218,7 @@ export default function AccountFeeForm({ fee = null, onSuccess, onCancel }) {
             onChange={handleChange}
             min="0"
             step="1"
-            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400"
             placeholder="Nhập số tiền phí"
             required
           />
@@ -226,7 +226,7 @@ export default function AccountFeeForm({ fee = null, onSuccess, onCancel }) {
 
         {/* Fee Date */}
         <div>
-          <label htmlFor="feeDate" className="block text-sm font-medium text-gray-700 mb-2">
+          <label htmlFor="feeDate" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
             Ngày phí *
           </label>
           <input
@@ -235,14 +235,14 @@ export default function AccountFeeForm({ fee = null, onSuccess, onCancel }) {
             name="feeDate"
             value={formData.feeDate}
             onChange={handleChange}
-            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400"
             required
           />
         </div>
 
         {/* Reference Number */}
         <div>
-          <label htmlFor="referenceNumber" className="block text-sm font-medium text-gray-700 mb-2">
+          <label htmlFor="referenceNumber" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
             Số tham chiếu
           </label>
           <input
@@ -251,14 +251,14 @@ export default function AccountFeeForm({ fee = null, onSuccess, onCancel }) {
             name="referenceNumber"
             value={formData.referenceNumber}
             onChange={handleChange}
-            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400"
             placeholder="Số tham chiếu từ công ty chứng khoán"
           />
         </div>
 
         {/* Attachment URL */}
         <div>
-          <label htmlFor="attachmentUrl" className="block text-sm font-medium text-gray-700 mb-2">
+          <label htmlFor="attachmentUrl" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
             Link đính kèm
           </label>
           <input
@@ -267,7 +267,7 @@ export default function AccountFeeForm({ fee = null, onSuccess, onCancel }) {
             name="attachmentUrl"
             value={formData.attachmentUrl}
             onChange={handleChange}
-            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400"
             placeholder="https://example.com/document.pdf"
           />
         </div>
@@ -275,7 +275,7 @@ export default function AccountFeeForm({ fee = null, onSuccess, onCancel }) {
 
       {/* Description */}
       <div>
-        <label htmlFor="description" className="block text-sm font-medium text-gray-700 mb-2">
+        <label htmlFor="description" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
           Mô tả
         </label>
         <textarea
@@ -284,7 +284,7 @@ export default function AccountFeeForm({ fee = null, onSuccess, onCancel }) {
           value={formData.description}
           onChange={handleChange}
           rows={3}
-          className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+          className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400"
           placeholder="Mô tả chi tiết về phí này..."
         />
       </div>
@@ -294,14 +294,14 @@ export default function AccountFeeForm({ fee = null, onSuccess, onCancel }) {
         <button
           type="button"
           onClick={onCancel}
-          className="px-4 py-2 text-gray-700 bg-gray-200 rounded-lg hover:bg-gray-300 focus:outline-none focus:ring-2 focus:ring-gray-500"
+          className="px-4 py-2 text-gray-700 dark:text-gray-300 bg-gray-200 dark:bg-gray-700 rounded-lg hover:bg-gray-300 dark:hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-gray-500 dark:focus:ring-gray-400"
           disabled={isSubmitting}
         >
           Hủy
         </button>
         <button
           type="submit"
-          className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:opacity-50"
+          className="px-4 py-2 bg-blue-600 dark:bg-blue-700 text-white rounded-lg hover:bg-blue-700 dark:hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 disabled:opacity-50"
           disabled={isSubmitting}
         >
           {isSubmitting ? 'Đang lưu...' : (isEditing ? 'Cập nhật' : 'Thêm phí')}

@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { formatDistanceToNow } from 'date-fns';
 import { useNotification } from './Notification';
+import { IconTrash, IconRefresh } from './ui/Icon';
 
 export default function StrategyList({ strategies, onStrategyDeleted, currentUserId }) {
   const { showError } = useNotification();
@@ -57,9 +58,9 @@ export default function StrategyList({ strategies, onStrategyDeleted, currentUse
                 title={deletingId === strategy.id ? "Đang xóa chiến lược..." : "Xóa chiến lược"}
               >
                 {deletingId === strategy.id ? (
-                  <i className="fas fa-spinner fa-spin text-sm"></i>
+                  <IconRefresh className="w-4 h-4 animate-spin" />
                 ) : (
-                  <i className="fas fa-trash text-sm"></i>
+                  <IconTrash className="w-4 h-4" />
                 )}
               </button>
             )}

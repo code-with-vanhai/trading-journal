@@ -156,21 +156,21 @@ export default function TransactionForm({ transaction = null, onSuccess }) {
     return (
       <div className="card">
         <div className="flex justify-center items-center py-8">
-          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
-          <span className="ml-3 text-gray-600">Đang tải...</span>
+          <div className="animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-blue-600 dark:border-blue-400"></div>
+          <span className="ml-3 text-gray-600 dark:text-gray-400">Đang tải...</span>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="card">
-      <h2 className="text-xl font-semibold mb-4">
+    <div className="card fade-in-up">
+      <h2 className="text-xl font-semibold mb-4 text-gray-900 dark:text-gray-100">
         {isEditing ? 'Chỉnh Sửa Giao Dịch' : 'Thêm Giao Dịch Mới'}
       </h2>
       
       {error && (
-        <div className="bg-red-50 text-red-500 p-3 rounded mb-4">
+        <div className="bg-red-50 dark:bg-red-900/20 text-red-500 dark:text-red-400 p-3 rounded mb-4 border border-red-200 dark:border-red-800 shake">
           {error}
         </div>
       )}
@@ -196,12 +196,12 @@ export default function TransactionForm({ transaction = null, onSuccess }) {
                   </option>
                 ))}
               </select>
-              <p className="text-sm text-gray-500 mt-1">
+              <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">
                 Nếu không chọn, giao dịch sẽ được gán cho tài khoản mặc định.{' '}
                 <button
                   type="button"
                   onClick={handleCreateAccount}
-                  className="text-blue-600 hover:text-blue-800 underline"
+                  className="text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300 underline"
                 >
                   Quản lý tài khoản
                 </button>
@@ -346,7 +346,7 @@ export default function TransactionForm({ transaction = null, onSuccess }) {
           <button
             type="button"
             onClick={() => router.back()}
-            className="px-4 py-2 border border-gray-300 rounded text-gray-700 hover:bg-gray-50"
+            className="px-4 py-2 border border-gray-300 dark:border-gray-600 rounded text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors"
           >
             Hủy
           </button>

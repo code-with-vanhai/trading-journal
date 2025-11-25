@@ -8,6 +8,8 @@ import dynamic from 'next/dynamic';
 import Pagination from '../components/Pagination';
 import { useNotification } from '../components/Notification';
 import { Spinner } from '../components/ui/Spinner';
+import { TableSkeleton, CardSkeleton } from '../components/ui/Skeleton';
+import { IconPlus, IconChevronDown, IconLineChart, IconCoins, IconAlertCircle, IconBarChart, IconX } from '../components/ui/Icon';
 
 // Dynamic imports for heavy components
 const TransactionList = dynamic(() => import('../components/TransactionList'), {
@@ -305,56 +307,56 @@ function TransactionsContent() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
       {/* Hero Header Section */}
-      <div className="gradient-bg text-white py-12">
+      <div className="gradient-bg dark:from-gray-800 dark:to-gray-700 text-white py-12">
         <div className="max-w-6xl mx-auto px-4">
           <div className="flex justify-between items-center">
             <div>
               <h1 className="text-4xl font-bold mb-4">Quản lý Giao dịch</h1>
-              <p className="text-xl opacity-90">Theo dõi và phân tích tất cả các giao dịch chứng khoán của bạn</p>
+              <p className="text-xl opacity-90 dark:opacity-80">Theo dõi và phân tích tất cả các giao dịch chứng khoán của bạn</p>
             </div>
             {status === 'authenticated' && (
               <div className="relative dropdown-container">
                 <button
                   onClick={() => setIsDropdownOpen(!isDropdownOpen)}
-                  className="bg-white text-blue-900 px-6 py-3 rounded-lg font-bold hover:bg-blue-100 transition shadow-lg flex items-center"
+                  className="bg-white dark:bg-gray-800 text-blue-900 dark:text-blue-100 px-6 py-3 rounded-lg font-bold hover:bg-blue-100 dark:hover:bg-gray-700 transition shadow-lg flex items-center"
                 >
-                  <i className="fas fa-plus mr-2"></i>
+                  <IconPlus className="w-5 h-5 mr-2" />
                   Thêm Mới
-                  <i className={`fas fa-chevron-down ml-2 transition-transform ${isDropdownOpen ? 'rotate-180' : ''}`}></i>
+                  <IconChevronDown className={`ml-2 transition-transform ${isDropdownOpen ? 'rotate-180' : ''} w-5 h-5`} />
                 </button>
                 
                 {isDropdownOpen && (
-                  <div className="absolute right-0 mt-2 w-56 bg-white rounded-lg shadow-xl z-50 border border-gray-200">
+                  <div className="absolute right-0 mt-2 w-56 bg-white dark:bg-gray-800 rounded-lg shadow-xl z-50 border border-gray-200 dark:border-gray-700">
                     <div className="py-2">
                       <button
                         onClick={() => {
                           setIsDropdownOpen(false);
                           setIsAddModalOpen(true);
                         }}
-                        className="w-full flex items-center px-4 py-3 text-gray-700 hover:bg-blue-50 hover:text-blue-900 transition-colors"
+                        className="w-full flex items-center px-4 py-3 text-gray-700 dark:text-gray-300 hover:bg-blue-50 dark:hover:bg-blue-900/30 hover:text-blue-900 dark:hover:text-blue-300 transition-colors"
                       >
-                        <i className="fas fa-chart-line text-blue-600 mr-3 w-4"></i>
+                        <IconLineChart className="text-blue-600 dark:text-blue-400 mr-3 w-5 h-5" />
                         <div>
                           <div className="font-medium">Thêm Giao Dịch</div>
-                          <div className="text-sm text-gray-500">Mua/bán cổ phiếu</div>
+                          <div className="text-sm text-gray-500 dark:text-gray-400">Mua/bán cổ phiếu</div>
                         </div>
                       </button>
                       
-                      <hr className="my-1 border-gray-200" />
+                      <hr className="my-1 border-gray-200 dark:border-gray-700" />
                       
                       <button
                         onClick={() => {
                           setIsDropdownOpen(false);
                           setIsDividendModalOpen(true);
                         }}
-                        className="w-full flex items-center px-4 py-3 text-gray-700 hover:bg-green-50 hover:text-green-900 transition-colors"
+                        className="w-full flex items-center px-4 py-3 text-gray-700 dark:text-gray-300 hover:bg-green-50 dark:hover:bg-green-900/30 hover:text-green-900 dark:hover:text-green-300 transition-colors"
                       >
-                        <i className="fas fa-coins text-green-600 mr-3 w-4"></i>
+                        <IconCoins className="text-green-600 dark:text-green-400 mr-3 w-5 h-5" />
                         <div className="text-left">
                           <div className="font-medium">Thêm Cổ Tức</div>
-                          <div className="text-sm text-gray-500">Nhập thông tin chia cổ tức</div>
+                          <div className="text-sm text-gray-500 dark:text-gray-400">Nhập thông tin chia cổ tức</div>
                         </div>
                       </button>
                     </div>
@@ -369,17 +371,17 @@ function TransactionsContent() {
       {/* Main Content */}
       <div className="max-w-6xl mx-auto p-4 mt-6">
         {status === 'unauthenticated' ? (
-          <div className="bg-white rounded-lg shadow-lg p-12 text-center">
+          <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg border border-gray-200 dark:border-gray-700 p-12 text-center">
             <div className="flex flex-col items-center">
-              <i className="fas fa-chart-line text-gray-400 text-6xl mb-6"></i>
-              <h3 className="text-2xl font-semibold text-gray-700 mb-4">Đăng nhập để xem giao dịch</h3>
-              <p className="text-gray-500 mb-6">Vui lòng đăng nhập để truy cập thông tin giao dịch của bạn</p>
+              <IconLineChart className="text-gray-400 dark:text-gray-500 w-16 h-16 mb-6" />
+              <h3 className="text-2xl font-semibold text-gray-700 dark:text-gray-300 mb-4">Đăng nhập để xem giao dịch</h3>
+              <p className="text-gray-500 dark:text-gray-400 mb-6">Vui lòng đăng nhập để truy cập thông tin giao dịch của bạn</p>
             </div>
           </div>
         ) : (
           <>
             {/* Filter Section */}
-            <div className="bg-white rounded-lg shadow-lg p-6 mb-6">
+            <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg border border-gray-200 dark:border-gray-700 p-6 mb-6">
               <TransactionFilters 
                 filters={filters} 
                 onFilterChange={handleFilterChange}
@@ -394,37 +396,34 @@ function TransactionsContent() {
             />
 
             {error && (
-              <div className="bg-red-50 border-l-4 border-red-500 text-red-700 p-4 rounded mb-6">
+              <div className="bg-red-50 dark:bg-red-900/20 border-l-4 border-red-500 dark:border-red-600 text-red-700 dark:text-red-400 p-4 rounded mb-6">
                 <div className="flex items-center">
-                  <i className="fas fa-exclamation-triangle mr-2"></i>
+                  <IconAlertCircle className="w-5 h-5 mr-2" />
                   {error}
                 </div>
               </div>
             )}
 
             {isLoading ? (
-              <div className="bg-white rounded-lg shadow-lg p-12 text-center">
-                <div className="flex flex-col items-center">
-                  <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mb-4"></div>
-                  <p className="text-gray-600">Đang tải giao dịch...</p>
-                </div>
+              <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg border border-gray-200 dark:border-gray-700 overflow-hidden">
+                <TableSkeleton rows={10} cols={8} />
               </div>
             ) : (
-              <div className="bg-white rounded-lg shadow-lg overflow-hidden">
-                <div className="p-6 bg-gradient-to-r from-blue-50 to-indigo-50 border-b border-gray-200 flex justify-between items-center">
+              <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg border border-gray-200 dark:border-gray-700 overflow-hidden">
+                <div className="p-6 bg-gradient-to-r from-blue-50 to-indigo-50 dark:from-blue-900/20 dark:to-indigo-900/20 border-b border-gray-200 dark:border-gray-700 flex justify-between items-center">
                   <div className="flex items-center">
-                    <i className="fas fa-chart-bar text-blue-600 text-xl mr-3"></i>
-                    <div className="font-semibold text-gray-800">Kết quả: {totalItems} giao dịch</div>
+                    <IconBarChart className="text-blue-600 dark:text-blue-400 w-6 h-6 mr-3" />
+                    <div className="font-semibold text-gray-800 dark:text-gray-200">Kết quả: {totalItems} giao dịch</div>
                   </div>
                   <div className="flex items-center space-x-2">
-                    <label className="text-sm text-gray-600 font-medium">Hiển thị:</label>
+                    <label className="text-sm text-gray-600 dark:text-gray-400 font-medium">Hiển thị:</label>
                     <select
                       value={pageSize}
                       onChange={(e) => {
                         setPageSize(parseInt(e.target.value, 10));
                         handleFilterChange({ pageSize: e.target.value, page: '1' });
                       }}
-                      className="border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                      className="border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-transparent"
                     >
                       <option value="10">10</option>
                       <option value="25">25</option>
@@ -444,7 +443,7 @@ function TransactionsContent() {
                 />
                 
                 {totalItems > 0 && (
-                  <div className="p-6 border-t border-gray-200 bg-gray-50">
+                  <div className="p-6 border-t border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-700/50">
                     <Pagination 
                       currentPage={currentPage}
                       totalPages={Math.ceil(totalItems / pageSize)}
@@ -466,18 +465,18 @@ function TransactionsContent() {
 
       {/* Dividend Modal */}
       {isDividendModalOpen && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-          <div className="bg-white rounded-lg shadow-xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
-            <div className="flex items-center justify-between p-6 border-b border-gray-200">
+        <div className="fixed inset-0 bg-black bg-opacity-50 dark:bg-opacity-70 flex items-center justify-center z-50 p-4">
+          <div className="bg-white dark:bg-gray-800 rounded-lg shadow-xl border border-gray-200 dark:border-gray-700 max-w-2xl w-full max-h-[90vh] overflow-y-auto">
+            <div className="flex items-center justify-between p-6 border-b border-gray-200 dark:border-gray-700">
               <div className="flex items-center">
-                <i className="fas fa-coins text-green-600 text-xl mr-3"></i>
-                <h2 className="text-xl font-bold text-gray-900">Thêm Thông Tin Cổ Tức</h2>
+                <IconCoins className="text-green-600 dark:text-green-400 w-6 h-6 mr-3" />
+                <h2 className="text-xl font-bold text-gray-900 dark:text-white">Thêm Thông Tin Cổ Tức</h2>
               </div>
               <button
                 onClick={() => setIsDividendModalOpen(false)}
-                className="text-gray-400 hover:text-gray-600 transition-colors"
+                className="text-gray-400 dark:text-gray-500 hover:text-gray-600 dark:hover:text-gray-300 transition-colors"
               >
-                <i className="fas fa-times text-xl"></i>
+                <IconX className="w-6 h-6" />
               </button>
             </div>
             
