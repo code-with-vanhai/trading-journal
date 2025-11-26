@@ -6,7 +6,7 @@
 
 **🚀 Giải pháp quản lý danh mục đầu tư chuyên sâu, tối ưu hóa cho thị trường chứng khoán Việt Nam (TCBS, SSI, VPS...)**
 
-[![Version](https://img.shields.io/badge/version-4.0.0-blue.svg)](https://github.com/yourusername/trading-journal)
+[![Version](https://img.shields.io/badge/version-4.1.0-blue.svg)](https://github.com/yourusername/trading-journal)
 [![License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
 [![Tech Stack](https://img.shields.io/badge/stack-Next.js%2015%20|%20Prisma%20|%20PostgreSQL-blueviolet.svg)](https://nextjs.org)
 [![Status](https://img.shields.io/badge/status-Production%20Ready-success.svg)](https://tradingjournal.vn)
@@ -44,7 +44,7 @@ Không chỉ là biểu đồ giá, chúng tôi cung cấp các chỉ số rủi
 
 ---
 
-## 🆕 Tính Năng Mới (v4.0.0)
+## 🆕 Tính Năng Mới (v4.1.0)
 
 ### 🎨 UI/UX Improvements
 
@@ -66,6 +66,14 @@ Không chỉ là biểu đồ giá, chúng tôi cung cấp các chỉ số rủi
 | **Database Indexes** | 8 indexes mới cho Transaction và CostBasisAdjustment (**30-50% faster queries**) |
 | **Bundle Optimization** | Chunk splitting thông minh cho vendors, common, recharts, date-fns (**20-30% smaller bundles**) |
 | **Response Caching** | Cache-Control headers với stale-while-revalidate |
+
+### 🔧 Bug Fixes & Improvements
+
+| Fix | Mô tả |
+|-----|-------|
+| **👤 User Attribution** | Strategies page hiện hiển thị đúng tên người tạo thay vì "Anonymous" |
+| **🔗 Database Relations** | Thêm Prisma relation giữa User và Strategy với foreign key constraints |
+| **🔒 Security** | API chỉ trả về thông tin user cần thiết (name, email, username), không expose passwordHash |
 
 ---
 
@@ -213,6 +221,12 @@ Dự án được phát hành dưới giấy phép [MIT](LICENSE).
 ---
 
 ## 📝 Changelog
+
+### v4.1.0 (November 26, 2025)
+- 👤 **User Attribution Fix**: Strategies now display correct author name instead of "Anonymous"
+- 🔗 **Database Relations**: Added Prisma User-Strategy relation with foreign key constraints
+- 🔒 **Security Enhancement**: API endpoints properly sanitize user data exposure
+- ⚡ **Migration**: Safe production migration with zero data changes
 
 ### v4.0.0 (November 2025)
 - 🎨 **Dark Mode**: Full dark mode support across all components
