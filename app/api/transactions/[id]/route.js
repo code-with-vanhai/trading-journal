@@ -14,6 +14,101 @@ const singleTransactionCache = new Map();
 const CACHE_TTL = 3 * 60 * 1000; // 3 minutes cache TTL for individual transactions
 const MAX_CACHE_SIZE = 1000; // Limit cache size to prevent memory leaks
 
+/**
+ * Tìm PurchaseLot tương ứng với Transaction
+ * Match theo: userId, stockAccountId, ticker, transactionDate (±1 day), quantity gốc
+ */
+async function findMatchingPurchaseLot(userId, stockAccountId, ticker, transactionDate, originalQuantity) {
+  const txDate = new Date(transactionDate);
+  
+  return await prisma.purchaseLot.findFirst({
+    where: {
+      userId,
+      stockAccountId,
+      ticker: ticker.toUpperCase(),
+      quantity: originalQuantity, // Match quantity gốc khi tạo
+      purchaseDate: {
+        gte: new Date(txDate.getTime() - 24 * 60 * 60 * 1000),
+        lte: new Date(txDate.getTime() + 24 * 60 * 60 * 1000)
+      }
+    },
+    orderBy: {
+      createdAt: 'desc' // Lấy lot mới nhất nếu có nhiều match
+    }
+  });
+}
+
+/**
+ * Cập nhật PurchaseLot khi sửa giao dịch BUY
+ * @returns {Object} { success, message, updatedLot }
+ */
+async function updatePurchaseLotForEditedBuy(
+  lotId,
+  originalLot,
+  newData // { quantity, price, fee, transactionDate }
+) {
+  const DRY_RUN = process.env.DRY_RUN === 'true';
+  const { quantity: newQuantity, price: newPrice, fee: newFee, transactionDate: newDate } = newData;
+  const oldQuantity = originalLot.quantity;
+  
+  // Validate quantity change
+  if (newQuantity < oldQuantity) {
+    const quantityReduction = oldQuantity - newQuantity;
+    const soldQuantity = oldQuantity - originalLot.remainingQuantity;
+    
+    if (quantityReduction > originalLot.remainingQuantity) {
+      return {
+        success: false,
+        message: `Không thể giảm số lượng xuống ${newQuantity}. Đã bán ${soldQuantity} cổ phiếu từ lô này.`
+      };
+    }
+  }
+  
+  // Calculate new values
+  const newTotalCost = (newPrice * newQuantity) + (newFee || 0);
+  const quantityDiff = newQuantity - oldQuantity;
+  const newRemainingQuantity = originalLot.remainingQuantity + quantityDiff;
+  
+  // DRY-RUN mode: chỉ log, không execute
+  if (DRY_RUN) {
+    console.log('[DRY-RUN] Would update PurchaseLot:', {
+      lotId,
+      oldValues: { 
+        quantity: originalLot.quantity, 
+        pricePerShare: originalLot.pricePerShare,
+        totalCost: originalLot.totalCost,
+        remainingQuantity: originalLot.remainingQuantity
+      },
+      newValues: { 
+        quantity: newQuantity, 
+        pricePerShare: newPrice, 
+        totalCost: newTotalCost,
+        remainingQuantity: newRemainingQuantity
+      }
+    });
+    return { success: true, dryRun: true, message: 'DRY-RUN: No changes made' };
+  }
+  
+  // Update PurchaseLot
+  const updatedLot = await prisma.purchaseLot.update({
+    where: { id: lotId },
+    data: {
+      quantity: newQuantity,
+      pricePerShare: newPrice,
+      totalCost: newTotalCost,
+      buyFee: newFee || 0,
+      remainingQuantity: newRemainingQuantity,
+      purchaseDate: newDate ? new Date(newDate) : undefined
+    }
+  });
+  
+  return {
+    success: true,
+    message: 'PurchaseLot updated successfully',
+    updatedLot
+  };
+}
+
 // Calculate profit/loss for a SELL transaction
 const calculateProfitLoss = async (userId, stockAccountId, ticker, quantity, sellPrice, fee, taxRate) => {
   // Get all BUY transactions for this ticker in the same stock account, ordered by date (FIFO method)
@@ -170,12 +265,27 @@ export async function PUT(request, { params }) {
       select: { 
         id: true, 
         stockAccountId: true,
-        type: true 
-      } // Get current values for comparison
+        type: true,
+        ticker: true,
+        quantity: true,
+        price: true,
+        transactionDate: true
+      } // Get current values for comparison and PurchaseLot sync
     });
 
     if (!existingTransaction) {
       return NextResponse.json({ message: 'Transaction not found' }, { status: 404 });
+    }
+    
+    // Validate ticker/account changes for BUY transactions
+    const isTickerChanged = ticker?.toUpperCase() !== existingTransaction.ticker;
+    const isAccountChanged = stockAccountId && stockAccountId !== existingTransaction.stockAccountId;
+    
+    if ((isTickerChanged || isAccountChanged) && existingTransaction.type === 'BUY') {
+      return NextResponse.json(
+        { message: 'Không thể thay đổi mã cổ phiếu hoặc tài khoản của giao dịch mua. Vui lòng xóa và tạo lại.' },
+        { status: 400 }
+      );
     }
 
     // If stockAccountId is being updated, verify the new stock account belongs to the user
@@ -226,6 +336,63 @@ export async function PUT(request, { params }) {
         stockAccountId: stockAccountId || undefined, // Only update if provided
       }
     });
+
+    // THÊM: Đồng bộ PurchaseLot cho giao dịch BUY
+    if (type === 'BUY' || existingTransaction.type === 'BUY') {
+      try {
+        // Tìm PurchaseLot tương ứng
+        const matchingLot = await findMatchingPurchaseLot(
+          session.user.id,
+          existingTransaction.stockAccountId,
+          existingTransaction.ticker, // Dùng ticker cũ để tìm
+          existingTransaction.transactionDate,
+          existingTransaction.quantity // Dùng quantity cũ để match
+        );
+        
+        if (matchingLot) {
+          const updateResult = await updatePurchaseLotForEditedBuy(
+            matchingLot.id,
+            matchingLot,
+            {
+              quantity,
+              price,
+              fee: fee || 0,
+              transactionDate
+            }
+          );
+          
+          if (!updateResult.success) {
+            // Rollback transaction update
+            await prisma.transaction.update({
+              where: { id },
+              data: {
+                ticker: existingTransaction.ticker,
+                type: existingTransaction.type,
+                quantity: existingTransaction.quantity,
+                price: existingTransaction.price,
+                transactionDate: existingTransaction.transactionDate,
+                fee: existingTransaction.fee,
+                taxRate: existingTransaction.taxRate,
+                notes: existingTransaction.notes,
+              }
+            });
+            
+            return NextResponse.json(
+              { message: updateResult.message },
+              { status: 400 }
+            );
+          }
+          
+          console.log(`[Transaction API] PurchaseLot ${matchingLot.id} synced with Transaction ${id}`);
+        } else {
+          console.warn(`[Transaction API] No matching PurchaseLot found for BUY transaction ${id}`);
+          // Continue anyway - old transactions may not have corresponding lots
+        }
+      } catch (lotError) {
+        console.error(`[Transaction API] Error syncing PurchaseLot:`, lotError);
+        // Don't fail the transaction update, just log the error
+      }
+    }
 
     // Clear cache entries for this transaction
     const cacheKey = `${session.user.id}-${id}`;
