@@ -74,6 +74,8 @@ Không chỉ là biểu đồ giá, chúng tôi cung cấp các chỉ số rủi
 | **👤 User Attribution** | Strategies page hiện hiển thị đúng tên người tạo thay vì "Anonymous" |
 | **🔗 Database Relations** | Thêm Prisma relation giữa User và Strategy với foreign key constraints |
 | **🔒 Security** | API chỉ trả về thông tin user cần thiết (name, email, username), không expose passwordHash |
+| **💰 PurchaseLot Sync** | Chỉnh sửa giao dịch BUY giờ đây tự động cập nhật giá vốn trong Portfolio |
+| **✅ Data Integrity** | Validation ngăn chặn thay đổi ticker/account cho BUY hoặc giảm quantity khi đã bán một phần |
 
 ---
 
@@ -227,6 +229,9 @@ Dự án được phát hành dưới giấy phép [MIT](LICENSE).
 - 🔗 **Database Relations**: Added Prisma User-Strategy relation with foreign key constraints
 - 🔒 **Security Enhancement**: API endpoints properly sanitize user data exposure
 - ⚡ **Migration**: Safe production migration with zero data changes
+- 💰 **PurchaseLot Sync Fix**: Editing BUY transactions now correctly updates PurchaseLot and average cost basis
+- ✅ **Data Validation**: Added safeguards to prevent invalid edits (ticker/account changes, quantity reduction when partially sold)
+- 🛠️ **DRY-RUN Mode**: Added safe testing mode for critical database operations
 
 ### v4.0.0 (November 2025)
 - 🎨 **Dark Mode**: Full dark mode support across all components
