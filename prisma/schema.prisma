@@ -8,13 +8,14 @@ datasource db {
 }
 
 model User {
-  id           String   @id @default(cuid())
-  email        String   @unique
+  id           String     @id @default(cuid())
+  email        String     @unique
   name         String?
   passwordHash String?
-  createdAt    DateTime @default(now())
-  updatedAt    DateTime @updatedAt
-  username     String   @unique
+  createdAt    DateTime   @default(now())
+  updatedAt    DateTime   @updatedAt
+  username     String     @unique
+  strategies   Strategy[]
 }
 
 model Transaction {
@@ -82,6 +83,7 @@ model Strategy {
   content   String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+  user      User     @relation(fields: [userId], references: [id])
 
   @@index([createdAt(sort: Desc)])
   @@index([userId])

@@ -54,6 +54,17 @@ export async function GET(request) {
         },
         skip,
         take: limit,
+        include: {
+          user: {
+            select: {
+              id: true,
+              name: true,
+              email: true,
+              username: true,
+              // KHÔNG select passwordHash!
+            }
+          }
+        }
       }),
       
       // Query 2: Count total strategies for pagination metadata
