@@ -17,3 +17,8 @@ logs/
 *.db
 *.db-journal
 
+# Backup files
+backups/
+*.bak
+*.backup
+*.backup.*
