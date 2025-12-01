@@ -1,15 +1,15 @@
-# 📈 Trading Journal - Nền Tảng Quản Lý Đầu Tư Chứng Khoán Việt Nam
+# 📈 Trading Journal - Nền Tảng Quản Lý Đầu Tư Chứng Khoán Thông Minh
 
 <div align="center">
 
-![Trading Journal Hero](public/images/trading-dashboard-hero.jpg)
+![Trading Journal Banner](public/images/trading-dashboard-hero.jpg)
 
-**🚀 Giải pháp quản lý danh mục đầu tư chuyên sâu, tối ưu hóa cho thị trường chứng khoán Việt Nam (TCBS, SSI, VPS...)**
+**🚀 Giải pháp quản lý danh mục đầu tư chuyên sâu, giao diện Glassmorphism hiện đại, tối ưu hóa cho thị trường chứng khoán Việt Nam.**
 
-[![Version](https://img.shields.io/badge/version-4.1.0-blue.svg)](https://github.com/yourusername/trading-journal)
+[![Version](https://img.shields.io/badge/version-4.2.0-blue.svg)](https://github.com/yourusername/trading-journal)
 [![License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
 [![Tech Stack](https://img.shields.io/badge/stack-Next.js%2015%20|%20Prisma%20|%20PostgreSQL-blueviolet.svg)](https://nextjs.org)
-[![Status](https://img.shields.io/badge/status-Production%20Ready-success.svg)](https://tradingjournal.vn)
+[![Style](https://img.shields.io/badge/style-Glassmorphism-teal.svg)](https://tailwindcss.com)
 
 [🌐 Website](https://tradingjournal.vn) • [📖 Tài Liệu](https://docs.tradingjournal.vn) • [💬 Cộng Đồng](https://discord.gg/tradingjournal)
 
@@ -17,109 +17,80 @@
 
 ---
 
+## 🎨 Giao Diện Glassmorphism Mới (v4.2.0)
+
+Phiên bản mới nhất mang đến trải nghiệm người dùng hoàn toàn mới với phong cách thiết kế **Glassmorphism** (Kính mờ) sang trọng và hiện đại.
+
+| Đặc điểm | Chi tiết |
+|----------|----------|
+| **🌫️ Hiệu ứng Kính mờ** | Sử dụng `backdrop-blur` và độ trong suốt tinh tế giúp giao diện có chiều sâu và nổi bật nội dung quan trọng. |
+| **🌓 Chế độ Sáng/Tối** | Tự động thích ứng với hệ thống, tối ưu hóa độ tương phản cho cả ngày và đêm. |
+| **✨ Vi mô tương tác** | Hiệu ứng hover, transition mượt mà, bóng đổ (shadow) mềm mại tạo cảm giác cao cấp. |
+| **📱 Responsive** | Hiển thị hoàn hảo trên mọi thiết bị từ Mobile, Tablet đến Desktop. |
+
+---
+
 ## 🎯 Tại Sao Chọn Trading Journal?
 
-Khác với các file Excel thủ công hay các app ghi chép đơn giản, **Trading Journal** tập trung vào **tính chính xác của dữ liệu tài chính** và **phân tích hiệu suất chuyên sâu**.
+Khác với Excel hay các ứng dụng ghi chép đơn giản, **Trading Journal** tập trung vào **tính chính xác tuyệt đối** của dữ liệu tài chính và **trải nghiệm người dùng đẳng cấp**.
 
 ### ✨ Tính Năng Cốt Lõi
 
 #### 1. 💰 Smart Cost Basis Engine (Độc Quyền)
-Hệ thống tính toán giá vốn (Cost Basis) phức tạp nhất hiện nay, giải quyết triệt để các bài toán khó của thị trường Việt Nam:
--   ✅ **FIFO Chính Xác**: Tự động khớp lệnh bán với các lô mua cũ nhất theo đúng chuẩn kế toán.
--   ✅ **Xử Lý Cổ Tức (Dividends)**: Tự động điều chỉnh giá vốn khi nhận cổ tức tiền mặt hoặc cổ phiếu thưởng.
--   ✅ **Corporate Actions**: Hỗ trợ chia tách cổ phiếu (Stock Splits), phát hành thêm.
+Hệ thống tính toán giá vốn phức tạp nhất hiện nay, giải quyết triệt để các bài toán khó của thị trường Việt Nam:
+-   ✅ **FIFO Chính Xác**: Tự động khớp lệnh bán với các lô mua cũ nhất theo chuẩn kế toán.
+-   ✅ **Xử Lý Cổ Tức**: Tự động điều chỉnh giá vốn khi nhận cổ tức tiền mặt/cổ phiếu.
+-   ✅ **Corporate Actions**: Hỗ trợ chia tách cổ phiếu, quyền mua.
 -   ✅ **Thuế & Phí**: Tính toán chính xác thuế bán (0.1%) và phí giao dịch từng công ty chứng khoán.
 
-#### 2. 📊 Advanced Analytics (Thay vì "Cảm tính")
-Không chỉ là biểu đồ giá, chúng tôi cung cấp các chỉ số rủi ro chuẩn quỹ đầu tư:
--   📈 **Risk Metrics**: Sharpe Ratio, Alpha, Beta, Volatility, Max Drawdown.
--   📉 **Benchmark Comparison**: So sánh hiệu suất thực tế với VN-Index/HNX-Index.
--   🍰 **Sector Analysis**: Phân tích phân bổ danh mục theo nhóm ngành (Ngân hàng, Bất động sản, Thép...).
--   📅 **Performance Attribution**: Phân tích hiệu quả theo từng khung thời gian (Tuần, Tháng, Năm).
+#### 2. 📊 Phân Tích Chuyên Sâu
+Không chỉ là con số, chúng tôi cung cấp cái nhìn toàn cảnh về hiệu suất đầu tư:
+-   📈 **Risk Metrics**: Sharpe Ratio, Alpha, Beta, Max Drawdown.
+-   📉 **Benchmark Comparison**: So sánh hiệu suất với VN-Index/HNX-Index.
+-   🍰 **Phân Bổ Danh Mục**: Theo dõi tỷ trọng cổ phiếu, tiền mặt và nhóm ngành.
+-   📅 **Lịch Sử Hiệu Quả**: Phân tích lãi/lỗ theo tuần, tháng, năm.
 
 #### 3. 🇻🇳 Tối Ưu Cho Chứng Khoán Việt Nam
--   ✅ **Bước Giá Động (Dynamic Price Steps)**: Validation giá đặt lệnh theo đúng quy định HSX/HNX (10, 50, 100 đồng).
--   ✅ **Dữ Liệu Thị Trường**: Tích hợp giá tham chiếu real-time (nguồn TCBS).
--   ✅ **T+2.5**: Hỗ trợ theo dõi chu kỳ thanh toán.
+-   ✅ **Bước Giá Động**: Validation giá đặt lệnh chuẩn HSX/HNX/UPCOM.
+-   ✅ **Dữ Liệu Thị Trường**: Tích hợp giá tham chiếu và cập nhật giá trị thị trường.
+-   ✅ **Chu Kỳ T+2.5**: Hỗ trợ theo dõi ngày thanh toán.
 
 ---
 
-## 🆕 Tính Năng Mới (v4.1.0)
+## 🛠️ Tech Stack & Kiến Trúc
 
-### 🎨 UI/UX Improvements
-
-| Tính năng | Mô tả |
-|-----------|-------|
-| **🌙 Dark Mode** | Hỗ trợ chế độ tối với localStorage persistence, toggle mượt mà |
-| **✍️ Typography** | Be Vietnam Pro (hỗ trợ tiếng Việt), Space Grotesk cho headings |
-| **⏳ Loading States** | Skeleton components (Table, Card, Chart, List, Form) với accessibility |
-| **✨ Animations** | Micro-interactions: fade-in-up, slide-in-right, scale-in, pulse effects |
-| **📋 Enhanced Table** | Sticky header, sorting, search, selection, empty/loading states |
-| **🎯 Icon System** | Lucide React icons - nhẹ hơn và đẹp hơn |
-
-### ⚡ Performance Optimization
-
-| Tối ưu | Cải thiện |
-|--------|-----------|
-| **API Consolidation** | Dashboard API giảm từ 5 requests → 1 request (**80% reduction**) |
-| **Server Components** | PortfolioStats, TransactionStats - Better SEO & TTFB |
-| **Database Indexes** | 8 indexes mới cho Transaction và CostBasisAdjustment (**30-50% faster queries**) |
-| **Bundle Optimization** | Chunk splitting thông minh cho vendors, common, recharts, date-fns (**20-30% smaller bundles**) |
-| **Response Caching** | Cache-Control headers với stale-while-revalidate |
-
-### 🔧 Bug Fixes & Improvements
-
-| Fix | Mô tả |
-|-----|-------|
-| **👤 User Attribution** | Strategies page hiện hiển thị đúng tên người tạo thay vì "Anonymous" |
-| **🔗 Database Relations** | Thêm Prisma relation giữa User và Strategy với foreign key constraints |
-| **🔒 Security** | API chỉ trả về thông tin user cần thiết (name, email, username), không expose passwordHash |
-| **💰 PurchaseLot Sync** | Chỉnh sửa giao dịch BUY giờ đây tự động cập nhật giá vốn trong Portfolio |
-| **✅ Data Integrity** | Validation ngăn chặn thay đổi ticker/account cho BUY hoặc giảm quantity khi đã bán một phần |
-
----
-
-## 🛠️ Tech Stack & Architecture
-
-Dự án được xây dựng với công nghệ hiện đại nhất, đảm bảo hiệu năng và khả năng mở rộng:
+Dự án được xây dựng trên nền tảng công nghệ vững chắc, đảm bảo hiệu năng và khả năng mở rộng:
 
 | Component | Technology | Description |
 |-----------|------------|-------------|
 | **Frontend** | **Next.js 15.3** (App Router) | Server Components, Streaming, Suspense |
-| **Styling** | **Tailwind CSS** | Responsive design, Dark mode support |
-| **Icons** | **Lucide React** | Lightweight, customizable icons |
+| **Styling** | **Tailwind CSS** | Glassmorphism Design System, Dark mode |
+| **Icons** | **Lucide React** | Lightweight, modern icons |
 | **Database** | **PostgreSQL** | Quan hệ dữ liệu chặt chẽ, ACID compliance |
-| **ORM** | **Prisma** | Type-safe database access, Migrations |
-| **Auth** | **NextAuth.js** | Secure authentication (Google, Credentials) |
-| **Charts** | **Chart.js / Recharts** | Interactive visualizations |
-| **State** | **SWR** | Data fetching with caching |
-| **Infra** | **Vercel / Supabase** | Serverless deployment, Connection pooling |
+| **ORM** | **Prisma** | Type-safe database access |
+| **Auth** | **NextAuth.js** | Secure authentication |
+| **Charts** | **Recharts** | Interactive data visualization |
 
 ---
 
-## 📁 Project Structure
+## 📁 Cấu Trúc Dự Án
 
 ```
 trading-journal/
 ├── app/
-│   ├── api/                    # API routes
-│   │   ├── dashboard/          # Consolidated dashboard API
-│   │   ├── portfolio/          # Portfolio endpoints
-│   │   ├── transactions/       # Transaction endpoints
-│   │   └── ...
+│   ├── api/                    # API routes (Next.js App Router)
 │   ├── components/
-│   │   ├── landing/            # Landing page components
-│   │   ├── portfolio/          # Portfolio components (inc. Server Components)
-│   │   ├── transactions/       # Transaction components
-│   │   └── ui/                 # Reusable UI components (Modal, Skeleton, etc.)
-│   ├── context/                # React contexts (Theme, Auth)
-│   ├── lib/                    # Utilities and helpers
-│   ├── services/               # Business logic services
-│   └── [pages]/                # App router pages
-├── prisma/                     # Database schema and migrations
-├── scripts/                    # Utility scripts (backup, cleanup)
-├── tests/                      # Test suites
-└── docs/                       # Documentation
+│   │   ├── ui/                 # Reusable Glassmorphism components (Modal, Card, Button...)
+│   │   ├── portfolio/          # Portfolio feature components
+│   │   ├── transactions/       # Transaction feature components
+│   │   └── ...
+│   ├── context/                # React Contexts (Theme, Auth)
+│   ├── lib/                    # Utilities, formatters, hooks
+│   └── [pages]/                # Application pages
+├── prisma/                     # Database schema & migrations
+├── public/                     # Static assets
+├── scripts/                    # Maintenance scripts
+└── tests/                      # Unit & E2E tests
 ```
 
 ---
@@ -128,59 +99,38 @@ trading-journal/
 
 ### Yêu Cầu
 -   Node.js 18+
--   PostgreSQL (Local hoặc Cloud)
+-   PostgreSQL (Local hoặc Docker)
 
 ### Cài Đặt
-```bash
-# 1. Clone repository
-git clone https://github.com/yourusername/trading-journal.git
-cd trading-journal
 
-# 2. Cài đặt dependencies
-npm install
+1.  **Clone repository**
+    ```bash
+    git clone https://github.com/yourusername/trading-journal.git
+    cd trading-journal
+    ```
 
-# 3. Cấu hình môi trường
-cp .env.example .env
-# Cập nhật DATABASE_URL trong file .env
+2.  **Cài đặt dependencies**
+    ```bash
+    npm install
+    ```
 
-# 4. Khởi tạo Database
-npx prisma migrate dev
-npx prisma db seed # (Tùy chọn) Tạo dữ liệu mẫu
+3.  **Cấu hình môi trường**
+    ```bash
+    cp .env.example .env
+    # Cập nhật DATABASE_URL trong file .env
+    ```
 
-# 5. Chạy ứng dụng
-npm run dev
-```
+4.  **Khởi tạo Database**
+    ```bash
+    npx prisma migrate dev
+    npx prisma db seed # (Tùy chọn: Tạo dữ liệu mẫu)
+    ```
 
-Truy cập `http://localhost:3000` để bắt đầu.
-
----
-
-## 📜 Available Scripts
-
-```bash
-# Development
-npm run dev              # Start development server
-npm run build            # Build for production
-npm run start            # Start production server
-npm run lint             # Run ESLint
-
-# Database
-npm run prisma:generate  # Generate Prisma client
-
-# Testing
-npm test                 # Run all tests
-npm run test:watch       # Run tests in watch mode
-npm run test:coverage    # Run tests with coverage
-npm run test:api         # Run API tests
-npm run test:components  # Run component tests
-npm run test:e2e         # Run E2E tests (Playwright)
-npm run test:performance # Run performance tests
-
-# Utilities
-npm run backup           # Create database backup
-npm run backup:restore   # Restore database from backup
-npm run cleanup:cache    # Clean up cache
-```
+5.  **Chạy ứng dụng**
+    ```bash
+    npm run dev
+    ```
+    Truy cập `http://localhost:3000` để trải nghiệm giao diện mới.
 
 ---
 
@@ -188,64 +138,40 @@ npm run cleanup:cache    # Clean up cache
 
 Chúng tôi cam kết chất lượng code cao nhất với bộ test suite toàn diện:
 
--   **Unit Tests**: `npm test` (Test logic tính toán giá vốn, xử lý cổ tức)
--   **E2E Tests**: `npm run test:e2e` (Test luồng người dùng với Playwright)
+-   **Unit Tests**: `npm test` (Logic nghiệp vụ, tính toán giá vốn)
+-   **E2E Tests**: `npm run test:e2e` (Luồng người dùng với Playwright)
 -   **Performance**: `npm run test:performance` (Load testing)
-
----
-
-## 🔐 Safety & Backup
-
-Để tránh mất dữ liệu, hãy tuân thủ các quy tắc sau:
-- **Luôn backup** trước khi chạy migrations hoặc scripts
-- **Sử dụng `.env.test`** riêng biệt cho môi trường test
-- **Không bao giờ** chạy test scripts với production DATABASE_URL
-
-Xem thêm: `docs/db-backup-instructions.md`
 
 ---
 
 ## 🤝 Đóng Góp
 
-Chúng tôi hoan nghênh mọi đóng góp từ cộng đồng!
+Chúng tôi hoan nghênh mọi đóng góp để làm cho Trading Journal tốt hơn!
+
 1.  Fork dự án
-2.  Tạo feature branch (`git checkout -b feature/AmazingFeature`)
-3.  Commit thay đổi (`git commit -m 'Add some AmazingFeature'`)
-4.  Push lên branch (`git push origin feature/AmazingFeature`)
+2.  Tạo feature branch (`git checkout -b feature/NewFeature`)
+3.  Commit thay đổi (`git commit -m 'Add NewFeature'`)
+4.  Push lên branch (`git push origin feature/NewFeature`)
 5.  Tạo Pull Request
-
----
-
-## 📄 License
-
-Dự án được phát hành dưới giấy phép [MIT](LICENSE).
 
 ---
 
 ## 📝 Changelog
 
-### v4.1.0 (November 26, 2025)
-- 👤 **User Attribution Fix**: Strategies now display correct author name instead of "Anonymous"
-- 🔗 **Database Relations**: Added Prisma User-Strategy relation with foreign key constraints
-- 🔒 **Security Enhancement**: API endpoints properly sanitize user data exposure
-- ⚡ **Migration**: Safe production migration with zero data changes
-- 💰 **PurchaseLot Sync Fix**: Editing BUY transactions now correctly updates PurchaseLot and average cost basis
-- ✅ **Data Validation**: Added safeguards to prevent invalid edits (ticker/account changes, quantity reduction when partially sold)
-- 🛠️ **DRY-RUN Mode**: Added safe testing mode for critical database operations
+### v4.2.0 (Current) - Glassmorphism Update
+- 🎨 **New UI**: Chuyển đổi toàn bộ giao diện sang phong cách Glassmorphism.
+- 🧩 **Components**: Cập nhật Modal, Cards, Tables với hiệu ứng kính mờ.
+- 🌓 **Theming**: Tinh chỉnh Dark Mode để phù hợp với thiết kế mới.
+- ⚡ **Optimization**: Cải thiện hiệu năng render các thành phần UI phức tạp.
 
-### v4.0.0 (November 2025)
-- 🎨 **Dark Mode**: Full dark mode support across all components
-- ✍️ **Typography**: Be Vietnam Pro + Space Grotesk fonts
-- ⏳ **Skeleton Loading**: Enhanced loading states with accessibility
-- ✨ **Animations**: Smooth micro-interactions and transitions
-- ⚡ **Performance**: 80% reduction in API calls, 30-50% faster queries
-- 📦 **Bundle Optimization**: Intelligent chunk splitting
-- 🖼️ **Icons**: Migrated to Lucide React
+### v4.1.0
+- 👤 **User Attribution Fix**: Sửa lỗi hiển thị tên người tạo chiến lược.
+- 🔗 **Database Relations**: Cải thiện quan hệ User-Strategy trong Prisma.
+- 🔒 **Security**: Tăng cường bảo mật API.
 
-### v3.1.1 (Previous)
-- Smart Cost Basis Engine
-- Advanced Analytics
-- Vietnam market optimization
+### v4.0.0
+- 🌑 **Dark Mode**: Hỗ trợ chế độ tối toàn diện.
+- ⚡ **Performance**: Giảm 80% API calls, query nhanh hơn 30-50%.
 
 ---
 
