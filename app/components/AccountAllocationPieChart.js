@@ -19,9 +19,9 @@ export default function AccountAllocationPieChart({ accountAllocations }) {
 
   if (!accountAllocations || accountAllocations.length === 0) {
     return (
-      <div className="bg-white p-4 rounded-lg shadow text-center h-96 flex flex-col justify-center">
-        <h2 className="text-lg font-semibold mb-4">Phân Bổ Tài Khoản</h2>
-        <p className="text-gray-500">Chưa có dữ liệu phân bổ tài khoản</p>
+      <div className="bg-white dark:bg-gray-800 p-4 rounded-lg shadow text-center h-96 flex flex-col justify-center">
+        <h2 className="text-lg font-semibold mb-4 text-gray-900 dark:text-white">Phân Bổ Tài Khoản</h2>
+        <p className="text-gray-500 dark:text-gray-400">Chưa có dữ liệu phân bổ tài khoản</p>
       </div>
     );
   }
@@ -182,10 +182,10 @@ export default function AccountAllocationPieChart({ accountAllocations }) {
   };
 
   return (
-    <div className="bg-white p-4 rounded-lg shadow h-96 flex flex-col relative"
+    <div className="bg-white dark:bg-gray-800 p-4 rounded-lg shadow h-96 flex flex-col relative"
          onMouseMove={handleMouseMove} 
          onMouseLeave={handleMouseLeave}>
-      <h2 className="text-lg font-semibold mb-4 text-center flex-shrink-0">Phân Bổ Tài Khoản</h2>
+      <h2 className="text-lg font-semibold mb-4 text-center flex-shrink-0 text-gray-900 dark:text-white">Phân Bổ Tài Khoản</h2>
       <div className="flex-1 min-h-0">
         <Pie data={data} options={options} />
       </div>

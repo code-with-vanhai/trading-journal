@@ -136,7 +136,7 @@ const EnhancedDashboard = ({ period = 'all' }) => {
       </div>
 
       {/* Navigation Tabs */}
-      <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700">
+      <div className="backdrop-blur-lg bg-white/70 dark:bg-gray-900/50 rounded-2xl shadow-xl border border-gray-200/50 dark:border-white/10">
         <div className="flex overflow-x-auto">
           {tabs.map(tab => {
             const IconComponent = tab.icon;
@@ -177,7 +177,7 @@ const LoadingSkeleton = () => (
     <div className="bg-gradient-to-r from-gray-200 dark:from-gray-700 to-gray-300 dark:to-gray-600 rounded-xl h-32 animate-pulse"></div>
     
     {/* Tabs skeleton */}
-    <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700">
+    <div className="backdrop-blur-lg bg-white/70 dark:bg-gray-900/50 rounded-2xl shadow-xl border border-gray-200/50 dark:border-white/10">
       <div className="flex space-x-4 p-4">
         {[1,2,3,4,5].map(i => (
           <div key={i} className="h-10 w-32 bg-gray-200 dark:bg-gray-700 rounded animate-pulse"></div>
@@ -188,7 +188,7 @@ const LoadingSkeleton = () => (
     {/* Content skeleton */}
     <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
       {[1,2,3,4].map(i => (
-        <div key={i} className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700">
+        <div key={i} className="backdrop-blur-lg bg-white/70 dark:bg-gray-900/50 p-6 rounded-2xl shadow-xl border border-gray-200/50 dark:border-white/10">
           <div className="h-6 w-48 bg-gray-200 dark:bg-gray-700 rounded mb-4 animate-pulse"></div>
           <div className="h-64 bg-gray-100 dark:bg-gray-700/50 rounded animate-pulse"></div>
         </div>
@@ -201,7 +201,7 @@ const LoadingSkeleton = () => (
 const OverviewTab = ({ data, formatCurrency, formatPercent }) => (
   <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
     {/* Portfolio Performance Chart */}
-    <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 col-span-2">
+    <div className="backdrop-blur-lg bg-white/70 dark:bg-gray-900/50 p-6 rounded-2xl shadow-xl border border-gray-200/50 dark:border-white/10 col-span-2">
       <h3 className="text-lg font-semibold mb-4 flex items-center text-gray-800 dark:text-gray-200">
         <IconAreaChart className="w-5 h-5 text-blue-500 dark:text-blue-400 mr-2" />
         Hiệu Suất Danh Mục Theo Thời Gian
@@ -242,7 +242,7 @@ const OverviewTab = ({ data, formatCurrency, formatPercent }) => (
     </div>
 
     {/* Risk Gauge */}
-    <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700">
+    <div className="backdrop-blur-lg bg-white/70 dark:bg-gray-900/50 p-6 rounded-2xl shadow-xl border border-gray-200/50 dark:border-white/10">
       <h3 className="text-lg font-semibold mb-4 flex items-center text-gray-800 dark:text-gray-200">
         <IconGauge className="w-5 h-5 text-red-500 dark:text-red-400 mr-2" />
         Đánh Giá Rủi Ro
@@ -251,7 +251,7 @@ const OverviewTab = ({ data, formatCurrency, formatPercent }) => (
     </div>
 
     {/* Key Metrics Summary */}
-    <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700">
+    <div className="backdrop-blur-lg bg-white/70 dark:bg-gray-900/50 p-6 rounded-2xl shadow-xl border border-gray-200/50 dark:border-white/10">
       <h3 className="text-lg font-semibold mb-4 flex items-center text-gray-800 dark:text-gray-200">
         <IconPieChart className="w-5 h-5 text-green-500 dark:text-green-400 mr-2" />
         Chỉ Số Quan Trọng
@@ -349,7 +349,7 @@ const RiskAnalysisTab = ({ data, formatCurrency, formatPercent }) => (
 
       {/* Enhanced Risk Score Visualization */}
       <div className="space-y-4">
-        <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700">
+        <div className="backdrop-blur-lg bg-white/70 dark:bg-gray-900/50 p-6 rounded-2xl shadow-xl border border-gray-200/50 dark:border-white/10">
           <h3 className="text-lg font-semibold mb-4 flex items-center text-gray-800 dark:text-gray-200">
             <IconGauge className="w-5 h-5 text-red-500 dark:text-red-400 mr-2" />
             Điểm Rủi Ro Tổng Hợp
@@ -372,7 +372,7 @@ const RiskAnalysisTab = ({ data, formatCurrency, formatPercent }) => (
         </div>
 
         {/* Risk Breakdown Chart */}
-        <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700">
+        <div className="backdrop-blur-lg bg-white/70 dark:bg-gray-900/50 p-6 rounded-2xl shadow-xl border border-gray-200/50 dark:border-white/10">
           <h3 className="text-lg font-semibold mb-4 text-gray-800 dark:text-gray-200">Phân Tích Chi Tiết Rủi Ro</h3>
           <RiskBreakdownChart data={data.riskMetrics} />
         </div>
@@ -618,7 +618,7 @@ const RiskMetricCard = ({ title, value, description, icon: IconComponent, color 
 // Benchmark Tab Component
 const BenchmarkTab = ({ data, formatCurrency, formatPercent }) => (
   <div className="space-y-6">
-    <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700">
+    <div className="backdrop-blur-lg bg-white/70 dark:bg-gray-900/50 p-6 rounded-2xl shadow-xl border border-gray-200/50 dark:border-white/10">
       <h3 className="text-lg font-semibold mb-4 flex items-center text-gray-800 dark:text-gray-200">
         <IconLineChart className="w-5 h-5 text-blue-500 dark:text-blue-400 mr-2" />
         So Sánh với VN-Index
@@ -652,7 +652,7 @@ const SectorsTab = ({ data, formatCurrency, formatPercent }) => {
     <div className="space-y-6">
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {/* Sector Performance List */}
-        <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700">
+        <div className="backdrop-blur-lg bg-white/70 dark:bg-gray-900/50 p-6 rounded-2xl shadow-xl border border-gray-200/50 dark:border-white/10">
           <h3 className="text-lg font-semibold mb-4 text-gray-800 dark:text-gray-200">Hiệu Suất Theo Ngành</h3>
           <div className="space-y-3">
             {data.sectors?.sectorPerformance?.slice(0, 8).map((sector, index) => (
@@ -679,7 +679,7 @@ const SectorsTab = ({ data, formatCurrency, formatPercent }) => {
         </div>
 
         {/* Sector Allocation Pie Chart */}
-        <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700">
+        <div className="backdrop-blur-lg bg-white/70 dark:bg-gray-900/50 p-6 rounded-2xl shadow-xl border border-gray-200/50 dark:border-white/10">
           <h3 className="text-lg font-semibold mb-4 text-gray-800 dark:text-gray-200">Phân Bổ Theo Ngành</h3>
           <div className="h-64">
             <ResponsiveContainer width="100%" height="100%">
@@ -709,7 +709,7 @@ const SectorsTab = ({ data, formatCurrency, formatPercent }) => {
 
 // Performance Tab Component
 const PerformanceTab = ({ data, formatCurrency, formatPercent }) => (
-  <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700">
+  <div className="backdrop-blur-lg bg-white/70 dark:bg-gray-900/50 p-6 rounded-2xl shadow-xl border border-gray-200/50 dark:border-white/10">
     <h3 className="text-lg font-semibold mb-4 flex items-center text-gray-800 dark:text-gray-200">
       <IconAreaChart className="w-5 h-5 text-purple-500 dark:text-purple-400 mr-2" />
       Hiệu Suất Chi Tiết

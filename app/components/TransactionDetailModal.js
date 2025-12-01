@@ -36,11 +36,11 @@ export default function TransactionDetailModal({ isOpen, onClose, transactionId 
       try {
         setIsLoading(true);
         const response = await fetch(`/api/transactions/${transactionId}`);
-        
+
         if (!response.ok) {
           throw new Error('Không thể tải thông tin giao dịch');
         }
-        
+
         const data = await response.json();
         setTransaction(data);
       } catch (err) {
@@ -81,19 +81,19 @@ export default function TransactionDetailModal({ isOpen, onClose, transactionId 
   if (!isOpen) return null;
 
   return (
-    <div 
-      className="fixed inset-0 bg-black bg-opacity-50 dark:bg-opacity-70 flex items-center justify-center z-50 p-4 overflow-y-auto"
+    <div
+      className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50 p-4 overflow-y-auto"
       onClick={handleBackdropClick}
     >
-      <div className="bg-white dark:bg-gray-800 rounded-lg shadow-xl border border-gray-200 dark:border-gray-700 max-w-4xl w-full max-h-[90vh] overflow-y-auto" onClick={e => e.stopPropagation()}>
+      <div className="backdrop-blur-xl bg-white/80 dark:bg-gray-900/80 rounded-2xl shadow-2xl border border-gray-200/50 dark:border-white/10 ring-1 ring-black/5 dark:ring-white/10 max-w-4xl w-full max-h-[90vh] overflow-y-auto" onClick={e => e.stopPropagation()}>
         {/* Header */}
-        <div className="flex items-center justify-between px-6 py-4 border-b border-gray-200 dark:border-gray-700">
+        <div className="flex items-center justify-between px-6 py-4 border-b border-gray-200/50 dark:border-white/10">
           <h2 className="text-xl font-bold text-gray-900 dark:text-white">Chi Tiết Giao Dịch</h2>
-          <button 
-            className="text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300"
+          <button
+            className="text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200 transition-colors p-1.5 rounded-lg hover:bg-gray-100/50 dark:hover:bg-white/10"
             onClick={onClose}
           >
-            <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
             </svg>
           </button>
@@ -116,73 +116,71 @@ export default function TransactionDetailModal({ isOpen, onClose, transactionId 
           ) : (
             <>
               {/* Transaction details */}
-              <div className="bg-white dark:bg-gray-800 rounded-lg mb-6 border border-gray-200 dark:border-gray-700 p-4">
+              <div className="backdrop-blur-lg bg-white/50 dark:bg-gray-800/50 rounded-xl mb-6 border border-gray-200/50 dark:border-white/10 p-4">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-4">
                   <div>
                     <h3 className="text-sm font-medium text-gray-500 dark:text-gray-400">Mã Cổ Phiếu</h3>
                     <p className="mt-1 text-lg font-semibold text-gray-900 dark:text-white">{transaction.ticker}</p>
                   </div>
-                  
+
                   <div>
                     <h3 className="text-sm font-medium text-gray-500 dark:text-gray-400">Loại</h3>
                     <p className="mt-1">
-                      <span className={`px-2 py-1 rounded-full text-xs font-semibold ${
-                        transaction.type === 'BUY' 
-                          ? 'bg-green-100 dark:bg-green-900/30 text-green-800 dark:text-green-400' 
+                      <span className={`px-2 py-1 rounded-full text-xs font-semibold ${transaction.type === 'BUY'
+                          ? 'bg-green-100 dark:bg-green-900/30 text-green-800 dark:text-green-400'
                           : 'bg-red-100 dark:bg-red-900/30 text-red-800 dark:text-red-400'
-                      }`}>
+                        }`}>
                         {transaction.type === 'BUY' ? 'Mua' : 'Bán'}
                       </span>
                     </p>
                   </div>
-                  
+
                   <div>
                     <h3 className="text-sm font-medium text-gray-500 dark:text-gray-400">Ngày</h3>
                     <p className="mt-1 text-gray-900 dark:text-gray-200">
                       {format(new Date(transaction.transactionDate), 'dd MMMM, yyyy', { locale: vi })}
                     </p>
                   </div>
-                  
+
                   <div>
                     <h3 className="text-sm font-medium text-gray-500 dark:text-gray-400">Số Lượng</h3>
                     <p className="mt-1 text-gray-900 dark:text-gray-200">{transaction.quantity}</p>
                   </div>
-                  
+
                   <div>
                     <h3 className="text-sm font-medium text-gray-500 dark:text-gray-400">Giá</h3>
                     <p className="mt-1 text-gray-900 dark:text-gray-200">{formatCurrency(transaction.price)}</p>
                   </div>
-                  
+
                   <div>
                     <h3 className="text-sm font-medium text-gray-500 dark:text-gray-400">Tổng Giá Trị</h3>
                     <p className="mt-1 text-gray-900 dark:text-gray-200">
                       {formatCurrency(transaction.price * transaction.quantity)}
                     </p>
                   </div>
-                  
+
                   {transaction.fee > 0 && (
                     <div>
                       <h3 className="text-sm font-medium text-gray-500 dark:text-gray-400">Phí</h3>
                       <p className="mt-1 text-gray-900 dark:text-gray-200">{formatCurrency(transaction.fee)}</p>
                     </div>
                   )}
-                  
+
                   {transaction.calculatedPl !== null && (
                     <div>
                       <h3 className="text-sm font-medium text-gray-500 dark:text-gray-400">
                         Lãi/Lỗ
                       </h3>
-                      <p className={`mt-1 ${
-                        transaction.calculatedPl >= 0 
-                          ? 'text-green-600 dark:text-green-400' 
+                      <p className={`mt-1 ${transaction.calculatedPl >= 0
+                          ? 'text-green-600 dark:text-green-400'
                           : 'text-red-600 dark:text-red-400'
-                      }`}>
+                        }`}>
                         {transaction.calculatedPl >= 0 ? '+' : ''}
                         {formatCurrency(Math.abs(transaction.calculatedPl))}
                       </p>
                     </div>
                   )}
-                  
+
                   {transaction.notes && (
                     <div className="col-span-2">
                       <h3 className="text-sm font-medium text-gray-500 dark:text-gray-400">Ghi Chú</h3>
@@ -191,32 +189,32 @@ export default function TransactionDetailModal({ isOpen, onClose, transactionId 
                   )}
                 </div>
               </div>
-              
+
               {/* Actions */}
               <div className="flex space-x-2 mt-6 mb-4">
-                <Link 
-                  href={`/transactions/${transaction.id}/edit`} 
-                  className="btn-secondary dark:bg-gray-700 dark:text-gray-300 dark:hover:bg-gray-600"
+                <Link
+                  href={`/transactions/${transaction.id}/edit`}
+                  className="btn-secondary"
                 >
                   Chỉnh sửa
                 </Link>
                 {transaction.journalEntry ? (
-                  <Link 
-                    href={`/transactions/${transaction.id}/journal/edit`} 
-                    className="btn-secondary dark:bg-gray-700 dark:text-gray-300 dark:hover:bg-gray-600"
+                  <Link
+                    href={`/transactions/${transaction.id}/journal/edit`}
+                    className="btn-secondary"
                   >
                     Sửa Nhật Ký
                   </Link>
                 ) : (
-                  <Link 
-                    href={`/transactions/${transaction.id}/journal/new`} 
-                    className="btn-primary dark:bg-blue-700 dark:hover:bg-blue-600"
+                  <Link
+                    href={`/transactions/${transaction.id}/journal/new`}
+                    className="btn-primary"
                   >
                     Thêm Nhật Ký
                   </Link>
                 )}
               </div>
-              
+
               {/* Journal entry section */}
               <div className="mt-6">
                 <JournalEntryView transactionId={transaction.id} />

@@ -164,14 +164,14 @@ export default function StockAccountManager() {
       {/* Header */}
       <div className="flex justify-between items-center">
         <div>
-          <h2 className="text-2xl font-bold text-gray-900">Quản Lý Tài Khoản Chứng Khoán</h2>
-          <p className="text-gray-600 mt-1">
+          <h2 className="text-2xl font-bold text-gray-900 dark:text-white">Quản Lý Tài Khoản Chứng Khoán</h2>
+          <p className="text-gray-600 dark:text-gray-400 mt-1">
             Tạo và quản lý các tài khoản giao dịch chứng khoán của bạn
           </p>
         </div>
         <button
           onClick={() => setShowCreateModal(true)}
-          className="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition-colors flex items-center"
+          className="bg-blue-600 dark:bg-blue-700 text-white px-4 py-2 rounded-md hover:bg-blue-700 dark:hover:bg-blue-600 transition-colors flex items-center"
         >
           <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
@@ -181,15 +181,15 @@ export default function StockAccountManager() {
       </div>
 
       {/* Info Box */}
-      <div className="bg-blue-50 border border-blue-200 rounded-md p-4">
+      <div className="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-md p-4">
         <div className="flex">
           <div className="flex-shrink-0">
-            <svg className="h-5 w-5 text-blue-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+            <svg className="h-5 w-5 text-blue-400 dark:text-blue-500" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
               <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clipRule="evenodd" />
             </svg>
           </div>
           <div className="ml-3">
-            <p className="text-sm text-blue-800">
+            <p className="text-sm text-blue-800 dark:text-blue-300">
               <strong>Tài khoản mặc định:</strong> Hệ thống tự động tạo tài khoản mặc định cho bạn. 
               Tất cả giao dịch sẽ được gán vào tài khoản này nếu bạn không chọn tài khoản khác. 
               Bạn có thể tạo thêm tài khoản để phân loại giao dịch theo từng sàn giao dịch hoặc chiến lược đầu tư.
@@ -201,28 +201,28 @@ export default function StockAccountManager() {
       {/* Account List */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {accounts.map((account) => (
-          <div key={account.id} className={`bg-white rounded-lg border p-6 hover:shadow-md transition-shadow ${
-            isDefaultAccount(account) ? 'border-blue-300 bg-blue-50' : 'border-gray-200'
+          <div key={account.id} className={`bg-white dark:bg-gray-800 rounded-lg border p-6 hover:shadow-md transition-shadow ${
+            isDefaultAccount(account) ? 'border-blue-300 dark:border-blue-700 bg-blue-50 dark:bg-blue-900/20' : 'border-gray-200 dark:border-gray-700'
           }`}>
             <div className="flex justify-between items-start mb-4">
               <div className="flex-1">
                 <div className="flex items-center gap-2 mb-1">
-                  <h3 className="text-lg font-semibold text-gray-900">
+                  <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
                     {account.name}
                   </h3>
                   {isDefaultAccount(account) && (
-                    <span className="bg-blue-100 text-blue-800 text-xs font-medium px-2.5 py-0.5 rounded">
+                    <span className="bg-blue-100 dark:bg-blue-900/30 text-blue-800 dark:text-blue-400 text-xs font-medium px-2.5 py-0.5 rounded">
                       Mặc định
                     </span>
                   )}
                 </div>
                 {account.brokerName && (
-                  <p className="text-sm text-gray-600 mb-1">
+                  <p className="text-sm text-gray-600 dark:text-gray-400 mb-1">
                     <span className="font-medium">Công ty CK:</span> {account.brokerName}
                   </p>
                 )}
                 {account.accountNumber && (
-                  <p className="text-sm text-gray-600 mb-1">
+                  <p className="text-sm text-gray-600 dark:text-gray-400 mb-1">
                     <span className="font-medium">Số TK:</span> {account.accountNumber}
                   </p>
                 )}
@@ -230,7 +230,7 @@ export default function StockAccountManager() {
               <div className="flex space-x-1 ml-4">
                 <button
                   onClick={() => handleEditClick(account)}
-                  className="p-2 text-gray-400 hover:text-blue-600 hover:bg-blue-50 rounded-md transition-colors"
+                  className="p-2 text-gray-400 dark:text-gray-500 hover:text-blue-600 dark:hover:text-blue-400 hover:bg-blue-50 dark:hover:bg-blue-900/20 rounded-md transition-colors"
                   title="Chỉnh sửa tài khoản"
                 >
                   <IconEdit className="w-4 h-4" />
@@ -239,8 +239,8 @@ export default function StockAccountManager() {
                   onClick={() => handleDeleteClick(account)}
                   className={`p-2 rounded-md transition-colors ${
                     isDefaultAccount(account) 
-                      ? 'text-gray-300 cursor-not-allowed' 
-                      : 'text-gray-400 hover:text-red-600 hover:bg-red-50'
+                      ? 'text-gray-300 dark:text-gray-600 cursor-not-allowed' 
+                      : 'text-gray-400 dark:text-gray-500 hover:text-red-600 dark:hover:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/20'
                   }`}
                   title={isDefaultAccount(account) ? 'Không thể xóa tài khoản mặc định' : 'Xóa tài khoản'}
                   disabled={isDefaultAccount(account)}
@@ -251,12 +251,12 @@ export default function StockAccountManager() {
             </div>
 
             {account.description && (
-              <p className="text-sm text-gray-600 mb-3">
+              <p className="text-sm text-gray-600 dark:text-gray-400 mb-3">
                 {account.description}
               </p>
             )}
 
-            <div className="flex justify-between items-center text-sm text-gray-500 pt-3 border-t border-gray-100">
+            <div className="flex justify-between items-center text-sm text-gray-500 dark:text-gray-400 pt-3 border-t border-gray-100 dark:border-gray-700">
               <span>
                 {account._count?.transactions || 0} giao dịch
               </span>

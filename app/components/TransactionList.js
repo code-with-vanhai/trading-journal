@@ -141,9 +141,9 @@ export default function TransactionList({
 
   return (
     <div>
-      <div className="overflow-x-auto rounded-lg border border-gray-200 dark:border-gray-700">
-        <table className="min-w-full bg-white dark:bg-gray-800">
-          <thead className="bg-gray-50 dark:bg-gray-900">
+      <div className="overflow-x-auto rounded-2xl border border-gray-200/50 dark:border-white/10 backdrop-blur-lg bg-white/70 dark:bg-gray-900/50">
+        <table className="min-w-full">
+          <thead className="bg-gray-50/80 dark:bg-gray-900/80 backdrop-blur-sm">
             <tr>
               <th
                 className="px-4 py-2 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"

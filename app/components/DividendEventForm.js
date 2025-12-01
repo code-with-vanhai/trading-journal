@@ -52,7 +52,7 @@ export default function DividendEventForm({ stockAccounts = [], onSuccess, initi
       ...prev,
       [name]: value
     }));
-    
+
     // Clear errors when user starts typing
     if (errors[name]) {
       setErrors(prev => ({
@@ -104,7 +104,7 @@ export default function DividendEventForm({ stockAccounts = [], onSuccess, initi
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    
+
     if (!validateForm()) {
       showError('Vui lòng kiểm tra lại thông tin');
       return;
@@ -154,7 +154,7 @@ export default function DividendEventForm({ stockAccounts = [], onSuccess, initi
       }
 
       // Success message will be handled by parent component via onSuccess callback
-      
+
       // Reset form
       setFormData({
         adjustmentType: 'CASH_DIVIDEND',
@@ -183,22 +183,22 @@ export default function DividendEventForm({ stockAccounts = [], onSuccess, initi
   };
 
   return (
-    <div className="max-w-2xl mx-auto bg-white shadow-lg rounded-lg p-6">
-      <h2 className="text-2xl font-bold text-gray-900 mb-6">
+    <div className="max-w-2xl mx-auto bg-white dark:bg-gray-800 shadow-lg rounded-lg p-6 border border-gray-200 dark:border-gray-700">
+      <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-6">
         {initialData ? 'Cập nhật' : 'Tạo'} Sự Kiện Cổ Tức
       </h2>
 
       <form onSubmit={handleSubmit} className="space-y-6">
         {/* Adjustment Type */}
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-2">
-            Loại sự kiện <span className="text-red-500">*</span>
+          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+            Loại sự kiện <span className="text-red-500 dark:text-red-400">*</span>
           </label>
           <select
             name="adjustmentType"
             value={formData.adjustmentType}
             onChange={handleInputChange}
-            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400"
           >
             {ADJUSTMENT_TYPES.map(type => (
               <option key={type.value} value={type.value}>
@@ -211,8 +211,8 @@ export default function DividendEventForm({ stockAccounts = [], onSuccess, initi
         {/* Ticker & Stock Account */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
-              Mã cổ phiếu <span className="text-red-500">*</span>
+            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+              Mã cổ phiếu <span className="text-red-500 dark:text-red-400">*</span>
             </label>
             <input
               type="text"
@@ -220,24 +220,22 @@ export default function DividendEventForm({ stockAccounts = [], onSuccess, initi
               value={formData.ticker}
               onChange={handleInputChange}
               placeholder="VD: VLB"
-              className={`w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 ${
-                errors.ticker ? 'border-red-500' : 'border-gray-300'
-              }`}
+              className={`w-full px-3 py-2 border rounded-md bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 ${errors.ticker ? 'border-red-500 dark:border-red-400' : 'border-gray-300 dark:border-gray-600'
+                }`}
             />
-            {errors.ticker && <p className="text-red-500 text-sm mt-1">{errors.ticker}</p>}
+            {errors.ticker && <p className="text-red-500 dark:text-red-400 text-sm mt-1">{errors.ticker}</p>}
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
-              Tài khoản <span className="text-red-500">*</span>
+            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+              Tài khoản <span className="text-red-500 dark:text-red-400">*</span>
             </label>
             <select
               name="stockAccountId"
               value={formData.stockAccountId}
               onChange={handleInputChange}
-              className={`w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 ${
-                errors.stockAccountId ? 'border-red-500' : 'border-gray-300'
-              }`}
+              className={`w-full px-3 py-2 border rounded-md bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 ${errors.stockAccountId ? 'border-red-500 dark:border-red-400' : 'border-gray-300 dark:border-gray-600'
+                }`}
             >
               <option value="">-- Chọn tài khoản --</option>
               {stockAccounts.map(account => (
@@ -246,33 +244,32 @@ export default function DividendEventForm({ stockAccounts = [], onSuccess, initi
                 </option>
               ))}
             </select>
-            {errors.stockAccountId && <p className="text-red-500 text-sm mt-1">{errors.stockAccountId}</p>}
+            {errors.stockAccountId && <p className="text-red-500 dark:text-red-400 text-sm mt-1">{errors.stockAccountId}</p>}
           </div>
         </div>
 
         {/* Event Date */}
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-2">
-            Ngày ex-dividend <span className="text-red-500">*</span>
+          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+            Ngày ex-dividend <span className="text-red-500 dark:text-red-400">*</span>
           </label>
           <input
             type="date"
             name="eventDate"
             value={formData.eventDate}
             onChange={handleInputChange}
-            className={`w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 ${
-              errors.eventDate ? 'border-red-500' : 'border-gray-300'
-            }`}
+            className={`w-full px-3 py-2 border rounded-md bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 ${errors.eventDate ? 'border-red-500 dark:border-red-400' : 'border-gray-300 dark:border-gray-600'
+              }`}
           />
-          {errors.eventDate && <p className="text-red-500 text-sm mt-1">{errors.eventDate}</p>}
+          {errors.eventDate && <p className="text-red-500 dark:text-red-400 text-sm mt-1">{errors.eventDate}</p>}
         </div>
 
         {/* Type-specific fields */}
         {formData.adjustmentType === 'CASH_DIVIDEND' && (
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                Cổ tức mỗi cổ phiếu (VND) <span className="text-red-500">*</span>
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                Cổ tức mỗi cổ phiếu (VND) <span className="text-red-500 dark:text-red-400">*</span>
               </label>
               <input
                 type="number"
@@ -282,16 +279,15 @@ export default function DividendEventForm({ stockAccounts = [], onSuccess, initi
                 placeholder="1500"
                 min="0"
                 step="0.01"
-                className={`w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 ${
-                  errors.dividendPerShare ? 'border-red-500' : 'border-gray-300'
-                }`}
+                className={`w-full px-3 py-2 border rounded-md bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 ${errors.dividendPerShare ? 'border-red-500 dark:border-red-400' : 'border-gray-300 dark:border-gray-600'
+                  }`}
               />
-              {errors.dividendPerShare && <p className="text-red-500 text-sm mt-1">{errors.dividendPerShare}</p>}
+              {errors.dividendPerShare && <p className="text-red-500 dark:text-red-400 text-sm mt-1">{errors.dividendPerShare}</p>}
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                Thuế suất (0-1) <span className="text-red-500">*</span>
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                Thuế suất (0-1) <span className="text-red-500 dark:text-red-400">*</span>
               </label>
               <input
                 type="number"
@@ -302,19 +298,18 @@ export default function DividendEventForm({ stockAccounts = [], onSuccess, initi
                 min="0"
                 max="1"
                 step="0.001"
-                className={`w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 ${
-                  errors.taxRate ? 'border-red-500' : 'border-gray-300'
-                }`}
+                className={`w-full px-3 py-2 border rounded-md bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 ${errors.taxRate ? 'border-red-500 dark:border-red-400' : 'border-gray-300 dark:border-gray-600'
+                  }`}
               />
-              {errors.taxRate && <p className="text-red-500 text-sm mt-1">{errors.taxRate}</p>}
+              {errors.taxRate && <p className="text-red-500 dark:text-red-400 text-sm mt-1">{errors.taxRate}</p>}
             </div>
           </div>
         )}
 
         {formData.adjustmentType === 'STOCK_DIVIDEND' && (
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
-              Tỷ lệ cổ tức cổ phiếu (0.1 = 10%) <span className="text-red-500">*</span>
+            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+              Tỷ lệ cổ tức cổ phiếu (0.1 = 10%) <span className="text-red-500 dark:text-red-400">*</span>
             </label>
             <input
               type="number"
@@ -324,18 +319,17 @@ export default function DividendEventForm({ stockAccounts = [], onSuccess, initi
               placeholder="0.15"
               min="0"
               step="0.001"
-              className={`w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 ${
-                errors.stockDividendRatio ? 'border-red-500' : 'border-gray-300'
-              }`}
+              className={`w-full px-3 py-2 border rounded-md bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 ${errors.stockDividendRatio ? 'border-red-500 dark:border-red-400' : 'border-gray-300 dark:border-gray-600'
+                }`}
             />
-            {errors.stockDividendRatio && <p className="text-red-500 text-sm mt-1">{errors.stockDividendRatio}</p>}
+            {errors.stockDividendRatio && <p className="text-red-500 dark:text-red-400 text-sm mt-1">{errors.stockDividendRatio}</p>}
           </div>
         )}
 
         {formData.adjustmentType === 'STOCK_SPLIT' && (
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
-              Tỷ lệ chia tách (2 = 1:2 split) <span className="text-red-500">*</span>
+            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+              Tỷ lệ chia tách (2 = 1:2 split) <span className="text-red-500 dark:text-red-400">*</span>
             </label>
             <input
               type="number"
@@ -345,17 +339,16 @@ export default function DividendEventForm({ stockAccounts = [], onSuccess, initi
               placeholder="2"
               min="0"
               step="0.1"
-              className={`w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 ${
-                errors.splitRatio ? 'border-red-500' : 'border-gray-300'
-              }`}
+              className={`w-full px-3 py-2 border rounded-md bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 ${errors.splitRatio ? 'border-red-500 dark:border-red-400' : 'border-gray-300 dark:border-gray-600'
+                }`}
             />
-            {errors.splitRatio && <p className="text-red-500 text-sm mt-1">{errors.splitRatio}</p>}
+            {errors.splitRatio && <p className="text-red-500 dark:text-red-400 text-sm mt-1">{errors.splitRatio}</p>}
           </div>
         )}
 
         {/* Description */}
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-2">
+          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
             Mô tả
           </label>
           <textarea
@@ -364,13 +357,13 @@ export default function DividendEventForm({ stockAccounts = [], onSuccess, initi
             onChange={handleInputChange}
             placeholder="Mô tả chi tiết về sự kiện cổ tức..."
             rows={3}
-            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400"
           />
         </div>
 
         {/* External Reference */}
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-2">
+          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
             Tham chiếu (Mã thông báo từ CTCK)
           </label>
           <input
@@ -379,7 +372,7 @@ export default function DividendEventForm({ stockAccounts = [], onSuccess, initi
             value={formData.externalRef}
             onChange={handleInputChange}
             placeholder="TB-123456"
-            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400"
           />
         </div>
 
@@ -388,11 +381,10 @@ export default function DividendEventForm({ stockAccounts = [], onSuccess, initi
           <button
             type="submit"
             disabled={isSubmitting}
-            className={`px-6 py-2 rounded-md text-white font-medium ${
-              isSubmitting
-                ? 'bg-gray-400 cursor-not-allowed'
-                : 'bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500'
-            }`}
+            className={`px-6 py-2 rounded-md text-white font-medium transition-colors ${isSubmitting
+                ? 'bg-gray-400 dark:bg-gray-600 cursor-not-allowed'
+                : 'bg-blue-600 dark:bg-blue-700 hover:bg-blue-700 dark:hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400'
+              }`}
           >
             {isSubmitting ? 'Đang xử lý...' : initialData ? 'Cập nhật' : 'Tạo sự kiện'}
           </button>

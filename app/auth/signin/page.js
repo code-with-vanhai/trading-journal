@@ -77,18 +77,25 @@ function SignInContent() {
 
   if (status === 'loading') {
     return (
-      <div className="flex justify-center mt-10">
+      <div className="min-h-screen flex items-center justify-center px-4">
         <div className="card w-full max-w-md">
-          <p className="text-center">Loading...</p>
+          <p className="text-center text-gray-600 dark:text-gray-400">Đang tải...</p>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="flex justify-center mt-10">
+    <div className="min-h-screen flex items-center justify-center px-4 py-12 relative overflow-hidden">
+      {/* Background ambient effects */}
+      <div className="absolute top-0 left-0 w-full h-full overflow-hidden -z-10 pointer-events-none">
+        <div className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-purple-600/20 rounded-full blur-[120px] animate-pulse"></div>
+        <div className="absolute bottom-[-10%] right-[-10%] w-[40%] h-[40%] bg-blue-600/20 rounded-full blur-[120px] animate-pulse delay-1000"></div>
+      </div>
+
       <div className="card w-full max-w-md">
-        <h1 className="text-2xl font-bold mb-6 text-center">Sign In</h1>
+        <h1 className="text-3xl font-bold mb-2 text-center text-gray-900 dark:text-white">Đăng nhập</h1>
+        <p className="text-gray-600 dark:text-gray-400 text-center mb-6">Truy cập vào tài khoản Trading Journal của bạn</p>
         
         {error && (
           <div className="bg-red-50 text-red-500 p-3 rounded mb-4">
@@ -114,10 +121,10 @@ function SignInContent() {
           </div>
         )}
         
-        <form onSubmit={handleSubmit}>
-          <div className="mb-4">
+        <form onSubmit={handleSubmit} className="space-y-5">
+          <div>
             <label htmlFor="login" className="form-label">
-              Email or Username
+              Email hoặc Username
             </label>
             <input
               id="login"
@@ -127,13 +134,13 @@ function SignInContent() {
               value={formData.login}
               onChange={handleChange}
               required
-              placeholder="Enter your email or username"
+              placeholder="email@example.com hoặc username"
             />
           </div>
           
-          <div className="mb-6">
+          <div>
             <label htmlFor="password" className="form-label">
-              Password
+              Mật khẩu
             </label>
             <input
               id="password"
@@ -143,23 +150,31 @@ function SignInContent() {
               value={formData.password}
               onChange={handleChange}
               required
+              placeholder="Nhập mật khẩu của bạn"
             />
           </div>
           
           <button
             type="submit"
-            className="btn-primary w-full"
+            className="btn-primary w-full flex items-center justify-center"
             disabled={isLoading}
           >
-            {isLoading ? 'Signing in...' : 'Sign In'}
+            {isLoading ? (
+              <>
+                <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white mr-2"></div>
+                Đang đăng nhập...
+              </>
+            ) : (
+              'Đăng nhập'
+            )}
           </button>
         </form>
         
-        <div className="text-center mt-4">
-          <p>
-            Don't have an account?{' '}
-            <Link href="/auth/signup" className="text-primary hover:underline">
-              Sign Up
+        <div className="text-center mt-6">
+          <p className="text-gray-600 dark:text-gray-400">
+            Chưa có tài khoản?{' '}
+            <Link href="/auth/signup" className="text-primary hover:underline font-medium">
+              Đăng ký ngay
             </Link>
           </p>
         </div>
@@ -170,9 +185,9 @@ function SignInContent() {
 
 export default function SignIn() {
   return (
-    <Suspense fallback={<div className="flex justify-center mt-10">
+    <Suspense fallback={<div className="min-h-screen flex items-center justify-center px-4">
       <div className="card w-full max-w-md">
-        <p className="text-center">Loading sign in page...</p>
+        <p className="text-center text-gray-600 dark:text-gray-400">Đang tải trang đăng nhập...</p>
       </div>
     </div>}>
       <SignInContent />

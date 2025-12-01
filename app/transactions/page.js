@@ -309,18 +309,18 @@ function TransactionsContent() {
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
       {/* Hero Header Section */}
-      <div className="gradient-bg dark:from-gray-800 dark:to-gray-700 text-white py-12">
+      <div className="gradient-bg dark:from-gray-800 dark:to-gray-700 text-gray-900 dark:text-white py-12">
         <div className="max-w-6xl mx-auto px-4">
           <div className="flex justify-between items-center">
             <div>
-              <h1 className="text-4xl font-bold mb-4">Quản lý Giao dịch</h1>
-              <p className="text-xl opacity-90 dark:opacity-80">Theo dõi và phân tích tất cả các giao dịch chứng khoán của bạn</p>
+              <h1 className="text-4xl font-bold mb-4 text-gray-900 dark:text-white">Quản lý Giao dịch</h1>
+              <p className="text-xl opacity-90 dark:opacity-80 text-gray-600 dark:text-gray-300">Theo dõi và phân tích tất cả các giao dịch chứng khoán của bạn</p>
             </div>
             {status === 'authenticated' && (
               <div className="relative dropdown-container">
                 <button
                   onClick={() => setIsDropdownOpen(!isDropdownOpen)}
-                  className="bg-white dark:bg-gray-800 text-blue-900 dark:text-blue-100 px-6 py-3 rounded-lg font-bold hover:bg-blue-100 dark:hover:bg-gray-700 transition shadow-lg flex items-center"
+                  className="glass-button text-blue-900 dark:text-blue-100 px-6 py-3 font-bold transition shadow-lg flex items-center"
                 >
                   <IconPlus className="w-5 h-5 mr-2" />
                   Thêm Mới
@@ -328,7 +328,7 @@ function TransactionsContent() {
                 </button>
                 
                 {isDropdownOpen && (
-                  <div className="absolute right-0 mt-2 w-56 bg-white dark:bg-gray-800 rounded-lg shadow-xl z-50 border border-gray-200 dark:border-gray-700">
+                  <div className="absolute right-0 mt-2 w-56 backdrop-blur-xl bg-white/90 dark:bg-gray-800/90 rounded-xl shadow-2xl z-50 border border-gray-200/50 dark:border-white/10">
                     <div className="py-2">
                       <button
                         onClick={() => {
@@ -371,7 +371,7 @@ function TransactionsContent() {
       {/* Main Content */}
       <div className="max-w-6xl mx-auto p-4 mt-6">
         {status === 'unauthenticated' ? (
-          <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg border border-gray-200 dark:border-gray-700 p-12 text-center">
+          <div className="backdrop-blur-lg bg-white/70 dark:bg-gray-900/50 rounded-2xl shadow-xl border border-gray-200/50 dark:border-white/10 p-12 text-center">
             <div className="flex flex-col items-center">
               <IconLineChart className="text-gray-400 dark:text-gray-500 w-16 h-16 mb-6" />
               <h3 className="text-2xl font-semibold text-gray-700 dark:text-gray-300 mb-4">Đăng nhập để xem giao dịch</h3>
@@ -381,7 +381,7 @@ function TransactionsContent() {
         ) : (
           <>
             {/* Filter Section */}
-            <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg border border-gray-200 dark:border-gray-700 p-6 mb-6">
+            <div className="backdrop-blur-lg bg-white/70 dark:bg-gray-900/50 rounded-2xl shadow-xl border border-gray-200/50 dark:border-white/10 p-6 mb-6">
               <TransactionFilters 
                 filters={filters} 
                 onFilterChange={handleFilterChange}
@@ -405,12 +405,12 @@ function TransactionsContent() {
             )}
 
             {isLoading ? (
-              <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg border border-gray-200 dark:border-gray-700 overflow-hidden">
+              <div className="backdrop-blur-lg bg-white/70 dark:bg-gray-900/50 rounded-2xl shadow-xl border border-gray-200/50 dark:border-white/10 overflow-hidden">
                 <TableSkeleton rows={10} cols={8} />
               </div>
             ) : (
-              <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg border border-gray-200 dark:border-gray-700 overflow-hidden">
-                <div className="p-6 bg-gradient-to-r from-blue-50 to-indigo-50 dark:from-blue-900/20 dark:to-indigo-900/20 border-b border-gray-200 dark:border-gray-700 flex justify-between items-center">
+              <div className="backdrop-blur-lg bg-white/70 dark:bg-gray-900/50 rounded-2xl shadow-xl border border-gray-200/50 dark:border-white/10 overflow-hidden">
+                <div className="p-6 bg-gradient-to-r from-blue-50/80 to-indigo-50/80 dark:from-blue-900/20 dark:to-indigo-900/20 backdrop-blur-sm border-b border-gray-200/50 dark:border-white/10 flex justify-between items-center">
                   <div className="flex items-center">
                     <IconBarChart className="text-blue-600 dark:text-blue-400 w-6 h-6 mr-3" />
                     <div className="font-semibold text-gray-800 dark:text-gray-200">Kết quả: {totalItems} giao dịch</div>
@@ -443,7 +443,7 @@ function TransactionsContent() {
                 />
                 
                 {totalItems > 0 && (
-                  <div className="p-6 border-t border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-700/50">
+                  <div className="p-6 border-t border-gray-200/50 dark:border-white/10 bg-gray-50/50 dark:bg-gray-900/50">
                     <Pagination 
                       currentPage={currentPage}
                       totalPages={Math.ceil(totalItems / pageSize)}
@@ -465,9 +465,9 @@ function TransactionsContent() {
 
       {/* Dividend Modal */}
       {isDividendModalOpen && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 dark:bg-opacity-70 flex items-center justify-center z-50 p-4">
-          <div className="bg-white dark:bg-gray-800 rounded-lg shadow-xl border border-gray-200 dark:border-gray-700 max-w-2xl w-full max-h-[90vh] overflow-y-auto">
-            <div className="flex items-center justify-between p-6 border-b border-gray-200 dark:border-gray-700">
+        <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50 p-4">
+          <div className="backdrop-blur-xl bg-white/80 dark:bg-gray-900/80 rounded-2xl shadow-2xl border border-gray-200/50 dark:border-white/10 ring-1 ring-black/5 dark:ring-white/10 max-w-2xl w-full max-h-[90vh] overflow-y-auto">
+            <div className="flex items-center justify-between p-6 border-b border-gray-200/50 dark:border-white/10">
               <div className="flex items-center">
                 <IconCoins className="text-green-600 dark:text-green-400 w-6 h-6 mr-3" />
                 <h2 className="text-xl font-bold text-gray-900 dark:text-white">Thêm Thông Tin Cổ Tức</h2>
@@ -511,4 +511,4 @@ export default function TransactionsPage() {
       <TransactionsContent />
     </Suspense>
   );
-} 
+}

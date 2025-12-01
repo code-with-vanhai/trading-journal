@@ -160,17 +160,17 @@ export default function CostBasisAdjustmentsPage() {
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
       {/* Hero Header */}
-      <div className="gradient-bg dark:from-gray-800 dark:to-gray-700 text-white py-12">
+      <div className="gradient-bg dark:from-gray-800 dark:to-gray-700 text-gray-900 dark:text-white py-12">
         <div className="max-w-6xl mx-auto px-4">
           <div className="flex justify-between items-center">
             <div>
-              <h1 className="text-4xl font-bold mb-4">Quản lý Sự kiện Quyền</h1>
-              <p className="text-xl opacity-90 dark:opacity-80">Theo dõi các sự kiện quyền ảnh hưởng đến giá vốn cổ phiếu</p>
+              <h1 className="text-4xl font-bold mb-4 text-gray-900 dark:text-white">Quản lý Sự kiện Quyền</h1>
+              <p className="text-xl opacity-90 dark:opacity-80 text-gray-600 dark:text-gray-300">Theo dõi các sự kiện quyền ảnh hưởng đến giá vốn cổ phiếu</p>
             </div>
             {status === 'authenticated' && (
               <button
                 onClick={() => setIsAddModalOpen(true)}
-                className="bg-white dark:bg-gray-800 text-blue-900 dark:text-blue-100 px-6 py-3 rounded-lg font-bold hover:bg-blue-100 dark:hover:bg-gray-700 transition shadow-lg flex items-center"
+                className="glass-button text-blue-900 dark:text-blue-100 px-6 py-3 font-bold transition shadow-lg flex items-center"
               >
                 <IconPlus className="w-5 h-5 mr-2" />
                 Thêm Sự kiện Quyền
@@ -183,7 +183,7 @@ export default function CostBasisAdjustmentsPage() {
       {/* Main Content */}
       <div className="max-w-6xl mx-auto p-4 mt-6">
         {status === 'unauthenticated' ? (
-          <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg border border-gray-200 dark:border-gray-700 p-12 text-center">
+          <div className="backdrop-blur-lg bg-white/70 dark:bg-gray-900/50 rounded-2xl shadow-xl border border-gray-200/50 dark:border-white/10 p-12 text-center">
             <div className="flex flex-col items-center">
               <IconLock className="text-gray-400 dark:text-gray-500 w-16 h-16 mb-6" />
               <h3 className="text-2xl font-semibold text-gray-700 dark:text-gray-300 mb-4">Đăng nhập để xem sự kiện quyền</h3>
@@ -193,7 +193,7 @@ export default function CostBasisAdjustmentsPage() {
         ) : (
           <>
             {/* Filters */}
-            <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg border border-gray-200 dark:border-gray-700 p-6 mb-6">
+            <div className="backdrop-blur-lg bg-white/70 dark:bg-gray-900/50 rounded-2xl shadow-xl border border-gray-200/50 dark:border-white/10 p-6 mb-6">
               <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
                 <div>
                   <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
@@ -264,14 +264,14 @@ export default function CostBasisAdjustmentsPage() {
             )}
 
             {isLoading ? (
-              <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg border border-gray-200 dark:border-gray-700 p-12 text-center">
+              <div className="backdrop-blur-lg bg-white/70 dark:bg-gray-900/50 rounded-2xl shadow-xl border border-gray-200/50 dark:border-white/10 p-12 text-center">
                 <div className="flex flex-col items-center">
                   <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 dark:border-blue-400 mb-4"></div>
                   <p className="text-gray-600 dark:text-gray-400">Đang tải sự kiện quyền...</p>
                 </div>
               </div>
             ) : (
-              <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg border border-gray-200 dark:border-gray-700 overflow-hidden">
+              <div className="backdrop-blur-lg bg-white/70 dark:bg-gray-900/50 rounded-2xl shadow-xl border border-gray-200/50 dark:border-white/10 overflow-hidden">
                 <div className="p-6 bg-gradient-to-r from-green-50 to-emerald-50 dark:from-green-900/20 dark:to-emerald-900/20 border-b border-gray-200 dark:border-gray-700">
                   <div className="flex items-center">
                     <IconCalendarCheck className="text-green-600 dark:text-green-400 w-6 h-6 mr-3" />
@@ -319,7 +319,7 @@ export default function CostBasisAdjustmentsPage() {
                           </th>
                         </tr>
                       </thead>
-                      <tbody className="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700">
+                      <tbody className="divide-y divide-gray-200/50 dark:divide-gray-700/50">
                         {adjustments.map((adjustment) => (
                           <tr key={adjustment.id} className="hover:bg-gray-50 dark:hover:bg-gray-700/50">
                             <td className="px-6 py-4 whitespace-nowrap">
@@ -395,7 +395,7 @@ export default function CostBasisAdjustmentsPage() {
       {/* Add Adjustment Modal */}
       {isAddModalOpen && (
         <div className="fixed inset-0 bg-black bg-opacity-50 dark:bg-opacity-70 flex items-center justify-center z-50 p-4">
-          <div className="bg-white dark:bg-gray-800 rounded-lg shadow-xl border border-gray-200 dark:border-gray-700 max-w-2xl w-full max-h-[90vh] overflow-y-auto">
+          <div className="backdrop-blur-xl bg-white/80 dark:bg-gray-900/80 rounded-2xl shadow-2xl border border-gray-200/50 dark:border-white/10 ring-1 ring-black/5 dark:ring-white/10 max-w-2xl w-full max-h-[90vh] overflow-y-auto">
             <div className="flex items-center justify-between p-6 border-b border-gray-200 dark:border-gray-700">
               <div className="flex items-center">
                 <IconCalendarCheck className="text-green-600 dark:text-green-400 w-6 h-6 mr-3" />
@@ -420,4 +420,4 @@ export default function CostBasisAdjustmentsPage() {
       )}
     </div>
   );
-} 
+}

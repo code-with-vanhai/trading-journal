@@ -104,7 +104,7 @@ export default function Portfolio({
 
   if (totalItems === 0) {
     return (
-      <div className="text-gray-500 dark:text-gray-400 p-4 text-center bg-white dark:bg-gray-800 rounded-lg">
+      <div className="text-gray-500 dark:text-gray-400 p-4 text-center backdrop-blur-lg bg-white/70 dark:bg-gray-900/50 rounded-2xl border border-gray-200/50 dark:border-white/10">
         Bạn chưa có cổ phiếu nào trong danh mục đầu tư.
       </div>
     );
@@ -115,8 +115,8 @@ export default function Portfolio({
     sum + (position.quantity * position.avgCost), 0);
 
   return (
-    <div className="bg-white dark:bg-gray-800 rounded-lg shadow overflow-hidden dark:shadow-gray-900/50">
-      <div className="p-4 border-b border-gray-200 dark:border-gray-700">
+    <div className="backdrop-blur-lg bg-white/70 dark:bg-gray-900/50 rounded-2xl shadow-xl overflow-hidden border border-gray-200/50 dark:border-white/10">
+      <div className="p-4 border-b border-gray-200/50 dark:border-white/10">
         <div className="flex justify-between items-center">
           <div>
             <h2 className="text-lg font-semibold text-gray-900 dark:text-gray-100">Danh Mục Đầu Tư</h2>
@@ -145,7 +145,7 @@ export default function Portfolio({
       
       <div className="overflow-x-auto">
         <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
-          <thead className="bg-gray-50 dark:bg-gray-900">
+          <thead className="bg-gray-50/80 dark:bg-gray-900/80 backdrop-blur-sm">
             <tr>
               <th 
                 className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
@@ -176,7 +176,7 @@ export default function Portfolio({
               </th>
             </tr>
           </thead>
-          <tbody className="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700">
+          <tbody className="divide-y divide-gray-200/50 dark:divide-gray-700/50">
             {portfolio.map((position, index) => {
               const positionValue = position.quantity * position.avgCost;
               const percentage = currentPageValue > 0 ? (positionValue / currentPageValue) * 100 : 0;
@@ -216,7 +216,7 @@ export default function Portfolio({
       </div>
       
       {totalPages > 1 && (
-        <div className="p-6 border-t border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-900">
+        <div className="p-6 border-t border-gray-200/50 dark:border-white/10 bg-gray-50/50 dark:bg-gray-900/50">
           <Pagination 
             currentPage={currentPage}
             totalPages={totalPages}

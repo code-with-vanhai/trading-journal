@@ -57,12 +57,12 @@ export default function JournalEntryView({ transactionId }) {
 
   if (!journalEntry) {
     return (
-      <div className="bg-white dark:bg-gray-800 shadow rounded-lg border border-gray-200 dark:border-gray-700 p-6 mb-6">
+      <div className="backdrop-blur-lg bg-white/70 dark:bg-gray-900/50 shadow-xl rounded-2xl border border-gray-200/50 dark:border-white/10 p-6 mb-6">
         <div className="flex justify-between items-center">
           <h2 className="text-xl font-semibold text-gray-900 dark:text-white">Nhật Ký Giao Dịch</h2>
           <Link
             href={`/transactions/${transactionId}/journal/new`}
-            className="btn-primary dark:bg-blue-700 dark:hover:bg-blue-600"
+            className="btn-primary"
           >
             Thêm Nhật Ký
           </Link>
@@ -75,7 +75,7 @@ export default function JournalEntryView({ transactionId }) {
   }
 
   return (
-    <div className="bg-white dark:bg-gray-800 shadow rounded-lg border border-gray-200 dark:border-gray-700 p-6 mb-6">
+    <div className="backdrop-blur-lg bg-white/70 dark:bg-gray-900/50 shadow-xl rounded-2xl border border-gray-200/50 dark:border-white/10 p-6 mb-6">
       <div className="flex justify-between items-center mb-6">
         <h2 className="text-xl font-semibold text-gray-900 dark:text-white">Nhật Ký Giao Dịch</h2>
         <Link

@@ -96,16 +96,16 @@ function StrategiesContent() {
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
       {/* Hero Header Section */}
-      <div className="gradient-bg dark:from-gray-800 dark:to-gray-700 text-white py-12">
+      <div className="gradient-bg dark:from-gray-800 dark:to-gray-700 text-gray-900 dark:text-white py-12">
         <div className="max-w-4xl mx-auto px-4">
           <div className="flex justify-between items-center">
             <div>
-              <h1 className="text-4xl font-bold mb-4">Chiến Lược Giao Dịch</h1>
-              <p className="text-xl opacity-90 dark:opacity-80">Chia sẻ và học hỏi các chiến lược giao dịch từ cộng đồng</p>
+              <h1 className="text-4xl font-bold mb-4 text-gray-900 dark:text-white">Chiến Lược Giao Dịch</h1>
+              <p className="text-xl opacity-90 dark:opacity-80 text-gray-600 dark:text-gray-300">Chia sẻ và học hỏi các chiến lược giao dịch từ cộng đồng</p>
             </div>
             {status === 'authenticated' && (
               <button
-                className="bg-white dark:bg-gray-800 text-blue-900 dark:text-blue-100 px-6 py-3 rounded-lg font-bold hover:bg-blue-100 dark:hover:bg-gray-700 transition shadow-lg flex items-center"
+                className="glass-button text-blue-900 dark:text-blue-100 px-6 py-3 font-bold transition shadow-lg flex items-center"
                 onClick={() => setShowForm(!showForm)}
               >
                 {showForm ? <IconX className="w-5 h-5 mr-2" /> : <IconPlus className="w-5 h-5 mr-2" />}
@@ -128,7 +128,7 @@ function StrategiesContent() {
         )}
 
         {status === 'unauthenticated' ? (
-          <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg border border-gray-200 dark:border-gray-700 p-12 text-center">
+          <div className="backdrop-blur-lg bg-white/70 dark:bg-gray-900/50 rounded-2xl shadow-xl border border-gray-200/50 dark:border-white/10 p-12 text-center">
             <div className="flex flex-col items-center">
               <IconChessKing className="text-gray-400 dark:text-gray-500 w-16 h-16 mb-6" />
               <h3 className="text-2xl font-semibold text-gray-700 dark:text-gray-300 mb-4">Đăng nhập để xem chiến lược</h3>
@@ -138,7 +138,7 @@ function StrategiesContent() {
         ) : (
           <>
             {showForm && (
-              <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg border border-gray-200 dark:border-gray-700 p-6 mb-6">
+              <div className="backdrop-blur-lg bg-white/70 dark:bg-gray-900/50 rounded-2xl shadow-xl border border-gray-200/50 dark:border-white/10 p-6 mb-6">
                 <div className="flex items-center mb-6">
                   <IconEdit className="text-blue-600 dark:text-blue-400 w-6 h-6 mr-3" />
                   <h2 className="text-xl font-bold text-gray-800 dark:text-gray-200">Tạo Chiến Lược Mới</h2>
@@ -148,14 +148,14 @@ function StrategiesContent() {
             )}
 
             {isLoading ? (
-              <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg border border-gray-200 dark:border-gray-700 p-12 text-center">
+              <div className="backdrop-blur-lg bg-white/70 dark:bg-gray-900/50 rounded-2xl shadow-xl border border-gray-200/50 dark:border-white/10 p-12 text-center">
                 <div className="flex flex-col items-center">
                   <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 dark:border-blue-400 mb-4"></div>
                   <p className="text-gray-600 dark:text-gray-400">Đang tải chiến lược...</p>
                 </div>
               </div>
             ) : (
-              <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg border border-gray-200 dark:border-gray-700 overflow-hidden">
+              <div className="backdrop-blur-lg bg-white/70 dark:bg-gray-900/50 rounded-2xl shadow-xl border border-gray-200/50 dark:border-white/10 overflow-hidden">
                 <div className="p-6 bg-gradient-to-r from-blue-50 to-indigo-50 dark:from-blue-900/20 dark:to-indigo-900/20 border-b border-gray-200 dark:border-gray-700">
                   <div className="flex items-center">
                     <IconLineChart className="text-blue-600 dark:text-blue-400 w-6 h-6 mr-3" />
@@ -200,4 +200,4 @@ export default function StrategiesPage() {
       <StrategiesContent />
     </Suspense>
   );
-} 
+}

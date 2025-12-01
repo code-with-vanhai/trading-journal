@@ -86,9 +86,16 @@ export default function SignUp() {
   };
 
   return (
-    <div className="flex justify-center mt-10">
+    <div className="min-h-screen flex items-center justify-center px-4 py-12 relative overflow-hidden">
+      {/* Background ambient effects */}
+      <div className="absolute top-0 left-0 w-full h-full overflow-hidden -z-10 pointer-events-none">
+        <div className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-purple-600/20 rounded-full blur-[120px] animate-pulse"></div>
+        <div className="absolute bottom-[-10%] right-[-10%] w-[40%] h-[40%] bg-blue-600/20 rounded-full blur-[120px] animate-pulse delay-1000"></div>
+      </div>
+
       <div className="card w-full max-w-md">
-        <h1 className="text-2xl font-bold mb-6 text-center">Sign Up</h1>
+        <h1 className="text-3xl font-bold mb-2 text-center text-gray-900 dark:text-white">Đăng ký tài khoản</h1>
+        <p className="text-gray-600 dark:text-gray-400 text-center mb-6">Tạo tài khoản Trading Journal miễn phí</p>
         
         {error && (
           <div className="bg-red-50 text-red-500 p-3 rounded mb-4">
@@ -96,10 +103,10 @@ export default function SignUp() {
           </div>
         )}
         
-        <form onSubmit={handleSubmit}>
-          <div className="mb-4">
+        <form onSubmit={handleSubmit} className="space-y-4">
+          <div>
             <label htmlFor="name" className="form-label">
-              Name (Optional)
+              Họ và tên <span className="text-gray-400 text-xs">(Không bắt buộc)</span>
             </label>
             <input
               id="name"
@@ -108,12 +115,13 @@ export default function SignUp() {
               className="input-field"
               value={formData.name}
               onChange={handleChange}
+              placeholder="Nguyễn Văn A"
             />
           </div>
           
-          <div className="mb-4">
+          <div>
             <label htmlFor="username" className="form-label">
-              Username
+              Username <span className="text-red-500">*</span>
             </label>
             <input
               id="username"
@@ -123,15 +131,16 @@ export default function SignUp() {
               value={formData.username}
               onChange={handleChange}
               required
+              placeholder="username_cua_ban"
             />
-            <p className="text-xs text-gray-500 mt-1">
-              Choose a unique username (letters, numbers, underscores, and hyphens only)
+            <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
+              Chỉ được dùng chữ cái, số, gạch dưới và gạch ngang
             </p>
           </div>
           
-          <div className="mb-4">
+          <div>
             <label htmlFor="email" className="form-label">
-              Email
+              Email <span className="text-red-500">*</span>
             </label>
             <input
               id="email"
@@ -141,12 +150,13 @@ export default function SignUp() {
               value={formData.email}
               onChange={handleChange}
               required
+              placeholder="email@example.com"
             />
           </div>
           
-          <div className="mb-4">
+          <div>
             <label htmlFor="password" className="form-label">
-              Password
+              Mật khẩu <span className="text-red-500">*</span>
             </label>
             <input
               id="password"
@@ -157,15 +167,16 @@ export default function SignUp() {
               onChange={handleChange}
               required
               minLength={8}
+              placeholder="Tối thiểu 8 ký tự"
             />
-            <p className="text-xs text-gray-500 mt-1">
-              Must be at least 8 characters
+            <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
+              Mật khẩu phải có ít nhất 8 ký tự
             </p>
           </div>
           
-          <div className="mb-6">
+          <div>
             <label htmlFor="confirmPassword" className="form-label">
-              Confirm Password
+              Xác nhận mật khẩu <span className="text-red-500">*</span>
             </label>
             <input
               id="confirmPassword"
@@ -175,23 +186,31 @@ export default function SignUp() {
               value={formData.confirmPassword}
               onChange={handleChange}
               required
+              placeholder="Nhập lại mật khẩu"
             />
           </div>
           
           <button
             type="submit"
-            className="btn-primary w-full"
+            className="btn-primary w-full flex items-center justify-center mt-6"
             disabled={isLoading}
           >
-            {isLoading ? 'Creating Account...' : 'Sign Up'}
+            {isLoading ? (
+              <>
+                <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white mr-2"></div>
+                Đang tạo tài khoản...
+              </>
+            ) : (
+              'Đăng ký'
+            )}
           </button>
         </form>
         
-        <div className="text-center mt-4">
-          <p>
-            Already have an account?{' '}
-            <Link href="/auth/signin" className="text-primary hover:underline">
-              Sign In
+        <div className="text-center mt-6">
+          <p className="text-gray-600 dark:text-gray-400">
+            Đã có tài khoản?{' '}
+            <Link href="/auth/signin" className="text-primary hover:underline font-medium">
+              Đăng nhập ngay
             </Link>
           </p>
         </div>

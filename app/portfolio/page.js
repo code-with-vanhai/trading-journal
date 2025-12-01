@@ -11,7 +11,7 @@ import Pagination from '../components/Pagination';
 import Link from 'next/link';
 import { useNotification } from '../components/Notification';
 import logger, { componentLogger, apiLogger, userLogger } from '../lib/client-logger.js';
-import { IconPieChart, IconPlus, IconLineChart, IconRefreshCw, IconBarChart, IconArrowRight, IconSettings, IconCalculator } from '../components/ui/Icon';
+import { IconPieChart, IconPlus, IconLineChart, IconRefreshCw, IconBarChart, IconArrowRight, IconSettings, IconCalculator, IconChevronDown } from '../components/ui/Icon';
 
 // Dynamic imports for heavy components to reduce initial bundle size
 const PortfolioPieChart = dynamic(() => import('../components/PortfolioPieChart'), {
@@ -445,7 +445,7 @@ export default function PortfolioPage() {
           <CardSkeleton lines={2} />
         </div>
         {/* Table skeleton */}
-        <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg border border-gray-200 dark:border-gray-700 overflow-hidden">
+        <div className="backdrop-blur-lg bg-white/70 dark:bg-gray-900/50 rounded-2xl shadow-xl border border-gray-200/50 dark:border-white/10 overflow-hidden">
           <TableSkeleton rows={10} cols={9} />
         </div>
         {/* Charts skeleton */}
@@ -505,12 +505,12 @@ export default function PortfolioPage() {
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
       {/* Hero Header Section */}
-      <div className="gradient-bg dark:from-gray-800 dark:to-gray-700 text-white py-12">
+      <div className="gradient-bg dark:from-gray-800 dark:to-gray-700 text-gray-900 dark:text-white py-12">
         <div className="max-w-6xl mx-auto px-4">
           <div className="flex justify-between items-center">
             <div>
-              <h1 className="text-4xl font-bold mb-4">Danh Mục Đầu Tư</h1>
-              <p className="text-xl opacity-90 dark:opacity-80">Theo dõi hiệu suất và quản lý danh mục đầu tư của bạn</p>
+              <h1 className="text-4xl font-bold mb-4 text-gray-900 dark:text-white">Danh Mục Đầu Tư</h1>
+              <p className="text-xl opacity-90 dark:opacity-80 text-gray-600 dark:text-gray-300">Theo dõi hiệu suất và quản lý danh mục đầu tư của bạn</p>
             </div>
             {/* Compact Controls */}
             <div className="flex items-center space-x-3 lg:space-x-4">
@@ -521,7 +521,7 @@ export default function PortfolioPage() {
                   <>
                     {/* Account Selector - Compact */}
                     <div className="flex items-center space-x-2 relative group">
-                      <label htmlFor="accountFilter" className="text-sm font-medium text-white whitespace-nowrap hidden sm:block">
+                      <label htmlFor="accountFilter" className="text-sm font-medium text-gray-700 dark:text-gray-300 whitespace-nowrap hidden sm:block">
                         Tài khoản:
                       </label>
                       <div className="relative">
@@ -529,14 +529,8 @@ export default function PortfolioPage() {
                           id="accountFilter"
                           value={selectedAccountId}
                           onChange={handleAccountChange}
-                          className="px-3 py-2 border border-white/20 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-white/50 bg-white/10 text-white backdrop-blur-sm w-32 sm:w-36 lg:w-40 truncate appearance-none cursor-pointer"
-                          style={{
-                            backgroundImage: `url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3E%3Cpath stroke='%23ffffff' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3E%3C/svg%3E")`,
-                            backgroundPosition: 'right 8px center',
-                            backgroundRepeat: 'no-repeat',
-                            backgroundSize: '16px',
-                            paddingRight: '2rem'
-                          }}
+                          className="px-3 py-2 border border-gray-300 dark:border-white/20 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/50 bg-white/50 dark:bg-white/10 text-gray-900 dark:text-white backdrop-blur-sm w-32 sm:w-36 lg:w-40 truncate appearance-none cursor-pointer"
+                          style={{ paddingRight: '2rem' }}
                         >
                           <option value="" className="text-gray-900">Tất cả tài khoản</option>
                           {stockAccounts.map((account) => (
@@ -545,6 +539,9 @@ export default function PortfolioPage() {
                             </option>
                           ))}
                         </select>
+                        <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-500 dark:text-white">
+                          <IconChevronDown className="h-4 w-4" />
+                        </div>
                         
                         {/* Account Tooltip */}
                         {selectedAccountId && (
@@ -563,7 +560,7 @@ export default function PortfolioPage() {
                     
                     {/* Cost Basis Toggle - Compact */}
                     <div className="flex items-center space-x-2">
-                      <label htmlFor="adjustedCostBasisToggle" className="text-sm font-medium text-white whitespace-nowrap hidden sm:block">
+                      <label htmlFor="adjustedCostBasisToggle" className="text-sm font-medium text-gray-700 dark:text-gray-300 whitespace-nowrap hidden sm:block">
                         Giá vốn:
                       </label>
                       <div className="relative group">
@@ -578,8 +575,8 @@ export default function PortfolioPage() {
                           }}
                           className={`px-3 py-2 rounded-lg text-xs sm:text-sm font-medium transition-all duration-200 border w-20 sm:w-24 lg:w-28 ${
                             useAdjustedCostBasis
-                              ? 'bg-green-500/20 text-green-100 border-green-400/50 hover:bg-green-500/30'
-                              : 'bg-orange-500/20 text-orange-100 border-orange-400/50 hover:bg-orange-500/30'
+                              ? 'bg-green-100 text-green-800 border-green-200 hover:bg-green-200 dark:bg-green-500/20 dark:text-green-100 dark:border-green-400/50 dark:hover:bg-green-500/30'
+                              : 'bg-orange-100 text-orange-800 border-orange-200 hover:bg-orange-200 dark:bg-orange-500/20 dark:text-orange-100 dark:border-orange-400/50 dark:hover:bg-orange-500/30'
                           }`}
                         >
                           {useAdjustedCostBasis ? (
@@ -616,7 +613,7 @@ export default function PortfolioPage() {
       {/* Main Content */}
       <div className="max-w-6xl mx-auto p-4 mt-6">
         {portfolio.length === 0 ? (
-          <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg border border-gray-200 dark:border-gray-700 p-12 text-center">
+          <div className="backdrop-blur-lg bg-white/70 dark:bg-gray-900/50 rounded-2xl shadow-xl border border-gray-200/50 dark:border-white/10 p-12 text-center">
             <div className="flex flex-col items-center">
               <IconPieChart className="text-gray-400 dark:text-gray-500 w-16 h-16 mb-6" />
               <h3 className="text-2xl font-semibold text-gray-700 dark:text-gray-300 mb-4">
@@ -627,7 +624,7 @@ export default function PortfolioPage() {
               <p className="text-gray-500 dark:text-gray-400 mb-6">Bắt đầu bằng cách thêm giao dịch đầu tiên của bạn</p>
               <button
                 onClick={() => setIsAddModalOpen(true)}
-                className="bg-blue-600 dark:bg-blue-700 text-white px-8 py-3 rounded-lg font-bold hover:bg-blue-700 dark:hover:bg-blue-600 transition shadow-lg flex items-center mx-auto"
+                className="glass-button-primary px-8 py-3 rounded-xl font-bold transition shadow-lg flex items-center mx-auto"
               >
                 <IconPlus className="w-5 h-5 mr-2" />
                 Thêm giao dịch mới
@@ -638,7 +635,7 @@ export default function PortfolioPage() {
           <div className="grid grid-cols-1 lg:grid-cols-10 gap-6">
             <div className="lg:col-span-7">
               {/* Overview Stats */}
-              <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg border border-gray-200 dark:border-gray-700 p-6 mb-6">
+              <div className="backdrop-blur-lg bg-white/70 dark:bg-gray-900/50 rounded-2xl shadow-xl border border-gray-200/50 dark:border-white/10 p-6 mb-6">
                 <div className="flex items-center mb-6">
                   <IconLineChart className="text-blue-600 dark:text-blue-400 w-7 h-7 mr-3" />
                   <h2 className="text-xl font-bold text-gray-800 dark:text-gray-200">
@@ -718,7 +715,7 @@ export default function PortfolioPage() {
               
               {/* Transfer Controls */}
               {!selectedAccountId && (
-                <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg border border-gray-200 dark:border-gray-700 p-4 mb-6">
+                <div className="backdrop-blur-lg bg-white/70 dark:bg-gray-900/50 rounded-2xl shadow-xl border border-gray-200/50 dark:border-white/10 p-4 mb-6">
                   <div className="flex justify-between items-center">
                     <div className="flex items-center space-x-3">
                       <IconRefreshCw className="text-orange-600 dark:text-orange-400 w-5 h-5" />
@@ -738,8 +735,8 @@ export default function PortfolioPage() {
                 </div>
               )}
               
-              <div className="overflow-x-auto bg-white dark:bg-gray-800 rounded-lg shadow-lg border border-gray-200 dark:border-gray-700">
-                <div className="p-6 bg-gradient-to-r from-blue-50 to-indigo-50 dark:from-blue-900/20 dark:to-indigo-900/20 border-b border-gray-200 dark:border-gray-700 flex justify-between items-center">
+              <div className="overflow-x-auto backdrop-blur-lg bg-white/70 dark:bg-gray-900/50 rounded-2xl shadow-xl border border-gray-200/50 dark:border-white/10">
+                <div className="p-6 bg-gradient-to-r from-blue-50/80 to-indigo-50/80 dark:from-blue-900/20 dark:to-indigo-900/20 backdrop-blur-sm border-b border-gray-200/50 dark:border-white/10 flex justify-between items-center">
                   <div className="flex items-center">
                     <IconBarChart className="text-blue-600 dark:text-blue-400 w-6 h-6 mr-3" />
                     <div className="font-semibold text-gray-800 dark:text-gray-200">Chi tiết danh mục: {totalSummary.totalPositions} positions</div>
@@ -761,23 +758,23 @@ export default function PortfolioPage() {
                 {useVirtual ? (
                   <>
                     <div className="hidden lg:block">
-                      <table className="min-w-full divide-y divide-gray-200">
-                        <thead className="bg-gray-100">
+                      <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
+                        <thead className="bg-gray-50 dark:bg-gray-900">
                           <tr>
                             {!selectedAccountId && (
-                              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Chọn</th>
+                              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Chọn</th>
                             )}
-                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Mã CP</th>
-                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Số lượng</th>
-                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Giá vốn TB</th>
-                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Giá đóng cửa hôm nay</th>
-                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Giá trị thị trường</th>
-                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Lãi/Lỗ</th>
-                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Lãi/Lỗ (%)</th>
+                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Mã CP</th>
+                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Số lượng</th>
+                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Giá vốn TB</th>
+                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Giá đóng cửa hôm nay</th>
+                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Giá trị thị trường</th>
+                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Lãi/Lỗ</th>
+                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Lãi/Lỗ (%)</th>
                             {!selectedAccountId && (
-                              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Tài khoản</th>
+                              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Tài khoản</th>
                             )}
-                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Hành động</th>
+                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Hành động</th>
                           </tr>
                         </thead>
                       </table>
@@ -788,32 +785,32 @@ export default function PortfolioPage() {
                         rowHeight={56}
                         height={560}
                         renderRow={(holding, idx, style) => (
-                          <div style={style} key={holding.ticker || idx} className="grid grid-cols-10 items-center border-b border-gray-200 px-6 bg-white">
+                          <div style={style} key={holding.ticker || idx} className="grid grid-cols-10 items-center border-b border-gray-200/50 dark:border-white/10 px-6 hover:bg-gray-50/50 dark:hover:bg-white/5 transition-colors">
                             {!selectedAccountId && (
                               <div className="py-3">
                                 <input
                                   type="checkbox"
                                   checked={isStockSelected(holding.ticker)}
                                   onChange={(e) => handleStockSelect(holding, e.target.checked)}
-                                  className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
+                                  className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 dark:border-gray-600 rounded"
                                 />
                               </div>
                             )}
-                            <div className="py-3 font-medium">{holding.ticker || 'N/A'}</div>
-                            <div className="py-3">{holding.quantity?.toLocaleString() || '0'}</div>
-                            <div className="py-3">{holding.avgCost ? holding.avgCost.toLocaleString('vi-VN', { minimumFractionDigits: 0, maximumFractionDigits: 0 }) : '0'} VND</div>
-                            <div className="py-3">{marketDataLoading ? '...' : (holding.currentPrice ? holding.currentPrice.toLocaleString('vi-VN') : 'N/A')} VND</div>
-                            <div className="py-3">{holding.marketValue ? holding.marketValue.toLocaleString('vi-VN') : 'N/A'} VND</div>
-                            <div className="py-3">{holding.unrealizedPL != null ? (<span className={holding.unrealizedPL >= 0 ? 'text-green-600' : 'text-red-600'}>{holding.unrealizedPL.toLocaleString('vi-VN')} VND</span>) : 'N/A'}</div>
-                            <div className="py-3">{holding.plPercentage != null ? (<span className={holding.plPercentage >= 0 ? 'text-green-600' : 'text-red-600'}>{holding.plPercentage.toFixed(2)}%</span>) : 'N/A'}</div>
+                            <div className="py-3 font-medium text-gray-900 dark:text-gray-100">{holding.ticker || 'N/A'}</div>
+                            <div className="py-3 text-gray-900 dark:text-gray-100">{holding.quantity?.toLocaleString() || '0'}</div>
+                            <div className="py-3 text-gray-900 dark:text-gray-100">{holding.avgCost ? holding.avgCost.toLocaleString('vi-VN', { minimumFractionDigits: 0, maximumFractionDigits: 0 }) : '0'} VND</div>
+                            <div className="py-3 text-gray-900 dark:text-gray-100">{marketDataLoading ? '...' : (holding.currentPrice ? holding.currentPrice.toLocaleString('vi-VN') : 'N/A')} VND</div>
+                            <div className="py-3 text-gray-900 dark:text-gray-100">{holding.marketValue ? holding.marketValue.toLocaleString('vi-VN') : 'N/A'} VND</div>
+                            <div className="py-3">{holding.unrealizedPL != null ? (<span className={holding.unrealizedPL >= 0 ? 'text-green-600 dark:text-green-400' : 'text-red-600 dark:text-red-400'}>{holding.unrealizedPL.toLocaleString('vi-VN')} VND</span>) : <span className="text-gray-500 dark:text-gray-400">N/A</span>}</div>
+                            <div className="py-3">{holding.plPercentage != null ? (<span className={holding.plPercentage >= 0 ? 'text-green-600 dark:text-green-400' : 'text-red-600 dark:text-red-400'}>{holding.plPercentage.toFixed(2)}%</span>) : <span className="text-gray-500 dark:text-gray-400">N/A</span>}</div>
                             {!selectedAccountId && (
                               <div className="py-3">
-                                <div>{holding.stockAccount?.name || 'N/A'}</div>
-                                {holding.stockAccount?.brokerName && (<div className="text-xs text-gray-500">{holding.stockAccount.brokerName}</div>)}
+                                <div className="text-gray-900 dark:text-gray-100">{holding.stockAccount?.name || 'N/A'}</div>
+                                {holding.stockAccount?.brokerName && (<div className="text-xs text-gray-500 dark:text-gray-400">{holding.stockAccount.brokerName}</div>)}
                               </div>
                             )}
                             <div className="py-3 text-sm font-medium">
-                              <Link href={`/transactions?ticker=${holding.ticker || ''}`} className="text-indigo-600 hover:text-indigo-900">Lịch sử giao dịch</Link>
+                              <Link href={`/transactions?ticker=${holding.ticker || ''}`} className="text-indigo-600 dark:text-indigo-400 hover:text-indigo-900 dark:hover:text-indigo-300">Lịch sử giao dịch</Link>
                             </div>
                           </div>
                         )}
@@ -821,11 +818,11 @@ export default function PortfolioPage() {
                     </div>
                   </>
                 ) : (
-                  <table className="min-w-full divide-y divide-gray-200">
-                    <thead className="bg-gray-100">
+                  <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
+                    <thead className="bg-gray-50/80 dark:bg-gray-900/80 backdrop-blur-sm">
                       <tr>
                         {!selectedAccountId && (
-                          <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                          <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
                             <input
                               type="checkbox"
                               checked={isAllSelected()}
@@ -833,40 +830,40 @@ export default function PortfolioPage() {
                                 if (input) input.indeterminate = isSomeSelected();
                               }}
                               onChange={(e) => handleSelectAll(e.target.checked)}
-                              className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
+                              className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 dark:border-gray-600 rounded"
                             />
                           </th>
                         )}
-                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Mã CP</th>
-                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Số lượng</th>
-                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Giá vốn TB</th>
-                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Giá đóng cửa hôm nay</th>
-                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Giá trị thị trường</th>
-                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Lãi/Lỗ</th>
-                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Lãi/Lỗ (%)</th>
-                        {!selectedAccountId && (<th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Tài khoản</th>)}
-                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Hành động</th>
+                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Mã CP</th>
+                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Số lượng</th>
+                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Giá vốn TB</th>
+                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Giá đóng cửa hôm nay</th>
+                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Giá trị thị trường</th>
+                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Lãi/Lỗ</th>
+                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Lãi/Lỗ (%)</th>
+                        {!selectedAccountId && (<th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Tài khoản</th>)}
+                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Hành động</th>
                       </tr>
                     </thead>
-                    <tbody className="bg-white divide-y divide-gray-200">
+                    <tbody className="divide-y divide-gray-200/50 dark:divide-gray-700/50">
                       {displayedRows.map((holding) => {
                         if (!holding || typeof holding !== 'object') return null;
                         return (
-                          <tr key={holding.ticker || 'unknown'} className="hover:bg-gray-50">
+                          <tr key={holding.ticker || 'unknown'} className="hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors">
                             {!selectedAccountId && (
                               <td className="px-6 py-4 whitespace-nowrap">
-                                <input type="checkbox" checked={isStockSelected(holding.ticker)} onChange={(e) => handleStockSelect(holding, e.target.checked)} className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded" />
+                                <input type="checkbox" checked={isStockSelected(holding.ticker)} onChange={(e) => handleStockSelect(holding, e.target.checked)} className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 dark:border-gray-600 rounded" />
                               </td>
                             )}
-                            <td className="px-6 py-4 whitespace-nowrap"><div className="text-sm font-medium text-gray-900">{holding.ticker || 'N/A'}</div></td>
-                            <td className="px-6 py-4 whitespace-nowrap"><div className="text-sm text-gray-900">{holding.quantity ? holding.quantity.toLocaleString() : '0'}</div></td>
-                            <td className="px-6 py-4 whitespace-nowrap"><div className="text-sm text-gray-900">{holding.avgCost ? holding.avgCost.toLocaleString('vi-VN', { minimumFractionDigits: 0, maximumFractionDigits: 0 }) : '0'} VND</div></td>
-                            <td className="px-6 py-4 whitespace-nowrap"><div className="text-sm text-gray-900">{marketDataLoading ? (<Spinner size="small" />) : holding.currentPrice ? (holding.currentPrice.toLocaleString('vi-VN')) : ('N/A')} VND</div></td>
-                            <td className="px-6 py-4 whitespace-nowrap"><div className="text-sm text-gray-900">{holding.marketValue ? (holding.marketValue.toLocaleString('vi-VN')) : ('N/A')} VND</div></td>
-                            <td className="px-6 py-4 whitespace-nowrap">{holding.unrealizedPL != null ? (<div className={`text-sm ${holding.unrealizedPL >= 0 ? 'text-green-600' : 'text-red-600'}`}>{holding.unrealizedPL.toLocaleString('vi-VN')} VND</div>) : (<div className="text-sm text-gray-500">N/A</div>)}</td>
-                            <td className="px-6 py-4 whitespace-nowrap">{holding.plPercentage != null ? (<div className={`text-sm ${holding.plPercentage >= 0 ? 'text-green-600' : 'text-red-600'}`}>{holding.plPercentage.toFixed(2)}%</div>) : (<div className="text-sm text-gray-500">N/A</div>)}</td>
-                            {!selectedAccountId && (<td className="px-6 py-4 whitespace-nowrap"><div className="text-sm text-gray-900">{holding.stockAccount?.name || 'N/A'}{holding.stockAccount?.brokerName && (<div className="text-xs text-gray-500">{holding.stockAccount.brokerName}</div>)}</div></td>)}
-                            <td className="px-6 py-4 whitespace-nowrap text-sm font-medium"><Link href={`/transactions?ticker=${holding.ticker || ''}`} className="text-indigo-600 hover:text-indigo-900 mr-4">Lịch sử giao dịch</Link></td>
+                            <td className="px-6 py-4 whitespace-nowrap"><div className="text-sm font-medium text-gray-900 dark:text-gray-100">{holding.ticker || 'N/A'}</div></td>
+                            <td className="px-6 py-4 whitespace-nowrap"><div className="text-sm text-gray-900 dark:text-gray-100">{holding.quantity ? holding.quantity.toLocaleString() : '0'}</div></td>
+                            <td className="px-6 py-4 whitespace-nowrap"><div className="text-sm text-gray-900 dark:text-gray-100">{holding.avgCost ? holding.avgCost.toLocaleString('vi-VN', { minimumFractionDigits: 0, maximumFractionDigits: 0 }) : '0'} VND</div></td>
+                            <td className="px-6 py-4 whitespace-nowrap"><div className="text-sm text-gray-900 dark:text-gray-100">{marketDataLoading ? (<Spinner size="small" />) : holding.currentPrice ? (holding.currentPrice.toLocaleString('vi-VN')) : ('N/A')} VND</div></td>
+                            <td className="px-6 py-4 whitespace-nowrap"><div className="text-sm text-gray-900 dark:text-gray-100">{holding.marketValue ? (holding.marketValue.toLocaleString('vi-VN')) : ('N/A')} VND</div></td>
+                            <td className="px-6 py-4 whitespace-nowrap">{holding.unrealizedPL != null ? (<div className={`text-sm ${holding.unrealizedPL >= 0 ? 'text-green-600 dark:text-green-400' : 'text-red-600 dark:text-red-400'}`}>{holding.unrealizedPL.toLocaleString('vi-VN')} VND</div>) : (<div className="text-sm text-gray-500 dark:text-gray-400">N/A</div>)}</td>
+                            <td className="px-6 py-4 whitespace-nowrap">{holding.plPercentage != null ? (<div className={`text-sm ${holding.plPercentage >= 0 ? 'text-green-600 dark:text-green-400' : 'text-red-600 dark:text-red-400'}`}>{holding.plPercentage.toFixed(2)}%</div>) : (<div className="text-sm text-gray-500 dark:text-gray-400">N/A</div>)}</td>
+                            {!selectedAccountId && (<td className="px-6 py-4 whitespace-nowrap"><div className="text-sm text-gray-900 dark:text-gray-100">{holding.stockAccount?.name || 'N/A'}{holding.stockAccount?.brokerName && (<div className="text-xs text-gray-500 dark:text-gray-400">{holding.stockAccount.brokerName}</div>)}</div></td>)}
+                            <td className="px-6 py-4 whitespace-nowrap text-sm font-medium"><Link href={`/transactions?ticker=${holding.ticker || ''}`} className="text-indigo-600 dark:text-indigo-400 hover:text-indigo-900 dark:hover:text-indigo-300 mr-4">Lịch sử giao dịch</Link></td>
                           </tr>
                         );
                       })}
@@ -875,7 +872,7 @@ export default function PortfolioPage() {
                 )}
                 
                 {totalPages > 1 && (
-                  <div className="p-6 border-t border-gray-200 bg-gray-50">
+                  <div className="p-6 border-t border-gray-200/50 dark:border-white/10 bg-gray-50/50 dark:bg-gray-900/50">
                     <Pagination 
                       currentPage={currentPage}
                       totalPages={totalPages}
@@ -890,7 +887,7 @@ export default function PortfolioPage() {
             <div className="lg:col-span-3 space-y-6">
               {/* Portfolio Allocation Chart */}
               {marketDataLoading ? (
-                <div className="flex justify-center items-center h-64 bg-white rounded-lg shadow">
+                <div className="flex justify-center items-center h-64 backdrop-blur-lg bg-white/70 dark:bg-gray-900/50 rounded-2xl shadow-xl border border-gray-200/50 dark:border-white/10">
                   <Spinner size="large" />
                 </div>
               ) : (
@@ -929,4 +926,4 @@ export default function PortfolioPage() {
       </div>
     </div>
   );
-} 
+}

@@ -36,7 +36,7 @@ export default function StrategyList({ strategies, onStrategyDeleted, currentUse
   if (strategies.length === 0) {
     return (
       <div className="text-center py-10">
-        <p className="text-gray-500">No strategies have been shared yet. Be the first!</p>
+        <p className="text-gray-500 dark:text-gray-400">Chưa có chiến lược nào được chia sẻ. Hãy là người đầu tiên!</p>
       </div>
     );
   }
@@ -46,7 +46,7 @@ export default function StrategyList({ strategies, onStrategyDeleted, currentUse
       {strategies.map((strategy) => (
         <div key={strategy.id} className="card">
           <div className="flex justify-between items-start mb-2">
-            <h3 className="text-lg font-semibold">
+            <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
               {strategy.title || 'Untitled Strategy'}
             </h3>
             
@@ -54,7 +54,7 @@ export default function StrategyList({ strategies, onStrategyDeleted, currentUse
               <button
                 onClick={() => handleDelete(strategy.id)}
                 disabled={deletingId === strategy.id}
-                className="text-red-500 hover:text-red-700 p-2 rounded hover:bg-red-50 transition-colors disabled:opacity-50"
+                className="text-red-500 dark:text-red-400 hover:text-red-700 dark:hover:text-red-300 p-2 rounded hover:bg-red-50 dark:hover:bg-red-900/20 transition-colors disabled:opacity-50"
                 title={deletingId === strategy.id ? "Đang xóa chiến lược..." : "Xóa chiến lược"}
               >
                 {deletingId === strategy.id ? (
@@ -66,14 +66,14 @@ export default function StrategyList({ strategies, onStrategyDeleted, currentUse
             )}
           </div>
           
-          <p className="text-gray-700 whitespace-pre-wrap mb-3">
+          <p className="text-gray-700 dark:text-gray-300 whitespace-pre-wrap mb-3">
             {strategy.content}
           </p>
           
-          <div className="text-sm text-gray-500 flex justify-between items-center">
+          <div className="text-sm text-gray-500 dark:text-gray-400 flex justify-between items-center">
             <div>
-              <span>Shared by </span>
-              <span className="font-medium">{strategy.user?.name || strategy.user?.email || 'Anonymous'}</span>
+              <span>Chia sẻ bởi </span>
+              <span className="font-medium text-gray-900 dark:text-white">{strategy.user?.name || strategy.user?.email || 'Anonymous'}</span>
             </div>
             <div>{formatDistanceToNow(new Date(strategy.createdAt), { addSuffix: true })}</div>
           </div>

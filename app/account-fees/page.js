@@ -196,18 +196,19 @@ function AccountFeesContent() {
 
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <div className="mb-8">
-          <div className="flex justify-between items-center mb-6">
+      {/* Hero Header */}
+      <div className="gradient-bg dark:from-gray-800 dark:to-gray-700 text-gray-900 dark:text-white py-12">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex justify-between items-center">
             <div>
               <h1 className="text-3xl font-bold text-gray-900 dark:text-white">Quản Lý Phí Tài Khoản</h1>
-              <p className="mt-2 text-sm text-gray-600 dark:text-gray-400">
+              <p className="mt-2 text-sm text-gray-600 dark:text-gray-300">
                 Theo dõi và quản lý các loại phí liên quan đến tài khoản chứng khoán
               </p>
             </div>
             <button
               onClick={handleAddFee}
-              className="bg-blue-600 dark:bg-blue-700 hover:bg-blue-700 dark:hover:bg-blue-600 text-white font-medium py-2 px-4 rounded-lg flex items-center gap-2"
+              className="glass-button text-blue-900 dark:text-blue-100 font-medium py-2 px-4 flex items-center gap-2 transition shadow-lg"
             >
               <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
@@ -215,9 +216,11 @@ function AccountFeesContent() {
               Thêm Phí
             </button>
           </div>
+        </div>
+      </div>
 
-
-
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <div className="mb-8">
           {/* Summary Statistics */}
           <AccountFeeSummary 
             summaryStats={summaryStats} 
@@ -245,8 +248,6 @@ function AccountFeesContent() {
             onDelete={handleDeleteFee}
           />
           
-
-
           {/* Page Size Selector and Pagination */}
           {totalItems > 0 && (
             <div className="flex items-center justify-between mt-6">
@@ -298,4 +299,4 @@ export default function AccountFeesPage() {
       <AccountFeesContent />
     </Suspense>
   );
-} 
+}

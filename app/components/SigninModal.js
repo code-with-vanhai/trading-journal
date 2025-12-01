@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { signIn } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import { IconX, IconAlertCircle } from './ui/Icon';
+import GlassCard from './ui/GlassCard';
 
 export default function SigninModal({ isOpen, onClose }) {
   const [login, setLogin] = useState('');
@@ -41,36 +42,35 @@ export default function SigninModal({ isOpen, onClose }) {
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 dark:bg-opacity-70 z-50 flex items-center justify-center p-4">
-      <div className="bg-white dark:bg-gray-800 rounded-lg shadow-xl max-w-md w-full max-h-[90vh] overflow-y-auto border border-gray-200 dark:border-gray-700">
+    <div className="fixed inset-0 bg-black/60 backdrop-blur-sm z-[60] flex items-center justify-center p-4 animate-fade-in">
+      <GlassCard className="w-full max-w-md overflow-hidden shadow-2xl border-0 ring-1 ring-white/10 relative">
+        {/* Background Glow */}
+        <div className="absolute top-0 left-0 w-full h-full overflow-hidden pointer-events-none -z-10">
+            <div className="absolute top-[-50%] left-[-50%] w-[200%] h-[200%] bg-gradient-to-b from-blue-500/10 to-transparent opacity-50 dark:opacity-30"></div>
+        </div>
+
         {/* Header */}
-        <div className="gradient-bg dark:from-gray-800 dark:to-gray-700 text-white p-6 rounded-t-lg">
-          <div className="flex justify-between items-center">
-            <div>
-              <h2 className="text-2xl font-bold">Đăng nhập</h2>
-              <p className="opacity-90 dark:opacity-80 mt-1">Truy cập vào tài khoản Trading Journal của bạn</p>
-            </div>
-            <button
-              onClick={onClose}
-              className="text-white hover:text-gray-200 dark:hover:text-gray-300 transition-colors"
-            >
-              <IconX className="w-6 h-6" />
-            </button>
-          </div>
+        <div className="relative p-6 border-b border-gray-200 dark:border-white/10">
+          <button
+            onClick={onClose}
+            className="absolute top-4 right-4 text-gray-400 hover:text-gray-600 dark:hover:text-white transition-colors"
+          >
+            <IconX className="w-6 h-6" />
+          </button>
+          <h2 className="text-2xl font-bold text-gray-900 dark:text-white">Đăng nhập</h2>
+          <p className="text-gray-600 dark:text-gray-300 mt-1 text-sm">Truy cập vào tài khoản Trading Journal</p>
         </div>
 
         {/* Body */}
         <div className="p-6">
           {error && (
-            <div className="bg-red-50 dark:bg-red-900/20 border-l-4 border-red-500 dark:border-red-600 text-red-700 dark:text-red-400 p-4 rounded mb-6">
-              <div className="flex items-center">
-                <IconAlertCircle className="w-5 h-5 mr-2" />
-                {error}
-              </div>
+            <div className="bg-red-50 dark:bg-red-900/20 border-l-4 border-red-500 dark:border-red-500 text-red-700 dark:text-red-300 p-4 rounded mb-6 text-sm flex items-center">
+              <IconAlertCircle className="w-5 h-5 mr-2 flex-shrink-0" />
+              {error}
             </div>
           )}
 
-          <form onSubmit={handleSubmit} className="space-y-4">
+          <form onSubmit={handleSubmit} className="space-y-5">
             <div>
               <label htmlFor="login" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                 Email/Username
@@ -81,7 +81,7 @@ export default function SigninModal({ isOpen, onClose }) {
                 value={login}
                 onChange={(e) => setLogin(e.target.value)}
                 required
-                className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-transparent"
+                className="input-glass w-full px-4 py-3"
                 placeholder="email@example.com hoặc username"
               />
             </div>
@@ -96,7 +96,7 @@ export default function SigninModal({ isOpen, onClose }) {
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 required
-                className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-transparent"
+                className="input-glass w-full px-4 py-3"
                 placeholder="Nhập mật khẩu"
               />
             </div>
@@ -104,13 +104,13 @@ export default function SigninModal({ isOpen, onClose }) {
             <button
               type="submit"
               disabled={isLoading}
-              className="w-full bg-blue-600 dark:bg-blue-700 text-white py-3 px-4 rounded-lg font-medium hover:bg-blue-700 dark:hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+              className="glass-button-primary w-full py-3 rounded-xl font-bold shadow-lg hover:shadow-xl transition-all disabled:opacity-50 disabled:cursor-not-allowed flex justify-center items-center"
             >
               {isLoading ? (
-                <div className="flex items-center justify-center">
+                <>
                   <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white mr-2"></div>
                   Đang đăng nhập...
-                </div>
+                </>
               ) : (
                 'Đăng nhập'
               )}
@@ -118,14 +118,14 @@ export default function SigninModal({ isOpen, onClose }) {
           </form>
 
           <div className="mt-6 text-center">
-            <p className="text-gray-600 dark:text-gray-400">
+            <p className="text-gray-600 dark:text-gray-400 text-sm">
               Chưa có tài khoản?{' '}
               <button
                 onClick={() => {
                   onClose();
                   router.push('/auth/signup');
                 }}
-                className="text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 font-medium"
+                className="text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 font-medium hover:underline"
               >
                 Đăng ký ngay
               </button>
@@ -133,10 +133,10 @@ export default function SigninModal({ isOpen, onClose }) {
           </div>
 
           {/* Social login options */}
-          <div className="mt-6 pt-6 border-t border-gray-200 dark:border-gray-700">
+          <div className="mt-6 pt-6 border-t border-gray-200 dark:border-white/10">
             <button
               onClick={() => signIn('google', { redirect: false })}
-              className="w-full flex items-center justify-center px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600 transition-colors"
+              className="w-full flex items-center justify-center px-4 py-3 border border-gray-300 dark:border-white/10 rounded-xl text-gray-700 dark:text-gray-200 bg-white/50 dark:bg-white/5 hover:bg-gray-50 dark:hover:bg-white/10 transition-colors font-medium shadow-sm"
             >
               <svg className="w-5 h-5 mr-3" viewBox="0 0 24 24" fill="currentColor">
                 <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/>
@@ -148,7 +148,7 @@ export default function SigninModal({ isOpen, onClose }) {
             </button>
           </div>
         </div>
-      </div>
+      </GlassCard>
     </div>
   );
-} 
+}

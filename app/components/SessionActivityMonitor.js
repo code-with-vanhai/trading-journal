@@ -147,40 +147,40 @@ export default function SessionActivityMonitor() {
   if (!showWarning) return null;
 
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-      <div className="bg-white p-6 rounded-lg shadow-lg max-w-md w-full mx-4">
+    <div className="fixed inset-0 bg-black bg-opacity-50 dark:bg-opacity-70 flex items-center justify-center z-50">
+      <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-lg border border-gray-200 dark:border-gray-700 max-w-md w-full mx-4">
         <div className="flex items-center mb-4">
-          <svg className="w-6 h-6 text-amber-500 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <svg className="w-6 h-6 text-amber-500 dark:text-amber-400 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" 
                   d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
           </svg>
-          <h2 className="text-xl font-bold text-gray-800">Session Expiring Soon</h2>
+          <h2 className="text-xl font-bold text-gray-800 dark:text-white">Phiên sắp hết hạn</h2>
         </div>
         
-        <p className="text-gray-600 mb-4">
-          Your session will expire in{' '}
-          <span className="font-bold text-red-600">
+        <p className="text-gray-600 dark:text-gray-300 mb-4">
+          Phiên của bạn sẽ hết hạn trong{' '}
+          <span className="font-bold text-red-600 dark:text-red-400">
             {Math.floor(timeRemaining / 60)}:{(timeRemaining % 60).toString().padStart(2, '0')}
           </span>
-          {' '}due to inactivity.
+          {' '}do không hoạt động.
         </p>
         
-        <p className="text-sm text-gray-500 mb-6">
-          Click "Stay Active" to continue your session, or you'll be automatically logged out.
+        <p className="text-sm text-gray-500 dark:text-gray-400 mb-6">
+          Nhấp "Tiếp tục" để duy trì phiên, hoặc bạn sẽ tự động đăng xuất.
         </p>
         
         <div className="flex justify-end space-x-3">
           <button
             onClick={handleLogout}
-            className="px-4 py-2 bg-gray-300 hover:bg-gray-400 text-gray-700 rounded transition-colors"
+            className="px-4 py-2 bg-gray-300 dark:bg-gray-700 hover:bg-gray-400 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-200 rounded transition-colors"
           >
-            Log Out
+            Đăng xuất
           </button>
           <button
             onClick={extendSession}
-            className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded transition-colors"
+            className="px-4 py-2 bg-blue-600 dark:bg-blue-700 hover:bg-blue-700 dark:hover:bg-blue-600 text-white rounded transition-colors"
           >
-            Stay Active
+            Tiếp tục
           </button>
         </div>
       </div>

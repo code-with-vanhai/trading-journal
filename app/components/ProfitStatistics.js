@@ -47,7 +47,7 @@ export default function ProfitStatistics({ profitStats, isVisible = true }) {
   };
 
   return (
-    <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg border border-gray-200 dark:border-gray-700 p-6 mb-6">
+    <div className="backdrop-blur-lg bg-white/70 dark:bg-gray-900/50 rounded-2xl shadow-xl border border-gray-200/50 dark:border-white/10 p-6 mb-6">
       <div className="flex items-center mb-4">
         <IconPieChart className="w-6 h-6 text-blue-600 dark:text-blue-400 mr-3" />
         <h3 className="text-lg font-semibold text-gray-800 dark:text-gray-200">Thống kê Lợi nhuận</h3>

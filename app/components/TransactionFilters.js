@@ -46,7 +46,7 @@ export default function TransactionFilters({ filters, onFilterChange, onResetFil
   };
 
   return (
-    <div className="bg-white dark:bg-gray-800 rounded-lg shadow mb-6 border border-gray-200 dark:border-gray-700 overflow-hidden">
+    <div className="backdrop-blur-lg bg-white/70 dark:bg-gray-900/50 rounded-2xl shadow-xl mb-6 border border-gray-200/50 dark:border-white/10 overflow-hidden">
       <div 
         className="p-4 bg-gray-50 dark:bg-gray-700/50 border-b border-gray-200 dark:border-gray-700 flex justify-between items-center cursor-pointer"
         onClick={() => setIsExpanded(!isExpanded)}

@@ -2,6 +2,8 @@
 
 import { useState } from 'react';
 import { signIn } from 'next-auth/react';
+import { IconX, IconAlertCircle } from './ui/Icon';
+import GlassCard from './ui/GlassCard';
 
 export default function LoginModal({ isOpen, onClose, onSuccess }) {
   const [formData, setFormData] = useState({
@@ -60,42 +62,46 @@ export default function LoginModal({ isOpen, onClose, onSuccess }) {
   }
 
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
-      <div className="bg-white rounded-lg shadow-xl w-full max-w-md overflow-hidden">
-        <div className="p-6">
-          <div className="flex justify-between items-center mb-4">
-            <h2 className="text-xl font-bold">Session Expired</h2>
+    <div className="fixed inset-0 bg-black/60 backdrop-blur-sm z-[60] flex items-center justify-center p-4 animate-fade-in">
+      <GlassCard className="w-full max-w-md overflow-hidden shadow-2xl border-0 ring-1 ring-white/10 relative">
+        {/* Background Glow */}
+         <div className="absolute top-0 left-0 w-full h-full overflow-hidden pointer-events-none -z-10">
+            <div className="absolute top-[-50%] left-[-50%] w-[200%] h-[200%] bg-gradient-to-b from-blue-500/10 to-transparent opacity-50 dark:opacity-30"></div>
+        </div>
+
+        <div className="relative p-6">
+          <div className="flex justify-between items-center mb-6 pb-4 border-b border-gray-200 dark:border-white/10">
+            <h2 className="text-xl font-bold text-gray-900 dark:text-white">Session Expired</h2>
             <button 
               onClick={onClose} 
-              className="text-gray-400 hover:text-gray-600"
+              className="text-gray-400 hover:text-gray-600 dark:hover:text-white transition-colors"
               aria-label="Close"
             >
-              <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-              </svg>
+              <IconX className="h-6 w-6" />
             </button>
           </div>
           
-          <p className="mb-4 text-gray-600">
+          <p className="mb-6 text-gray-600 dark:text-gray-300">
             Your session has expired. Please sign in again to continue.
           </p>
           
           {error && (
-            <div className="bg-red-50 text-red-500 p-3 rounded mb-4">
+            <div className="bg-red-50 dark:bg-red-900/20 border-l-4 border-red-500 dark:border-red-500 text-red-700 dark:text-red-300 p-4 rounded mb-6 text-sm flex items-center">
+              <IconAlertCircle className="w-5 h-5 mr-2 flex-shrink-0" />
               {error}
             </div>
           )}
           
-          <form onSubmit={handleSubmit}>
-            <div className="mb-4">
-              <label htmlFor="modal-login" className="block text-sm font-medium text-gray-700 mb-1">
+          <form onSubmit={handleSubmit} className="space-y-5">
+            <div>
+              <label htmlFor="modal-login" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                 Email or Username
               </label>
               <input
                 id="modal-login"
                 name="login"
                 type="text"
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="input-glass w-full px-4 py-3"
                 value={formData.login}
                 onChange={handleChange}
                 required
@@ -103,33 +109,38 @@ export default function LoginModal({ isOpen, onClose, onSuccess }) {
               />
             </div>
             
-            <div className="mb-6">
-              <label htmlFor="modal-password" className="block text-sm font-medium text-gray-700 mb-1">
+            <div>
+              <label htmlFor="modal-password" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                 Password
               </label>
               <input
                 id="modal-password"
                 name="password"
                 type="password"
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="input-glass w-full px-4 py-3"
                 value={formData.password}
                 onChange={handleChange}
                 required
               />
             </div>
             
-            <div className="flex items-center justify-between">
-              <button
-                type="submit"
-                className="w-full bg-blue-600 text-white font-medium py-2 px-4 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
-                disabled={isLoading}
-              >
-                {isLoading ? 'Signing in...' : 'Sign In'}
-              </button>
-            </div>
+            <button
+              type="submit"
+              className="glass-button-primary w-full py-3 rounded-xl font-bold shadow-lg hover:shadow-xl transition-all disabled:opacity-50 disabled:cursor-not-allowed flex justify-center items-center"
+              disabled={isLoading}
+            >
+              {isLoading ? (
+                <>
+                  <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white mr-2"></div>
+                  Signing in...
+                </>
+              ) : (
+                'Sign In'
+              )}
+            </button>
           </form>
         </div>
-      </div>
+      </GlassCard>
     </div>
   );
-} 
+}
