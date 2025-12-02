@@ -16,6 +16,9 @@ const nextConfig = {
     // Only enable stable optimizations
   },
 
+  // Add empty turbopack config to silence the warning
+  turbopack: {},
+
   // Server Components optimizations
   serverExternalPackages: ['@prisma/client', 'bcrypt'],
 

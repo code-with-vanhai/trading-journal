@@ -5,6 +5,10 @@ node_modules
 .env.development.local
 .env.test.local
 .env.production.local
+.env_*
+*.env
+!.env.example
+!.env.test
 
 # Build output
 .next
@@ -22,3 +26,21 @@ backups/
 *.bak
 *.backup
 *.backup.*
+
+# Security - Old vulnerable scripts
+scripts/OLD_VULNERABLE/
+
+# Security - Temporary analysis files
+tmp_rovodev_*
+
+# Keys and certificates
+*.pem
+*.key
+*.p12
+*.pfx
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
