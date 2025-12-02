@@ -175,8 +175,19 @@ Chúng tôi cam kết chất lượng code cao nhất với bộ test suite toà
 - ✅ **Command injection prevention** - Secure backup scripts using `execFile`
 - ✅ **SQL injection protection** - Prisma ORM with parameterized queries
 - ✅ **Secret management** - Environment variables, never committed to Git
-- ✅ **Pre-commit hooks** - Automatic checks to prevent secret leaks
+- ✅ **Pre-commit hooks (Husky)** - Automatic checks to prevent secret leaks
 - ✅ **Git history** - Clean, no exposed credentials
+
+#### 🐶 Git Hooks (Husky)
+
+Pre-commit hooks automatically run security checks before each commit:
+
+1. **Detect .env files** - Prevents committing sensitive files
+2. **Scan for secrets** - Detects passwords, API keys, tokens in code
+3. **Verify .gitignore** - Ensures sensitive files are protected
+4. **Pattern matching** - Catches common security mistakes
+
+To bypass (not recommended): `git commit --no-verify`
 
 ### Database Safety Guards
 **Important:** Test scripts have safety checks to prevent production data loss:

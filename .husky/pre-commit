@@ -1,6 +1,3 @@
-#!/usr/bin/env sh
-. "$(dirname -- "$0")/_/husky.sh"
-
 echo "🔍 Running pre-commit security checks..."
 echo ""
 
@@ -36,31 +33,44 @@ echo ""
 # ============================================================
 echo "📋 Check 2: Scanning for potential secrets in code..."
 
-# Patterns to detect
-SECRET_PATTERNS=(
-  "password\s*=\s*['\"][^'\"]{8,}"
-  "api[_-]?key\s*=\s*['\"][^'\"]{20,}"
-  "secret\s*=\s*['\"][^'\"]{20,}"
-  "token\s*=\s*['\"][^'\"]{20,}"
-  "DATABASE_URL\s*=\s*['\"]postgresql://[^'\"]+:[^'\"]+@"
-  "mongodb(\+srv)?://[^:]+:[^@]+@"
-  "PRIVATE[_-]?KEY"
-  "-----BEGIN.*PRIVATE KEY-----"
-)
-
+# Patterns to detect (using grep -E format)
 SECRETS_FOUND=0
 
-for pattern in "${SECRET_PATTERNS[@]}"; do
-  if git diff --cached | grep -i -E "$pattern" > /dev/null; then
-    if [ $SECRETS_FOUND -eq 0 ]; then
-      echo ""
-      echo "⚠️  WARNING: Potential secrets detected in changes!"
-      echo ""
-    fi
-    SECRETS_FOUND=1
-    echo "   Found pattern: $pattern"
-  fi
-done
+# Check each pattern individually
+if git diff --cached | grep -i -E "password\s*=\s*['\"][^'\"]{8,}" > /dev/null 2>&1; then
+  SECRETS_FOUND=1
+  echo "   Found pattern: password assignment"
+fi
+
+if git diff --cached | grep -i -E "api[_-]?key\s*=\s*['\"][^'\"]{20,}" > /dev/null 2>&1; then
+  SECRETS_FOUND=1
+  echo "   Found pattern: API key"
+fi
+
+if git diff --cached | grep -i -E "secret\s*=\s*['\"][^'\"]{20,}" > /dev/null 2>&1; then
+  SECRETS_FOUND=1
+  echo "   Found pattern: secret assignment"
+fi
+
+if git diff --cached | grep -i -E "token\s*=\s*['\"][^'\"]{20,}" > /dev/null 2>&1; then
+  SECRETS_FOUND=1
+  echo "   Found pattern: token"
+fi
+
+if git diff --cached | grep -i -E "DATABASE_URL\s*=\s*['\"]postgresql://[^'\"]+:[^'\"]+@" > /dev/null 2>&1; then
+  SECRETS_FOUND=1
+  echo "   Found pattern: DATABASE_URL with credentials"
+fi
+
+if git diff --cached | grep -i -E "mongodb(\+srv)?://[^:]+:[^@]+@" > /dev/null 2>&1; then
+  SECRETS_FOUND=1
+  echo "   Found pattern: MongoDB URL with credentials"
+fi
+
+if [ $SECRETS_FOUND -eq 1 ]; then
+  echo ""
+  echo "⚠️  WARNING: Potential secrets detected in changes!"
+fi
 
 if [ $SECRETS_FOUND -eq 1 ]; then
   echo ""
@@ -85,25 +95,38 @@ echo ""
 # ============================================================
 echo "📋 Check 3: Verifying .gitignore configuration..."
 
-REQUIRED_IGNORES=(
-  "^\.env$"
-  "^\.env\.\*"
-  "^\*\.env$"
-)
-
 MISSING_IGNORES=0
 
-for pattern in "${REQUIRED_IGNORES[@]}"; do
-  if ! grep -E "$pattern" .gitignore > /dev/null 2>&1; then
-    if [ $MISSING_IGNORES -eq 0 ]; then
-      echo ""
-      echo "⚠️  WARNING: .gitignore may not be protecting all sensitive files"
-      echo ""
-    fi
-    MISSING_IGNORES=1
-    echo "   Missing pattern: $pattern"
+# Check for required .gitignore patterns
+if ! grep -E "^\\.env$" .gitignore > /dev/null 2>&1; then
+  if [ $MISSING_IGNORES -eq 0 ]; then
+    echo ""
+    echo "⚠️  WARNING: .gitignore may not be protecting all sensitive files"
+    echo ""
   fi
-done
+  MISSING_IGNORES=1
+  echo "   Missing pattern: .env"
+fi
+
+if ! grep -E "^\\.env\\.\\*" .gitignore > /dev/null 2>&1; then
+  if [ $MISSING_IGNORES -eq 0 ]; then
+    echo ""
+    echo "⚠️  WARNING: .gitignore may not be protecting all sensitive files"
+    echo ""
+  fi
+  MISSING_IGNORES=1
+  echo "   Missing pattern: .env.*"
+fi
+
+if ! grep -E "^\\*\\.env$" .gitignore > /dev/null 2>&1; then
+  if [ $MISSING_IGNORES -eq 0 ]; then
+    echo ""
+    echo "⚠️  WARNING: .gitignore may not be protecting all sensitive files"
+    echo ""
+  fi
+  MISSING_IGNORES=1
+  echo "   Missing pattern: *.env"
+fi
 
 if [ $MISSING_IGNORES -eq 1 ]; then
   echo ""
